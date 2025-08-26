@@ -28,15 +28,15 @@ This system is a web application for managing user information (first name, last
 ```json
 {
   "id": "1",
-  "firstName": "太郎",
-  "lastName": "田中",
+  "firstName": "Taro",
+  "lastName": "Tanaka",
   "email": "tanaka@example.com",
   "jsonData": {
     "age": 30,
-    "city": "東京",
-    "hobbies": ["読書", "旅行"],
+    "city": "Tokyo",
+    "hobbies": ["Reading", "Traveling"],
     "profile": {
-      "bio": "エンジニアとして働いています",
+      "bio": "Working as an engineer",
       "experience": 5
     }
   }
@@ -75,7 +75,7 @@ This system is a web application for managing user information (first name, last
 ### Starting the Backend
 
 ```bash
-# プロジェクトルートディレクトリで
+# From the project root directory
 ./gradlew bootRun
 ```
 
@@ -84,7 +84,7 @@ The backend will start at `http://localhost:8080`.
 ### Starting the Frontend
 
 ```bash
-# clientディレクトリで
+# From the client directory
 cd client
 npm install
 npm start
@@ -111,8 +111,8 @@ GET /api/users
 [
   {
     "id": "1",
-    "firstName": "太郎",
-    "lastName": "田中",
+    "firstName": "Taro",
+    "lastName": "Tanaka",
     "email": "tanaka@example.com",
     "jsonData": {...}
   }
@@ -127,12 +127,12 @@ POST /api/users
 **Request Body:**
 ```json
 {
-  "firstName": "花子",
-  "lastName": "佐藤",
+  "firstName": "Hanako",
+  "lastName": "Sato",
   "email": "sato@example.com",
   "jsonData": {
     "age": 25,
-    "city": "大阪"
+    "city": "Osaka"
   }
 }
 ```
