@@ -1,0 +1,102 @@
+<div class="user-management-container">
+  <mat-card class="main-card">
+    <mat-card-header>
+      <mat-card-title class="card-title">
+        <mat-icon class="title-icon">people</mat-icon>
+        ユーザー管理システム
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- 新規ユーザー追加ボタン -->
+      <div class="add-user-section">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="openAddUserDialog()"
+          class="add-user-button">
+          <mat-icon>add</mat-icon>
+          新規ユーザー追加
+        </button>
+      </div>
+
+      <!-- ユーザー一覧テーブル -->
+      <div class="table-container">
+        <table mat-table [dataSource]="users" class="user-table">
+          <!-- 姓列 -->
+          <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef>姓</th>
+            <td mat-cell *matCellDef="let user">{{ user.lastName }}</td>
+          </ng-container>
+
+          <!-- 名列 -->
+          <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef>名</th>
+            <td mat-cell *matCellDef="let user">{{ user.firstName }}</td>
+          </ng-container>
+
+          <!-- メールアドレス列 -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>メールアドレス</th>
+            <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+          </ng-container>
+
+          <!-- JSONデータ列 -->
+          <ng-container matColumnDef="jsonData">
+            <th mat-header-cell *matHeaderCellDef>JSONデータ</th>
+            <td mat-cell *matCellDef="let user">
+              <pre class="json-data">{{ formatJsonData(user.jsonData) }}</pre>
+            </td>
+          </ng-container>
+
+          <!-- 操作列 -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>操作</th>
+            <td mat-cell *matCellDef="let user">
+              <div class="action-buttons">
+                <button 
+                  mat-icon-button 
+                  color="primary" 
+                  (click)="openEditUserDialog(user)"
+                  matTooltip="編集"
+                  class="edit-button">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                                          <button 
+                            mat-icon-button 
+                            color="warn" 
+                            (click)="deleteUser(user)" 
+                            matTooltip="削除"
+                            class="delete-button">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <!-- データがない場合の表示 -->
+        <div *ngIf="users.length === 0 && !isLoading" class="no-data">
+          <mat-icon class="no-data-icon">info</mat-icon>
+          <p>ユーザーデータがありません</p>
+          <button 
+            mat-raised-button 
+            color="primary" 
+            (click)="openAddUserDialog()">
+            <mat-icon>add</mat-icon>
+            最初のユーザーを追加
+          </button>
+        </div>
+
+        <!-- ローディング表示 -->
+        <div *ngIf="isLoading" class="loading">
+          <mat-spinner diameter="40"></mat-spinner>
+          <p>データを読み込み中...</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

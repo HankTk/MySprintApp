@@ -1,0 +1,185 @@
+.delete-confirm-dialog {
+  min-width: 450px;
+  max-width: 500px;
+
+  .dialog-title {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 16px 24px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #fff3e0;
+    color: #e65100;
+
+    .title-icon {
+      margin-right: 12px;
+      color: #ff9800;
+      
+      &.warning {
+        color: #f57c00;
+      }
+    }
+  }
+
+  .dialog-content {
+    padding: 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+
+    .warning-message {
+      text-align: center;
+
+      p {
+        margin: 0 0 16px 0;
+        font-size: 16px;
+        color: #333;
+      }
+
+      .user-info {
+        background-color: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 16px 0;
+        text-align: left;
+
+        .user-name,
+        .user-email {
+          margin-bottom: 8px;
+          font-size: 14px;
+          color: #555;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          strong {
+            color: #333;
+            margin-right: 8px;
+          }
+        }
+      }
+
+      .caution {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #d32f2f;
+        font-size: 14px;
+        margin: 16px 0 0 0;
+
+        .caution-icon {
+          margin-right: 8px;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+
+  .dialog-actions {
+    padding: 16px 24px;
+    border-top: 1px solid #e0e0e0;
+    background-color: #fafafa;
+    margin: 0;
+
+    .cancel-button {
+      margin-right: 8px;
+      color: #666;
+
+      .mat-icon {
+        margin-right: 8px;
+      }
+    }
+
+    .confirm-button {
+      background-color: #d32f2f;
+      color: white;
+
+      .mat-icon {
+        margin-right: 8px;
+      }
+
+      &:hover {
+        background-color: #b71c1c;
+      }
+    }
+  }
+}
+
+// レスポンシブ対応
+@media (max-width: 768px) {
+  .delete-confirm-dialog {
+    min-width: 90vw;
+    max-width: 95vw;
+
+    .dialog-content {
+      padding: 16px;
+
+      .warning-message {
+        .user-info {
+          padding: 12px;
+        }
+      }
+    }
+
+    .dialog-actions {
+      padding: 16px;
+      flex-direction: column-reverse;
+      gap: 8px;
+
+      .cancel-button {
+        margin-right: 0;
+        width: 100%;
+      }
+
+      .confirm-button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// ダークテーマ対応
+@media (prefers-color-scheme: dark) {
+  .delete-confirm-dialog {
+    .dialog-title {
+      background-color: #3e2723;
+      color: #ffab91;
+      border-bottom-color: #5d4037;
+
+      .title-icon {
+        color: #ff8a50;
+        
+        &.warning {
+          color: #ff7043;
+        }
+      }
+    }
+
+    .dialog-content {
+      background-color: #424242;
+      color: #ffffff;
+
+      .warning-message {
+        .user-info {
+          background-color: #616161;
+          border-color: #757575;
+          color: #bdbdbd;
+
+          strong {
+            color: #ffffff;
+          }
+        }
+
+        .caution {
+          color: #ef5350;
+        }
+      }
+    }
+
+    .dialog-actions {
+      background-color: #424242;
+      border-top-color: #616161;
+    }
+  }
+}

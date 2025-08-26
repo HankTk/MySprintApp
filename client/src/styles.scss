@@ -1,0 +1,231 @@
+/* You can add global styles to this file, and also import other style files */
+@use "sass:map";
+
+/* Angular Material テーマ */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* Material Icons フォント */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* Google Noto Sans JP フォント設定 */
+* {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+}
+
+body {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f8f9fa;
+}
+
+/* 見出しのフォントウェイト調整 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* ボタンのフォント設定 */
+.btn {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+  font-weight: 500;
+}
+
+/* フォーム要素のフォント設定 */
+.form-control, .form-label, .form-text {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+}
+
+/* テーブルのフォント設定 */
+.table {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+}
+
+.table th {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* カードのフォント設定 */
+.card {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+}
+
+.card-title {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* アラートのフォント設定 */
+.alert {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+}
+
+/* ナビゲーションのフォント設定 */
+.navbar {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+}
+
+.navbar-brand {
+  font-weight: 500;
+}
+
+/* モーダルのフォント設定 */
+.modal-title {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* 日本語テキストの最適化 */
+.japanese-text {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
+  line-height: 1.8;
+  letter-spacing: 0.05em;
+}
+
+/* フォントウェイトのバリエーション */
+.font-light {
+  font-weight: 300;
+}
+
+.font-regular {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/* SCSS変数とミックスイン */
+$primary-color: #667eea;
+$secondary-color: #764ba2;
+$danger-color: #dc3545;
+$success-color: #28a745;
+$warning-color: #ffc107;
+$info-color: #17a2b8;
+$light-color: #f8f9fa;
+$dark-color: #2c3e50;
+
+$border-radius: 8px;
+$transition-duration: 0.3s;
+$box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+/* グラデーション用ミックスイン */
+@mixin gradient($start-color, $end-color, $direction: 135deg) {
+  background: linear-gradient($direction, $start-color 0%, $end-color 100%);
+}
+
+@mixin hover-transform($scale: 1.05, $translate-y: -2px) {
+  transition: all $transition-duration ease;
+  
+  &:hover {
+    transform: scale($scale) translateY($translate-y);
+  }
+}
+
+@mixin card-shadow($shadow: $box-shadow) {
+  box-shadow: $shadow;
+  border-radius: $border-radius;
+}
+
+/* 共通スタイルの適用 */
+.btn-primary {
+  @include gradient($primary-color, $secondary-color);
+  @include hover-transform();
+}
+
+.card {
+  @include card-shadow();
+}
+
+/* レスポンシブブレークポイント */
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+@mixin respond-to($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (min-width: map.get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+}
+
+/* レスポンシブ対応 */
+@include respond-to(md) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@include respond-to(lg) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+/* アニメーション用キーフレーム */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* アニメーションクラス */
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.4s ease-out;
+}
+
+/* ユーティリティクラス */
+.text-gradient {
+  @include gradient($primary-color, $secondary-color);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.border-gradient {
+  border: 2px solid;
+  border-image: linear-gradient(135deg, $primary-color, $secondary-color) 1;
+}
+
+/* SnackBar スタイル */
+.success-snackbar {
+  background-color: #4caf50;
+  color: white;
+}
+
+.error-snackbar {
+  background-color: #f44336;
+  color: white;
+}
