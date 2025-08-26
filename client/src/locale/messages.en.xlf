@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <!-- User Management Component -->
+      <trans-unit id="userManagementSystem" datatype="html">
+        <source>User Management System</source>
+        <target>User Management System</target>
+      </trans-unit>
+      
+      <trans-unit id="addNewUser" datatype="html">
+        <source>Add New User</source>
+        <target>Add New User</target>
+      </trans-unit>
+      
+      <trans-unit id="lastName" datatype="html">
+        <source>Last Name</source>
+        <target>Last Name</target>
+      </trans-unit>
+      
+      <trans-unit id="firstName" datatype="html">
+        <source>First Name</source>
+        <target>First Name</target>
+      </trans-unit>
+      
+      <trans-unit id="emailAddress" datatype="html">
+        <source>Email Address</source>
+        <target>Email Address</target>
+      </trans-unit>
+      
+      <trans-unit id="jsonData" datatype="html">
+        <source>JSON Data</source>
+        <target>JSON Data</target>
+      </trans-unit>
+      
+      <trans-unit id="actions" datatype="html">
+        <source>Actions</source>
+        <target>Actions</target>
+      </trans-unit>
+      
+      <trans-unit id="edit" datatype="html">
+        <source>Edit</source>
+        <target>Edit</target>
+      </trans-unit>
+      
+      <trans-unit id="delete" datatype="html">
+        <source>Delete</source>
+        <target>Delete</target>
+      </trans-unit>
+      
+      <trans-unit id="noUserData" datatype="html">
+        <source>No user data available</source>
+        <target>No user data available</target>
+      </trans-unit>
+      
+      <trans-unit id="addFirstUser" datatype="html">
+        <source>Add First User</source>
+        <target>Add First User</target>
+      </trans-unit>
+      
+      <trans-unit id="loadingData" datatype="html">
+        <source>Loading data...</source>
+        <target>Loading data...</target>
+      </trans-unit>
+      
+      <!-- User Dialog Component -->
+      <trans-unit id="editUser" datatype="html">
+        <source>Edit User</source>
+        <target>Edit User</target>
+      </trans-unit>
+      
+      <trans-unit id="addUser" datatype="html">
+        <source>Add User</source>
+        <target>Add User</target>
+      </trans-unit>
+      
+      <trans-unit id="lastNamePlaceholder" datatype="html">
+        <source>Enter last name</source>
+        <target>Enter last name</target>
+      </trans-unit>
+      
+      <trans-unit id="firstNamePlaceholder" datatype="html">
+        <source>Enter first name</source>
+        <target>Enter first name</target>
+      </trans-unit>
+      
+      <trans-unit id="emailPlaceholder" datatype="html">
+        <source>Enter email address</source>
+        <target>Enter email address</target>
+      </trans-unit>
+      
+      <trans-unit id="jsonDataPlaceholder" datatype="html">
+        <source>{"age": 25, "city": "Tokyo", "hobbies": ["reading", "traveling"]}</source>
+        <target>{"age": 25, "city": "Tokyo", "hobbies": ["reading", "traveling"]}</target>
+      </trans-unit>
+      
+      <trans-unit id="jsonDataHint" datatype="html">
+        <source>Please enter valid JSON format</source>
+        <target>Please enter valid JSON format</target>
+      </trans-unit>
+      
+      <trans-unit id="cancel" datatype="html">
+        <source>Cancel</source>
+        <target>Cancel</target>
+      </trans-unit>
+      
+      <trans-unit id="update" datatype="html">
+        <source>Update</source>
+        <target>Update</target>
+      </trans-unit>
+      
+      <trans-unit id="add" datatype="html">
+        <source>Add</source>
+        <target>Add</target>
+      </trans-unit>
+      
+      <!-- Delete Confirm Dialog Component -->
+      <trans-unit id="confirmUserDeletion" datatype="html">
+        <source>Confirm User Deletion</source>
+        <target>Confirm User Deletion</target>
+      </trans-unit>
+      
+      <trans-unit id="deleteUserMessage" datatype="html">
+        <source>Are you sure you want to delete the following user?</source>
+        <target>Are you sure you want to delete the following user?</target>
+      </trans-unit>
+      
+      <trans-unit id="name" datatype="html">
+        <source>Name:</source>
+        <target>Name:</target>
+      </trans-unit>
+      
+      <trans-unit id="email" datatype="html">
+        <source>Email:</source>
+        <target>Email:</target>
+      </trans-unit>
+      
+      <trans-unit id="operationIrreversible" datatype="html">
+        <source>This operation cannot be undone.</source>
+        <target>This operation cannot be undone.</target>
+      </trans-unit>
+      
+      <trans-unit id="confirm" datatype="html">
+        <source>Confirm</source>
+        <target>Confirm</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

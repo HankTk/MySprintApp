@@ -15,7 +15,7 @@ import java.util.List;
 public class MyappApplication {
 
 	public static void main(String[] args) {
-		// システムプロパティで文字エンコーディングを設定
+		// Set character encoding in system properties
 		System.setProperty("file.encoding", "UTF-8");
 		System.setProperty("sun.jnu.encoding", "UTF-8");
 
@@ -35,7 +35,7 @@ public class MyappApplication {
 	public ApplicationRunner initData(com.example.myapp.service.JsonDbService jsonDbService) {
 		return args -> {
 			System.out.println("ApplicationRunner: Initializing JsonDbService...");
-			// JsonDbServiceの初期化を強制実行
+			// Force initialization of JsonDbService
 			jsonDbService.getAllUsers();
 			System.out.println("ApplicationRunner: JsonDbService initialized");
 		};

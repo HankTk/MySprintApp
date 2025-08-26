@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { User, CreateUserRequest } from '../../models/user';
+import { I18nPipe } from '../../pipes/i18n.pipe';
 
 export interface UserDialogData {
   user?: User;
@@ -24,7 +25,8 @@ export interface UserDialogData {
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    I18nPipe
   ],
   templateUrl: './user-dialog.component.html',
   styleUrls: ['./user-dialog.component.scss']
@@ -39,7 +41,7 @@ export class UserDialogComponent implements OnInit {
   
   constructor(@Inject(MAT_DIALOG_DATA) public data: UserDialogData) {
     this.isEdit = data.isEdit;
-    this.dialogTitle = this.isEdit ? 'ユーザー情報編集' : '新規ユーザー登録';
+    this.dialogTitle = this.isEdit ? 'Edit User Information' : 'Add New User';
     
     this.userForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(1)]],
@@ -56,7 +58,7 @@ export class UserDialogComponent implements OnInit {
   }
 
   private populateForm(user: User): void {
-    // JSONデータを文字列として編集用に準備
+    // Prepare JSON data as string for editing
     let jsonDataString = '{}';
     if (user.jsonData) {
       if (typeof user.jsonData === 'object') {
@@ -79,7 +81,7 @@ export class UserDialogComponent implements OnInit {
     });
   }
 
-  // JSONバリデーター
+  // JSON validator
   private jsonValidator(control: any) {
     if (!control.value) return null;
     try {
@@ -94,7 +96,7 @@ export class UserDialogComponent implements OnInit {
     if (this.userForm.valid) {
       const formValue = this.userForm.value;
       
-      // JSONデータを適切に処理
+      // Process JSON data appropriately
       let jsonData: any = {};
       if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
         try {
@@ -105,7 +107,7 @@ export class UserDialogComponent implements OnInit {
       }
 
       if (this.isEdit && this.data.user) {
-        // 編集の場合
+        // For editing
         const userToUpdate: User = {
           id: this.data.user.id,
           firstName: formValue.firstName,
@@ -115,7 +117,7 @@ export class UserDialogComponent implements OnInit {
         };
         this.dialogRef.close({ action: 'update', user: userToUpdate });
       } else {
-        // 新規追加の場合
+        // For new addition
         const userToCreate: CreateUserRequest = {
           firstName: formValue.firstName,
           lastName: formValue.lastName,
@@ -131,7 +133,7 @@ export class UserDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  // フォームのバリデーション状態を取得
+  // Get form validation status
   isFieldInvalid(fieldName: string): boolean {
     const field = this.userForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
@@ -141,16 +143,16 @@ export class UserDialogComponent implements OnInit {
     const field = this.userForm.get(fieldName);
     if (field?.errors) {
       if (field.errors['required']) {
-        return 'この項目は必須です';
+        return 'This field is required';
       }
       if (field.errors['email']) {
-        return '有効なメールアドレスを入力してください';
+        return 'Please enter a valid email address';
       }
       if (field.errors['minlength']) {
-        return `最小${field.errors['minlength'].requiredLength}文字で入力してください`;
+        return `Please enter at least ${field.errors['minlength'].requiredLength} characters`;
       }
       if (field.errors['invalidJson']) {
-        return '有効なJSON形式で入力してください';
+        return 'Please enter valid JSON format';
       }
     }
     return '';

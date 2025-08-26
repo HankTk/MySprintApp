@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" target-language="ja" datatype="plaintext" original="ng2.template">
+    <body>
+      <!-- User Management Component -->
+      <trans-unit id="userManagementSystem" datatype="html">
+        <source>User Management System</source>
+        <target>ユーザー管理システム</target>
+      </trans-unit>
+      
+      <trans-unit id="addNewUser" datatype="html">
+        <source>Add New User</source>
+        <target>新規ユーザー追加</target>
+      </trans-unit>
+      
+      <trans-unit id="lastName" datatype="html">
+        <source>Last Name</source>
+        <target>姓</target>
+      </trans-unit>
+      
+      <trans-unit id="firstName" datatype="html">
+        <source>First Name</source>
+        <target>名</target>
+      </trans-unit>
+      
+      <trans-unit id="emailAddress" datatype="html">
+        <source>Email Address</source>
+        <target>メールアドレス</target>
+      </trans-unit>
+      
+      <trans-unit id="jsonData" datatype="html">
+        <source>JSON Data</source>
+        <target>JSONデータ</target>
+      </trans-unit>
+      
+      <trans-unit id="actions" datatype="html">
+        <source>Actions</source>
+        <target>操作</target>
+      </trans-unit>
+      
+      <trans-unit id="edit" datatype="html">
+        <source>Edit</source>
+        <target>編集</target>
+      </trans-unit>
+      
+      <trans-unit id="delete" datatype="html">
+        <source>Delete</source>
+        <target>削除</target>
+      </trans-unit>
+      
+      <trans-unit id="noUserData" datatype="html">
+        <source>No user data available</source>
+        <target>ユーザーデータがありません</target>
+      </trans-unit>
+      
+      <trans-unit id="addFirstUser" datatype="html">
+        <source>Add First User</source>
+        <target>最初のユーザーを追加</target>
+      </trans-unit>
+      
+      <trans-unit id="loadingData" datatype="html">
+        <source>Loading data...</source>
+        <target>データを読み込み中...</target>
+      </trans-unit>
+      
+      <!-- User Dialog Component -->
+      <trans-unit id="editUser" datatype="html">
+        <source>Edit User</source>
+        <target>ユーザー編集</target>
+      </trans-unit>
+      
+      <trans-unit id="addUser" datatype="html">
+        <source>Add User</source>
+        <target>ユーザー追加</target>
+      </trans-unit>
+      
+      <trans-unit id="lastNamePlaceholder" datatype="html">
+        <source>Enter last name</source>
+        <target>姓を入力してください</target>
+      </trans-unit>
+      
+      <trans-unit id="firstNamePlaceholder" datatype="html">
+        <source>Enter first name</source>
+        <target>名を入力してください</target>
+      </trans-unit>
+      
+      <trans-unit id="emailPlaceholder" datatype="html">
+        <source>Enter email address</source>
+        <target>メールアドレスを入力してください</target>
+      </trans-unit>
+      
+      <trans-unit id="jsonDataPlaceholder" datatype="html">
+        <source>{"age": 25, "city": "Tokyo", "hobbies": ["reading", "traveling"]}</source>
+        <target>{"age": 25, "city": "東京", "hobbies": ["読書", "旅行"]}</target>
+      </trans-unit>
+      
+      <trans-unit id="jsonDataHint" datatype="html">
+        <source>Please enter valid JSON format</source>
+        <target>有効なJSON形式で入力してください</target>
+      </trans-unit>
+      
+      <trans-unit id="cancel" datatype="html">
+        <source>Cancel</source>
+        <target>キャンセル</target>
+      </trans-unit>
+      
+      <trans-unit id="update" datatype="html">
+        <source>Update</source>
+        <target>更新</target>
+      </trans-unit>
+      
+      <trans-unit id="add" datatype="html">
+        <source>Add</source>
+        <target>追加</target>
+      </trans-unit>
+      
+      <!-- Delete Confirm Dialog Component -->
+      <trans-unit id="confirmUserDeletion" datatype="html">
+        <source>Confirm User Deletion</source>
+        <target>ユーザー削除の確認</target>
+      </trans-unit>
+      
+      <trans-unit id="deleteUserMessage" datatype="html">
+        <source>Are you sure you want to delete the following user?</source>
+        <target>以下のユーザーを削除しますか？</target>
+      </trans-unit>
+      
+      <trans-unit id="name" datatype="html">
+        <source>Name:</source>
+        <target>名前:</target>
+      </trans-unit>
+      
+      <trans-unit id="email" datatype="html">
+        <source>Email:</source>
+        <target>メールアドレス:</target>
+      </trans-unit>
+      
+      <trans-unit id="operationIrreversible" datatype="html">
+        <source>This operation cannot be undone.</source>
+        <target>この操作は取り消すことができません。</target>
+      </trans-unit>
+      
+      <trans-unit id="confirm" datatype="html">
+        <source>Confirm</source>
+        <target>削除</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

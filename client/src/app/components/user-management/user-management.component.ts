@@ -7,10 +7,14 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserService } from '../../services/user.service';
 import { User, CreateUserRequest } from '../../models/user';
 import { UserDialogComponent, UserDialogData } from '../user-dialog/user-dialog.component';
 import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../delete-confirm-dialog/delete-confirm-dialog.component';
+import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
+import { I18nPipe } from '../../pipes/i18n.pipe';
 
 @Component({
   selector: 'app-user-management',
@@ -23,7 +27,11 @@ import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../delete
     MatTableModule,
     MatCardModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    LanguageSwitcherComponent,
+    I18nPipe
   ],
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss']
@@ -49,7 +57,7 @@ export class UserManagementComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        this.showSnackBar('ユーザーの読み込みに失敗しました', 'error');
+        this.showSnackBar('Failed to load users', 'error');
         this.isLoading = false;
         console.error('Error loading users:', error);
       }
@@ -91,15 +99,15 @@ export class UserManagementComponent implements OnInit {
     this.userService.createUser(userData).subscribe({
       next: (user) => {
         console.log('User created successfully:', user);
-        this.users = [...this.users, user]; // 配列の参照を変更してAngularの変更検知を確実にする
+        this.users = [...this.users, user]; // Change array reference to ensure Angular change detection
         console.log('Updated users array:', this.users);
-        this.showSnackBar('ユーザーが正常に作成されました', 'success');
-        // 確実に表示を更新するため、ユーザーリストを再読み込み
+        this.showSnackBar('User created successfully', 'success');
+        // Reload user list to ensure display is updated
         this.loadUsers();
       },
       error: (error) => {
         console.error('Error creating user:', error);
-        this.showSnackBar('ユーザーの作成に失敗しました', 'error');
+        this.showSnackBar('Failed to create user', 'error');
       }
     });
   }
@@ -112,10 +120,10 @@ export class UserManagementComponent implements OnInit {
           if (index !== -1) {
             this.users = [...this.users.slice(0, index), updatedUser, ...this.users.slice(index + 1)];
           }
-          this.showSnackBar('ユーザーが正常に更新されました', 'success');
+          this.showSnackBar('User updated successfully', 'success');
         },
         error: (error) => {
-          this.showSnackBar('ユーザーの更新に失敗しました', 'error');
+          this.showSnackBar('Failed to update user', 'error');
           console.error('Error updating user:', error);
         }
       });
@@ -135,7 +143,7 @@ export class UserManagementComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        // 削除が確認された場合
+        // If deletion is confirmed
         this.performDelete(user.id);
       }
     });
@@ -145,10 +153,10 @@ export class UserManagementComponent implements OnInit {
     this.userService.deleteUser(id).subscribe({
       next: () => {
         this.users = this.users.filter(u => u.id !== id);
-        this.showSnackBar('ユーザーが正常に削除されました', 'success');
+        this.showSnackBar('User deleted successfully', 'success');
       },
       error: (error) => {
-        this.showSnackBar('ユーザーの削除に失敗しました', 'error');
+        this.showSnackBar('Failed to delete user', 'error');
         console.error('Error deleting user:', error);
       }
     });
@@ -167,7 +175,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   private showSnackBar(message: string, type: 'success' | 'error'): void {
-    this.snackBar.open(message, '閉じる', {
+    this.snackBar.open(message, 'Close', {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',

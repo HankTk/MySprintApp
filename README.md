@@ -1,29 +1,29 @@
-# ユーザー管理システム
+# User Management System
 
-Spring Boot バックエンドと Angular フロントエンドを使用したユーザー管理システムです。
+A user management system built with Spring Boot backend and Angular frontend.
 
-## 概要
+## Overview
 
-このシステムは、ユーザーの情報（姓名、メールアドレス、JSONデータ）を管理するためのWebアプリケーションです。バックエンドはSpring Bootで構築され、フロントエンドはAngularで構築されています。データはJSONファイルベースのデータベースで管理されます。
+This system is a web application for managing user information (first name, last name, email address, and JSON data). The backend is built with Spring Boot and the frontend is built with Angular. Data is managed using a JSON file-based database.
 
-## システム構成
+## System Architecture
 
-### バックエンド (Spring Boot)
+### Backend (Spring Boot)
 
-- **フレームワーク**: Spring Boot 3.x
-- **データベース**: ファイルベースJSONDB (H2から移行)
-- **ビルドツール**: Gradle
-- **Java バージョン**: 17+
+- **Framework**: Spring Boot 3.x
+- **Database**: File-based JSONDB (migrated from H2)
+- **Build Tool**: Gradle
+- **Java Version**: 17+
 
-#### 主要コンポーネント
+#### Main Components
 
-- **User Entity**: ユーザー情報を表現するエンティティクラス
-- **JsonDbService**: JSONファイルベースのデータベース操作を担当
-- **UserService**: ビジネスロジックを担当
-- **UserController**: REST APIエンドポイントを提供
-- **IndexController**: Webページとステータス情報を提供
+- **User Entity**: Entity class representing user information
+- **JsonDbService**: Handles JSON file-based database operations
+- **UserService**: Handles business logic
+- **UserController**: Provides REST API endpoints
+- **IndexController**: Provides web pages and status information
 
-#### データ構造
+#### Data Structure
 
 ```json
 {
@@ -43,45 +43,45 @@ Spring Boot バックエンドと Angular フロントエンドを使用した�
 }
 ```
 
-### フロントエンド (Angular)
+### Frontend (Angular)
 
-- **フレームワーク**: Angular 17+
-- **UIライブラリ**: Bootstrap 5
-- **HTTP通信**: Angular HttpClient
-- **スタイル**: SCSS（Sass）による高度なスタイリング
+- **Framework**: Angular 17+
+- **UI Library**: Bootstrap 5
+- **HTTP Communication**: Angular HttpClient
+- **Styling**: Advanced styling with SCSS (Sass)
 
-#### 主要コンポーネント
+#### Main Components
 
-- **UserManagementComponent**: ユーザー管理のメイン画面
-- **UserService**: バックエンドAPIとの通信を担当
-- **User Model**: フロントエンドでのユーザーデータ構造
+- **UserManagementComponent**: Main screen for user management
+- **UserService**: Handles communication with backend API
+- **User Model**: User data structure in frontend
 
-#### SCSSの利点
+#### Benefits of SCSS
 
-- **変数**: カラー、サイズ、アニメーション時間などの再利用可能な値
-- **ミックスイン**: 共通のスタイルパターンを関数化
-- **ネスト**: セレクタの階層構造を視覚的に表現
-- **演算**: 数値計算による動的なスタイル生成
-- **関数**: 条件分岐やループによる高度なスタイル制御
+- **Variables**: Reusable values for colors, sizes, animation durations, etc.
+- **Mixins**: Function-based common style patterns
+- **Nesting**: Visual representation of selector hierarchy
+- **Operations**: Dynamic style generation through numerical calculations
+- **Functions**: Advanced style control with conditional statements and loops
 
-## セットアップと実行
+## Setup and Execution
 
-### 前提条件
+### Prerequisites
 
-- Java 17以上
-- Node.js 18以上
-- npm または yarn
+- Java 17 or higher
+- Node.js 18 or higher
+- npm or yarn
 
-### バックエンドの起動
+### Starting the Backend
 
 ```bash
 # プロジェクトルートディレクトリで
 ./gradlew bootRun
 ```
 
-バックエンドは `http://localhost:8080` で起動します。
+The backend will start at `http://localhost:8080`.
 
-### フロントエンドの起動
+### Starting the Frontend
 
 ```bash
 # clientディレクトリで
@@ -90,23 +90,23 @@ npm install
 npm start
 ```
 
-フロントエンドは `http://localhost:4200` で起動します。
+The frontend will start at `http://localhost:4200`.
 
-## API仕様
+## API Specification
 
-### ベースURL
+### Base URL
 ```
 http://localhost:8080/api/users
 ```
 
-### エンドポイント
+### Endpoints
 
-#### 1. ユーザー一覧取得
+#### 1. Get User List
 ```
 GET /api/users
 ```
 
-**レスポンス例:**
+**Response Example:**
 ```json
 [
   {
@@ -119,12 +119,12 @@ GET /api/users
 ]
 ```
 
-#### 2. ユーザー作成
+#### 2. Create User
 ```
 POST /api/users
 ```
 
-**リクエストボディ:**
+**Request Body:**
 ```json
 {
   "firstName": "花子",
@@ -137,155 +137,155 @@ POST /api/users
 }
 ```
 
-#### 3. ユーザー更新
+#### 3. Update User
 ```
 PUT /api/users/{id}
 ```
 
-**リクエストボディ:** 作成時と同様
+**Request Body:** Same as creation
 
-#### 4. ユーザー削除
+#### 4. Delete User
 ```
 DELETE /api/users/{id}
 ```
 
-#### 5. ユーザー取得（ID指定）
+#### 5. Get User by ID
 ```
 GET /api/users/{id}
 ```
 
-#### 6. ステータス確認
+#### 6. Check Status
 ```
 GET /api/status
 ```
 
-## データベース
+## Database
 
-### JSONDBファイル
+### JSONDB Files
 
-- **メインデータファイル**: `data/users.json`
-- **サンプルデータ**: `src/main/resources/sample-users.json`
-- **自動保存**: 設定可能（`jsondb.auto.save=true`）
+- **Main Data File**: `data/users.json`
+- **Sample Data**: `src/main/resources/sample-users.json`
+- **Auto Save**: Configurable (`jsondb.auto.save=true`)
 
-### データの永続化
+### Data Persistence
 
-- アプリケーション起動時に `data/users.json` からデータを読み込み
-- ファイルが存在しない場合は `sample-users.json` からサンプルデータを読み込み
-- データの変更時は自動的に `data/users.json` に保存
+- Load data from `data/users.json` when application starts
+- If file doesn't exist, load sample data from `sample-users.json`
+- Automatically save to `data/users.json` when data changes
 
-## 設定
+## Configuration
 
-### アプリケーション設定 (`application.properties`)
+### Application Configuration (`application.properties`)
 
 ```properties
-# JSONDB設定
+# JSONDB Configuration
 jsondb.file.path=./data/users.json
 jsondb.auto.save=true
 
-# 文字エンコーディング
+# Character Encoding
 server.servlet.encoding.charset=UTF-8
 server.servlet.encoding.force=true
 server.servlet.encoding.enabled=true
 
-# サーバーポート
+# Server Port
 server.port=8080
 ```
 
-## 機能
+## Features
 
-### ユーザー管理
+### User Management
 
-- ✅ ユーザー一覧表示
-- ✅ ユーザー追加
-- ✅ ユーザー編集
-- ✅ ユーザー削除
-- ✅ JSONデータの柔軟な管理
+- ✅ User list display
+- ✅ User addition
+- ✅ User editing
+- ✅ User deletion
+- ✅ Flexible JSON data management
 
-### データ検証
+### Data Validation
 
-- メールアドレスの重複チェック
-- 必須フィールドのバリデーション
-- JSONデータの形式チェック
+- Email address duplication check
+- Required field validation
+- JSON data format validation
 
-### 国際化対応
+### Internationalization Support
 
-- 日本語文字の完全サポート
-- UTF-8エンコーディング
-- **Google Noto Sans JPフォント**による美しい日本語表示
-- 日本語テキストの最適化（行間、文字間隔の調整）
+- Complete Japanese character support
+- UTF-8 encoding
+- Beautiful Japanese display with **Google Noto Sans JP font**
+- Japanese text optimization (line spacing, character spacing adjustment)
 
-### UI/UX改善
+### UI/UX Improvements
 
-- **フォント**: Google Noto Sans JP（日本語最適化）
-- **デザイン**: モダンなグラデーションとシャドウ効果
-- **レスポンシブ**: モバイル・タブレット対応
-- **アニメーション**: スムーズなホバー効果とトランジション
-- **カラーパレット**: 統一感のある配色設計
+- **Font**: Google Noto Sans JP (Japanese optimized)
+- **Design**: Modern gradients and shadow effects
+- **Responsive**: Mobile and tablet support
+- **Animation**: Smooth hover effects and transitions
+- **Color Palette**: Unified color scheme design
 
-## 開発者向け情報
+## Developer Information
 
-### プロジェクト構造
+### Project Structure
 
 ```
 myapp/
 ├── src/main/java/com/example/myapp/
-│   ├── config/          # 設定クラス
-│   ├── controller/      # REST APIコントローラー
-│   ├── entity/          # エンティティクラス
-│   ├── service/         # ビジネスロジック
+│   ├── config/          # Configuration classes
+│   ├── controller/      # REST API controllers
+│   ├── entity/          # Entity classes
+│   ├── service/         # Business logic
 │   └── MyappApplication.java
 ├── src/main/resources/
 │   ├── application.properties
 │   └── sample-users.json
-├── client/              # Angularフロントエンド
+├── client/              # Angular frontend
 │   ├── src/app/
 │   │   ├── components/
 │   │   ├── models/
 │   │   └── services/
 │   └── package.json
-├── data/                # JSONDBデータファイル
-├── build.gradle         # Gradle設定
+├── data/                # JSONDB data files
+├── build.gradle         # Gradle configuration
 └── README.md
 ```
 
-### ログ出力
+### Log Output
 
-アプリケーションは詳細なログを出力し、以下の情報を提供します：
+The application outputs detailed logs providing the following information:
 
-- ファイル読み込み/保存の状況
-- データベース操作の詳細
-- エラーの詳細情報
-- パフォーマンス情報
+- File read/save status
+- Database operation details
+- Error details
+- Performance information
 
-### トラブルシューティング
+### Troubleshooting
 
-#### よくある問題
+#### Common Issues
 
-1. **ポート8080が使用中**
+1. **Port 8080 is in use**
    ```bash
    lsof -ti:8080 | xargs kill -9
    ```
 
-2. **データファイルが読み込まれない**
-   - `data/users.json` の存在確認
-   - ファイルの権限確認
-   - JSON形式の構文チェック
+2. **Data file cannot be loaded**
+   - Check existence of `data/users.json`
+   - Check file permissions
+   - Check JSON format syntax
 
-3. **日本語文字の文字化け**
-   - エディタの文字エンコーディング設定
-   - アプリケーションのUTF-8設定確認
+3. **Japanese character garbling**
+   - Check editor character encoding settings
+   - Check application UTF-8 configuration
 
-## ライセンス
+## License
 
-このプロジェクトはMITライセンスの下で公開されています。
+This project is published under the MIT License.
 
-## 貢献
+## Contributing
 
-バグレポートや機能リクエストは、GitHubのIssueでお知らせください。
+Please report bugs and feature requests through GitHub Issues.
 
-## 更新履歴
+## Update History
 
-- v1.0.0: 初期リリース
-- v1.1.0: H2からJSONDBへの移行
-- v1.2.0: 日本語サポートの改善
-- v1.3.0: エラーハンドリングの強化
+- v1.0.0: Initial release
+- v1.1.0: Migration from H2 to JSONDB
+- v1.2.0: Improved Japanese support
+- v1.3.0: Enhanced error handling

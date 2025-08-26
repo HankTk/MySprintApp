@@ -18,7 +18,6 @@ public class IndexController {
     public String index() {
         return "<h3>Hello World</h3>" +
                "<p>JSON Database is running!</p>" +
-               "<p><a href='/h2-console' target='_blank'>H2 Console</a></p>" +
                "<p><a href='/api/users'>View Users API</a></p>";
     }
     

@@ -4,12 +4,12 @@ import com.example.myapp.entity.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-// import org.springframework.core.io.ClassPathResource; // サンプルデータ読み込みで使用していたが、現在は不要
+// import org.springframework.core.io.ClassPathResource; // Used for sample data loading but not needed now
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-// import java.io.InputStream; // サンプルデータ読み込みで使用していたが、現在は不要
+// import java.io.InputStream; // Used for sample data loading but not needed now
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,16 +24,16 @@ public class JsonDbService {
     
     private static final String DATA_FILE_NAME = "users.json";
     private static final String DATA_DIR_NAME = "data";
-    // サンプルデータは使用しない
+    // Sample data is not used
     // private static final String SAMPLE_DATA_PATH = "sample-users.json";
     
     private final ObjectMapper objectMapper;
-    // UUIDを使用するため、AtomicLongは不要
+    // AtomicLong is not needed since we use UUID
     // private final AtomicLong idCounter = new AtomicLong(1);
     private List<User> users = new ArrayList<>();
     
     public JsonDbService() {
-        // ObjectMapperの設定
+        // ObjectMapper configuration
         this.objectMapper = new ObjectMapper();
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         
@@ -45,7 +45,7 @@ public class JsonDbService {
         System.out.println("=== loadUsers called ===");
         
         try {
-            // 絶対パスでファイルを確認
+            // Check file with absolute path
             Path currentDir = Paths.get("").toAbsolutePath();
             Path dataDir = currentDir.resolve(DATA_DIR_NAME);
             Path dataFile = dataDir.resolve(DATA_FILE_NAME);
@@ -61,23 +61,23 @@ public class JsonDbService {
                 System.out.println("Data file exists, attempting to read...");
                 
                 try {
-                    // 既存のデータファイルから読み込み
+                    // Load from existing data file
                     String content = new String(Files.readAllBytes(dataFile));
                     System.out.println("Data file content length: " + content.length());
                     System.out.println("Data file content preview: " + content.substring(0, Math.min(200, content.length())));
                     
-                    // JSONの構文チェック
+                    // JSON syntax check
                     if (content.trim().isEmpty()) {
                         System.out.println("Data file is empty, starting with empty user list");
                         users = new ArrayList<>();
                         return;
                     }
                     
-                    // ObjectMapperで読み込みを試行
+                                            // Attempt to load with ObjectMapper
                     users = objectMapper.readValue(dataFile.toFile(), new TypeReference<List<User>>() {});
                     System.out.println("Successfully loaded " + users.size() + " users from data file");
                     
-                    // UUIDを使用するため、IDカウンターの設定は不要
+                                            // ID counter setup is not needed since we use UUID
                     System.out.println("Loaded " + users.size() + " users with UUIDs");
                     
                     System.out.println("Data file loading completed successfully");
@@ -117,19 +117,19 @@ public class JsonDbService {
             System.out.println("Save - Data directory exists: " + Files.exists(dataDir));
             System.out.println("Save - Data file exists before save: " + Files.exists(dataFile));
             
-            // ディレクトリが存在しない場合は作成
+            // Create directory if it doesn't exist
             if (!Files.exists(dataDir)) {
                 Files.createDirectories(dataDir);
                 System.out.println("Created data directory: " + dataDir);
             }
             
-            // 保存前のユーザー数
+            // Number of users before saving
             System.out.println("Save - Users to save: " + users.size());
             
             objectMapper.writeValue(dataFile.toFile(), users);
             System.out.println("Save - File written successfully");
             
-            // 保存後の確認
+            // Verification after saving
             System.out.println("Save - Data file exists after save: " + Files.exists(dataFile));
             System.out.println("Save - Data file size after save: " + Files.size(dataFile));
             System.out.println("Saved " + users.size() + " users to: " + dataFile);

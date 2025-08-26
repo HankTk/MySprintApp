@@ -14,7 +14,7 @@ public class User {
     
     private Map<String, Object> jsonData;
     
-    // コンストラクタ
+    // Constructor
     public User() {}
     
     public User(String firstName, String lastName, String email, Map<String, Object> jsonData) {
@@ -24,7 +24,7 @@ public class User {
         this.jsonData = jsonData;
     }
     
-    // ゲッターとセッター
+    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -65,7 +65,7 @@ public class User {
         this.jsonData = jsonData;
     }
     
-    // フルネームを取得するメソッド
+    // Method to get full name
     public String getFullName() {
         return lastName + " " + firstName;
     }

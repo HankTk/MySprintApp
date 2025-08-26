@@ -7,6 +7,24 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 16px 0;
+      
+      .card-title {
+        flex: 1;
+        margin-right: 16px;
+      }
+      
+      app-language-switcher {
+        flex-shrink: 0;
+        margin-left: auto;
+      }
+    }
+
     .card-title {
       display: flex;
       align-items: center;
@@ -133,7 +151,7 @@
   }
 }
 
-// レスポンシブ対応
+// Responsive design
 @media (max-width: 768px) {
   .user-management-container {
     padding: 16px;
@@ -170,7 +188,7 @@
   }
 }
 
-// ダークテーマ対応
+// Dark theme support
 @media (prefers-color-scheme: dark) {
   .user-management-container {
     .main-card {
