@@ -14,7 +14,7 @@ import { User, CreateUserRequest } from '../../models/user';
 import { UserDialogComponent, UserDialogData } from '../user-dialog/user-dialog.component';
 import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../delete-confirm-dialog/delete-confirm-dialog.component';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
-import { I18nPipe } from '../../pipes/i18n.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-management',
@@ -31,7 +31,7 @@ import { I18nPipe } from '../../pipes/i18n.pipe';
     MatToolbarModule,
     MatTooltipModule,
     LanguageSwitcherComponent,
-    I18nPipe
+    TranslateModule
   ],
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss']

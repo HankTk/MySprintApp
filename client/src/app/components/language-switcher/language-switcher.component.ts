@@ -4,19 +4,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService, Language } from '../../services/language.service';
-import { I18nPipe } from '../../pipes/i18n.pipe';
+
 
 @Component({
   selector: 'app-language-switcher',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatMenuModule, MatTooltipModule, I18nPipe],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatMenuModule, MatTooltipModule, TranslateModule],
   template: `
     <button 
       mat-icon-button 
       [matMenuTriggerFor]="languageMenu" 
       class="language-button"
-      [matTooltip]="'changeLanguage' | i18n">
+      [matTooltip]="'changeLanguage' | translate">
       <mat-icon>language</mat-icon>
     </button>
     

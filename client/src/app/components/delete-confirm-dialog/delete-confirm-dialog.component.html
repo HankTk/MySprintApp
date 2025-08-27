@@ -1,23 +1,23 @@
 <div class="delete-confirm-dialog">
   <h2 mat-dialog-title class="dialog-title">
     <mat-icon class="title-icon warning">warning</mat-icon>
-    {{ 'confirmUserDeletion' | i18n }}
+    {{ 'confirmUserDeletion' | translate }}
   </h2>
 
   <mat-dialog-content class="dialog-content">
     <div class="warning-message">
-      <p>{{ 'deleteUserMessage' | i18n }}</p>
+      <p>{{ 'deleteUserMessage' | translate }}</p>
       <div class="user-info">
         <div class="user-name">
-          <strong>{{ 'name' | i18n }}</strong> {{ data.userName }}
+          <strong>{{ 'name' | translate }}</strong> {{ data.userName }}
         </div>
         <div class="user-email">
-          <strong>{{ 'email' | i18n }}</strong> {{ data.userEmail }}
+          <strong>{{ 'email' | translate }}</strong> {{ data.userEmail }}
         </div>
       </div>
       <p class="caution">
         <mat-icon class="caution-icon">info</mat-icon>
-        {{ 'operationIrreversible' | i18n }}
+        {{ 'operationIrreversible' | translate }}
       </p>
     </div>
   </mat-dialog-content>
@@ -29,7 +29,7 @@
         (click)="onCancel()" 
         class="cancel-button">
         <mat-icon>cancel</mat-icon>
-        {{ 'cancel' | i18n }}
+        {{ 'cancel' | translate }}
       </button>
       <button 
         mat-raised-button 
@@ -38,7 +38,7 @@
         (click)="onConfirm()"
         class="confirm-button">
         <mat-icon>delete_forever</mat-icon>
-        {{ 'confirm' | i18n }}
+        {{ 'confirm' | translate }}
       </button>
   </mat-dialog-actions>
 </div>

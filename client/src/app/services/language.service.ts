@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export type Language = 'en' | 'ja';
 
@@ -10,11 +11,16 @@ export class LanguageService {
   private currentLanguageSubject = new BehaviorSubject<Language>('en');
   public currentLanguage$ = this.currentLanguageSubject.asObservable();
 
-  constructor() {
+  constructor(private translateService: TranslateService) {
+    // Initialize with default language
+    this.translateService.setDefaultLang('en');
+
     // Load language setting from localStorage
     const savedLanguage = localStorage.getItem('language') as Language;
     if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'ja')) {
-      this.currentLanguageSubject.next(savedLanguage);
+      this.setLanguage(savedLanguage);
+    } else {
+      this.setLanguage('en');
     }
   }
 
@@ -23,11 +29,9 @@ export class LanguageService {
   }
 
   setLanguage(language: Language): void {
+    this.translateService.use(language);
     this.currentLanguageSubject.next(language);
     localStorage.setItem('language', language);
-    
-    // Notify language change (without page reload)
-    this.currentLanguageSubject.next(language);
   }
 
   isEnglish(): boolean {
@@ -36,5 +40,15 @@ export class LanguageService {
 
   isJapanese(): boolean {
     return this.getCurrentLanguage() === 'ja';
+  }
+
+  // Get translation for a key
+  translate(key: string): Observable<string> {
+    return this.translateService.get(key);
+  }
+
+  // Get translation for a key synchronously (for immediate use)
+  instant(key: string): string {
+    return this.translateService.instant(key);
   }
 }

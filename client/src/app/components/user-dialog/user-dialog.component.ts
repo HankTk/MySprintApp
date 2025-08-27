@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { User, CreateUserRequest } from '../../models/user';
-import { I18nPipe } from '../../pipes/i18n.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 export interface UserDialogData {
   user?: User;
@@ -26,7 +26,7 @@ export interface UserDialogData {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    I18nPipe
+    TranslateModule
   ],
   templateUrl: './user-dialog.component.html',
   styleUrls: ['./user-dialog.component.scss']

@@ -4,7 +4,7 @@
       <div class="header-content">
         <mat-card-title class="card-title">
           <mat-icon class="title-icon">people</mat-icon>
-          {{ 'userManagementSystem' | i18n }}
+          {{ 'userManagementSystem' | translate }}
         </mat-card-title>
         <app-language-switcher></app-language-switcher>
       </div>
@@ -19,7 +19,7 @@
           (click)="openAddUserDialog()"
           class="add-user-button">
           <mat-icon>add</mat-icon>
-          {{ 'addNewUser' | i18n }}
+          {{ 'addNewUser' | translate }}
         </button>
       </div>
 
@@ -28,25 +28,25 @@
         <table mat-table [dataSource]="users" class="user-table">
           <!-- Last Name Column -->
           <ng-container matColumnDef="lastName">
-            <th mat-header-cell *matHeaderCellDef>{{ 'lastName' | i18n }}</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'lastName' | translate }}</th>
             <td mat-cell *matCellDef="let user">{{ user.lastName }}</td>
           </ng-container>
 
           <!-- First Name Column -->
           <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef>{{ 'firstName' | i18n }}</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'firstName' | translate }}</th>
             <td mat-cell *matCellDef="let user">{{ user.firstName }}</td>
           </ng-container>
 
           <!-- Email Address Column -->
           <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef>{{ 'emailAddress' | i18n }}</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'emailAddress' | translate }}</th>
             <td mat-cell *matCellDef="let user">{{ user.email }}</td>
           </ng-container>
 
           <!-- JSON Data Column -->
           <ng-container matColumnDef="jsonData">
-            <th mat-header-cell *matHeaderCellDef>{{ 'jsonData' | i18n }}</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'jsonData' | translate }}</th>
             <td mat-cell *matCellDef="let user">
               <pre class="json-data">{{ formatJsonData(user.jsonData) }}</pre>
             </td>
@@ -54,14 +54,14 @@
 
           <!-- Actions Column -->
           <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>{{ 'actions' | i18n }}</th>
+            <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
             <td mat-cell *matCellDef="let user">
               <div class="action-buttons">
                 <button 
                   mat-icon-button 
                   color="primary" 
                   (click)="openEditUserDialog(user)"
-                  [matTooltip]="'edit' | i18n"
+                  [matTooltip]="'edit' | translate"
                   class="edit-button">
                   <mat-icon>edit</mat-icon>
                 </button>
@@ -69,7 +69,7 @@
                             mat-icon-button 
                             color="warn" 
                             (click)="deleteUser(user)" 
-                            [matTooltip]="'delete' | i18n"
+                            [matTooltip]="'delete' | translate"
                             class="delete-button">
                             <mat-icon>delete</mat-icon>
                           </button>
@@ -84,20 +84,20 @@
         <!-- Display when no data -->
         <div *ngIf="users.length === 0 && !isLoading" class="no-data">
           <mat-icon class="no-data-icon">info</mat-icon>
-          <p>{{ 'noUserData' | i18n }}</p>
+          <p>{{ 'noUserData' | translate }}</p>
           <button 
             mat-raised-button 
             color="primary" 
             (click)="openAddUserDialog()">
             <mat-icon>add</mat-icon>
-            {{ 'addFirstUser' | i18n }}
+            {{ 'addFirstUser' | translate }}
           </button>
         </div>
 
         <!-- Loading Display -->
         <div *ngIf="isLoading" class="loading">
           <mat-spinner diameter="40"></mat-spinner>
-          <p>{{ 'loadingData' | i18n }}</p>
+          <p>{{ 'loadingData' | translate }}</p>
         </div>
       </div>
     </mat-card-content>

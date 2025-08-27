@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { I18nPipe } from '../../pipes/i18n.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 export interface DeleteConfirmDialogData {
   userName: string;
@@ -18,7 +18,7 @@ export interface DeleteConfirmDialogData {
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    I18nPipe
+    TranslateModule
   ],
   templateUrl: './delete-confirm-dialog.component.html',
   styleUrls: ['./delete-confirm-dialog.component.scss']
