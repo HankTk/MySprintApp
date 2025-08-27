@@ -34,7 +34,7 @@ import { LanguageService, Language } from '../../services/language.service';
         (click)="switchLanguage('ja')"
         [class.active]="languageService.isJapanese()">
         <mat-icon>flag</mat-icon>
-        <span>日本語</span>
+        <span>{{ 'japanese' | translate }}</span>
       </button>
     </mat-menu>
   `,

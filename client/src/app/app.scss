@@ -1,31 +1,31 @@
-/* アプリケーションコンポーネント固有のスタイル */
+/* Application Component Specific Styles */
 app-root {
   display: block;
   min-height: 100vh;
   background-color: #f8f9fa;
 }
 
-/* グローバルスタイルの補完 */
+/* Global Style Supplement */
 body {
   margin: 0;
   padding: 0;
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
 }
 
-/* アプリケーション全体のレイアウト */
+/* Overall Application Layout */
 .app-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* メインコンテンツエリア */
+/* Main Content Area */
 .main-content {
   flex: 1;
   padding: 20px;
 }
 
-/* レスポンシブ対応 */
+/* Responsive Support */
 @media (max-width: 768px) {
   .main-content {
     padding: 16px;

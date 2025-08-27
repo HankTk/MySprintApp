@@ -106,7 +106,7 @@
   }
 }
 
-// レスポンシブ対応
+// Responsive support
 @media (max-width: 768px) {
   .delete-confirm-dialog {
     min-width: 90vw;
@@ -139,7 +139,7 @@
   }
 }
 
-// ダークテーマ対応
+// Dark theme support
 @media (prefers-color-scheme: dark) {
   .delete-confirm-dialog {
     .dialog-title {

@@ -27,5 +27,6 @@
   "email": "メールアドレス:",
   "operationIrreversible": "この操作は取り消すことができません。",
   "confirm": "削除",
-  "changeLanguage": "言語を変更"
+  "changeLanguage": "言語を変更",
+  "japanese": "日本語"
 }

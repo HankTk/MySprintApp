@@ -1,13 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @use "sass:map";
 
-/* Angular Material テーマ */
+/* Angular Material Theme */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
-/* Material Icons フォント */
+/* Material Icons Font */
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-/* Google Noto Sans JP フォント設定 */
+/* Google Noto Sans JP Font Configuration */
 * {
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
 }
@@ -20,25 +20,25 @@ body {
   background-color: #f8f9fa;
 }
 
-/* 見出しのフォントウェイト調整 */
+/* Heading Font Weight Adjustment */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
   font-weight: 500;
   color: #2c3e50;
 }
 
-/* ボタンのフォント設定 */
+/* Button Font Configuration */
 .btn {
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
   font-weight: 500;
 }
 
-/* フォーム要素のフォント設定 */
+/* Form Element Font Configuration */
 .form-control, .form-label, .form-text {
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
 }
 
-/* テーブルのフォント設定 */
+/* Table Font Configuration */
 .table {
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
 }
@@ -48,7 +48,7 @@ h1, h2, h3, h4, h5, h6 {
   color: #2c3e50;
 }
 
-/* カードのフォント設定 */
+/* Card Font Configuration */
 .card {
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
 }
@@ -58,12 +58,12 @@ h1, h2, h3, h4, h5, h6 {
   color: #2c3e50;
 }
 
-/* アラートのフォント設定 */
+/* Alert Font Configuration */
 .alert {
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
 }
 
-/* ナビゲーションのフォント設定 */
+/* Navigation Font Configuration */
 .navbar {
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
 }
@@ -72,20 +72,20 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
 }
 
-/* モーダルのフォント設定 */
+/* Modal Font Configuration */
 .modal-title {
   font-weight: 500;
   color: #2c3e50;
 }
 
-/* 日本語テキストの最適化 */
+/* Japanese Text Optimization */
 .japanese-text {
   font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo', sans-serif;
   line-height: 1.8;
   letter-spacing: 0.05em;
 }
 
-/* フォントウェイトのバリエーション */
+/* Font Weight Variations */
 .font-light {
   font-weight: 300;
 }
@@ -102,7 +102,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
-/* SCSS変数とミックスイン */
+/* SCSS Variables and Mixins */
 $primary-color: #667eea;
 $secondary-color: #764ba2;
 $danger-color: #dc3545;
@@ -116,7 +116,7 @@ $border-radius: 8px;
 $transition-duration: 0.3s;
 $box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
-/* グラデーション用ミックスイン */
+/* Gradient Mixins */
 @mixin gradient($start-color, $end-color, $direction: 135deg) {
   background: linear-gradient($direction, $start-color 0%, $end-color 100%);
 }
@@ -134,7 +134,7 @@ $box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: $border-radius;
 }
 
-/* 共通スタイルの適用 */
+/* Common Style Application */
 .btn-primary {
   @include gradient($primary-color, $secondary-color);
   @include hover-transform();
@@ -144,7 +144,7 @@ $box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   @include card-shadow();
 }
 
-/* レスポンシブブレークポイント */
+/* Responsive Breakpoints */
 $breakpoints: (
   xs: 0,
   sm: 576px,
@@ -161,7 +161,7 @@ $breakpoints: (
   }
 }
 
-/* レスポンシブ対応 */
+/* Responsive Support */
 @include respond-to(md) {
   .container {
     max-width: 960px;
@@ -174,7 +174,7 @@ $breakpoints: (
   }
 }
 
-/* アニメーション用キーフレーム */
+/* Animation Keyframes */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -197,7 +197,7 @@ $breakpoints: (
   }
 }
 
-/* アニメーションクラス */
+/* Animation Classes */
 .fade-in-up {
   animation: fadeInUp 0.6s ease-out;
 }
@@ -206,7 +206,7 @@ $breakpoints: (
   animation: slideInRight 0.4s ease-out;
 }
 
-/* ユーティリティクラス */
+/* Utility Classes */
 .text-gradient {
   @include gradient($primary-color, $secondary-color);
   -webkit-background-clip: text;
@@ -219,7 +219,7 @@ $breakpoints: (
   border-image: linear-gradient(135deg, $primary-color, $secondary-color) 1;
 }
 
-/* SnackBar スタイル */
+/* SnackBar Styles */
 .success-snackbar {
   background-color: #4caf50;
   color: white;

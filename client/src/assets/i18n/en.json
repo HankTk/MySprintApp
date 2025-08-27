@@ -27,5 +27,6 @@
   "email": "Email:",
   "operationIrreversible": "This operation cannot be undone.",
   "confirm": "Delete",
-  "changeLanguage": "Change Language"
+  "changeLanguage": "Change Language",
+  "japanese": "Japanese"
 }
