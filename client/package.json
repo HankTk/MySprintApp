@@ -1,6 +1,7 @@
 {
-  "name": "user-management-client",
+  "name": "Edge Application",
   "version": "0.0.0",
+  "author": "Hidenori Takaku",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

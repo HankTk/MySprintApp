@@ -1,10 +1,10 @@
-package com.example.myapp;
+package com.edge;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MyappApplicationTests {
+class EdgeApplicationTests {
 
 	@Test
 	void contextLoads() {

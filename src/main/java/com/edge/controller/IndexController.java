@@ -1,6 +1,6 @@
-package com.example.myapp.controller;
+package com.edge.controller;
 
-import com.example.myapp.service.UserService;
+import com.edge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,7 @@
-package com.example.myapp.controller;
+package com.edge.controller;
 
-import com.example.myapp.entity.User;
-import com.example.myapp.service.UserService;
+import com.edge.entity.User;
+import com.edge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

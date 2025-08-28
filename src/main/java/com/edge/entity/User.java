@@ -1,4 +1,4 @@
-package com.example.myapp.entity;
+package com.edge.entity;
 
 import java.util.Map;
 

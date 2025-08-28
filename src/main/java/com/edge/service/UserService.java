@@ -1,6 +1,6 @@
-package com.example.myapp.service;
+package com.edge.service;
 
-import com.example.myapp.entity.User;
+import com.edge.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

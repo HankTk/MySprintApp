@@ -1,4 +1,4 @@
-package com.example.myapp;
+package com.edge;
 
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,14 +12,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @SpringBootApplication
-public class MyappApplication {
+public class EdgeApplication {
 
 	public static void main(String[] args) {
 		// Set character encoding in system properties
 		System.setProperty("file.encoding", "UTF-8");
 		System.setProperty("sun.jnu.encoding", "UTF-8");
 
-		SpringApplication.run(MyappApplication.class, args);
+		SpringApplication.run(EdgeApplication.class, args);
 	}
 
 	@Configuration
@@ -32,7 +32,7 @@ public class MyappApplication {
 	}
 
 	@Bean
-	public ApplicationRunner initData(com.example.myapp.service.JsonDbService jsonDbService) {
+	public ApplicationRunner initData(com.edge.service.JsonDbService jsonDbService) {
 		return args -> {
 			System.out.println("ApplicationRunner: Initializing JsonDbService...");
 			// Force initialization of JsonDbService

@@ -227,13 +227,13 @@ server.port=8080
 ### Project Structure
 
 ```
-myapp/
-├── src/main/java/com/example/myapp/
+edge/
+├── src/main/java/com/edge/
 │   ├── config/          # Configuration classes
 │   ├── controller/      # REST API controllers
 │   ├── entity/          # Entity classes
 │   ├── service/         # Business logic
-│   └── MyappApplication.java
+│   └── EdgeApplication.java
 ├── src/main/resources/
 │   ├── application.properties
 │   └── sample-users.json
