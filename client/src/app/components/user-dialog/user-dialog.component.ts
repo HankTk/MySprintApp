@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { User, CreateUserRequest } from '../../models/user';
 import { TranslateModule } from '@ngx-translate/core';
+import { LanguageService } from '../../services/language.service';
 
 export interface UserDialogData
 {
@@ -40,6 +41,7 @@ export class UserDialogComponent implements OnInit
 
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<UserDialogComponent>);
+  private languageService = inject(LanguageService);
   
   constructor(@Inject(MAT_DIALOG_DATA) public data: UserDialogData)
   {
@@ -107,6 +109,10 @@ export class UserDialogComponent implements OnInit
     {
       return { invalidJson: true };
     }
+  }
+
+  get isEnglish(): boolean {
+    return this.languageService.isEnglish();
   }
 
   onSubmit(): void

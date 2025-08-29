@@ -7,6 +7,20 @@
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content class="dialog-content">
       <div class="form-row">
+        <!-- First Name Field (English: First, Japanese: Second) -->
+        <mat-form-field appearance="outline" class="form-field" *ngIf="isEnglish">
+          <mat-label>{{ 'firstName' | translate }}</mat-label>
+          <input 
+            matInput 
+            formControlName="firstName" 
+            [placeholder]="'firstNamePlaceholder' | translate"
+            [class.is-invalid]="isFieldInvalid('firstName')">
+          <mat-error *ngIf="isFieldInvalid('firstName')">
+            {{ getErrorMessage('firstName') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Last Name Field (English: Second, Japanese: First) -->
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'lastName' | translate }}</mat-label>
           <input 
@@ -19,7 +33,8 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="form-field">
+        <!-- First Name Field (English: First, Japanese: Second) -->
+        <mat-form-field appearance="outline" class="form-field" *ngIf="!isEnglish">
           <mat-label>{{ 'firstName' | translate }}</mat-label>
           <input 
             matInput 

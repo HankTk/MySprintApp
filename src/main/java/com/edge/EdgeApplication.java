@@ -3,6 +3,7 @@ package com.edge;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -24,7 +25,8 @@ public class EdgeApplication
 		SpringApplication.run(EdgeApplication.class, args);
 	}
 
-	@Configuration
+	@Component
+@Configuration
 	public static class WebConfig implements WebMvcConfigurer
 	{
 

@@ -4,211 +4,271 @@ import com.edge.entity.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-// import org.springframework.core.io.ClassPathResource; // Used for sample data loading but not needed now
-import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
-// import java.io.InputStream; // Used for sample data loading but not needed now
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.UUID;
 
-@Service
+@Component
 public class JsonDbService
 {
 
+    private static final Logger logger = LoggerFactory.getLogger(JsonDbService.class);
     private static final String DATA_FILE_NAME = "users.json";
     private static final String DATA_DIR_NAME = "data";
 
     private final ObjectMapper objectMapper;
+    private final Path dataFilePath;
     private List<User> users = new ArrayList<>();
 
     public JsonDbService()
     {
-        // ObjectMapper configuration
-        this.objectMapper = new ObjectMapper();
-        this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        System.out.println("JsonDbService constructor called");
+        this.objectMapper = createObjectMapper();
+        this.dataFilePath = initializeDataFilePath();
         loadUsers();
+    }
+
+    private ObjectMapper createObjectMapper()
+    {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return mapper;
+    }
+
+    private Path initializeDataFilePath()
+    {
+        Path currentDir = Paths.get("").toAbsolutePath();
+        Path dataDir = currentDir.resolve(DATA_DIR_NAME);
+        return dataDir.resolve(DATA_FILE_NAME);
     }
 
     private void loadUsers()
     {
-        System.out.println("=== loadUsers called ===");
-
+        logger.info("Loading users from data file: {}", dataFilePath);
+        
         try
         {
-            // Check file with absolute path
-            Path currentDir = Paths.get("").toAbsolutePath();
-            Path dataDir = currentDir.resolve(DATA_DIR_NAME);
-            Path dataFile = dataDir.resolve(DATA_FILE_NAME);
-
-            System.out.println("Current directory: " + currentDir);
-            System.out.println("Data directory: " + dataDir);
-            System.out.println("Data file path: " + dataFile);
-            System.out.println("Data file exists: " + Files.exists(dataFile));
-            System.out.println("Data file is readable: " + Files.isReadable(dataFile));
-            System.out.println("Data file size: " + (Files.exists(dataFile) ? Files.size(dataFile) : "N/A"));
-
-            if (Files.exists(dataFile))
+            if (Files.exists(dataFilePath) && Files.isReadable(dataFilePath))
             {
-                System.out.println("Data file exists, attempting to read...");
-
-                try
-                {
-                    // Load from existing data file
-                    String content = new String(Files.readAllBytes(dataFile));
-                    System.out.println("Data file content length: " + content.length());
-                    System.out.println("Data file content preview: " + content.substring(0, Math.min(200, content.length())));
-
-                    // JSON syntax check
-                    if (content.trim().isEmpty())
-                    {
-                        System.out.println("Data file is empty, starting with empty user list");
-                        users = new ArrayList<>();
-                        return;
-                    }
-
-                    // Attempt to load with ObjectMapper
-                    users = objectMapper.readValue(dataFile.toFile(), new TypeReference<List<User>>() {});
-                    System.out.println("Successfully loaded " + users.size() + " users from data file");
-
-                    // ID counter setup is not needed since we use UUID
-                    System.out.println("Loaded " + users.size() + " users with UUIDs");
-
-                    System.out.println("Data file loading completed successfully");
-                    return;
-
-                }
-                catch (Exception e)
-                {
-                    System.err.println("Error reading data file: " + e.getClass().getSimpleName() + ": " + e.getMessage());
-                    e.printStackTrace();
-                    System.out.println("Will start with empty user list instead");
-                    users = new ArrayList<>();
-                    return;
-                }
+                loadUsersFromFile();
             }
             else
             {
-                System.out.println("Data file does not exist, starting with empty user list");
+                logger.info("Data file does not exist or is not readable, starting with empty user list");
                 users = new ArrayList<>();
             }
         }
         catch (Exception e)
         {
-            System.err.println("Unexpected error in loadUsers: " + e.getClass().getSimpleName() + ": " + e.getMessage());
-            e.printStackTrace();
-            System.out.println("Starting with empty user list instead");
+            logger.error("Error loading users from file: {}", e.getMessage(), e);
             users = new ArrayList<>();
         }
     }
 
-
-
-    private void saveUsers()
+    private void loadUsersFromFile() throws IOException
     {
-        System.out.println("=== saveUsers called ===");
+        String content = new String(Files.readAllBytes(dataFilePath));
+        
+        if (content.trim().isEmpty())
+        {
+            logger.info("Data file is empty, starting with empty user list");
+            users = new ArrayList<>();
+            return;
+        }
+
         try
         {
-            Path currentDir = Paths.get("").toAbsolutePath();
-            Path dataDir = currentDir.resolve(DATA_DIR_NAME);
-            Path dataFile = dataDir.resolve(DATA_FILE_NAME);
-
-            System.out.println("Save - Current directory: " + currentDir);
-            System.out.println("Save - Data directory: " + dataDir);
-            System.out.println("Save - Data file path: " + dataFile);
-            System.out.println("Save - Data directory exists: " + Files.exists(dataDir));
-            System.out.println("Save - Data file exists before save: " + Files.exists(dataFile));
-
-            // Create directory if it doesn't exist
-            if (!Files.exists(dataDir))
-            {
-                Files.createDirectories(dataDir);
-                System.out.println("Created data directory: " + dataDir);
-            }
-
-            // Number of users before saving
-            System.out.println("Save - Users to save: " + users.size());
-
-            objectMapper.writeValue(dataFile.toFile(), users);
-            System.out.println("Save - File written successfully");
-
-            // Verification after saving
-            System.out.println("Save - Data file exists after save: " + Files.exists(dataFile));
-            System.out.println("Save - Data file size after save: " + Files.size(dataFile));
-            System.out.println("Saved " + users.size() + " users to: " + dataFile);
-        }
-        catch (IOException e)
-        {
-            System.err.println("Failed to save users: " + e.getClass().getSimpleName() + ": " + e.getMessage());
-            e.printStackTrace();
+            users = objectMapper.readValue(dataFilePath.toFile(), new TypeReference<List<User>>() {});
+            logger.info("Successfully loaded {} users from data file", users.size());
         }
         catch (Exception e)
         {
-            System.err.println("Unexpected error in saveUsers: " + e.getClass().getSimpleName() + ": " + e.getMessage());
-            e.printStackTrace();
+            logger.error("Error parsing JSON data: {}", e.getMessage(), e);
+            users = new ArrayList<>();
+        }
+    }
+
+    private void saveUsers()
+    {
+        logger.info("Saving {} users to data file", users.size());
+        
+        try
+        {
+            ensureDataDirectoryExists();
+            objectMapper.writeValue(dataFilePath.toFile(), users);
+            logger.info("Successfully saved {} users to data file", users.size());
+        }
+        catch (IOException e)
+        {
+            logger.error("Failed to save users: {}", e.getMessage(), e);
+            throw new DataPersistenceException("Failed to save users to file", e);
+        }
+        catch (Exception e)
+        {
+            logger.error("Unexpected error in saveUsers: {}", e.getMessage(), e);
+            throw new DataPersistenceException("Failed to save users to file", e);
+        }
+    }
+
+    private void ensureDataDirectoryExists()
+    {
+        Path dataDir = dataFilePath.getParent();
+        if (!Files.exists(dataDir))
+        {
+            try
+            {
+                Files.createDirectories(dataDir);
+                logger.info("Created data directory: {}", dataDir);
+            }
+            catch (IOException e)
+            {
+                logger.error("Failed to create data directory: {}", e.getMessage(), e);
+                throw new DataPersistenceException("Failed to create data directory", e);
+            }
         }
     }
 
     public List<User> getAllUsers()
     {
-        System.out.println("getAllUsers called, returning " + users.size() + " users");
+        logger.debug("Getting all users, returning {} users", users.size());
         return new ArrayList<>(users);
     }
 
     public Optional<User> getUserById(String id)
     {
+        if (id == null || id.trim().isEmpty())
+        {
+            return Optional.empty();
+        }
+        
         return users.stream()
-            .filter(user -> user.getId().equals(id))
+            .filter(user -> id.equals(user.getId()))
             .findFirst();
     }
 
-    public User getUserByEmail(String email)
+    public Optional<User> getUserByEmail(String email)
     {
+        if (email == null || email.trim().isEmpty())
+        {
+            return Optional.empty();
+        }
+        
         return users.stream()
-            .filter(user -> user.getEmail().equals(email))
-            .findFirst()
-            .orElse(null);
+            .filter(user -> email.equals(user.getEmail()))
+            .findFirst();
     }
 
     public User createUser(User user)
     {
+        if (user == null)
+        {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        
+        if (getUserByEmail(user.getEmail()).isPresent())
+        {
+            throw new UserAlreadyExistsException("User with email " + user.getEmail() + " already exists");
+        }
+        
         user.setId(UUID.randomUUID().toString());
         users.add(user);
         saveUsers();
+        
+        logger.info("Created new user with ID: {}", user.getId());
         return user;
     }
 
     public User updateUser(String id, User userDetails)
     {
+        if (id == null || id.trim().isEmpty())
+        {
+            throw new IllegalArgumentException("User ID cannot be null or empty");
+        }
+        
+        if (userDetails == null)
+        {
+            throw new IllegalArgumentException("User details cannot be null");
+        }
+        
         User existingUser = getUserById(id)
-            .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+            .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
+        // Check if email is being changed and if it conflicts with existing user
+        if (!id.equals(existingUser.getId()) && 
+            getUserByEmail(userDetails.getEmail()).isPresent())
+        {
+            throw new UserAlreadyExistsException("User with email " + userDetails.getEmail() + " already exists");
+        }
+
+        updateUserFields(existingUser, userDetails);
+        saveUsers();
+        
+        logger.info("Updated user with ID: {}", id);
+        return existingUser;
+    }
+
+    private void updateUserFields(User existingUser, User userDetails)
+    {
         existingUser.setFirstName(userDetails.getFirstName());
         existingUser.setLastName(userDetails.getLastName());
         existingUser.setEmail(userDetails.getEmail());
         existingUser.setJsonData(userDetails.getJsonData());
-
-        saveUsers();
-        return existingUser;
     }
 
     public void deleteUser(String id)
     {
-        users.removeIf(user -> user.getId().equals(id));
-        saveUsers();
+        if (id == null || id.trim().isEmpty())
+        {
+            throw new IllegalArgumentException("User ID cannot be null or empty");
+        }
+        
+        boolean removed = users.removeIf(user -> id.equals(user.getId()));
+        if (removed)
+        {
+            saveUsers();
+            logger.info("Deleted user with ID: {}", id);
+        }
+        else
+        {
+            logger.warn("Attempted to delete user with ID: {}, but user was not found", id);
+        }
     }
 
     public void saveAll()
     {
         saveUsers();
+    }
+
+    // Custom exceptions
+    public static class DataPersistenceException extends RuntimeException
+    {
+        public DataPersistenceException(String message, Throwable cause)
+        {
+            super(message, cause);
+        }
+    }
+
+    public static class UserNotFoundException extends RuntimeException
+    {
+        public UserNotFoundException(String message)
+        {
+            super(message);
+        }
+    }
+
+    public static class UserAlreadyExistsException extends RuntimeException
+    {
+        public UserAlreadyExistsException(String message)
+        {
+            super(message);
+        }
     }
 }

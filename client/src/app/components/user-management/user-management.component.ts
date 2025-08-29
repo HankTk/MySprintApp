@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,6 +15,8 @@ import { UserDialogComponent, UserDialogData } from '../user-dialog/user-dialog.
 import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../delete-confirm-dialog/delete-confirm-dialog.component';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { LanguageService } from '../../services/language.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-management',
@@ -36,7 +38,7 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss']
 })
-export class UserManagementComponent implements OnInit
+export class UserManagementComponent implements OnInit, OnDestroy
 {
   users: User[] = [];
   isLoading = false;
@@ -45,10 +47,34 @@ export class UserManagementComponent implements OnInit
   private userService = inject(UserService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
+  private languageService = inject(LanguageService);
+  private languageSubscription: Subscription | undefined;
 
   ngOnInit(): void
   {
     this.loadUsers();
+    this.updateColumnOrder();
+    
+    // Subscribe to language changes
+    this.languageSubscription = this.languageService.currentLanguage$.subscribe(() => {
+      this.updateColumnOrder();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.languageSubscription) {
+      this.languageSubscription.unsubscribe();
+    }
+  }
+
+  private updateColumnOrder(): void {
+    if (this.languageService.isEnglish()) {
+      // English: FirstName, LastName
+      this.displayedColumns = ['firstName', 'lastName', 'email', 'jsonData', 'actions'];
+    } else {
+      // Japanese: LastName, FirstName
+      this.displayedColumns = ['lastName', 'firstName', 'email', 'jsonData', 'actions'];
+    }
   }
 
   loadUsers(): void

@@ -5,10 +5,12 @@ import com.edge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Component
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
@@ -35,15 +37,9 @@ public class UserController
     @GetMapping(value = "/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email)
     {
-        User user = userService.getUserByEmail(email);
-        if (user != null)
-        {
-            return ResponseEntity.ok(user);
-        }
-        else
-        {
-            return ResponseEntity.notFound().build();
-        }
+        return userService.getUserByEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
     
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")

@@ -2,12 +2,12 @@ package com.edge.service;
 
 import com.edge.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Component
 public class UserService
 {
     
@@ -24,7 +24,7 @@ public class UserService
         return jsonDbService.getUserById(id);
     }
     
-    public User getUserByEmail(String email)
+    public Optional<User> getUserByEmail(String email)
     {
         return jsonDbService.getUserByEmail(email);
     }
