@@ -22,56 +22,52 @@ import java.util.UUID;
 @Service
 public class JsonDbService
 {
-    
+
     private static final String DATA_FILE_NAME = "users.json";
     private static final String DATA_DIR_NAME = "data";
-    // Sample data is not used
-    // private static final String SAMPLE_DATA_PATH = "sample-users.json";
-    
+
     private final ObjectMapper objectMapper;
-    // AtomicLong is not needed since we use UUID
-    // private final AtomicLong idCounter = new AtomicLong(1);
     private List<User> users = new ArrayList<>();
-    
+
     public JsonDbService()
     {
         // ObjectMapper configuration
         this.objectMapper = new ObjectMapper();
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        
+
         System.out.println("JsonDbService constructor called");
         loadUsers();
     }
-    
+
     private void loadUsers()
     {
         System.out.println("=== loadUsers called ===");
-        
+
         try
         {
             // Check file with absolute path
             Path currentDir = Paths.get("").toAbsolutePath();
             Path dataDir = currentDir.resolve(DATA_DIR_NAME);
             Path dataFile = dataDir.resolve(DATA_FILE_NAME);
-            
+
             System.out.println("Current directory: " + currentDir);
             System.out.println("Data directory: " + dataDir);
             System.out.println("Data file path: " + dataFile);
             System.out.println("Data file exists: " + Files.exists(dataFile));
             System.out.println("Data file is readable: " + Files.isReadable(dataFile));
             System.out.println("Data file size: " + (Files.exists(dataFile) ? Files.size(dataFile) : "N/A"));
-            
+
             if (Files.exists(dataFile))
             {
                 System.out.println("Data file exists, attempting to read...");
-                
+
                 try
                 {
                     // Load from existing data file
                     String content = new String(Files.readAllBytes(dataFile));
                     System.out.println("Data file content length: " + content.length());
                     System.out.println("Data file content preview: " + content.substring(0, Math.min(200, content.length())));
-                    
+
                     // JSON syntax check
                     if (content.trim().isEmpty())
                     {
@@ -79,17 +75,17 @@ public class JsonDbService
                         users = new ArrayList<>();
                         return;
                     }
-                    
-                                            // Attempt to load with ObjectMapper
+
+                    // Attempt to load with ObjectMapper
                     users = objectMapper.readValue(dataFile.toFile(), new TypeReference<List<User>>() {});
                     System.out.println("Successfully loaded " + users.size() + " users from data file");
-                    
-                                            // ID counter setup is not needed since we use UUID
+
+                    // ID counter setup is not needed since we use UUID
                     System.out.println("Loaded " + users.size() + " users with UUIDs");
-                    
+
                     System.out.println("Data file loading completed successfully");
                     return;
-                    
+
                 }
                 catch (Exception e)
                 {
@@ -114,9 +110,9 @@ public class JsonDbService
             users = new ArrayList<>();
         }
     }
-    
 
-    
+
+
     private void saveUsers()
     {
         System.out.println("=== saveUsers called ===");
@@ -125,26 +121,26 @@ public class JsonDbService
             Path currentDir = Paths.get("").toAbsolutePath();
             Path dataDir = currentDir.resolve(DATA_DIR_NAME);
             Path dataFile = dataDir.resolve(DATA_FILE_NAME);
-            
+
             System.out.println("Save - Current directory: " + currentDir);
             System.out.println("Save - Data directory: " + dataDir);
             System.out.println("Save - Data file path: " + dataFile);
             System.out.println("Save - Data directory exists: " + Files.exists(dataDir));
             System.out.println("Save - Data file exists before save: " + Files.exists(dataFile));
-            
+
             // Create directory if it doesn't exist
             if (!Files.exists(dataDir))
             {
                 Files.createDirectories(dataDir);
                 System.out.println("Created data directory: " + dataDir);
             }
-            
+
             // Number of users before saving
             System.out.println("Save - Users to save: " + users.size());
-            
+
             objectMapper.writeValue(dataFile.toFile(), users);
             System.out.println("Save - File written successfully");
-            
+
             // Verification after saving
             System.out.println("Save - Data file exists after save: " + Files.exists(dataFile));
             System.out.println("Save - Data file size after save: " + Files.size(dataFile));
@@ -161,20 +157,20 @@ public class JsonDbService
             e.printStackTrace();
         }
     }
-    
+
     public List<User> getAllUsers()
     {
         System.out.println("getAllUsers called, returning " + users.size() + " users");
         return new ArrayList<>(users);
     }
-    
+
     public Optional<User> getUserById(String id)
     {
         return users.stream()
             .filter(user -> user.getId().equals(id))
             .findFirst();
     }
-    
+
     public User getUserByEmail(String email)
     {
         return users.stream()
@@ -182,7 +178,7 @@ public class JsonDbService
             .findFirst()
             .orElse(null);
     }
-    
+
     public User createUser(User user)
     {
         user.setId(UUID.randomUUID().toString());
@@ -190,27 +186,27 @@ public class JsonDbService
         saveUsers();
         return user;
     }
-    
+
     public User updateUser(String id, User userDetails)
     {
         User existingUser = getUserById(id)
             .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
-        
+
         existingUser.setFirstName(userDetails.getFirstName());
         existingUser.setLastName(userDetails.getLastName());
         existingUser.setEmail(userDetails.getEmail());
         existingUser.setJsonData(userDetails.getJsonData());
-        
+
         saveUsers();
         return existingUser;
     }
-    
+
     public void deleteUser(String id)
     {
         users.removeIf(user -> user.getId().equals(id));
         saveUsers();
     }
-    
+
     public void saveAll()
     {
         saveUsers();
