@@ -2,7 +2,8 @@ package com.edge.entity;
 
 import java.util.Map;
 
-public class User {
+public class User
+{
     
     private String id;
     
@@ -15,9 +16,12 @@ public class User {
     private Map<String, Object> jsonData;
     
     // Constructor
-    public User() {}
+    public User()
+    {
+    }
     
-    public User(String firstName, String lastName, String email, Map<String, Object> jsonData) {
+    public User(String firstName, String lastName, String email, Map<String, Object> jsonData)
+    {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -25,53 +29,65 @@ public class User {
     }
     
     // Getters and Setters
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
     
-    public void setId(String id) {
+    public void setId(String id)
+    {
         this.id = id;
     }
     
-    public String getFirstName() {
+    public String getFirstName()
+    {
         return firstName;
     }
     
-    public void setFirstName(String firstName) {
+    public void setFirstName(String firstName)
+    {
         this.firstName = firstName;
     }
     
-    public String getLastName() {
+    public String getLastName()
+    {
         return lastName;
     }
     
-    public void setLastName(String lastName) {
+    public void setLastName(String lastName)
+    {
         this.lastName = lastName;
     }
     
-    public String getEmail() {
+    public String getEmail()
+    {
         return email;
     }
     
-    public void setEmail(String email) {
+    public void setEmail(String email)
+    {
         this.email = email;
     }
     
-    public Map<String, Object> getJsonData() {
+    public Map<String, Object> getJsonData()
+    {
         return jsonData;
     }
     
-    public void setJsonData(Map<String, Object> jsonData) {
+    public void setJsonData(Map<String, Object> jsonData)
+    {
         this.jsonData = jsonData;
     }
     
     // Method to get full name
-    public String getFullName() {
+    public String getFullName()
+    {
         return lastName + " " + firstName;
     }
     
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "User{" +
                 "id='" + id + '\'' +
                 ", firstName='" + firstName + '\'' +

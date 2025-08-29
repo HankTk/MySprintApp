@@ -12,9 +12,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @SpringBootApplication
-public class EdgeApplication {
+public class EdgeApplication
+{
 
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 		// Set character encoding in system properties
 		System.setProperty("file.encoding", "UTF-8");
 		System.setProperty("sun.jnu.encoding", "UTF-8");
@@ -23,16 +25,19 @@ public class EdgeApplication {
 	}
 
 	@Configuration
-	public static class WebConfig implements WebMvcConfigurer {
+	public static class WebConfig implements WebMvcConfigurer
+	{
 
 		@Override
-		public void configureMessageConverters(List<org.springframework.http.converter.HttpMessageConverter<?>> converters) {
+		public void configureMessageConverters(List<org.springframework.http.converter.HttpMessageConverter<?>> converters)
+		{
 			converters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
 		}
 	}
 
 	@Bean
-	public ApplicationRunner initData(com.edge.service.JsonDbService jsonDbService) {
+	public ApplicationRunner initData(com.edge.service.JsonDbService jsonDbService)
+	{
 		return args -> {
 			System.out.println("ApplicationRunner: Initializing JsonDbService...");
 			// Force initialization of JsonDbService

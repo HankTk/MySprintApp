@@ -9,7 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { User, CreateUserRequest } from '../../models/user';
 import { TranslateModule } from '@ngx-translate/core';
 
-export interface UserDialogData {
+export interface UserDialogData
+{
   user?: User;
   isEdit: boolean;
 }
@@ -31,7 +32,8 @@ export interface UserDialogData {
   templateUrl: './user-dialog.component.html',
   styleUrls: ['./user-dialog.component.scss']
 })
-export class UserDialogComponent implements OnInit {
+export class UserDialogComponent implements OnInit
+{
   userForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
@@ -39,7 +41,8 @@ export class UserDialogComponent implements OnInit {
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<UserDialogComponent>);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: UserDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: UserDialogData)
+  {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? 'Edit User Information' : 'Add New User';
     
@@ -51,23 +54,33 @@ export class UserDialogComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (this.isEdit && this.data.user) {
+  ngOnInit(): void
+  {
+    if (this.isEdit && this.data.user)
+    {
       this.populateForm(this.data.user);
     }
   }
 
-  private populateForm(user: User): void {
+  private populateForm(user: User): void
+  {
     // Prepare JSON data as string for editing
     let jsonDataString = '{}';
-    if (user.jsonData) {
-      if (typeof user.jsonData === 'object') {
+    if (user.jsonData)
+    {
+      if (typeof user.jsonData === 'object')
+      {
         jsonDataString = JSON.stringify(user.jsonData, null, 2);
-      } else if (typeof user.jsonData === 'string') {
-        try {
+      }
+      else if (typeof user.jsonData === 'string')
+      {
+        try
+        {
           JSON.parse(user.jsonData);
           jsonDataString = user.jsonData;
-        } catch {
+        }
+        catch
+        {
           jsonDataString = '{}';
         }
       }
@@ -82,31 +95,42 @@ export class UserDialogComponent implements OnInit {
   }
 
   // JSON validator
-  private jsonValidator(control: any) {
+  private jsonValidator(control: any)
+  {
     if (!control.value) return null;
-    try {
+    try
+    {
       JSON.parse(control.value);
       return null;
-    } catch (e) {
+    }
+    catch (e)
+    {
       return { invalidJson: true };
     }
   }
 
-  onSubmit(): void {
-    if (this.userForm.valid) {
+  onSubmit(): void
+  {
+    if (this.userForm.valid)
+    {
       const formValue = this.userForm.value;
       
       // Process JSON data appropriately
       let jsonData: any = {};
-      if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
-        try {
+      if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
+      {
+        try
+        {
           jsonData = JSON.parse(formValue.jsonData);
-        } catch (e) {
+        }
+        catch (e)
+        {
           return;
         }
       }
 
-      if (this.isEdit && this.data.user) {
+      if (this.isEdit && this.data.user)
+      {
         // For editing
         const userToUpdate: User = {
           id: this.data.user.id,
@@ -116,7 +140,9 @@ export class UserDialogComponent implements OnInit {
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', user: userToUpdate });
-      } else {
+      }
+      else
+      {
         // For new addition
         const userToCreate: CreateUserRequest = {
           firstName: formValue.firstName,
@@ -129,29 +155,37 @@ export class UserDialogComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close();
   }
 
   // Get form validation status
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.userForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.userForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['required']) {
+    if (field?.errors)
+    {
+      if (field.errors['required'])
+      {
         return 'This field is required';
       }
-      if (field.errors['email']) {
+      if (field.errors['email'])
+      {
         return 'Please enter a valid email address';
       }
-      if (field.errors['minlength']) {
+      if (field.errors['minlength'])
+      {
         return `Please enter at least ${field.errors['minlength'].requiredLength} characters`;
       }
-      if (field.errors['invalidJson']) {
+      if (field.errors['invalidJson'])
+      {
         return 'Please enter valid JSON format';
       }
     }

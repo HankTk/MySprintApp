@@ -20,7 +20,9 @@ import { TranslateModule } from '@ngx-translate/core';
     }
   `]
 })
-export class TestTranslateComponent {}
+export class TestTranslateComponent
+{
+}
 
 
 

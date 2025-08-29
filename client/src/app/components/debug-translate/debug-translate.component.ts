@@ -29,38 +29,46 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   `,
   styles: []
 })
-export class DebugTranslateComponent implements OnInit {
+export class DebugTranslateComponent implements OnInit
+{
   currentLanguage: string = '';
   defaultLanguage: string = '';
   availableLanguages: string[] = [];
   translationData: any = {};
 
-  constructor(private translateService: TranslateService) {}
+  constructor(private translateService: TranslateService)
+  {
+  }
 
-  ngOnInit() {
+  ngOnInit()
+  {
     this.currentLanguage = this.translateService.currentLang || 'not set';
     this.defaultLanguage = this.translateService.getDefaultLang() || 'not set';
     this.availableLanguages = [...(this.translateService.getLangs() || [])];
     
     // Test getting a translation
     this.translateService.get('userManagementSystem').subscribe(
-      (translation) => {
+      (translation) =>
+      {
         this.translationData = { 'userManagementSystem': translation };
         console.log('Translation result:', translation);
       },
-      (error) => {
+      (error) =>
+      {
         console.error('Translation error:', error);
         this.translationData = { error: error.message };
       }
     );
   }
 
-  switchToEnglish() {
+  switchToEnglish()
+  {
     this.translateService.use('en');
     this.currentLanguage = this.translateService.currentLang || 'not set';
   }
 
-  switchToJapanese() {
+  switchToJapanese()
+  {
     this.translateService.use('ja');
     this.currentLanguage = this.translateService.currentLang || 'not set';
   }

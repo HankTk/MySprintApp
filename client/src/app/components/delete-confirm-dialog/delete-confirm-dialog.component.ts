@@ -5,7 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 
-export interface DeleteConfirmDialogData {
+export interface DeleteConfirmDialogData
+{
   userName: string;
   userEmail: string;
 }
@@ -23,16 +24,21 @@ export interface DeleteConfirmDialogData {
   templateUrl: './delete-confirm-dialog.component.html',
   styleUrls: ['./delete-confirm-dialog.component.scss']
 })
-export class DeleteConfirmDialogComponent {
+export class DeleteConfirmDialogComponent
+{
   private dialogRef = inject(MatDialogRef<DeleteConfirmDialogComponent>);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DeleteConfirmDialogData) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DeleteConfirmDialogData)
+  {
+  }
 
-  onConfirm(): void {
+  onConfirm(): void
+  {
     this.dialogRef.close(true);
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close(false);
   }
 }

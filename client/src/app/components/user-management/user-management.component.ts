@@ -36,7 +36,8 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss']
 })
-export class UserManagementComponent implements OnInit {
+export class UserManagementComponent implements OnInit
+{
   users: User[] = [];
   isLoading = false;
   displayedColumns: string[] = ['lastName', 'firstName', 'email', 'jsonData', 'actions'];
@@ -45,18 +46,22 @@ export class UserManagementComponent implements OnInit {
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadUsers();
   }
 
-  loadUsers(): void {
+  loadUsers(): void
+  {
     this.isLoading = true;
     this.userService.getUsers().subscribe({
-      next: (users) => {
+      next: (users) =>
+      {
         this.users = users;
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error) =>
+      {
         this.showSnackBar('Failed to load users', 'error');
         this.isLoading = false;
         console.error('Error loading users:', error);
@@ -64,7 +69,8 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  openAddUserDialog(): void {
+  openAddUserDialog(): void
+  {
     const dialogRef = this.dialog.open(UserDialogComponent, {
       data: { isEdit: false } as UserDialogData,
       width: '600px',
@@ -72,14 +78,17 @@ export class UserManagementComponent implements OnInit {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'create') {
+    dialogRef.afterClosed().subscribe(result =>
+    {
+      if (result && result.action === 'create')
+      {
         this.createUser(result.user);
       }
     });
   }
 
-  openEditUserDialog(user: User): void {
+  openEditUserDialog(user: User): void
+  {
     const dialogRef = this.dialog.open(UserDialogComponent, {
       data: { user, isEdit: true } as UserDialogData,
       width: '600px',
@@ -87,17 +96,21 @@ export class UserManagementComponent implements OnInit {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'update') {
+    dialogRef.afterClosed().subscribe(result =>
+    {
+      if (result && result.action === 'update')
+      {
         this.updateUser(result.user);
       }
     });
   }
 
-  private createUser(userData: CreateUserRequest): void {
+  private createUser(userData: CreateUserRequest): void
+  {
     console.log('Creating user with data:', userData);
     this.userService.createUser(userData).subscribe({
-      next: (user) => {
+      next: (user) =>
+      {
         console.log('User created successfully:', user);
         this.users = [...this.users, user]; // Change array reference to ensure Angular change detection
         console.log('Updated users array:', this.users);
@@ -105,24 +118,30 @@ export class UserManagementComponent implements OnInit {
         // Reload user list to ensure display is updated
         this.loadUsers();
       },
-      error: (error) => {
+      error: (error) =>
+      {
         console.error('Error creating user:', error);
         this.showSnackBar('Failed to create user', 'error');
       }
     });
   }
 
-  private updateUser(userData: User): void {
-    if (userData.id) {
+  private updateUser(userData: User): void
+  {
+    if (userData.id)
+    {
       this.userService.updateUser(userData.id, userData).subscribe({
-        next: (updatedUser) => {
+        next: (updatedUser) =>
+        {
           const index = this.users.findIndex(u => u.id === updatedUser.id);
-          if (index !== -1) {
+          if (index !== -1)
+          {
             this.users = [...this.users.slice(0, index), updatedUser, ...this.users.slice(index + 1)];
           }
           this.showSnackBar('User updated successfully', 'success');
         },
-        error: (error) => {
+        error: (error) =>
+        {
           this.showSnackBar('Failed to update user', 'error');
           console.error('Error updating user:', error);
         }
@@ -130,7 +149,8 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
-  deleteUser(user: User): void {
+  deleteUser(user: User): void
+  {
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
       data: {
         userName: `${user.lastName} ${user.firstName}`,
@@ -141,40 +161,53 @@ export class UserManagementComponent implements OnInit {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+    dialogRef.afterClosed().subscribe(result =>
+    {
+      if (result === true)
+      {
         // If deletion is confirmed
         this.performDelete(user.id);
       }
     });
   }
 
-  private performDelete(id: string): void {
+  private performDelete(id: string): void
+  {
     this.userService.deleteUser(id).subscribe({
-      next: () => {
+      next: () =>
+      {
         this.users = this.users.filter(u => u.id !== id);
         this.showSnackBar('User deleted successfully', 'success');
       },
-      error: (error) => {
+      error: (error) =>
+      {
         this.showSnackBar('Failed to delete user', 'error');
         console.error('Error deleting user:', error);
       }
     });
   }
 
-  formatJsonData(jsonData: any): string {
-    try {
-      if (typeof jsonData === 'string') {
+  formatJsonData(jsonData: any): string
+  {
+    try
+    {
+      if (typeof jsonData === 'string')
+      {
         return JSON.stringify(JSON.parse(jsonData), null, 2);
-      } else {
+      }
+      else
+      {
         return JSON.stringify(jsonData, null, 2);
       }
-    } catch {
+    }
+    catch
+    {
       return String(jsonData);
     }
   }
 
-  private showSnackBar(message: string, type: 'success' | 'error'): void {
+  private showSnackBar(message: string, type: 'success' | 'error'): void
+  {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
       horizontalPosition: 'center',

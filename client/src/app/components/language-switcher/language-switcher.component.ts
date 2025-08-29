@@ -90,10 +90,14 @@ import { LanguageService, Language } from '../../services/language.service';
     }
   `]
 })
-export class LanguageSwitcherComponent {
-  constructor(public languageService: LanguageService) {}
+export class LanguageSwitcherComponent
+{
+  constructor(public languageService: LanguageService)
+  {
+  }
 
-  switchLanguage(language: Language): void {
+  switchLanguage(language: Language): void
+  {
     this.languageService.setLanguage(language);
   }
 }

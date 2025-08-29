@@ -8,32 +8,39 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService
+{
     
     @Autowired
     private JsonDbService jsonDbService;
     
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers()
+    {
         return jsonDbService.getAllUsers();
     }
     
-    public Optional<User> getUserById(String id) {
+    public Optional<User> getUserById(String id)
+    {
         return jsonDbService.getUserById(id);
     }
     
-    public User getUserByEmail(String email) {
+    public User getUserByEmail(String email)
+    {
         return jsonDbService.getUserByEmail(email);
     }
     
-    public User createUser(User user) {
+    public User createUser(User user)
+    {
         return jsonDbService.createUser(user);
     }
     
-    public User updateUser(String id, User userDetails) {
+    public User updateUser(String id, User userDetails)
+    {
         return jsonDbService.updateUser(id, userDetails);
     }
     
-    public void deleteUser(String id) {
+    public void deleteUser(String id)
+    {
         jsonDbService.deleteUser(id);
     }
 }

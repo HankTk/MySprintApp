@@ -10,6 +10,7 @@ import { DebugTranslateComponent } from './components/debug-translate/debug-tran
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
-  protected readonly title = signal('user-management-client');
+export class App
+{
+  protected readonly title = signal('Edge');
 }
