@@ -287,6 +287,40 @@ The application outputs detailed logs providing the following information:
    - Check editor character encoding settings
    - Check application UTF-8 configuration
 
+4. **IDE Restart Issues (Resource Loading Errors)**
+   
+   If you experience 404 resource loading errors after IDE restart:
+   
+   **Quick Fix:**
+   ```bash
+   # Use the startup script
+   ./start-apps.sh
+   ```
+   
+   **Manual Fix:**
+   ```bash
+   # Clean Angular cache and restart
+   cd client
+   npm run start:clean
+   ```
+   
+   **Alternative:**
+   ```bash
+   # Clean everything and restart
+   cd client
+   npm run clean
+   npm start
+   ```
+
+5. **Vite Dependency Optimization Errors**
+   
+   If you see "chunk-XXXXX.js not found" errors:
+   ```bash
+   cd client
+   rm -rf .angular/cache node_modules/.vite dist
+   npm start
+   ```
+
 ## License
 
 This project is published under the MIT License.
