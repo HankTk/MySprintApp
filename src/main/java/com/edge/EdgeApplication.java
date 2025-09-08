@@ -35,6 +35,16 @@ public class EdgeApplication
 		{
 			converters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
 		}
+
+		@Override
+		public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry)
+		{
+			registry.addMapping("/api/**")
+					.allowedOriginPatterns("http://localhost:4200", "http://127.0.0.1:4200")
+					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+					.allowedHeaders("*")
+					.allowCredentials(true);
+		}
 	}
 
 	@Bean

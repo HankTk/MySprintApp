@@ -8,7 +8,7 @@ import { User, CreateUserRequest } from '../models/user';
 })
 export class UserService
 {
-  private apiUrl = 'http://localhost:8080/api/users';
+  private apiUrl = '/api/users';
 
   private http = inject(HttpClient);
 
