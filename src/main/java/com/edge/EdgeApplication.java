@@ -48,13 +48,13 @@ public class EdgeApplication
 	}
 
 	@Bean
-	public ApplicationRunner initData(com.edge.service.JsonDbService jsonDbService)
+	public ApplicationRunner initData(com.edge.repository.UserRepository userRepository)
 	{
 		return args -> {
-			System.out.println("ApplicationRunner: Initializing JsonDbService...");
-			// Force initialization of JsonDbService
-			jsonDbService.getAllUsers();
-			System.out.println("ApplicationRunner: JsonDbService initialized");
+			System.out.println("ApplicationRunner: Initializing UserRepository...");
+			// Force initialization of UserRepository
+			userRepository.getAllUsers();
+			System.out.println("ApplicationRunner: UserRepository initialized");
 		};
 	}
 }

@@ -15,16 +15,16 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController
 {
-    
+
     @Autowired
     private UserService userService;
-    
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public List<User> getAllUsers()
     {
         return userService.getAllUsers();
     }
-    
+
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<User> getUserById(@PathVariable String id)
     {
@@ -32,7 +32,7 @@ public class UserController
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    
+
     @GetMapping(value = "/email/{email}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email)
     {
@@ -40,27 +40,32 @@ public class UserController
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public User createUser(@RequestBody User user)
     {
         return userService.createUser(user);
     }
-    
+
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User userDetails)
     {
+        System.out.println("Received PUT request for user ID: " + id);
+        System.out.println("Request body: " + userDetails);
         try
         {
             User updatedUser = userService.updateUser(id, userDetails);
+            System.out.println("User updated successfully");
             return ResponseEntity.ok(updatedUser);
         }
         catch (RuntimeException e)
         {
+            System.err.println("Update error: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable String id)
     {
@@ -71,7 +76,10 @@ public class UserController
         }
         catch (RuntimeException e)
         {
+            e.printStackTrace();
+            System.err.println("Delete error: " + e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }
+
 }

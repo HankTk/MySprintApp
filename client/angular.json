@@ -67,14 +67,13 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {},
           "configurations": {
             "production": {
               "buildTarget": "user-management-client:build:production"
             },
-
             "development": {
-              "buildTarget": "user-management-client:build:development",
-              "proxyConfig": "proxy.conf.json"
+              "buildTarget": "user-management-client:build:development"
             }
           },
           "defaultConfiguration": "development"

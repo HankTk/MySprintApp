@@ -12,5 +12,7 @@ export default defineConfig({
   server: {
     port: 4200,
     host: 'localhost'
+    // Note: Direct backend URL is used in user.service.ts
+    // Proxy is not needed when using http://localhost:8080 directly
   }
 });

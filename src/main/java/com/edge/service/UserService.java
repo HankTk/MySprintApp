@@ -1,6 +1,7 @@
 package com.edge.service;
 
 import com.edge.entity.User;
+import com.edge.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,35 +13,35 @@ public class UserService
 {
     
     @Autowired
-    private JsonDbService jsonDbService;
+    private UserRepository userRepository;
     
     public List<User> getAllUsers()
     {
-        return jsonDbService.getAllUsers();
+        return userRepository.getAllUsers();
     }
     
     public Optional<User> getUserById(String id)
     {
-        return jsonDbService.getUserById(id);
+        return userRepository.getUserById(id);
     }
     
     public Optional<User> getUserByEmail(String email)
     {
-        return jsonDbService.getUserByEmail(email);
+        return userRepository.getUserByEmail(email);
     }
     
     public User createUser(User user)
     {
-        return jsonDbService.createUser(user);
+        return userRepository.createUser(user);
     }
     
     public User updateUser(String id, User userDetails)
     {
-        return jsonDbService.updateUser(id, userDetails);
+        return userRepository.updateUser(id, userDetails);
     }
     
     public void deleteUser(String id)
     {
-        jsonDbService.deleteUser(id);
+        userRepository.deleteUser(id);
     }
 }

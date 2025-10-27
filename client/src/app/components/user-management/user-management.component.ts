@@ -154,11 +154,14 @@ export class UserManagementComponent implements OnInit, OnDestroy
 
   private updateUser(userData: User): void
   {
+    console.log('updateUser called with data:', userData);
     if (userData.id)
     {
+      console.log('Sending update request for ID:', userData.id);
       this.userService.updateUser(userData.id, userData).subscribe({
         next: (updatedUser) =>
         {
+          console.log('Update successful, received user:', updatedUser);
           const index = this.users.findIndex(u => u.id === updatedUser.id);
           if (index !== -1)
           {
@@ -168,10 +171,12 @@ export class UserManagementComponent implements OnInit, OnDestroy
         },
         error: (error) =>
         {
-          this.showSnackBar('Failed to update user', 'error');
           console.error('Error updating user:', error);
+          this.showSnackBar('Failed to update user: ' + JSON.stringify(error), 'error');
         }
       });
+    } else {
+      console.error('User ID is missing:', userData);
     }
   }
 
@@ -199,16 +204,18 @@ export class UserManagementComponent implements OnInit, OnDestroy
 
   private performDelete(id: string): void
   {
+    console.log('performDelete called with ID:', id);
     this.userService.deleteUser(id).subscribe({
       next: () =>
       {
+        console.log('Delete successful');
         this.users = this.users.filter(u => u.id !== id);
         this.showSnackBar('User deleted successfully', 'success');
       },
       error: (error) =>
       {
-        this.showSnackBar('Failed to delete user', 'error');
         console.error('Error deleting user:', error);
+        this.showSnackBar('Failed to delete user: ' + JSON.stringify(error), 'error');
       }
     });
   }

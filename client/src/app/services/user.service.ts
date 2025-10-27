@@ -8,7 +8,8 @@ import { User, CreateUserRequest } from '../models/user';
 })
 export class UserService
 {
-  private apiUrl = '/api/users';
+  // Direct backend URL - bypasses proxy issues
+  private apiUrl = 'http://localhost:8080/api/users';
 
   private http = inject(HttpClient);
 
