@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -40,9 +40,9 @@ import { Subscription } from 'rxjs';
 })
 export class UserManagementComponent implements OnInit, OnDestroy
 {
-  users: User[] = [];
-  isLoading = false;
-  displayedColumns: string[] = ['lastName', 'firstName', 'email', 'jsonData', 'actions'];
+  users = signal<User[]>([]);
+  isLoading = signal<boolean>(false);
+  displayedColumns = signal<string[]>(['lastName', 'firstName', 'email', 'jsonData', 'actions']);
 
   private userService = inject(UserService);
   private dialog = inject(MatDialog);
@@ -70,26 +70,26 @@ export class UserManagementComponent implements OnInit, OnDestroy
   private updateColumnOrder(): void {
     if (this.languageService.isEnglish()) {
       // English: FirstName, LastName
-      this.displayedColumns = ['firstName', 'lastName', 'email', 'jsonData', 'actions'];
+      this.displayedColumns.set(['firstName', 'lastName', 'email', 'jsonData', 'actions']);
     } else {
       // Japanese: LastName, FirstName
-      this.displayedColumns = ['lastName', 'firstName', 'email', 'jsonData', 'actions'];
+      this.displayedColumns.set(['lastName', 'firstName', 'email', 'jsonData', 'actions']);
     }
   }
 
   loadUsers(): void
   {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this.userService.getUsers().subscribe({
       next: (users) =>
       {
-        this.users = users;
-        this.isLoading = false;
+        this.users.set(users);
+        this.isLoading.set(false);
       },
       error: (error) =>
       {
         this.showSnackBar('Failed to load users', 'error');
-        this.isLoading = false;
+        this.isLoading.set(false);
         console.error('Error loading users:', error);
       }
     });
@@ -138,8 +138,8 @@ export class UserManagementComponent implements OnInit, OnDestroy
       next: (user) =>
       {
         console.log('User created successfully:', user);
-        this.users = [...this.users, user]; // Change array reference to ensure Angular change detection
-        console.log('Updated users array:', this.users);
+        this.users.update(users => [...users, user]);
+        console.log('Updated users array:', this.users());
         this.showSnackBar('User created successfully', 'success');
         // Reload user list to ensure display is updated
         this.loadUsers();
@@ -162,11 +162,14 @@ export class UserManagementComponent implements OnInit, OnDestroy
         next: (updatedUser) =>
         {
           console.log('Update successful, received user:', updatedUser);
-          const index = this.users.findIndex(u => u.id === updatedUser.id);
-          if (index !== -1)
-          {
-            this.users = [...this.users.slice(0, index), updatedUser, ...this.users.slice(index + 1)];
-          }
+          this.users.update(users => {
+            const index = users.findIndex(u => u.id === updatedUser.id);
+            if (index !== -1)
+            {
+              return [...users.slice(0, index), updatedUser, ...users.slice(index + 1)];
+            }
+            return users;
+          });
           this.showSnackBar('User updated successfully', 'success');
         },
         error: (error) =>
@@ -209,7 +212,7 @@ export class UserManagementComponent implements OnInit, OnDestroy
       next: () =>
       {
         console.log('Delete successful');
-        this.users = this.users.filter(u => u.id !== id);
+        this.users.update(users => users.filter(u => u.id !== id));
         this.showSnackBar('User deleted successfully', 'success');
       },
       error: (error) =>
