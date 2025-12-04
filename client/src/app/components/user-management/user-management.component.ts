@@ -9,7 +9,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UserService } from '../../services/user.service';
+import { DataService } from '../../services/data.service';
+import { StoreService } from '../../services/store.service';
+import { ResourceManagementService, ResourceHooks } from '../../services/resource-management.service';
 import { User, CreateUserRequest } from '../../models/user';
 import { UserDialogComponent, UserDialogData } from '../user-dialog/user-dialog.component';
 import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../delete-confirm-dialog/delete-confirm-dialog.component';
@@ -40,15 +42,17 @@ import { Subscription } from 'rxjs';
 })
 export class UserManagementComponent implements OnInit, OnDestroy
 {
-  users = signal<User[]>([]);
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['lastName', 'firstName', 'email', 'jsonData', 'actions']);
 
-  private userService = inject(UserService);
+  private data = inject(DataService);
+  private store = inject(StoreService);
+  private resourceManager = inject(ResourceManagementService);
   private dialog = inject(MatDialog);
-  private snackBar = inject(MatSnackBar);
   private languageService = inject(LanguageService);
   private languageSubscription: Subscription | undefined;
+
+  users = this.store.select('users'); // <- Signal getter
 
   ngOnInit(): void
   {
@@ -79,20 +83,7 @@ export class UserManagementComponent implements OnInit, OnDestroy
 
   loadUsers(): void
   {
-    this.isLoading.set(true);
-    this.userService.getUsers().subscribe({
-      next: (users) =>
-      {
-        this.users.set(users);
-        this.isLoading.set(false);
-      },
-      error: (error) =>
-      {
-        this.showSnackBar('Failed to load users', 'error');
-        this.isLoading.set(false);
-        console.error('Error loading users:', error);
-      }
-    });
+    this.resourceManager.loadResource('users', this.isLoading, 'Failed to load users');
   }
 
   openAddUserDialog(): void
@@ -133,54 +124,35 @@ export class UserManagementComponent implements OnInit, OnDestroy
 
   private createUser(userData: CreateUserRequest): void
   {
-    console.log('Creating user with data:', userData);
-    this.userService.createUser(userData).subscribe({
-      next: (user) =>
-      {
-        console.log('User created successfully:', user);
-        this.users.update(users => [...users, user]);
-        console.log('Updated users array:', this.users());
-        this.showSnackBar('User created successfully', 'success');
-        // Reload user list to ensure display is updated
+    const resourceHooks: ResourceHooks = {
+      onSuccess: (user) => {
+        // Custom processing after user creation
+        console.log('User created:', user);
+        // Reload user list after creation
         this.loadUsers();
-      },
-      error: (error) =>
-      {
-        console.error('Error creating user:', error);
-        this.showSnackBar('Failed to create user', 'error');
       }
-    });
+    };
+
+    this.resourceManager.createResource(
+      'users',
+      userData,
+      this.isLoading,
+      'User created successfully',
+      'Failed to create user',
+      resourceHooks
+    );
   }
 
   private updateUser(userData: User): void
   {
-    console.log('updateUser called with data:', userData);
-    if (userData.id)
-    {
-      console.log('Sending update request for ID:', userData.id);
-      this.userService.updateUser(userData.id, userData).subscribe({
-        next: (updatedUser) =>
-        {
-          console.log('Update successful, received user:', updatedUser);
-          this.users.update(users => {
-            const index = users.findIndex(u => u.id === updatedUser.id);
-            if (index !== -1)
-            {
-              return [...users.slice(0, index), updatedUser, ...users.slice(index + 1)];
-            }
-            return users;
-          });
-          this.showSnackBar('User updated successfully', 'success');
-        },
-        error: (error) =>
-        {
-          console.error('Error updating user:', error);
-          this.showSnackBar('Failed to update user: ' + JSON.stringify(error), 'error');
-        }
-      });
-    } else {
-      console.error('User ID is missing:', userData);
-    }
+    this.resourceManager.updateResource(
+      'users',
+      userData.id!,
+      userData,
+      this.isLoading,
+      'User updated successfully',
+      'Failed to update user'
+    );
   }
 
   deleteUser(user: User): void
@@ -207,20 +179,13 @@ export class UserManagementComponent implements OnInit, OnDestroy
 
   private performDelete(id: string): void
   {
-    console.log('performDelete called with ID:', id);
-    this.userService.deleteUser(id).subscribe({
-      next: () =>
-      {
-        console.log('Delete successful');
-        this.users.update(users => users.filter(u => u.id !== id));
-        this.showSnackBar('User deleted successfully', 'success');
-      },
-      error: (error) =>
-      {
-        console.error('Error deleting user:', error);
-        this.showSnackBar('Failed to delete user: ' + JSON.stringify(error), 'error');
-      }
-    });
+    this.resourceManager.deleteResource(
+      'users',
+      id,
+      this.isLoading,
+      'User deleted successfully',
+      'Failed to delete user'
+    );
   }
 
   formatJsonData(jsonData: any): string
@@ -242,13 +207,4 @@ export class UserManagementComponent implements OnInit, OnDestroy
     }
   }
 
-  private showSnackBar(message: string, type: 'success' | 'error'): void
-  {
-    this.snackBar.open(message, 'Close', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-      panelClass: type === 'success' ? 'success-snackbar' : 'error-snackbar'
-    });
-  }
 }

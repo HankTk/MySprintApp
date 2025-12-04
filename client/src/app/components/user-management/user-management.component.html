@@ -25,7 +25,7 @@
 
       <!-- User List Table -->
       <div class="table-container">
-        <table mat-table [dataSource]="users()" class="user-table">
+        <table mat-table [dataSource]="users() || []" class="user-table">
           <!-- Last Name Column -->
           <ng-container matColumnDef="lastName">
             <th mat-header-cell *matHeaderCellDef>{{ 'lastName' | translate }}</th>
@@ -82,7 +82,7 @@
         </table>
 
         <!-- Display when no data -->
-        <div *ngIf="users().length === 0 && !isLoading()" class="no-data">
+        <div *ngIf="users() && users().length === 0 && !isLoading()" class="no-data">
           <mat-icon class="no-data-icon">info</mat-icon>
           <p>{{ 'noUserData' | translate }}</p>
           <button 
