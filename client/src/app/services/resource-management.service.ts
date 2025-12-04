@@ -1,6 +1,7 @@
 import { Injectable, inject, signal, WritableSignal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 import { DataService } from './data.service';
 import { globalHandlers } from '../utils/global-handlers';
 
@@ -19,6 +20,7 @@ export class ResourceManagementService {
 
   private data = inject(DataService);
   private snackBar = inject(MatSnackBar);
+  private translate = inject(TranslateService);
 
   protected defaultSuccessHandler(
     data: any,
@@ -51,26 +53,26 @@ export class ResourceManagementService {
     isLoading.set(true);
     this.data.get(resource).subscribe({
       next: (data) => {
-        // まずデフォルト処理を実行
+        // Execute default processing first
         this.defaultSuccessHandler(data, isLoading);
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onSuccess) {
           hooks.onSuccess(data);
         }
       },
       error: (error) => {
-        // まずデフォルト処理を実行
-        const message = errorMessage || `Failed to load ${resource}`;
+        // Execute default processing first
+        const message = errorMessage || this.translate.instant('messages.failedToLoad', { resource });
         this.defaultErrorHandler(error, isLoading, message);
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onError) {
           hooks.onError(error);
         }
       },
       complete: () => {
-        // まずデフォルト処理を実行
+        // Execute default processing first
         this.defaultCompleteHandler();
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onComplete) {
           hooks.onComplete();
         }
@@ -85,7 +87,7 @@ export class ResourceManagementService {
     successMessage?: string
   ): void {
     isLoading.set(false);
-    const message = successMessage || `${resource} created successfully`;
+    const message = successMessage || this.translate.instant('messages.resourceCreatedSuccessfully', { resource });
     this.showSnackBar(message, 'success');
     globalHandlers.next(result);
   }
@@ -101,26 +103,26 @@ export class ResourceManagementService {
     isLoading.set(true);
     this.data.post(resource, data).subscribe({
       next: (result) => {
-        // まずデフォルト処理を実行
+        // Execute default processing first
         this.defaultCreateSuccessHandler(result, isLoading, resource, successMessage);
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onSuccess) {
           hooks.onSuccess(result);
         }
       },
       error: (error) => {
-        // まずデフォルト処理を実行
-        const message = errorMessage || `Failed to create ${resource}`;
+        // Execute default processing first
+        const message = errorMessage || this.translate.instant('messages.failedToCreateResource', { resource });
         this.defaultErrorHandler(error, isLoading, message);
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onError) {
           hooks.onError(error);
         }
       },
       complete: () => {
-        // まずデフォルト処理を実行
+        // Execute default processing first
         this.defaultCompleteHandler();
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onComplete) {
           hooks.onComplete();
         }
@@ -135,7 +137,7 @@ export class ResourceManagementService {
     successMessage?: string
   ): void {
     isLoading.set(false);
-    const message = successMessage || `${resource} updated successfully`;
+    const message = successMessage || this.translate.instant('messages.resourceUpdatedSuccessfully', { resource });
     this.showSnackBar(message, 'success');
     globalHandlers.next(result);
   }
@@ -157,26 +159,26 @@ export class ResourceManagementService {
     isLoading.set(true);
     this.data.put(resource, id, data).subscribe({
       next: (result) => {
-        // まずデフォルト処理を実行
+        // Execute default processing first
         this.defaultUpdateSuccessHandler(result, isLoading, resource, successMessage);
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onSuccess) {
           hooks.onSuccess(result);
         }
       },
       error: (error) => {
-        // まずデフォルト処理を実行
-        const message = errorMessage || `Failed to update ${resource}: ${JSON.stringify(error)}`;
+        // Execute default processing first
+        const message = errorMessage || this.translate.instant('messages.failedToUpdateResource', { resource });
         this.defaultErrorHandler(error, isLoading, message);
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onError) {
           hooks.onError(error);
         }
       },
       complete: () => {
-        // まずデフォルト処理を実行
+        // Execute default processing first
         this.defaultCompleteHandler();
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onComplete) {
           hooks.onComplete();
         }
@@ -190,7 +192,7 @@ export class ResourceManagementService {
     successMessage?: string
   ): void {
     isLoading.set(false);
-    const message = successMessage || `${resource} deleted successfully`;
+    const message = successMessage || this.translate.instant('messages.resourceDeletedSuccessfully', { resource });
     this.showSnackBar(message, 'success');
     globalHandlers.next(null);
   }
@@ -206,26 +208,26 @@ export class ResourceManagementService {
     isLoading.set(true);
     this.data.delete(resource, id).subscribe({
       next: (result) => {
-        // まずデフォルト処理を実行
+        // Execute default processing first
         this.defaultDeleteSuccessHandler(isLoading, resource, successMessage);
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onSuccess) {
           hooks.onSuccess(result);
         }
       },
       error: (error) => {
-        // まずデフォルト処理を実行
-        const message = errorMessage || `Failed to delete ${resource}: ${JSON.stringify(error)}`;
+        // Execute default processing first
+        const message = errorMessage || this.translate.instant('messages.failedToDeleteResource', { resource });
         this.defaultErrorHandler(error, isLoading, message);
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onError) {
           hooks.onError(error);
         }
       },
       complete: () => {
-        // まずデフォルト処理を実行
+        // Execute default processing first
         this.defaultCompleteHandler();
-        // その後、hooksが提供されている場合はそれも実行
+        // Then execute hooks if provided
         if (hooks?.onComplete) {
           hooks.onComplete();
         }
@@ -234,7 +236,8 @@ export class ResourceManagementService {
   }
 
   private showSnackBar(message: string, type: 'success' | 'error'): void {
-    this.snackBar.open(message, 'Close', {
+    const closeLabel = this.translate.instant('messages.close');
+    this.snackBar.open(message, closeLabel, {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',

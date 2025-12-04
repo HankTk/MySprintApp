@@ -82,23 +82,27 @@
         </table>
 
         <!-- Display when no data -->
-        <div *ngIf="users() && users().length === 0 && !isLoading()" class="no-data">
-          <mat-icon class="no-data-icon">info</mat-icon>
-          <p>{{ 'noUserData' | translate }}</p>
-          <button 
-            mat-raised-button 
-            color="primary" 
-            (click)="openAddUserDialog()">
-            <mat-icon>add</mat-icon>
-            {{ 'addFirstUser' | translate }}
-          </button>
-        </div>
+        @if (users() && users().length === 0 && !isLoading()) {
+          <div class="no-data">
+            <mat-icon class="no-data-icon">info</mat-icon>
+            <p>{{ 'noUserData' | translate }}</p>
+            <button 
+              mat-raised-button 
+              color="primary" 
+              (click)="openAddUserDialog()">
+              <mat-icon>add</mat-icon>
+              {{ 'addFirstUser' | translate }}
+            </button>
+          </div>
+        }
 
         <!-- Loading Display -->
-        <div *ngIf="isLoading()" class="loading">
-          <mat-spinner diameter="40"></mat-spinner>
-          <p>{{ 'loadingData' | translate }}</p>
-        </div>
+        @if (isLoading()) {
+          <div class="loading">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>{{ 'loadingData' | translate }}</p>
+          </div>
+        }
       </div>
     </mat-card-content>
   </mat-card>

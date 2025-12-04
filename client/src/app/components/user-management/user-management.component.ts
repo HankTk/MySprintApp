@@ -16,7 +16,7 @@ import { User, CreateUserRequest } from '../../models/user';
 import { UserDialogComponent, UserDialogData } from '../user-dialog/user-dialog.component';
 import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../delete-confirm-dialog/delete-confirm-dialog.component';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
 import { Subscription } from 'rxjs';
 
@@ -50,6 +50,7 @@ export class UserManagementComponent implements OnInit, OnDestroy
   private resourceManager = inject(ResourceManagementService);
   private dialog = inject(MatDialog);
   private languageService = inject(LanguageService);
+  private translate = inject(TranslateService);
   private languageSubscription: Subscription | undefined;
 
   users = this.store.select('users'); // <- Signal getter
@@ -83,7 +84,11 @@ export class UserManagementComponent implements OnInit, OnDestroy
 
   loadUsers(): void
   {
-    this.resourceManager.loadResource('users', this.isLoading, 'Failed to load users');
+    this.resourceManager.loadResource(
+      'users',
+      this.isLoading,
+      this.translate.instant('messages.failedToLoad', { resource: 'users' })
+    );
   }
 
   openAddUserDialog(): void
@@ -137,8 +142,8 @@ export class UserManagementComponent implements OnInit, OnDestroy
       'users',
       userData,
       this.isLoading,
-      'User created successfully',
-      'Failed to create user',
+      this.translate.instant('messages.userCreatedSuccessfully'),
+      this.translate.instant('messages.failedToCreateUser'),
       resourceHooks
     );
   }
@@ -150,8 +155,8 @@ export class UserManagementComponent implements OnInit, OnDestroy
       userData.id!,
       userData,
       this.isLoading,
-      'User updated successfully',
-      'Failed to update user'
+      this.translate.instant('messages.userUpdatedSuccessfully'),
+      this.translate.instant('messages.failedToUpdateUser')
     );
   }
 
@@ -183,8 +188,8 @@ export class UserManagementComponent implements OnInit, OnDestroy
       'users',
       id,
       this.isLoading,
-      'User deleted successfully',
-      'Failed to delete user'
+      this.translate.instant('messages.userDeletedSuccessfully'),
+      this.translate.instant('messages.failedToDeleteUser')
     );
   }
 

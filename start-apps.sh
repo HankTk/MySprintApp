@@ -1,27 +1,27 @@
 #!/bin/bash
 
-# アプリケーション起動スクリプト
+# Application startup script
 echo "Starting Spring Boot and Angular applications..."
 
-# 既存のプロセスを停止
+# Stop existing processes
 echo "Stopping existing processes..."
 pkill -f "java.*EdgeApplication" 2>/dev/null
 pkill -f "ng serve" 2>/dev/null
 
-# 少し待機
+# Wait a bit
 sleep 2
 
-# Spring Bootアプリケーションを起動
+# Start Spring Boot application
 echo "Starting Spring Boot application..."
 cd /Users/hidenori/Documents/Spring/MySprintApp
 ./gradlew bootRun &
 SPRING_PID=$!
 
-# Spring Bootの起動を待機
+# Wait for Spring Boot to start
 echo "Waiting for Spring Boot to start..."
 sleep 15
 
-# Angularアプリケーションを起動
+# Start Angular application
 echo "Starting Angular application..."
 cd /Users/hidenori/Documents/Spring/MySprintApp/client
 npm start &
@@ -36,5 +36,5 @@ echo "Angular: http://localhost:4200"
 echo ""
 echo "To stop applications, press Ctrl+C"
 
-# プロセスの監視
+# Monitor processes
 wait

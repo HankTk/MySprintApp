@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
+
   private state = signal<Record<string, any>>({});
 
   set(resource: string, data: any) {
@@ -11,4 +12,5 @@ export class StoreService {
   select(resource: string) {
     return () => this.state()[resource];
   }
+
 }

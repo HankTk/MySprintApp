@@ -28,5 +28,21 @@
   "operationIrreversible": "This operation cannot be undone.",
   "confirm": "Delete",
   "changeLanguage": "Change Language",
-  "japanese": "Japanese"
+  "japanese": "Japanese",
+  "messages": {
+    "failedToLoad": "Failed to load {{resource}}",
+    "userCreatedSuccessfully": "User created successfully",
+    "failedToCreateUser": "Failed to create user",
+    "userUpdatedSuccessfully": "User updated successfully",
+    "failedToUpdateUser": "Failed to update user",
+    "userDeletedSuccessfully": "User deleted successfully",
+    "failedToDeleteUser": "Failed to delete user",
+    "resourceCreatedSuccessfully": "{{resource}} created successfully",
+    "failedToCreateResource": "Failed to create {{resource}}",
+    "resourceUpdatedSuccessfully": "{{resource}} updated successfully",
+    "failedToUpdateResource": "Failed to update {{resource}}",
+    "resourceDeletedSuccessfully": "{{resource}} deleted successfully",
+    "failedToDeleteResource": "Failed to delete {{resource}}",
+    "close": "Close"
+  }
 }

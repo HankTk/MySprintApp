@@ -28,5 +28,21 @@
   "operationIrreversible": "この操作は取り消すことができません。",
   "confirm": "削除",
   "changeLanguage": "言語を変更",
-  "japanese": "日本語"
+  "japanese": "日本語",
+  "messages": {
+    "failedToLoad": "{{resource}}の読み込みに失敗しました",
+    "userCreatedSuccessfully": "ユーザーが正常に作成されました",
+    "failedToCreateUser": "ユーザーの作成に失敗しました",
+    "userUpdatedSuccessfully": "ユーザーが正常に更新されました",
+    "failedToUpdateUser": "ユーザーの更新に失敗しました",
+    "userDeletedSuccessfully": "ユーザーが正常に削除されました",
+    "failedToDeleteUser": "ユーザーの削除に失敗しました",
+    "resourceCreatedSuccessfully": "{{resource}}が正常に作成されました",
+    "failedToCreateResource": "{{resource}}の作成に失敗しました",
+    "resourceUpdatedSuccessfully": "{{resource}}が正常に更新されました",
+    "failedToUpdateResource": "{{resource}}の更新に失敗しました",
+    "resourceDeletedSuccessfully": "{{resource}}が正常に削除されました",
+    "failedToDeleteResource": "{{resource}}の削除に失敗しました",
+    "close": "閉じる"
+  }
 }
