@@ -51,7 +51,8 @@ export class UserManagementComponent implements OnInit, OnDestroy
   private dialog = inject(MatDialog);
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
-  private languageSubscription: Subscription | undefined;
+
+  private subscriptions = new Subscription();
 
   users = this.store.select('users'); // <- Signal getter
 
@@ -61,15 +62,15 @@ export class UserManagementComponent implements OnInit, OnDestroy
     this.updateColumnOrder();
     
     // Subscribe to language changes
-    this.languageSubscription = this.languageService.currentLanguage$.subscribe(() => {
-      this.updateColumnOrder();
-    });
+    this.subscriptions.add(
+      this.languageService.currentLanguage$.subscribe(() => {
+        this.updateColumnOrder();
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    if (this.languageSubscription) {
-      this.languageSubscription.unsubscribe();
-    }
+    this.subscriptions.unsubscribe();
   }
 
   private updateColumnOrder(): void {

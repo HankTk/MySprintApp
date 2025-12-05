@@ -238,9 +238,9 @@ export class ResourceManagementService {
   private showSnackBar(message: string, type: 'success' | 'error'): void {
     const closeLabel = this.translate.instant('messages.close');
     this.snackBar.open(message, closeLabel, {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
+      duration: 5000,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
       panelClass: type === 'success' ? 'success-snackbar' : 'error-snackbar'
     });
   }
