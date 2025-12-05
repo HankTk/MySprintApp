@@ -2,8 +2,8 @@ import { Injectable, inject, signal, WritableSignal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { DataService } from './data.service';
-import { globalHandlers } from '../utils/global-handlers';
+import { DataService } from '../../core/data.service';
+import { globalHandlers } from '../../core/global-handlers';
 
 export type SuccessHook = (data: any) => void;
 export type ErrorHook = (error: any) => void;
@@ -16,7 +16,7 @@ export interface ResourceHooks {
 }
 
 @Injectable({ providedIn: 'root' })
-export class ResourceManagementService {
+export class ResourceService {
 
   private data = inject(DataService);
   private snackBar = inject(MatSnackBar);

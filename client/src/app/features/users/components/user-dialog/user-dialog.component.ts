@@ -7,8 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { User, CreateUserRequest } from '../../models/user';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../services/language.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { LanguageService } from '../../../../shared/services/language.service';
 
 export interface UserDialogData
 {
@@ -41,11 +41,12 @@ export class UserDialogComponent implements OnInit
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<UserDialogComponent>);
   private languageService = inject(LanguageService);
+  private translate = inject(TranslateService);
   
   constructor(@Inject(MAT_DIALOG_DATA) public data: UserDialogData)
   {
     this.isEdit = data.isEdit;
-    this.dialogTitle = this.isEdit ? 'Edit User Information' : 'Add New User';
+    this.dialogTitle = this.isEdit ? this.translate.instant('editUser') : this.translate.instant('addUser');
     
     this.userForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(1)]],
@@ -179,19 +180,19 @@ export class UserDialogComponent implements OnInit
     {
       if (field.errors['required'])
       {
-        return 'This field is required';
+        return this.translate.instant('validation.required');
       }
       if (field.errors['email'])
       {
-        return 'Please enter a valid email address';
+        return this.translate.instant('validation.email');
       }
       if (field.errors['minlength'])
       {
-        return `Please enter at least ${field.errors['minlength'].requiredLength} characters`;
+        return this.translate.instant('validation.minlength', { min: field.errors['minlength'].requiredLength });
       }
       if (field.errors['invalidJson'])
       {
-        return 'Please enter valid JSON format';
+        return this.translate.instant('validation.invalidJson');
       }
     }
     return '';

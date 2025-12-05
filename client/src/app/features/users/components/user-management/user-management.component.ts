@@ -9,15 +9,15 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DataService } from '../../services/data.service';
-import { StoreService } from '../../services/store.service';
-import { ResourceManagementService, ResourceHooks } from '../../services/resource-management.service';
+import { DataService } from '../../../../core/data.service';
+import { StoreService } from '../../../../core/store.service';
+import { ResourceService, ResourceHooks } from '../../../../shared/services/resource.service';
 import { User, CreateUserRequest } from '../../models/user';
 import { UserDialogComponent, UserDialogData } from '../user-dialog/user-dialog.component';
-import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../delete-confirm-dialog/delete-confirm-dialog.component';
-import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
+import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import { LanguageSwitcherComponent } from '../../../../shared/components/language-switcher/language-switcher.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LanguageService } from '../../services/language.service';
+import { LanguageService } from '../../../../shared/services/language.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -46,7 +46,7 @@ export class UserManagementComponent implements OnInit, OnDestroy
 
   private data = inject(DataService);
   private store = inject(StoreService);
-  private resourceManager = inject(ResourceManagementService);
+  private resourceManager = inject(ResourceService);
   private dialog = inject(MatDialog);
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);

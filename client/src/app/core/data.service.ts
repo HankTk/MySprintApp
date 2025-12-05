@@ -5,6 +5,7 @@ import { StoreService } from './store.service';
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
+
   private http = inject(HttpClient);
   private store = inject(StoreService);
   private apiUrl = 'http://localhost:8080/api';
@@ -54,4 +55,5 @@ export class DataService {
       })
     );
   }
+
 }

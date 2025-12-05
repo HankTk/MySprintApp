@@ -12,7 +12,7 @@
     (click)="switchLanguage('en')"
     [class.active]="languageService.isEnglish()">
     <mat-icon>flag</mat-icon>
-    <span>English</span>
+    <span>{{ 'english' | translate }}</span>
   </button>
   <button 
     mat-menu-item 

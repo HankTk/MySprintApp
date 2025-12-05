@@ -28,7 +28,9 @@
   "operationIrreversible": "この操作は取り消すことができません。",
   "confirm": "削除",
   "changeLanguage": "言語を変更",
+  "english": "英語",
   "japanese": "日本語",
+  "dialog": "ダイアログ",
   "messages": {
     "failedToLoad": "{{resource}}の読み込みに失敗しました",
     "userCreatedSuccessfully": "ユーザーが正常に作成されました",
@@ -43,6 +45,17 @@
     "failedToUpdateResource": "{{resource}}の更新に失敗しました",
     "resourceDeletedSuccessfully": "{{resource}}が正常に削除されました",
     "failedToDeleteResource": "{{resource}}の削除に失敗しました",
-    "close": "閉じる"
+    "close": "閉じる",
+    "networkError": "ネットワークエラー。接続を確認してください。",
+    "serverError": "サーバーエラー。後でもう一度お試しください。",
+    "unauthorized": "認証されていません。再度ログインしてください。",
+    "forbidden": "アクセスが拒否されました。",
+    "notFound": "リソースが見つかりません。"
+  },
+  "validation": {
+    "required": "このフィールドは必須です",
+    "email": "有効なメールアドレスを入力してください",
+    "minlength": "少なくとも{{min}}文字以上入力してください",
+    "invalidJson": "有効なJSON形式で入力してください"
   }
 }
