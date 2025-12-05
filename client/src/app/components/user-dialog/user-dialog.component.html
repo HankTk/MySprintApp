@@ -8,90 +8,104 @@
     <mat-dialog-content class="dialog-content">
       <div class="form-row">
         <!-- First Name Field (English: First, Japanese: Second) -->
-        <mat-form-field appearance="outline" class="form-field" *ngIf="isEnglish">
-          <mat-label>{{ 'firstName' | translate }}</mat-label>
-          <input 
-            matInput 
-            formControlName="firstName" 
-            [placeholder]="'firstNamePlaceholder' | translate"
-            [class.is-invalid]="isFieldInvalid('firstName')">
-          <mat-error *ngIf="isFieldInvalid('firstName')">
-            {{ getErrorMessage('firstName') }}
-          </mat-error>
-        </mat-form-field>
+        @if (isEnglish) {
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>{{ 'firstName' | translate }}</mat-label>
+            <input
+              matInput
+              formControlName="firstName"
+              [placeholder]="'firstNamePlaceholder' | translate"
+              [class.is-invalid]="isFieldInvalid('firstName')">
+            @if (isFieldInvalid('firstName')) {
+              <mat-error>
+                {{ getErrorMessage('firstName') }}
+              </mat-error>
+            }
+          </mat-form-field>
+        }
 
         <!-- Last Name Field (English: Second, Japanese: First) -->
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'lastName' | translate }}</mat-label>
-          <input 
-            matInput 
-            formControlName="lastName" 
+          <input
+            matInput
+            formControlName="lastName"
             [placeholder]="'lastNamePlaceholder' | translate"
             [class.is-invalid]="isFieldInvalid('lastName')">
-          <mat-error *ngIf="isFieldInvalid('lastName')">
-            {{ getErrorMessage('lastName') }}
-          </mat-error>
+          @if (isFieldInvalid('lastName')) {
+            <mat-error>
+              {{ getErrorMessage('lastName') }}
+            </mat-error>
+          }
         </mat-form-field>
 
         <!-- First Name Field (English: First, Japanese: Second) -->
-        <mat-form-field appearance="outline" class="form-field" *ngIf="!isEnglish">
-          <mat-label>{{ 'firstName' | translate }}</mat-label>
-          <input 
-            matInput 
-            formControlName="firstName" 
-            [placeholder]="'firstNamePlaceholder' | translate"
-            [class.is-invalid]="isFieldInvalid('firstName')">
-          <mat-error *ngIf="isFieldInvalid('firstName')">
-            {{ getErrorMessage('firstName') }}
-          </mat-error>
-        </mat-form-field>
+        @if (!isEnglish) {
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>{{ 'firstName' | translate }}</mat-label>
+            <input
+              matInput
+              formControlName="firstName"
+              [placeholder]="'firstNamePlaceholder' | translate"
+              [class.is-invalid]="isFieldInvalid('firstName')">
+            @if (isFieldInvalid('firstName')) {
+              <mat-error>
+                {{ getErrorMessage('firstName') }}
+              </mat-error>
+            }
+          </mat-form-field>
+        }
       </div>
 
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'emailAddress' | translate }}</mat-label>
-          <input 
-            matInput 
-            type="email" 
-            formControlName="email" 
+          <input
+            matInput
+            type="email"
+            formControlName="email"
             [placeholder]="'emailPlaceholder' | translate"
             [class.is-invalid]="isFieldInvalid('email')">
-          <mat-error *ngIf="isFieldInvalid('email')">
-            {{ getErrorMessage('email') }}
-          </mat-error>
+          @if (isFieldInvalid('email')) {
+            <mat-error>
+              {{ getErrorMessage('email') }}
+            </mat-error>
+          }
         </mat-form-field>
       </div>
 
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field full-width">
           <mat-label>{{ 'jsonData' | translate }}</mat-label>
-          <textarea 
-            matInput 
-            formControlName="jsonData" 
+          <textarea
+            matInput
+            formControlName="jsonData"
             rows="4"
             [placeholder]="'jsonDataPlaceholder' | translate"
-            [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
+          [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
           <mat-hint>{{ 'jsonDataHint' | translate }}</mat-hint>
-          <mat-error *ngIf="isFieldInvalid('jsonData')">
-            {{ getErrorMessage('jsonData') }}
-          </mat-error>
+          @if (isFieldInvalid('jsonData')) {
+            <mat-error>
+              {{ getErrorMessage('jsonData') }}
+            </mat-error>
+          }
         </mat-form-field>
       </div>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end" class="dialog-actions">
-      <button 
-        mat-button 
-        type="button" 
-        (click)="onCancel()" 
+      <button
+        mat-button
+        type="button"
+        (click)="onCancel()"
         class="cancel-button">
         <mat-icon>cancel</mat-icon>
         {{ 'cancel' | translate }}
       </button>
-      <button 
-        mat-raised-button 
-        color="primary" 
-        type="submit" 
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
         [disabled]="userForm.invalid"
         class="submit-button">
         <mat-icon>{{ isEdit ? 'save' : 'add_circle' }}</mat-icon>

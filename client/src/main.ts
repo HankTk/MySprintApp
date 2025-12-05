@@ -1,3 +1,4 @@
+import { provideZoneChangeDetection } from "@angular/core";
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
@@ -16,7 +17,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 bootstrapApplication(App, {
   ...appConfig,
   providers: [
-    ...appConfig.providers,
+    provideZoneChangeDetection(),...appConfig.providers,
     {
       provide: TranslateLoader,
       useFactory: HttpLoaderFactory,

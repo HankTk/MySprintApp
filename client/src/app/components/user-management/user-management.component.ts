@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, OnDestroy, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,7 +24,6 @@ import { Subscription } from 'rxjs';
   selector: 'app-user-management',
   standalone: true,
   imports: [
-    CommonModule,
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
@@ -36,7 +35,7 @@ import { Subscription } from 'rxjs';
     MatTooltipModule,
     LanguageSwitcherComponent,
     TranslateModule
-  ],
+],
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.scss']
 })
