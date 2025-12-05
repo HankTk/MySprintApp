@@ -4,7 +4,7 @@ import { Observable, tap } from 'rxjs';
 import { StoreService } from './store.service';
 
 @Injectable({ providedIn: 'root' })
-export class DataService {
+export class HttpService {
 
   private http = inject(HttpClient);
   private store = inject(StoreService);

@@ -9,7 +9,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { DataService } from '../../../../core/data.service';
+import { HttpService } from '../../../../core/http.service';
 import { StoreService } from '../../../../core/store.service';
 import { ResourceService, ResourceHooks } from '../../../../shared/services/resource.service';
 import { User, CreateUserRequest } from '../../models/user';
@@ -44,7 +44,7 @@ export class UserManagementComponent implements OnInit, OnDestroy
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['lastName', 'firstName', 'email', 'jsonData', 'actions']);
 
-  private data = inject(DataService);
+  private data = inject(HttpService);
   private store = inject(StoreService);
   private resourceManager = inject(ResourceService);
   private dialog = inject(MatDialog);
