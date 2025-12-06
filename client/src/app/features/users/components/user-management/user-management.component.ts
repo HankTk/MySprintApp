@@ -19,6 +19,7 @@ import { LanguageSwitcherComponent } from '../../../../shared/components/languag
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { Subscription } from 'rxjs';
+import { JsonUtil } from '../../../../shared/utils/json.util';
 
 @Component({
   selector: 'app-user-management',
@@ -52,6 +53,9 @@ export class UserManagementComponent implements OnInit, OnDestroy
   private translate = inject(TranslateService);
 
   private subscriptions = new Subscription();
+
+  // Expose JsonUtil to template
+  JsonUtilRef = JsonUtil;
 
   users = this.store.select('users'); // <- Signal getter
 
@@ -182,25 +186,6 @@ export class UserManagementComponent implements OnInit, OnDestroy
       this.translate.instant('messages.userDeletedSuccessfully'),
       this.translate.instant('messages.failedToDeleteUser')
     );
-  }
-
-  formatJsonData(jsonData: any): string
-  {
-    try
-    {
-      if (typeof jsonData === 'string')
-      {
-        return JSON.stringify(JSON.parse(jsonData), null, 2);
-      }
-      else
-      {
-        return JSON.stringify(jsonData, null, 2);
-      }
-    }
-    catch
-    {
-      return String(jsonData);
-    }
   }
 
 }
