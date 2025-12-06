@@ -17,43 +17,18 @@ export class HttpService {
   }
 
   post(resource: string, data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${resource}`, data).pipe(
-      tap(response => {
-        // Update store if needed
-        const currentData = this.store.select(resource)();
-        if (Array.isArray(currentData)) {
-          this.store.set(resource, [...currentData, response]);
-        }
-      })
-    );
+    // Store will be automatically updated via WebSocket notification, so no need to update here
+    return this.http.post(`${this.apiUrl}/${resource}`, data);
   }
 
   put(resource: string, id: string, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${resource}/${id}`, data).pipe(
-      tap(response => {
-        // Update store if needed
-        const currentData = this.store.select(resource)();
-        if (Array.isArray(currentData)) {
-          const updated = currentData.map((item: any) => 
-            item.id === id ? response : item
-          );
-          this.store.set(resource, updated);
-        }
-      })
-    );
+    // Store will be automatically updated via WebSocket notification, so no need to update here
+    return this.http.put(`${this.apiUrl}/${resource}/${id}`, data);
   }
 
   delete(resource: string, id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${resource}/${id}`).pipe(
-      tap(() => {
-        // Update store if needed
-        const currentData = this.store.select(resource)();
-        if (Array.isArray(currentData)) {
-          const filtered = currentData.filter((item: any) => item.id !== id);
-          this.store.set(resource, filtered);
-        }
-      })
-    );
+    // Store will be automatically updated via WebSocket notification, so no need to update here
+    return this.http.delete<void>(`${this.apiUrl}/${resource}/${id}`);
   }
 
 }

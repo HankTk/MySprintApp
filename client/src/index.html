@@ -7,6 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
+  <!-- Polyfill for global variable (required by sockjs-client) -->
+  <script>
+    (function() {
+      if (typeof global === 'undefined') {
+        window.global = globalThis;
+      }
+      if (typeof globalThis.global === 'undefined') {
+        globalThis.global = globalThis;
+      }
+    })();
+  </script>
+  
   <!-- Google Fonts - Noto Sans JP -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

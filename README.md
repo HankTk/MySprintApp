@@ -144,6 +144,40 @@ PUT /api/users/{id}
 
 **Request Body:** Same as creation
 
+**Update Test Sample (curl):**
+
+```bash
+# Get current user data
+curl -X GET http://localhost:8080/api/users/<id> \
+  -H "Content-Type: application/json"
+
+# Update user data (basic example)
+curl -X PUT http://localhost:8080/api/users/<id> \
+  -H "Content-Type: application/json;charset=UTF-8" \
+  -d '{
+    "firstName": "John",
+    "lastName": "Smith",
+    "email": "john.smith@example.com",
+    "jsonData": {}
+  }'
+
+# Update user data with detailed jsonData
+curl -X PUT http://localhost:8080/api/users/<id> \
+  -H "Content-Type: application/json;charset=UTF-8" \
+  -d '{
+    "firstName": "John",
+    "lastName": "Smith",
+    "email": "john.smith@example.com",
+    "jsonData": {
+      "age": 30,
+      "city": "New York",
+      "hobbies": ["reading", "traveling"]
+    }
+  }'
+```
+
+**Note:** After updating, the changes will be automatically notified to all connected clients via WebSocket.
+
 #### 4. Delete User
 ```
 DELETE /api/users/{id}

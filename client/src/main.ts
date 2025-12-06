@@ -5,6 +5,11 @@ import { App } from './app/app';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 
+// Polyfill for global variable (required by sockjs-client)
+if (typeof (globalThis as any).global === 'undefined') {
+  (globalThis as any).global = globalThis;
+}
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return {

@@ -1,5 +1,6 @@
 package com.edge.service;
 
+import com.edge.config.DataChangeNotification;
 import com.edge.entity.User;
 import com.edge.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,11 @@ public class UserService
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private WebSocketNotificationService notificationService;
+    
+    private static final String DATA_TYPE_ID = "users";
     
     public List<User> getAllUsers()
     {
@@ -32,16 +38,24 @@ public class UserService
     
     public User createUser(User user)
     {
-        return userRepository.createUser(user);
+        User createdUser = userRepository.createUser(user);
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, createdUser);
+        return createdUser;
     }
     
     public User updateUser(String id, User userDetails)
     {
-        return userRepository.updateUser(id, userDetails);
+        User updatedUser = userRepository.updateUser(id, userDetails);
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updatedUser);
+        return updatedUser;
     }
     
     public void deleteUser(String id)
     {
+        Optional<User> userToDelete = userRepository.getUserById(id);
         userRepository.deleteUser(id);
+        if (userToDelete.isPresent()) {
+            notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, userToDelete.get());
+        }
     }
 }

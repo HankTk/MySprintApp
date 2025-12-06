@@ -129,22 +129,13 @@ export class UserManagementComponent implements OnInit, OnDestroy
 
   private createUser(userData: CreateUserRequest): void
   {
-    const resourceHooks: ResourceHooks = {
-      onSuccess: (user) => {
-        // Custom processing after user creation
-        console.log('User created:', user);
-        // Reload user list after creation
-        this.loadUsers();
-      }
-    };
-
+    // Data will be automatically updated via WebSocket notification, so no need to reload
     this.resourceManager.createResource(
       'users',
       userData,
       this.isLoading,
       this.translate.instant('messages.userCreatedSuccessfully'),
-      this.translate.instant('messages.failedToCreateUser'),
-      resourceHooks
+      this.translate.instant('messages.failedToCreateUser')
     );
   }
 
