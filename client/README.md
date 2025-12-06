@@ -1,13 +1,33 @@
 # UserManagementClient
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.0.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.0 and is now powered by [Nx](https://nx.dev).
+
+## Project Structure
+
+This workspace follows the Nx standard folder structure:
+
+```
+client/
+├── apps/
+│   └── user-management-client/    # Main application
+│       ├── src/                    # Application source code
+│       ├── public/                 # Public assets
+│       ├── project.json            # Nx project configuration
+│       ├── tsconfig.app.json       # TypeScript config for app
+│       └── tsconfig.spec.json     # TypeScript config for tests
+├── nx.json                         # Nx workspace configuration
+├── tsconfig.json                   # Root TypeScript configuration
+└── package.json                    # Dependencies and scripts
+```
 
 ## Development server
 
 To start a local development server, run:
 
 ```bash
-ng serve
+npm start
+# or
+nx serve
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
@@ -18,12 +38,16 @@ Angular CLI includes powerful code scaffolding tools. To generate a new componen
 
 ```bash
 ng generate component component-name
+# or
+nx generate @schematics/angular:component component-name
 ```
 
 For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
 ```bash
 ng generate --help
+# or
+nx generate --help
 ```
 
 ## Building
@@ -31,29 +55,46 @@ ng generate --help
 To build the project run:
 
 ```bash
-ng build
+npm run build
+# or
+nx build
 ```
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+Nx provides intelligent caching, so subsequent builds will be faster if nothing has changed.
 
 ## Running unit tests
 
 To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
 ```bash
-ng test
+npm test
+# or
+nx test
 ```
 
-## Running end-to-end tests
+Nx will cache test results, making subsequent test runs faster.
 
-For end-to-end (e2e) testing, run:
+## Nx Features
 
-```bash
-ng e2e
-```
+This workspace is powered by Nx, which provides:
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- **Intelligent Caching**: Builds and tests are cached, making subsequent runs faster
+- **Project Graph**: Visualize dependencies between projects with `nx graph`
+- **Task Orchestration**: Run tasks in parallel and only when needed
+- **Code Generation**: Generate components, services, and more with Nx generators
+
+### Useful Nx Commands
+
+- `nx graph` - Visualize the project graph
+- `nx show projects` - List all projects in the workspace
+- `nx show project <project-name>` - Show details about a specific project
+- `nx run-many --target=build --all` - Build all projects
+- `nx affected:build` - Build only projects affected by changes
 
 ## Additional Resources
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli)
+- [Nx Documentation](https://nx.dev)
+- [Nx Angular Plugin](https://nx.dev/nx-api/angular)

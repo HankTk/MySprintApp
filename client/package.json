@@ -4,12 +4,14 @@
   "author": "Hidenori Takaku",
   "scripts": {
     "ng": "ng",
-    "startx": "ng serve",
-    "start": "rm -rf .angular/cache node_modules/.vite dist && ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "clean": "rm -rf .angular/cache node_modules/.vite dist"
+    "nx": "nx",
+    "startx": "nx serve my-app",
+    "start": "rm -rf .angular/cache node_modules/.vite dist && nx serve my-app",
+    "build": "nx build my-app",
+    "watch": "nx build my-app --watch --configuration development",
+    "test": "nx test my-app",
+    "clean": "rm -rf .angular/cache node_modules/.vite dist",
+    "graph": "nx graph"
   },
   "prettier": {
     "printWidth": 100,
@@ -47,6 +49,7 @@
     "@angular/build": "^21.0.2",
     "@angular/cli": "^21.0.2",
     "@angular/compiler-cli": "^21.0.3",
+    "@nx/angular": "^22.1.3",
     "@types/jasmine": "~5.1.0",
     "@types/sockjs-client": "^1.5.4",
     "jasmine-core": "~5.9.0",
@@ -55,6 +58,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "nx": "^22.1.3",
     "typescript": "~5.9.2"
   }
 }
