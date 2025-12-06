@@ -1,0 +1,6 @@
+{
+  "name": "my-electron",
+  "version": "1.0.0",
+  "main": "../../dist/apps/my-electron/main.js",
+  "type": "module"
+}

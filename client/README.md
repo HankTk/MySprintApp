@@ -9,12 +9,18 @@ This workspace follows the Nx standard folder structure:
 ```
 client/
 ├── apps/
-│   └── user-management-client/    # Main application
-│       ├── src/                    # Application source code
-│       ├── public/                 # Public assets
-│       ├── project.json            # Nx project configuration
-│       ├── tsconfig.app.json       # TypeScript config for app
-│       └── tsconfig.spec.json     # TypeScript config for tests
+│   ├── my-app/                     # Angular application
+│   │   ├── src/                    # Application source code
+│   │   ├── public/                 # Public assets
+│   │   ├── project.json             # Nx project configuration
+│   │   ├── tsconfig.app.json        # TypeScript config for app
+│   │   └── tsconfig.spec.json       # TypeScript config for tests
+│   └── my-electron/                # Electron wrapper application
+│       ├── src/
+│       │   ├── main.ts              # Electron main process
+│       │   └── preload.ts          # Preload script
+│       ├── project.json             # Nx project configuration
+│       └── tsconfig.json            # TypeScript configuration
 ├── nx.json                         # Nx workspace configuration
 ├── tsconfig.json                   # Root TypeScript configuration
 └── package.json                    # Dependencies and scripts
@@ -27,7 +33,7 @@ To start a local development server, run:
 ```bash
 npm start
 # or
-nx serve
+nx serve my-app
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
@@ -57,7 +63,7 @@ To build the project run:
 ```bash
 npm run build
 # or
-nx build
+nx build my-app
 ```
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
@@ -71,10 +77,39 @@ To execute unit tests with the [Karma](https://karma-runner.github.io) test runn
 ```bash
 npm test
 # or
-nx test
+nx test my-app
 ```
 
 Nx will cache test results, making subsequent test runs faster.
+
+## Electron Application
+
+This workspace includes an Electron application (`my-electron`) that can launch the Angular app (`my-app`) in a desktop window.
+
+### Running Electron
+
+To run the Electron app in development mode:
+
+```bash
+npm run electron
+# or
+npm run electron:dev
+```
+
+This will:
+1. Start the Angular development server (`my-app`)
+2. Wait for the server to be ready
+3. Build the Electron app
+4. Launch Electron with the Angular app
+
+### Building Electron
+
+To build the Electron app:
+
+```bash
+npm run electron:build
+```
+
 
 ## Nx Features
 
