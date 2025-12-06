@@ -193,6 +193,168 @@ GET /api/users/{id}
 GET /api/status
 ```
 
+## Data Operation Sequence Diagrams
+
+### Data Addition (Create) Sequence
+
+```mermaid
+sequenceDiagram
+    participant User as UserManagementComponent
+    participant RS as ResourceService
+    participant HS as HttpService
+    participant Controller as UserController
+    participant Service as UserService
+    participant Repo as UserRepository
+    participant WS as WebSocketNotificationService
+    participant WSC as WebSocketService (Angular)
+    participant Store as StoreService
+
+    User->>RS: createResource('users', userData)
+    RS->>HS: post('users', userData)
+    HS->>Controller: HTTP POST /api/users
+    Controller->>Service: createUser(user)
+    Service->>Repo: createUser(user)
+    Repo-->>Service: createdUser
+    Service->>WS: notifyDataChange(CREATE, 'users', createdUser)
+    WS->>WSC: WebSocket /topic/data-changes
+    WSC->>Store: handleDataChange(notification)
+    Store->>Store: Update state (CREATE)
+    Service-->>Controller: createdUser
+    Controller-->>HS: HTTP 200 OK (createdUser)
+    HS-->>RS: Observable<User>
+    RS->>RS: showSnackBar('User created successfully')
+    RS-->>User: Complete
+```
+
+### Data Update (Update) Sequence
+
+```mermaid
+sequenceDiagram
+    participant User as UserManagementComponent
+    participant RS as ResourceService
+    participant HS as HttpService
+    participant Controller as UserController
+    participant Service as UserService
+    participant Repo as UserRepository
+    participant WS as WebSocketNotificationService
+    participant WSC as WebSocketService (Angular)
+    participant Store as StoreService
+
+    User->>RS: updateResource('users', id, userData)
+    RS->>HS: put('users', id, userData)
+    HS->>Controller: HTTP PUT /api/users/{id}
+    Controller->>Service: updateUser(id, userDetails)
+    Service->>Repo: updateUser(id, userDetails)
+    Repo-->>Service: updatedUser
+    Service->>WS: notifyDataChange(UPDATE, 'users', updatedUser)
+    WS->>WSC: WebSocket /topic/data-changes
+    WSC->>Store: handleDataChange(notification)
+    Store->>Store: Update state (UPDATE)
+    Service-->>Controller: updatedUser
+    Controller-->>HS: HTTP 200 OK (updatedUser)
+    HS-->>RS: Observable<User>
+    RS->>RS: showSnackBar('User updated successfully')
+    RS-->>User: Complete
+```
+
+### Data Deletion (Delete) Sequence
+
+```mermaid
+sequenceDiagram
+    participant User as UserManagementComponent
+    participant RS as ResourceService
+    participant HS as HttpService
+    participant Controller as UserController
+    participant Service as UserService
+    participant Repo as UserRepository
+    participant WS as WebSocketNotificationService
+    participant WSC as WebSocketService (Angular)
+    participant Store as StoreService
+
+    User->>RS: deleteResource('users', id)
+    RS->>HS: delete('users', id)
+    HS->>Controller: HTTP DELETE /api/users/{id}
+    Controller->>Service: deleteUser(id)
+    Service->>Repo: getUserById(id)
+    Repo-->>Service: userToDelete
+    Service->>Repo: deleteUser(id)
+    Repo-->>Service: Deletion complete
+    Service->>WS: notifyDataChange(DELETE, 'users', userToDelete)
+    WS->>WSC: WebSocket /topic/data-changes
+    WSC->>Store: handleDataChange(notification)
+    Store->>Store: Update state (DELETE)
+    Service-->>Controller: Deletion complete
+    Controller-->>HS: HTTP 200 OK
+    HS-->>RS: Observable<void>
+    RS->>RS: showSnackBar('User deleted successfully')
+    RS-->>User: Complete
+```
+
+### Integrated Sequence Diagram (All Operations)
+
+```mermaid
+sequenceDiagram
+    participant User as UserManagementComponent
+    participant RS as ResourceService
+    participant HS as HttpService
+    participant Controller as UserController
+    participant Service as UserService
+    participant Repo as UserRepository
+    participant WS as WebSocketNotificationService
+    participant WSC as WebSocketService (Angular)
+    participant Store as StoreService
+
+    Note over User,Store: Data Addition (Create)
+    User->>RS: createResource()
+    RS->>HS: post()
+    HS->>Controller: POST /api/users
+    Controller->>Service: createUser()
+    Service->>Repo: createUser()
+    Repo-->>Service: createdUser
+    Service->>WS: notifyDataChange(CREATE)
+    WS->>WSC: WebSocket notification
+    WSC->>Store: handleDataChange()
+    Store->>Store: Update state
+    Service-->>Controller: createdUser
+    Controller-->>HS: 200 OK
+    HS-->>RS: Observable
+    RS-->>User: Complete
+
+    Note over User,Store: Data Update (Update)
+    User->>RS: updateResource()
+    RS->>HS: put()
+    HS->>Controller: PUT /api/users/{id}
+    Controller->>Service: updateUser()
+    Service->>Repo: updateUser()
+    Repo-->>Service: updatedUser
+    Service->>WS: notifyDataChange(UPDATE)
+    WS->>WSC: WebSocket notification
+    WSC->>Store: handleDataChange()
+    Store->>Store: Update state
+    Service-->>Controller: updatedUser
+    Controller-->>HS: 200 OK
+    HS-->>RS: Observable
+    RS-->>User: Complete
+
+    Note over User,Store: Data Deletion (Delete)
+    User->>RS: deleteResource()
+    RS->>HS: delete()
+    HS->>Controller: DELETE /api/users/{id}
+    Controller->>Service: deleteUser()
+    Service->>Repo: getUserById()
+    Repo-->>Service: userToDelete
+    Service->>Repo: deleteUser()
+    Repo-->>Service: Deletion complete
+    Service->>WS: notifyDataChange(DELETE)
+    WS->>WSC: WebSocket notification
+    WSC->>Store: handleDataChange()
+    Store->>Store: Update state
+    Service-->>Controller: Deletion complete
+    Controller-->>HS: 200 OK
+    HS-->>RS: Observable
+    RS-->>User: Complete
+```
+
 ## Database
 
 ### JSONDB Files
