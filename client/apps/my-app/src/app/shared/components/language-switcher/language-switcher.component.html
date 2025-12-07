@@ -1,24 +1,18 @@
-<button 
-  mat-icon-button 
-  [matMenuTriggerFor]="languageMenu" 
-  class="language-button"
-  [matTooltip]="'changeLanguage' | translate">
-  <mat-icon>language</mat-icon>
-</button>
-
-<mat-menu #languageMenu="matMenu">
-  <button 
-    mat-menu-item 
-    (click)="switchLanguage('en')"
-    [class.active]="languageService.isEnglish()">
-    <mat-icon>flag</mat-icon>
-    <span>{{ 'english' | translate }}</span>
-  </button>
-  <button 
-    mat-menu-item 
-    (click)="switchLanguage('ja')"
-    [class.active]="languageService.isJapanese()">
-    <mat-icon>flag</mat-icon>
-    <span>{{ 'japanese' | translate }}</span>
-  </button>
-</mat-menu>
+<mat-form-field appearance="outline" class="language-select-field">
+  <mat-label *ngIf="showLabel">
+    <mat-icon class="label-icon">language</mat-icon>
+    {{ 'changeLanguage' | translate }}
+  </mat-label>
+  <mat-select 
+    #languageSelect
+    [value]="currentLanguage" 
+    (selectionChange)="onLanguageChange($event.value)"
+    class="language-select" 
+    [placeholder]="showLabel ? '' : ('changeLanguage' | translate)"
+    panelClass="language-select-panel">
+    <mat-option *ngFor="let lang of languages" [value]="lang.value">
+      <mat-icon class="option-icon">{{ lang.icon }}</mat-icon>
+      <span>{{ lang.label | translate }}</span>
+    </mat-option>
+  </mat-select>
+</mat-form-field>

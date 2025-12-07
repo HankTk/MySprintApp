@@ -10,12 +10,14 @@
     <div class="settings-section">
       <h3 class="section-title">{{ 'settings.general' | translate }}</h3>
       
-      <div class="setting-item">
+      <div class="setting-item language-setting">
         <div class="setting-label">
           <mat-icon matListItemIcon>language</mat-icon>
           <span>{{ 'settings.language' | translate }}</span>
         </div>
-        <app-language-switcher></app-language-switcher>
+        <div class="setting-control">
+          <app-language-switcher [showLabel]="false"></app-language-switcher>
+        </div>
       </div>
     </div>
 
@@ -24,11 +26,13 @@
     <div class="settings-section">
       <h3 class="section-title">{{ 'settings.appearance' | translate }}</h3>
       
-      <a mat-list-item>
-        <mat-icon matListItemIcon>palette</mat-icon>
-        <span matListItemTitle>{{ 'settings.theme' | translate }}</span>
-        <span matListItemMeta>{{ 'settings.comingSoon' | translate }}</span>
-      </a>
+      <div class="setting-item">
+        <div class="setting-label">
+          <mat-icon matListItemIcon>palette</mat-icon>
+          <span>{{ 'settings.theme' | translate }}</span>
+        </div>
+        <app-theme-switcher></app-theme-switcher>
+      </div>
     </div>
   </mat-nav-list>
 </nav>

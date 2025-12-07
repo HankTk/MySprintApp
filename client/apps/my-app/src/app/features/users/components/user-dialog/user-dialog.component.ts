@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { User, CreateUserRequest } from '../../models/user';
@@ -25,6 +26,7 @@ export interface UserDialogData
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatButtonModule,
     MatIconModule,
     TranslateModule
@@ -37,6 +39,7 @@ export class UserDialogComponent implements OnInit
   userForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
+  roles = ['Admin', 'Basic'];
 
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<UserDialogComponent>);
@@ -49,9 +52,11 @@ export class UserDialogComponent implements OnInit
     this.dialogTitle = this.isEdit ? this.translate.instant('editUser') : this.translate.instant('addUser');
     
     this.userForm = this.fb.group({
+      userid: ['', [Validators.required, Validators.minLength(1)]],
       firstName: ['', [Validators.required, Validators.minLength(1)]],
       lastName: ['', [Validators.required, Validators.minLength(1)]],
       email: ['', [Validators.required, Validators.email]],
+      role: ['', [Validators.required]],
       jsonData: ['{}', [Validators.required, this.jsonValidator]]
     });
   }
@@ -89,9 +94,11 @@ export class UserDialogComponent implements OnInit
     }
 
     this.userForm.patchValue({
+      userid: user.userid,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      role: user.role,
       jsonData: jsonDataString
     });
   }
@@ -140,9 +147,11 @@ export class UserDialogComponent implements OnInit
         // For editing
         const userToUpdate: User = {
           id: this.data.user.id,
+          userid: formValue.userid,
           firstName: formValue.firstName,
           lastName: formValue.lastName,
           email: formValue.email,
+          role: formValue.role,
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', user: userToUpdate });
@@ -151,9 +160,11 @@ export class UserDialogComponent implements OnInit
       {
         // For new addition
         const userToCreate: CreateUserRequest = {
+          userid: formValue.userid,
           firstName: formValue.firstName,
           lastName: formValue.lastName,
           email: formValue.email,
+          role: formValue.role,
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'create', user: userToCreate });

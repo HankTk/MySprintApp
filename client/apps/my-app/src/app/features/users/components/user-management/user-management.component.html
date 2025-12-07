@@ -6,7 +6,6 @@
           <mat-icon class="title-icon">people</mat-icon>
           {{ 'userManagementSystem' | translate }}
         </mat-card-title>
-        <app-language-switcher></app-language-switcher>
       </div>
     </mat-card-header>
 
@@ -26,6 +25,12 @@
       <!-- User List Table -->
       <div class="table-container">
         <table mat-table [dataSource]="users() || []" class="user-table">
+          <!-- User ID Column -->
+          <ng-container matColumnDef="userid">
+            <th mat-header-cell *matHeaderCellDef>{{ 'userid' | translate }}</th>
+            <td mat-cell *matCellDef="let user">{{ user.userid }}</td>
+          </ng-container>
+
           <!-- Last Name Column -->
           <ng-container matColumnDef="lastName">
             <th mat-header-cell *matHeaderCellDef>{{ 'lastName' | translate }}</th>
@@ -42,6 +47,12 @@
           <ng-container matColumnDef="email">
             <th mat-header-cell *matHeaderCellDef>{{ 'emailAddress' | translate }}</th>
             <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+          </ng-container>
+
+          <!-- Role Column -->
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>{{ 'role' | translate }}</th>
+            <td mat-cell *matCellDef="let user">{{ user.role }}</td>
           </ng-container>
 
           <!-- JSON Data Column -->

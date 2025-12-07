@@ -3,6 +3,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: visible;
+  position: relative;
 }
 
 .drawer-header {
@@ -38,10 +40,21 @@
   }
 }
 
+:host-context(.dark-theme) .settings-drawer {
+  background-color: var(--bg-sidenav) !important;
+}
+
+:host-context(.dark-theme) .drawer-header {
+  border-bottom: 1px solid var(--border-primary) !important;
+}
+
 mat-nav-list {
   padding-top: 8px;
   flex: 1;
   overflow-y: auto;
+  overflow-x: visible;
+  position: relative;
+  z-index: 1;
 }
 
 .settings-section {
@@ -58,6 +71,10 @@ mat-nav-list {
   letter-spacing: 0.5px;
 }
 
+:host-context(.dark-theme) .section-title {
+  color: var(--text-secondary) !important;
+}
+
 .setting-item {
   padding: 8px 16px;
   display: flex;
@@ -65,15 +82,34 @@ mat-nav-list {
   justify-content: space-between;
 }
 
+.setting-item.language-setting {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
 .setting-label {
   display: flex;
   align-items: center;
   gap: 16px;
   flex: 1;
+  width: 100%;
 
   mat-icon {
     color: rgba(0, 0, 0, 0.54);
   }
+}
+
+:host-context(.dark-theme) .setting-label mat-icon {
+  color: var(--text-secondary) !important;
+}
+
+.setting-control {
+  width: 100%;
+  margin-top: 4px;
+  position: relative;
+  z-index: 10;
+  overflow: visible;
 }
 
 ::ng-deep mat-list-item {
@@ -87,4 +123,8 @@ mat-nav-list {
 
 mat-divider {
   margin: 8px 0;
+}
+
+:host-context(.dark-theme) mat-divider {
+  border-top-color: var(--border-primary) !important;
 }

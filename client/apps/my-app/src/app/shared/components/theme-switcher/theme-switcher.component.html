@@ -1,0 +1,24 @@
+<button
+  mat-icon-button
+  [matMenuTriggerFor]="themeMenu"
+  [matTooltip]="'settings.theme' | translate"
+  class="theme-switcher-button">
+  <mat-icon>{{ themeService.isDark() ? 'dark_mode' : 'light_mode' }}</mat-icon>
+</button>
+
+<mat-menu #themeMenu="matMenu">
+  <button 
+    mat-menu-item 
+    (click)="switchTheme('light')"
+    [class.active]="themeService.isLight()">
+    <mat-icon>light_mode</mat-icon>
+    <span>{{ 'theme.light' | translate }}</span>
+  </button>
+  <button 
+    mat-menu-item 
+    (click)="switchTheme('dark')"
+    [class.active]="themeService.isDark()">
+    <mat-icon>dark_mode</mat-icon>
+    <span>{{ 'theme.dark' | translate }}</span>
+  </button>
+</mat-menu>

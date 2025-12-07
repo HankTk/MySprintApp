@@ -11,7 +11,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StoreService } from '../../../../core/store.service';
 import { User } from '../../models/user';
-import { LanguageSwitcherComponent } from '../../../../shared/components/language-switcher/language-switcher.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { Subscription } from 'rxjs';
@@ -31,7 +30,6 @@ import { UserManagementService } from './user-management.service';
     MatProgressSpinnerModule,
     MatToolbarModule,
     MatTooltipModule,
-    LanguageSwitcherComponent,
     TranslateModule
 ],
   templateUrl: './user-management.component.html',
@@ -40,7 +38,7 @@ import { UserManagementService } from './user-management.service';
 export class UserManagementComponent implements OnInit, OnDestroy
 {
   isLoading = signal<boolean>(false);
-  displayedColumns = signal<string[]>(['lastName', 'firstName', 'email', 'jsonData', 'actions']);
+  displayedColumns = signal<string[]>(['userid', 'lastName', 'firstName', 'email', 'role', 'jsonData', 'actions']);
 
   private store = inject(StoreService);
   private userService = inject(UserManagementService);
@@ -73,10 +71,10 @@ export class UserManagementComponent implements OnInit, OnDestroy
   private updateColumnOrder(): void {
     if (this.languageService.isEnglish()) {
       // English: FirstName, LastName
-      this.displayedColumns.set(['firstName', 'lastName', 'email', 'jsonData', 'actions']);
+      this.displayedColumns.set(['userid', 'firstName', 'lastName', 'email', 'role', 'jsonData', 'actions']);
     } else {
       // Japanese: LastName, FirstName
-      this.displayedColumns.set(['lastName', 'firstName', 'email', 'jsonData', 'actions']);
+      this.displayedColumns.set(['userid', 'lastName', 'firstName', 'email', 'role', 'jsonData', 'actions']);
     }
   }
 

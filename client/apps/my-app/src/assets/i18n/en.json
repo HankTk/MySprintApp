@@ -1,9 +1,13 @@
 {
   "userManagementSystem": "User Management System",
   "addNewUser": "Add New User",
+  "userid": "User ID",
+  "useridPlaceholder": "Enter user ID",
   "lastName": "Last Name",
   "firstName": "First Name",
   "emailAddress": "Email Address",
+  "role": "Role",
+  "rolePlaceholder": "Select role",
   "jsonData": "JSON Data",
   "actions": "Actions",
   "edit": "Edit",
@@ -71,5 +75,13 @@
     "appearance": "Appearance",
     "theme": "Theme",
     "comingSoon": "Coming Soon"
+  },
+  "roleOptions": {
+    "admin": "Admin",
+    "basic": "Basic"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
   }
 }

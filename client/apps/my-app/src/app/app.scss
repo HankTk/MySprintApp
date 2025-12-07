@@ -2,7 +2,8 @@
 app-root {
   display: block;
   height: 100vh;
-  background-color: #f8f9fa;
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease;
 }
 
 /* Global Style Supplement */
@@ -17,6 +18,16 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: var(--bg-primary);
+}
+
+.dark-theme ::ng-deep .app-container,
+.dark-theme ::ng-deep mat-sidenav-container {
+  background-color: var(--bg-primary) !important;
+}
+
+.dark-theme ::ng-deep mat-sidenav-content {
+  background-color: var(--bg-primary) !important;
 }
 
 /* Toolbar Styles */
@@ -42,13 +53,41 @@ body {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
-  background-color: #f8f9fa;
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease;
 }
 
 /* Sidenav Styles */
 ::ng-deep .menu-sidenav,
 ::ng-deep .settings-sidenav {
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  overflow: visible !important;
+}
+
+.dark-theme ::ng-deep .menu-sidenav,
+.dark-theme ::ng-deep .settings-sidenav {
+  background-color: var(--bg-sidenav) !important;
+}
+
+.dark-theme ::ng-deep .mat-drawer-backdrop {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.dark-theme ::ng-deep .mat-sidenav-container {
+  background-color: var(--bg-primary) !important;
+}
+
+.dark-theme ::ng-deep .mat-sidenav-content {
+  background-color: var(--bg-primary) !important;
+}
+
+/* Ensure mat-select dropdowns can appear above sidenavs */
+::ng-deep .mat-mdc-select-panel {
+  z-index: 10000 !important;
+}
+
+::ng-deep .cdk-overlay-container {
+  z-index: 10000 !important;
 }
 
 /* Responsive Support */

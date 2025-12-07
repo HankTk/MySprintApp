@@ -94,9 +94,11 @@ public class UserRepository extends AbstractJsonRepository<User>
             throw new UserAlreadyExistsException("User with email " + userDetails.getEmail() + " already exists");
 
         // Update fields manually
+        existingUser.setUserid(userDetails.getUserid());
         existingUser.setFirstName(userDetails.getFirstName());
         existingUser.setLastName(userDetails.getLastName());
         existingUser.setEmail(userDetails.getEmail());
+        existingUser.setRole(userDetails.getRole());
         existingUser.setJsonData(userDetails.getJsonData());
         
         saveItems();

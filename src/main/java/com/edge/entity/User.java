@@ -7,9 +7,11 @@ import java.util.Map;
 public class User {
 
     private String id;
+    private String userid;
     private String firstName;
     private String lastName;
     private String email;
+    private String role;
     private Map<String, Object> jsonData;
 
     // Method to get the full name

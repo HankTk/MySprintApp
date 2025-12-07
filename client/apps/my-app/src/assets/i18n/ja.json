@@ -1,9 +1,17 @@
 {
   "userManagementSystem": "ユーザー管理システム",
   "addNewUser": "新規ユーザー追加",
+  "userid": "ユーザーID",
+  "useridPlaceholder": "ユーザーIDを入力してください",
   "lastName": "姓",
   "firstName": "名",
   "emailAddress": "メールアドレス",
+  "role": "役割",
+  "rolePlaceholder": "役割を選択してください",
+  "roleOptions": {
+    "admin": "管理者",
+    "basic": "基本"
+  },
   "jsonData": "JSONデータ",
   "actions": "操作",
   "edit": "編集",
@@ -71,5 +79,13 @@
     "appearance": "外観",
     "theme": "テーマ",
     "comingSoon": "近日公開"
+  },
+  "roleOptions": {
+    "admin": "管理者",
+    "basic": "基本"
+  },
+  "theme": {
+    "light": "ライト",
+    "dark": "ダーク"
   }
 }

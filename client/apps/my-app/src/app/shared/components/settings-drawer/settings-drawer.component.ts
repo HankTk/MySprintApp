@@ -8,6 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
+import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.component';
 
 @Component({
   selector: 'app-settings-drawer',
@@ -20,7 +21,8 @@ import { LanguageSwitcherComponent } from '../language-switcher/language-switche
     MatButtonModule,
     MatDividerModule,
     TranslateModule,
-    LanguageSwitcherComponent
+    LanguageSwitcherComponent,
+    ThemeSwitcherComponent
   ],
   templateUrl: './settings-drawer.component.html',
   styleUrls: ['./settings-drawer.component.scss']

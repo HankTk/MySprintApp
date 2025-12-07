@@ -3,6 +3,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  background-color: var(--bg-sidenav);
 }
 
 .drawer-header {
@@ -38,6 +39,14 @@
   }
 }
 
+:host-context(.dark-theme) .menu-drawer {
+  background-color: var(--bg-sidenav) !important;
+}
+
+:host-context(.dark-theme) .drawer-header {
+  border-bottom: 1px solid var(--border-primary) !important;
+}
+
 mat-nav-list {
   padding-top: 8px;
 }
@@ -52,6 +61,6 @@ mat-nav-list {
 
   &.mat-mdc-list-item-active {
     background-color: rgba(63, 81, 181, 0.12);
-    color: #3f51b5;
+    color: var(--accent-primary);
   }
 }
