@@ -1,25 +1,22 @@
-import { Component, OnInit, inject, OnDestroy, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, signal } from '@angular/core';
 
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { HttpService } from '../../../../core/http.service';
 import { StoreService } from '../../../../core/store.service';
-import { ResourceService, ResourceHooks } from '../../../../shared/services/resource.service';
-import { User, CreateUserRequest } from '../../models/user';
-import { UserDialogComponent, UserDialogData } from '../user-dialog/user-dialog.component';
-import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import { User } from '../../models/user';
 import { LanguageSwitcherComponent } from '../../../../shared/components/language-switcher/language-switcher.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { Subscription } from 'rxjs';
 import { JsonUtil } from '../../../../shared/utils/json.util';
+import { UserManagementService } from './user-management.service';
 
 @Component({
   selector: 'app-user-management',
@@ -45,12 +42,9 @@ export class UserManagementComponent implements OnInit, OnDestroy
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['lastName', 'firstName', 'email', 'jsonData', 'actions']);
 
-  private data = inject(HttpService);
   private store = inject(StoreService);
-  private resourceManager = inject(ResourceService);
-  private dialog = inject(MatDialog);
+  private userService = inject(UserManagementService);
   private languageService = inject(LanguageService);
-  private translate = inject(TranslateService);
 
   private subscriptions = new Subscription();
 
@@ -88,104 +82,22 @@ export class UserManagementComponent implements OnInit, OnDestroy
 
   loadUsers(): void
   {
-    this.resourceManager.loadResource(
-      'users',
-      this.isLoading,
-      this.translate.instant('messages.failedToLoad', { resource: 'users' })
-    );
+    this.userService.loadUsers(this.isLoading);
   }
 
   openAddUserDialog(): void
   {
-    const dialogRef = this.dialog.open(UserDialogComponent, {
-      data: { isEdit: false } as UserDialogData,
-      width: '600px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
-
-    dialogRef.afterClosed().subscribe(result =>
-    {
-      if (result && result.action === 'create')
-      {
-        this.createUser(result.user);
-      }
-    });
+    this.userService.openAddUserDialog(this.isLoading);
   }
 
   openEditUserDialog(user: User): void
   {
-    const dialogRef = this.dialog.open(UserDialogComponent, {
-      data: { user, isEdit: true } as UserDialogData,
-      width: '600px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
-
-    dialogRef.afterClosed().subscribe(result =>
-    {
-      if (result && result.action === 'update')
-      {
-        this.updateUser(result.user);
-      }
-    });
-  }
-
-  private createUser(userData: CreateUserRequest): void
-  {
-    // Data will be automatically updated via WebSocket notification, so no need to reload
-    this.resourceManager.createResource(
-      'users',
-      userData,
-      this.isLoading,
-      this.translate.instant('messages.userCreatedSuccessfully'),
-      this.translate.instant('messages.failedToCreateUser')
-    );
-  }
-
-  private updateUser(userData: User): void
-  {
-    this.resourceManager.updateResource(
-      'users',
-      userData.id!,
-      userData,
-      this.isLoading,
-      this.translate.instant('messages.userUpdatedSuccessfully'),
-      this.translate.instant('messages.failedToUpdateUser')
-    );
+    this.userService.openEditUserDialog(user, this.isLoading);
   }
 
   deleteUser(user: User): void
   {
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
-      data: {
-        userName: `${user.lastName} ${user.firstName}`,
-        userEmail: user.email
-      } as DeleteConfirmDialogData,
-      width: '500px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
-
-    dialogRef.afterClosed().subscribe(result =>
-    {
-      if (result === true)
-      {
-        // If deletion is confirmed
-        this.performDelete(user.id);
-      }
-    });
-  }
-
-  private performDelete(id: string): void
-  {
-    this.resourceManager.deleteResource(
-      'users',
-      id,
-      this.isLoading,
-      this.translate.instant('messages.userDeletedSuccessfully'),
-      this.translate.instant('messages.failedToDeleteUser')
-    );
+    this.userService.openDeleteUserDialog(user, this.isLoading);
   }
 
 }
