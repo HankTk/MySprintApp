@@ -6,6 +6,8 @@
   "lastName": "Last Name",
   "firstName": "First Name",
   "emailAddress": "Email Address",
+  "password": "Password",
+  "passwordPlaceholder": "Enter password",
   "role": "Role",
   "rolePlaceholder": "Select role",
   "jsonData": "JSON Data",
@@ -83,5 +85,25 @@
   "theme": {
     "light": "Light",
     "dark": "Dark"
+  },
+  "login": {
+    "title": "Login",
+    "submit": "Login",
+    "error": "Invalid user ID or password",
+    "shutdown": "Shutdown Application"
+  },
+  "initialUser": {
+    "title": "Create Initial User",
+    "subtitle": "No users found. Please create the first administrator account.",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "passwordMismatch": "Passwords do not match",
+    "submit": "Create User",
+    "error": "Failed to create user"
+  },
+  "logout": {
+    "confirmTitle": "Confirm Logout",
+    "confirmMessage": "Are you sure you want to logout?",
+    "confirm": "Logout"
   }
 }

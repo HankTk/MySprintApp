@@ -1,0 +1,65 @@
+.logout-confirm-dialog {
+  min-width: 400px;
+  max-width: 450px;
+
+  .dialog-title {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 16px 24px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #e3f2fd;
+    color: #1976d2;
+
+    .title-icon {
+      margin-right: 12px;
+      color: #1976d2;
+    }
+  }
+
+  .dialog-content {
+    padding: 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+
+    .message {
+      text-align: center;
+
+      p {
+        margin: 0;
+        font-size: 16px;
+        color: #333;
+      }
+    }
+  }
+
+  .dialog-actions {
+    padding: 16px 24px;
+    border-top: 1px solid #e0e0e0;
+    background-color: #fafafa;
+    margin: 0;
+
+    .cancel-button {
+      margin-right: 8px;
+      color: #666;
+
+      .mat-icon {
+        margin-right: 8px;
+      }
+    }
+
+    .confirm-button {
+      .mat-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+// Responsive support
+@media (max-width: 768px) {
+  .logout-confirm-dialog {
+    min-width: 90vw;
+    max-width: 95vw;
+  }
+}

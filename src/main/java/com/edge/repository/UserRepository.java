@@ -62,6 +62,12 @@ public class UserRepository extends AbstractJsonRepository<User>
         return items.stream().filter(user -> email.equals(user.getEmail())).findFirst();
     }
 
+    public Optional<User> getUserByUserid(String userid)
+    {
+        if (userid == null || userid.trim().isEmpty()) return Optional.empty();
+        return items.stream().filter(user -> userid.equals(user.getUserid())).findFirst();
+    }
+
     public Optional<User> getUserById(String id)
     {
         return findById(id);
@@ -100,6 +106,10 @@ public class UserRepository extends AbstractJsonRepository<User>
         existingUser.setEmail(userDetails.getEmail());
         existingUser.setRole(userDetails.getRole());
         existingUser.setJsonData(userDetails.getJsonData());
+        // Update password only if provided
+        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
+            existingUser.setPassword(userDetails.getPassword());
+        }
         
         saveItems();
         logger.info("Updated user with ID: {}", id);

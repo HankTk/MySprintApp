@@ -1,0 +1,75 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon class="title-icon">lock</mat-icon>
+        {{ 'login.title' | translate }}
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'userid' | translate }}</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="userid"
+            [placeholder]="'useridPlaceholder' | translate"
+            [class.is-invalid]="isFieldInvalid('userid')">
+          <mat-icon matPrefix>badge</mat-icon>
+          @if (isFieldInvalid('userid')) {
+            <mat-error>
+              {{ getErrorMessage('userid') | translate }}
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'password' | translate }}</mat-label>
+          <input
+            matInput
+            type="password"
+            formControlName="password"
+            [placeholder]="'passwordPlaceholder' | translate"
+            [class.is-invalid]="isFieldInvalid('password')">
+          <mat-icon matPrefix>lock</mat-icon>
+          @if (isFieldInvalid('password')) {
+            <mat-error>
+              {{ getErrorMessage('password') | translate }}
+            </mat-error>
+          }
+        </mat-form-field>
+
+        @if (errorMessage) {
+          <div class="error-message">
+            {{ errorMessage }}
+          </div>
+        }
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="full-width login-button"
+          [disabled]="loginForm.invalid || isLoading">
+          @if (isLoading) {
+            <mat-spinner diameter="20" class="spinner"></mat-spinner>
+          } @else {
+            {{ 'login.submit' | translate }}
+          }
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  
+  <!-- Shutdown Button -->
+  <button
+    mat-icon-button
+    class="shutdown-button"
+    (click)="shutdown()"
+    [attr.aria-label]="'login.shutdown' | translate"
+    [title]="'login.shutdown' | translate">
+    <mat-icon>power_settings_new</mat-icon>
+  </button>
+</div>

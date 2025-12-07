@@ -19,6 +19,9 @@ public class UserService
     @Autowired
     private WebSocketNotificationService notificationService;
     
+    @Autowired
+    private AuthService authService;
+    
     private static final String DATA_TYPE_ID = "users";
     
     public List<User> getAllUsers()
@@ -38,6 +41,11 @@ public class UserService
     
     public User createUser(User user)
     {
+        // Hash password if provided
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            String hashedPassword = authService.encodePassword(user.getPassword());
+            user.setPassword(hashedPassword);
+        }
         User createdUser = userRepository.createUser(user);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, createdUser);
         return createdUser;
@@ -45,6 +53,11 @@ public class UserService
     
     public User updateUser(String id, User userDetails)
     {
+        // Hash password if provided
+        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
+            String hashedPassword = authService.encodePassword(userDetails.getPassword());
+            userDetails.setPassword(hashedPassword);
+        }
         User updatedUser = userRepository.updateUser(id, userDetails);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updatedUser);
         return updatedUser;

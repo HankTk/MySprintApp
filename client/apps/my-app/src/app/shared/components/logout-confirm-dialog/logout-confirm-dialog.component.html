@@ -1,0 +1,32 @@
+<div class="logout-confirm-dialog">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon class="title-icon">logout</mat-icon>
+    {{ 'logout.confirmTitle' | translate }}
+  </h2>
+
+  <mat-dialog-content class="dialog-content">
+    <div class="message">
+      <p>{{ 'logout.confirmMessage' | translate }}</p>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button 
+      mat-button 
+      type="button" 
+      (click)="onCancel()" 
+      class="cancel-button">
+      <mat-icon>cancel</mat-icon>
+      {{ 'cancel' | translate }}
+    </button>
+    <button 
+      mat-raised-button 
+      color="primary" 
+      type="button" 
+      (click)="onConfirm()"
+      class="confirm-button">
+      <mat-icon>logout</mat-icon>
+      {{ 'logout.confirm' | translate }}
+    </button>
+  </mat-dialog-actions>
+</div>

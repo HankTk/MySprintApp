@@ -1,6 +1,6 @@
 .user-management-container {
   padding: 24px;
-  height: calc(100dvh - 100px);
+  height: calc(100dvh - var(--header-height));
   max-width: 1400px;
   margin: 0 auto;
 

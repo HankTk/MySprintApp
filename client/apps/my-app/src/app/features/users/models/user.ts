@@ -5,6 +5,7 @@ export interface User
   firstName: string;
   lastName: string;
   email: string;
+  password?: string;
   role: string;
   jsonData: any;
 }
@@ -15,6 +16,13 @@ export interface CreateUserRequest
   firstName: string;
   lastName: string;
   email: string;
+  password?: string;
   role: string;
   jsonData: any;
+}
+
+export interface LoginRequest
+{
+  userid: string;
+  password: string;
 }

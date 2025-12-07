@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -41,6 +41,12 @@ function createWindow(): void {
     mainWindow = null;
   });
 }
+
+// Handle app shutdown from renderer - set up before window creation
+ipcMain.on('app-shutdown', () => {
+  console.log('Received shutdown request from renderer');
+  app.quit();
+});
 
 // This method will be called when Electron has finished initialization
 app.whenReady().then(() => {

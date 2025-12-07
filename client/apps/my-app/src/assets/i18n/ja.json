@@ -6,6 +6,8 @@
   "lastName": "姓",
   "firstName": "名",
   "emailAddress": "メールアドレス",
+  "password": "パスワード",
+  "passwordPlaceholder": "パスワードを入力してください",
   "role": "役割",
   "rolePlaceholder": "役割を選択してください",
   "roleOptions": {
@@ -87,5 +89,25 @@
   "theme": {
     "light": "ライト",
     "dark": "ダーク"
+  },
+  "login": {
+    "title": "ログイン",
+    "submit": "ログイン",
+    "error": "ユーザーIDまたはパスワードが正しくありません",
+    "shutdown": "アプリケーションを終了"
+  },
+  "initialUser": {
+    "title": "初期ユーザー作成",
+    "subtitle": "ユーザーが見つかりません。最初の管理者アカウントを作成してください。",
+    "confirmPassword": "パスワード確認",
+    "confirmPasswordPlaceholder": "パスワードを再入力してください",
+    "passwordMismatch": "パスワードが一致しません",
+    "submit": "ユーザー作成",
+    "error": "ユーザーの作成に失敗しました"
+  },
+  "logout": {
+    "confirmTitle": "ログアウトの確認",
+    "confirmMessage": "ログアウトしますか？",
+    "confirm": "ログアウト"
   }
 }
