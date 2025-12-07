@@ -1,0 +1,57 @@
+.menu-drawer {
+  width: 280px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+
+    mat-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+    }
+  }
+}
+
+mat-nav-list {
+  padding-top: 8px;
+}
+
+::ng-deep mat-list-item {
+  margin: 4px 8px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  &.mat-mdc-list-item-active {
+    background-color: rgba(63, 81, 181, 0.12);
+    color: #3f51b5;
+  }
+}

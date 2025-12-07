@@ -1,2 +1,40 @@
-<app-user-management></app-user-management>
-<router-outlet />
+<mat-sidenav-container class="app-container">
+  <!-- Menu Drawer -->
+  <mat-sidenav 
+    #menuDrawer
+    mode="over" 
+    position="start"
+    class="menu-sidenav">
+    <app-menu-drawer (closeDrawer)="closeMenuDrawer()"></app-menu-drawer>
+  </mat-sidenav>
+
+  <!-- Settings Drawer -->
+  <mat-sidenav 
+    #settingsDrawer
+    mode="over" 
+    position="end"
+    class="settings-sidenav">
+    <app-settings-drawer (closeDrawer)="closeSettingsDrawer()"></app-settings-drawer>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content>
+    <!-- Toolbar -->
+    <mat-toolbar color="primary" class="app-toolbar">
+      <button mat-icon-button (click)="openMenuDrawer()" aria-label="Open menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="toolbar-title">{{ title() }}</span>
+      <span class="spacer"></span>
+      <button mat-icon-button (click)="openSettingsDrawer()" aria-label="Open settings">
+        <mat-icon>settings</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <app-user-management></app-user-management>
+      <router-outlet />
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

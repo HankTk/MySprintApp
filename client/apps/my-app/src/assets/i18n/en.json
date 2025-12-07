@@ -57,5 +57,19 @@
     "email": "Please enter a valid email address",
     "minlength": "Please enter at least {{min}} characters",
     "invalidJson": "Please enter valid JSON format"
+  },
+  "menu": {
+    "title": "Menu",
+    "users": "Users",
+    "products": "Products",
+    "orders": "Orders"
+  },
+  "settings": {
+    "title": "Settings",
+    "general": "General",
+    "language": "Language",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "comingSoon": "Coming Soon"
   }
 }

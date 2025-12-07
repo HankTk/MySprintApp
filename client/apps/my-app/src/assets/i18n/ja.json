@@ -57,5 +57,19 @@
     "email": "有効なメールアドレスを入力してください",
     "minlength": "少なくとも{{min}}文字以上入力してください",
     "invalidJson": "有効なJSON形式で入力してください"
+  },
+  "menu": {
+    "title": "メニュー",
+    "users": "ユーザー",
+    "products": "商品",
+    "orders": "注文"
+  },
+  "settings": {
+    "title": "設定",
+    "general": "一般",
+    "language": "言語",
+    "appearance": "外観",
+    "theme": "テーマ",
+    "comingSoon": "近日公開"
   }
 }
