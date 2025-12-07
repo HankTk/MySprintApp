@@ -1,5 +1,6 @@
 package com.edge.controller;
 
+import com.edge.config.JwtTokenProvider;
 import com.edge.entity.User;
 import com.edge.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -17,6 +19,9 @@ public class AuthController
 {
     @Autowired
     private AuthService authService;
+    
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials)
@@ -31,7 +36,10 @@ public class AuthController
         try {
             User user = authService.authenticate(userid, password);
             if (user != null) {
-                // Return user without password
+                // Generate JWT token
+                String token = jwtTokenProvider.generateToken(user.getUserid(), user.getRole() != null ? user.getRole() : "USER");
+                
+                // Return user without password and JWT token
                 User userResponse = new User();
                 userResponse.setId(user.getId());
                 userResponse.setUserid(user.getUserid());
@@ -40,7 +48,12 @@ public class AuthController
                 userResponse.setEmail(user.getEmail());
                 userResponse.setRole(user.getRole());
                 userResponse.setJsonData(user.getJsonData());
-                return ResponseEntity.ok(userResponse);
+                
+                Map<String, Object> response = new HashMap<>();
+                response.put("user", userResponse);
+                response.put("token", token);
+                
+                return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(401).body(Map.of("error", "Invalid user ID or password"));
             }

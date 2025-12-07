@@ -18,6 +18,7 @@ export class AuthService {
   
   private readonly CURRENT_USER_KEY = 'currentUser';
   private readonly HAS_USERS_KEY = 'hasUsers';
+  private readonly JWT_TOKEN_KEY = 'jwtToken';
   
   // Reactive state
   currentUser = signal<User | null>(this.getStoredUser());
@@ -48,11 +49,14 @@ export class AuthService {
    * Login with email and password
    */
   login(credentials: LoginRequest): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/auth/login`, credentials).pipe(
-      tap(user => {
+    return this.http.post<{ user: User; token: string }>(`${this.apiUrl}/auth/login`, credentials).pipe(
+      tap(response => {
+        const { user, token } = response;
         this.currentUser.set(user);
         localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(user));
-      })
+        localStorage.setItem(this.JWT_TOKEN_KEY, token);
+      }),
+      map(response => response.user)
     );
   }
 
@@ -62,6 +66,7 @@ export class AuthService {
   logout(): void {
     this.currentUser.set(null);
     localStorage.removeItem(this.CURRENT_USER_KEY);
+    localStorage.removeItem(this.JWT_TOKEN_KEY);
     this.router.navigate(['/login']);
   }
 
@@ -69,7 +74,7 @@ export class AuthService {
    * Check if user is authenticated
    */
   isAuthenticated(): boolean {
-    return this.currentUser() !== null;
+    return this.currentUser() !== null && this.hasToken();
   }
 
   /**
@@ -100,5 +105,19 @@ export class AuthService {
   getHasUsersCached(): boolean | null {
     const stored = localStorage.getItem(this.HAS_USERS_KEY);
     return stored === 'true' ? true : stored === 'false' ? false : null;
+  }
+
+  /**
+   * Get JWT token from localStorage
+   */
+  getToken(): string | null {
+    return localStorage.getItem(this.JWT_TOKEN_KEY);
+  }
+
+  /**
+   * Check if user has a valid token
+   */
+  hasToken(): boolean {
+    return this.getToken() !== null;
   }
 }

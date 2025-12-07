@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from './auth/auth.service';
 
 /**
  * HTTP Error Interceptor
@@ -12,6 +13,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
   const snackBar = inject(MatSnackBar);
   const translate = inject(TranslateService);
+  const authService = inject(AuthService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -26,7 +28,11 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
         messageKey = 'messages.serverError';
       } 
       else if (error.status === 401) {
-        // Unauthorized
+        // Unauthorized - token expired or invalid
+        // Don't logout for login endpoint
+        if (!req.url.includes('/auth/login')) {
+          authService.logout();
+        }
         messageKey = 'messages.unauthorized';
       } 
       else if (error.status === 403) {

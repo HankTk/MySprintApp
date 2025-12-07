@@ -1,14 +1,19 @@
 package com.edge.controller;
 
 import com.edge.entity.User;
+import com.edge.service.AuthService;
 import com.edge.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RestController
@@ -18,6 +23,9 @@ public class UserController
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private AuthService authService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public List<User> getAllUsers()
@@ -42,9 +50,24 @@ public class UserController
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public User createUser(@RequestBody User user)
+    public ResponseEntity<?> createUser(@RequestBody User user)
     {
-        return userService.createUser(user);
+        // Allow user creation in two cases:
+        // 1. When no users exist (initial user setup) - no authentication required
+        // 2. When users exist - authentication is required
+        boolean hasUsers = authService.hasUsers();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAuthenticated = authentication != null && 
+                                  authentication.isAuthenticated() && 
+                                  !authentication.getName().equals("anonymousUser");
+        
+        if (hasUsers && !isAuthenticated) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("error", "User creation requires authentication when users already exist."));
+        }
+        
+        User createdUser = userService.createUser(user);
+        return ResponseEntity.ok(createdUser);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")

@@ -5,6 +5,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { httpErrorInterceptor } from './core/http-interceptor';
+import { jwtInterceptor } from './core/auth/jwt.interceptor';
 
 export const appConfig: ApplicationConfig =
 {
@@ -12,7 +13,7 @@ export const appConfig: ApplicationConfig =
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([httpErrorInterceptor])),
+    provideHttpClient(withInterceptors([jwtInterceptor, httpErrorInterceptor])),
     provideAnimations()
   ]
 };
