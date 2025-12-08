@@ -1,0 +1,18 @@
+<div class="order-list-container">
+  <mat-card class="main-card">
+    <mat-card-header>
+      <div class="header-content">
+        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <mat-card-title class="card-title">
+          <mat-icon class="title-icon">shopping_cart</mat-icon>
+          {{ 'menu.orders' | translate }}
+        </mat-card-title>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ 'orders.comingSoon' | translate }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
