@@ -6,7 +6,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { UserManagementComponent } from '../users/components/user-management/user-management.component';
 import { MenuDrawerComponent } from '../../shared/components/menu-drawer/menu-drawer.component';
 import { SettingsDrawerComponent } from '../../shared/components/settings-drawer/settings-drawer.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -23,7 +22,6 @@ import { LogoutConfirmDialogComponent } from '../../shared/components/logout-con
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    UserManagementComponent,
     MenuDrawerComponent,
     SettingsDrawerComponent,
     TranslateModule

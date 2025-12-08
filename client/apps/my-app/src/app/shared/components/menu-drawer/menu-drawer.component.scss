@@ -1,66 +1,242 @@
-.menu-drawer {
-  width: 280px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bg-sidenav);
-}
-
-.drawer-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-
-  h2 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 500;
+app-menu-drawer {
+  .menu-drawer {
+    width: 280px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-sidenav);
+    color: var(--text-primary);
   }
 
-  button {
+  .drawer-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 
-    mat-icon {
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-heading);
+    }
+
+    .close-button {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0;
-      padding: 0;
-      width: 24px;
-      height: 24px;
-      line-height: 24px;
+      width: 40px;
+      height: 40px;
+      color: var(--text-primary) !important;
+
+      .close-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        color: var(--text-primary) !important;
+      }
+    }
+  }
+
+  .menu-nav-list {
+    padding-top: 8px;
+
+    .menu-item {
+      margin: 4px 8px;
+      border-radius: 4px;
+      color: var(--text-primary) !important;
+
+      .menu-icon {
+        color: var(--text-primary) !important;
+      }
+
+      .menu-text {
+        color: var(--text-primary) !important;
+      }
+
+      .mat-mdc-list-item-unscoped-content {
+        color: var(--text-primary) !important;
+      }
+
+      .mdc-list-item__content {
+        color: var(--text-primary) !important;
+      }
+
+      .mdc-list-item__primary-text {
+        color: var(--text-primary) !important;
+      }
+
+      mat-icon[matListItemIcon] {
+        color: var(--text-primary) !important;
+      }
+
+      span[matListItemTitle] {
+        color: var(--text-primary) !important;
+      }
+
+      .mdc-list-item__content > * {
+        color: var(--text-primary) !important;
+      }
+
+      * {
+        color: var(--text-primary) !important;
+      }
+
+      &:hover {
+        background-color: var(--bg-hover) !important;
+      }
+
+      &.mat-mdc-list-item-active,
+      &.mdc-list-item--activated {
+        background-color: var(--bg-hover) !important;
+        color: var(--color-primary) !important;
+
+        .menu-icon {
+          color: var(--color-primary) !important;
+        }
+
+        .menu-text {
+          color: var(--color-primary) !important;
+        }
+
+        .mdc-list-item__content {
+          color: var(--color-primary) !important;
+        }
+
+        .mdc-list-item__primary-text {
+          color: var(--color-primary) !important;
+        }
+
+        mat-icon[matListItemIcon] {
+          color: var(--color-primary) !important;
+        }
+
+        span[matListItemTitle] {
+          color: var(--color-primary) !important;
+        }
+
+        .mdc-list-item__content > * {
+          color: var(--color-primary) !important;
+        }
+
+        * {
+          color: var(--color-primary) !important;
+        }
+      }
     }
   }
 }
 
-:host-context(.dark-theme) .menu-drawer {
-  background-color: var(--bg-sidenav) !important;
-}
-
-:host-context(.dark-theme) .drawer-header {
-  border-bottom: 1px solid var(--border-primary) !important;
-}
-
-mat-nav-list {
-  padding-top: 8px;
-}
-
-::ng-deep mat-list-item {
-  margin: 4px 8px;
-  border-radius: 4px;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+/* Dark Theme Overrides */
+.dark-theme app-menu-drawer {
+  .menu-drawer {
+    background-color: var(--bg-sidenav) !important;
+    color: var(--text-primary) !important;
   }
 
-  &.mat-mdc-list-item-active {
-    background-color: rgba(63, 81, 181, 0.12);
-    color: var(--accent-primary);
+  .drawer-header {
+    border-bottom: 1px solid var(--border-primary) !important;
+
+    h2 {
+      color: var(--text-heading) !important;
+    }
+
+    .close-button {
+      color: var(--text-primary) !important;
+
+      .close-icon {
+        color: var(--text-primary) !important;
+      }
+    }
+  }
+
+  .menu-nav-list {
+    .menu-item {
+      color: var(--text-primary) !important;
+
+      .menu-icon {
+        color: var(--text-primary) !important;
+      }
+
+      .menu-text {
+        color: var(--text-primary) !important;
+      }
+
+      .mat-mdc-list-item-unscoped-content {
+        color: var(--text-primary) !important;
+      }
+
+      .mdc-list-item__content {
+        color: var(--text-primary) !important;
+      }
+
+      .mdc-list-item__primary-text {
+        color: var(--text-primary) !important;
+      }
+
+      mat-icon[matListItemIcon] {
+        color: var(--text-primary) !important;
+      }
+
+      span[matListItemTitle] {
+        color: var(--text-primary) !important;
+      }
+
+      .mdc-list-item__content > * {
+        color: var(--text-primary) !important;
+      }
+
+      * {
+        color: var(--text-primary) !important;
+      }
+
+      &:hover {
+        background-color: var(--bg-hover) !important;
+      }
+
+      &.mat-mdc-list-item-active,
+      &.mdc-list-item--activated {
+        background-color: var(--bg-hover) !important;
+        color: var(--color-primary) !important;
+
+        .menu-icon {
+          color: var(--color-primary) !important;
+        }
+
+        .menu-text {
+          color: var(--color-primary) !important;
+        }
+
+        .mdc-list-item__content {
+          color: var(--color-primary) !important;
+        }
+
+        .mdc-list-item__primary-text {
+          color: var(--color-primary) !important;
+        }
+
+        mat-icon[matListItemIcon] {
+          color: var(--color-primary) !important;
+        }
+
+        span[matListItemTitle] {
+          color: var(--color-primary) !important;
+        }
+
+        .mdc-list-item__content > * {
+          color: var(--color-primary) !important;
+        }
+
+        * {
+          color: var(--color-primary) !important;
+        }
+      }
+    }
   }
 }

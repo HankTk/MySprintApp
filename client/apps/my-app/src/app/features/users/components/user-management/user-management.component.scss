@@ -9,12 +9,37 @@
     border-radius: 8px;
     height: 100%;
 
+    mat-card-header {
+      padding-top: 0 !important;
+    }
+
     .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
       padding: 16px 0;
+      gap: 12px;
+      
+      .back-button {
+        flex-shrink: 0;
+        color: var(--text-primary);
+        background-color: rgba(0, 0, 0, 0.04);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color var(--transition-base);
+
+        mat-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+      }
       
       .card-title {
         flex: 1;
@@ -268,6 +293,14 @@
 
       .no-data-icon {
         color: var(--text-secondary) !important;
+      }
+    }
+
+    .back-button {
+      background-color: rgba(255, 255, 255, 0.04) !important;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
       }
     }
   }

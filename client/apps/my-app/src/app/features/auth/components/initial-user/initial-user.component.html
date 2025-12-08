@@ -27,35 +27,33 @@
           }
         </mat-form-field>
 
-        <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field">
-            <mat-label>{{ 'firstName' | translate }}</mat-label>
-            <input
-              matInput
-              formControlName="firstName"
-              [placeholder]="'firstNamePlaceholder' | translate"
-              [class.is-invalid]="isFieldInvalid('firstName')">
-            @if (isFieldInvalid('firstName')) {
-              <mat-error>
-                {{ getErrorMessage('firstName') | translate }}
-              </mat-error>
-            }
-          </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'firstName' | translate }}</mat-label>
+          <input
+            matInput
+            formControlName="firstName"
+            [placeholder]="'firstNamePlaceholder' | translate"
+            [class.is-invalid]="isFieldInvalid('firstName')">
+          @if (isFieldInvalid('firstName')) {
+            <mat-error>
+              {{ getErrorMessage('firstName') | translate }}
+            </mat-error>
+          }
+        </mat-form-field>
 
-          <mat-form-field appearance="outline" class="form-field">
-            <mat-label>{{ 'lastName' | translate }}</mat-label>
-            <input
-              matInput
-              formControlName="lastName"
-              [placeholder]="'lastNamePlaceholder' | translate"
-              [class.is-invalid]="isFieldInvalid('lastName')">
-            @if (isFieldInvalid('lastName')) {
-              <mat-error>
-                {{ getErrorMessage('lastName') | translate }}
-              </mat-error>
-            }
-          </mat-form-field>
-        </div>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{ 'lastName' | translate }}</mat-label>
+          <input
+            matInput
+            formControlName="lastName"
+            [placeholder]="'lastNamePlaceholder' | translate"
+            [class.is-invalid]="isFieldInvalid('lastName')">
+          @if (isFieldInvalid('lastName')) {
+            <mat-error>
+              {{ getErrorMessage('lastName') | translate }}
+            </mat-error>
+          }
+        </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>{{ 'password' | translate }}</mat-label>
@@ -87,18 +85,6 @@
               {{ getErrorMessage('confirmPassword') | translate }}
             </mat-error>
           }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ 'role' | translate }}</mat-label>
-          <mat-select formControlName="role">
-            @for (role of roles; track role) {
-              <mat-option [value]="role">
-                {{ 'roleOptions.' + role.toLowerCase() | translate }}
-              </mat-option>
-            }
-          </mat-select>
-          <mat-icon matPrefix>admin_panel_settings</mat-icon>
         </mat-form-field>
 
         @if (errorMessage) {

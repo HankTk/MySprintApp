@@ -20,10 +20,10 @@ $color-light-primary-light: #64b5f6;
 $color-light-secondary: #667eea;
 $color-light-secondary-dark: #764ba2;
 
-/* Dark Theme Colors */
-$color-dark-primary: #64b5f6;
-$color-dark-primary-dark: #42a5f5;
-$color-dark-primary-light: #90caf9;
+/* Dark Theme Colors - Material Design Standard */
+$color-dark-primary: #90caf9;
+$color-dark-primary-dark: #64b5f6;
+$color-dark-primary-light: #bbdefb;
 
 /* Semantic Colors */
 $color-success: #4caf50;
@@ -51,17 +51,18 @@ $color-light-bg-form-field: #ffffff;
 $color-light-bg-hover: #f8f9fa;
 $color-light-bg-overlay: rgba(0, 0, 0, 0.5);
 
-/* Dark Theme Background Colors */
-$color-dark-bg-primary: #0d1b2a;
-$color-dark-bg-secondary: #16213e;
-$color-dark-bg-card: #16213e;
-$color-dark-bg-toolbar: #1e3a5f;
-$color-dark-bg-sidenav: #16213e;
-$color-dark-bg-table: #16213e;
-$color-dark-bg-table-header: #16213e;
-$color-dark-bg-form-field: #1e3a5f;
-$color-dark-bg-hover: #1e3a5f;
-$color-dark-bg-overlay: rgba(0, 0, 0, 0.7);
+/* Dark Theme Background Colors - Material Design Standard */
+/* Base: #121212, Elevation achieved with white overlays */
+$color-dark-bg-primary: #121212;
+$color-dark-bg-secondary: #1e1e1e;
+$color-dark-bg-card: #1e1e1e;
+$color-dark-bg-toolbar: #1e1e1e;
+$color-dark-bg-sidenav: #121212;
+$color-dark-bg-table: #1e1e1e;
+$color-dark-bg-table-header: #2c2c2c;
+$color-dark-bg-form-field: #2c2c2c;
+$color-dark-bg-hover: #2c2c2c;
+$color-dark-bg-overlay: rgba(0, 0, 0, 0.6);
 
 /* Light Theme Text Colors */
 $color-light-text-primary: #333333;
@@ -70,12 +71,12 @@ $color-light-text-heading: #2c3e50;
 $color-light-text-white: #ffffff;
 $color-light-text-disabled: #bdbdbd;
 
-/* Dark Theme Text Colors */
-$color-dark-text-primary: #e0e0e0;
-$color-dark-text-secondary: #bdbdbd;
+/* Dark Theme Text Colors - Material Design Standard */
+$color-dark-text-primary: #ffffff;
+$color-dark-text-secondary: #b3b3b3;
 $color-dark-text-heading: #ffffff;
 $color-dark-text-white: #ffffff;
-$color-dark-text-disabled: #757575;
+$color-dark-text-disabled: #666666;
 
 /* Light Theme Border Colors */
 $color-light-border-primary: #e0e0e0;
@@ -84,12 +85,12 @@ $color-light-border-card: #e9ecef;
 $color-light-border-form: #e0e0e0;
 $color-light-border-divider: #e0e0e0;
 
-/* Dark Theme Border Colors */
-$color-dark-border-primary: #1e3a5f;
-$color-dark-border-secondary: #1e3a5f;
-$color-dark-border-card: #1e3a5f;
-$color-dark-border-form: #2d4a6b;
-$color-dark-border-divider: #1e3a5f;
+/* Dark Theme Border Colors - Material Design Standard */
+$color-dark-border-primary: #333333;
+$color-dark-border-secondary: #2c2c2c;
+$color-dark-border-card: #333333;
+$color-dark-border-form: #404040;
+$color-dark-border-divider: #333333;
 
 /* ==========================================================================
    Spacing Tokens

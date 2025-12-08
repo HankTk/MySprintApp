@@ -31,6 +31,11 @@ app-main-layout {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.back-button {
+  margin-left: 8px;
+  color: var(--text-primary);
+}
+
 .toolbar-title {
   margin-left: 16px;
   font-size: 20px;

@@ -70,9 +70,16 @@
   },
   "menu": {
     "title": "メニュー",
+    "home": "ホーム",
     "users": "ユーザー",
     "products": "商品",
     "orders": "注文"
+  },
+  "products": {
+    "comingSoon": "商品管理機能は近日公開予定です。"
+  },
+  "orders": {
+    "comingSoon": "注文管理機能は近日公開予定です。"
   },
   "settings": {
     "title": "設定",
@@ -109,5 +116,24 @@
     "confirmTitle": "ログアウトの確認",
     "confirmMessage": "ログアウトしますか？",
     "confirm": "ログアウト"
+  },
+  "welcome": {
+    "title": "Edge Systemへようこそ",
+    "subtitle": "包括的な管理プラットフォーム",
+    "description": "ユーザー、商品、注文を一箇所で管理できます。以下の機能を探索して始めましょう。",
+    "features": {
+      "users": {
+        "title": "ユーザー管理",
+        "description": "ロールベースのアクセス制御でユーザーアカウントを作成、編集、管理します。"
+      },
+      "products": {
+        "title": "商品カタログ",
+        "description": "詳細な情報で商品在庫とカタログを管理します。"
+      },
+      "orders": {
+        "title": "注文管理",
+        "description": "注文をライフサイクル全体で追跡・管理します。"
+      }
+    }
   }
 }

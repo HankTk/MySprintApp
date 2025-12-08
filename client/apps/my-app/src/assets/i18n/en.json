@@ -66,9 +66,16 @@
   },
   "menu": {
     "title": "Menu",
+    "home": "Home",
     "users": "Users",
     "products": "Products",
     "orders": "Orders"
+  },
+  "products": {
+    "comingSoon": "Product management feature is coming soon."
+  },
+  "orders": {
+    "comingSoon": "Order management feature is coming soon."
   },
   "settings": {
     "title": "Settings",
@@ -105,5 +112,24 @@
     "confirmTitle": "Confirm Logout",
     "confirmMessage": "Are you sure you want to logout?",
     "confirm": "Logout"
+  },
+  "welcome": {
+    "title": "Welcome to Edge System",
+    "subtitle": "Your comprehensive management platform",
+    "description": "Manage your users, products, and orders all in one place. Get started by exploring the features below.",
+    "features": {
+      "users": {
+        "title": "User Management",
+        "description": "Create, edit, and manage user accounts with role-based access control."
+      },
+      "products": {
+        "title": "Product Catalog",
+        "description": "Manage your product inventory and catalog with detailed information."
+      },
+      "orders": {
+        "title": "Order Management",
+        "description": "Track and manage orders throughout their lifecycle."
+      }
+    }
   }
 }

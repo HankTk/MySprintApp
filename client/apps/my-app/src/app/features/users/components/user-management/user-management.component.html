@@ -2,6 +2,9 @@
   <mat-card class="main-card">
     <mat-card-header>
       <div class="header-content">
+        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
         <mat-card-title class="card-title">
           <mat-icon class="title-icon">people</mat-icon>
           {{ 'userManagementSystem' | translate }}

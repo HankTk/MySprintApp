@@ -2,35 +2,33 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 
-/**
- * Product list component
- * Displays a list of products
- */
 @Component({
-  selector: 'app-product-list',
+  selector: 'app-welcome',
   standalone: true,
   imports: [
     CommonModule,
     MatCardModule,
-    MatButtonModule,
     MatIconModule,
     TranslateModule
   ],
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  templateUrl: './welcome.component.html',
+  styleUrls: ['./welcome.component.scss']
 })
-export class ProductListComponent {
+export class WelcomeComponent {
   private router = inject(Router);
 
-  goBack(): void {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      this.router.navigate(['/']);
-    }
+  navigateToUsers(): void {
+    this.router.navigate(['/users']);
+  }
+
+  navigateToProducts(): void {
+    this.router.navigate(['/products']);
+  }
+
+  navigateToOrders(): void {
+    this.router.navigate(['/orders']);
   }
 }

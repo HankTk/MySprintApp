@@ -37,7 +37,6 @@ export class InitialUserComponent implements OnInit {
   userForm!: FormGroup;
   isLoading = false;
   errorMessage = '';
-  roles = ['Admin', 'Basic'];
 
   private fb = inject(FormBuilder);
   private httpService = inject(HttpService);
@@ -56,8 +55,7 @@ export class InitialUserComponent implements OnInit {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required]],
-      role: ['Admin', [Validators.required]]
+      confirmPassword: ['', [Validators.required]]
     }, { validators: this.passwordMatchValidator });
   }
 
@@ -83,7 +81,7 @@ export class InitialUserComponent implements OnInit {
         lastName: this.userForm.value.lastName,
         email: '', // Email not required for initial user
         password: this.userForm.value.password,
-        role: this.userForm.value.role,
+        role: 'Admin', // Initial user must always be Admin
         jsonData: {}
       };
 

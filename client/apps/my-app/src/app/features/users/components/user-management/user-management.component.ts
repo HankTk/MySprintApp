@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, OnDestroy, signal } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -43,6 +43,7 @@ export class UserManagementComponent implements OnInit, OnDestroy
   private store = inject(StoreService);
   private userService = inject(UserManagementService);
   private languageService = inject(LanguageService);
+  private router = inject(Router);
 
   private subscriptions = new Subscription();
 
@@ -96,6 +97,14 @@ export class UserManagementComponent implements OnInit, OnDestroy
   deleteUser(user: User): void
   {
     this.userService.openDeleteUserDialog(user, this.isLoading);
+  }
+
+  goBack(): void {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
 }

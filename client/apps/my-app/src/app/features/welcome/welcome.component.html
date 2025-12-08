@@ -1,0 +1,43 @@
+<div class="welcome-container">
+  <mat-card class="welcome-card">
+    <mat-card-header>
+      <div class="welcome-icon">
+        <mat-icon>dashboard</mat-icon>
+      </div>
+      <mat-card-title>
+        {{ 'welcome.title' | translate }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ 'welcome.subtitle' | translate }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="welcome-content">
+        <p class="welcome-description">
+          {{ 'welcome.description' | translate }}
+        </p>
+
+        <div class="features-grid">
+          <div class="feature-item" (click)="navigateToUsers()" role="button" tabindex="0" (keydown.enter)="navigateToUsers()" (keydown.space)="navigateToUsers()">
+            <mat-icon class="feature-icon">people</mat-icon>
+            <h3>{{ 'welcome.features.users.title' | translate }}</h3>
+            <p>{{ 'welcome.features.users.description' | translate }}</p>
+          </div>
+
+          <div class="feature-item" (click)="navigateToProducts()" role="button" tabindex="0" (keydown.enter)="navigateToProducts()" (keydown.space)="navigateToProducts()">
+            <mat-icon class="feature-icon">inventory_2</mat-icon>
+            <h3>{{ 'welcome.features.products.title' | translate }}</h3>
+            <p>{{ 'welcome.features.products.description' | translate }}</p>
+          </div>
+
+          <div class="feature-item" (click)="navigateToOrders()" role="button" tabindex="0" (keydown.enter)="navigateToOrders()" (keydown.space)="navigateToOrders()">
+            <mat-icon class="feature-icon">shopping_cart</mat-icon>
+            <h3>{{ 'welcome.features.orders.title' | translate }}</h3>
+            <p>{{ 'welcome.features.orders.description' | translate }}</p>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

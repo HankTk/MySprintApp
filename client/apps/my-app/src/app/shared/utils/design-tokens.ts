@@ -2,119 +2,130 @@
  * Design Tokens
  * 
  * TypeScript representation of design tokens for use in Angular components.
- * These tokens match the SCSS design tokens defined in styles/_design-tokens.scss
+ * These tokens read from CSS variables defined in _design-tokens.scss,
+ * avoiding hard-coded color values and ensuring single source of truth.
+ * 
+ * All color values are read dynamically from CSS variables at runtime,
+ * so they automatically adapt to the current theme (light/dark).
  */
 
+/**
+ * CSS Variable Names
+ * These constants define the CSS variable names used in the design system.
+ * The actual values are defined in _design-tokens.scss and read at runtime.
+ */
+export const CSSVariables = {
+  // Color Variables
+  colorPrimary: '--color-primary',
+  colorPrimaryDark: '--color-primary-dark',
+  colorPrimaryLight: '--color-primary-light',
+  colorSecondary: '--color-secondary',
+  colorSuccess: '--color-success',
+  colorError: '--color-error',
+  colorWarning: '--color-warning',
+  colorInfo: '--color-info',
+  
+  // Background Variables
+  bgPrimary: '--bg-primary',
+  bgSecondary: '--bg-secondary',
+  bgCard: '--bg-card',
+  bgToolbar: '--bg-toolbar',
+  bgSidenav: '--bg-sidenav',
+  bgTable: '--bg-table',
+  bgTableHeader: '--bg-table-header',
+  bgFormField: '--bg-form-field',
+  bgHover: '--bg-hover',
+  bgOverlay: '--bg-overlay',
+  
+  // Text Variables
+  textPrimary: '--text-primary',
+  textSecondary: '--text-secondary',
+  textHeading: '--text-heading',
+  textWhite: '--text-white',
+  textDisabled: '--text-disabled',
+  
+  // Border Variables
+  borderPrimary: '--border-primary',
+  borderSecondary: '--border-secondary',
+  borderCard: '--border-card',
+  borderForm: '--border-form',
+  borderDivider: '--border-divider',
+  
+  // Shadow Variables
+  shadowXs: '--shadow-xs',
+  shadowSm: '--shadow-sm',
+  shadowMd: '--shadow-md',
+  shadowLg: '--shadow-lg',
+  shadowXl: '--shadow-xl',
+  
+  // Transition Variables
+  transitionFast: '--transition-fast',
+  transitionBase: '--transition-base',
+  transitionSlow: '--transition-slow',
+} as const;
+
+/**
+ * Design Tokens Object
+ * Provides getter functions that read from CSS variables dynamically.
+ * This ensures values are always in sync with the current theme.
+ */
 export const DesignTokens = {
   /**
-   * Color Tokens
+   * Color Tokens - Read from CSS variables
    */
   colors: {
-    // Base Colors
-    base: {
-      white: '#ffffff',
-      black: '#000000',
-    },
-    
-    // Light Theme Colors
-    light: {
-      primary: '#1976d2',
-      primaryDark: '#1565c0',
-      primaryLight: '#64b5f6',
-      secondary: '#667eea',
-      secondaryDark: '#764ba2',
-    },
-    
-    // Dark Theme Colors
-    dark: {
-      primary: '#64b5f6',
-      primaryDark: '#42a5f5',
-      primaryLight: '#90caf9',
-    },
-    
-    // Semantic Colors
-    semantic: {
-      success: '#4caf50',
-      successLight: '#81c784',
-      successDark: '#388e3c',
-      error: '#f44336',
-      errorLight: '#e57373',
-      errorDark: '#d32f2f',
-      warning: '#ffc107',
-      warningLight: '#ffd54f',
-      warningDark: '#f57c00',
-      info: '#17a2b8',
-      infoLight: '#5bc0de',
-      infoDark: '#138496',
-    },
-    
-    // Light Theme Backgrounds
-    lightBackground: {
-      primary: '#f8f9fa',
-      secondary: '#ffffff',
-      card: '#ffffff',
-      toolbar: '#3f51b5',
-      sidenav: '#ffffff',
-      table: '#ffffff',
-      tableHeader: '#f5f5f5',
-      formField: '#ffffff',
-      hover: '#f8f9fa',
-      overlay: 'rgba(0, 0, 0, 0.5)',
-    },
-    
-    // Dark Theme Backgrounds
-    darkBackground: {
-      primary: '#0d1b2a',
-      secondary: '#16213e',
-      card: '#16213e',
-      toolbar: '#1e3a5f',
-      sidenav: '#16213e',
-      table: '#16213e',
-      tableHeader: '#16213e',
-      formField: '#1e3a5f',
-      hover: '#1e3a5f',
-      overlay: 'rgba(0, 0, 0, 0.7)',
-    },
-    
-    // Light Theme Text
-    lightText: {
-      primary: '#333333',
-      secondary: '#666666',
-      heading: '#2c3e50',
-      white: '#ffffff',
-      disabled: '#bdbdbd',
-    },
-    
-    // Dark Theme Text
-    darkText: {
-      primary: '#e0e0e0',
-      secondary: '#bdbdbd',
-      heading: '#ffffff',
-      white: '#ffffff',
-      disabled: '#757575',
-    },
-    
-    // Light Theme Borders
-    lightBorder: {
-      primary: '#e0e0e0',
-      secondary: '#f0f0f0',
-      card: '#e9ecef',
-      form: '#e0e0e0',
-      divider: '#e0e0e0',
-    },
-    
-    // Dark Theme Borders
-    darkBorder: {
-      primary: '#1e3a5f',
-      secondary: '#1e3a5f',
-      card: '#1e3a5f',
-      form: '#2d4a6b',
-      divider: '#1e3a5f',
-    },
+    // Get current theme colors (automatically adapts to light/dark)
+    get primary() { return getCSSVariable(CSSVariables.colorPrimary); },
+    get primaryDark() { return getCSSVariable(CSSVariables.colorPrimaryDark); },
+    get primaryLight() { return getCSSVariable(CSSVariables.colorPrimaryLight); },
+    get secondary() { return getCSSVariable(CSSVariables.colorSecondary); },
+    get success() { return getCSSVariable(CSSVariables.colorSuccess); },
+    get error() { return getCSSVariable(CSSVariables.colorError); },
+    get warning() { return getCSSVariable(CSSVariables.colorWarning); },
+    get info() { return getCSSVariable(CSSVariables.colorInfo); },
+  },
+  
+  /**
+   * Background Tokens - Read from CSS variables
+   */
+  backgrounds: {
+    get primary() { return getCSSVariable(CSSVariables.bgPrimary); },
+    get secondary() { return getCSSVariable(CSSVariables.bgSecondary); },
+    get card() { return getCSSVariable(CSSVariables.bgCard); },
+    get toolbar() { return getCSSVariable(CSSVariables.bgToolbar); },
+    get sidenav() { return getCSSVariable(CSSVariables.bgSidenav); },
+    get table() { return getCSSVariable(CSSVariables.bgTable); },
+    get tableHeader() { return getCSSVariable(CSSVariables.bgTableHeader); },
+    get formField() { return getCSSVariable(CSSVariables.bgFormField); },
+    get hover() { return getCSSVariable(CSSVariables.bgHover); },
+    get overlay() { return getCSSVariable(CSSVariables.bgOverlay); },
+  },
+  
+  /**
+   * Text Tokens - Read from CSS variables
+   */
+  text: {
+    get primary() { return getCSSVariable(CSSVariables.textPrimary); },
+    get secondary() { return getCSSVariable(CSSVariables.textSecondary); },
+    get heading() { return getCSSVariable(CSSVariables.textHeading); },
+    get white() { return getCSSVariable(CSSVariables.textWhite); },
+    get disabled() { return getCSSVariable(CSSVariables.textDisabled); },
+  },
+  
+  /**
+   * Border Tokens - Read from CSS variables
+   */
+  borders: {
+    get primary() { return getCSSVariable(CSSVariables.borderPrimary); },
+    get secondary() { return getCSSVariable(CSSVariables.borderSecondary); },
+    get card() { return getCSSVariable(CSSVariables.borderCard); },
+    get form() { return getCSSVariable(CSSVariables.borderForm); },
+    get divider() { return getCSSVariable(CSSVariables.borderDivider); },
   },
   
   /**
    * Spacing Tokens
+   * These are numeric values used for calculations, so they remain as constants.
    */
   spacing: {
     base: 4,
@@ -128,7 +139,7 @@ export const DesignTokens = {
     xxxl: 64,    // 64px
     
     // Layout Spacing
-    headerHeight: 68,
+    headerHeight: 64,
     sidebarWidth: 280,
     sidebarCollapsedWidth: 64,
     containerPadding: 24,
@@ -190,22 +201,14 @@ export const DesignTokens = {
   },
   
   /**
-   * Shadow Tokens (as CSS strings)
+   * Shadow Tokens - Read from CSS variables
    */
   shadows: {
-    xs: '0 1px 2px rgba(0, 0, 0, 0.05)',
-    sm: '0 1px 3px rgba(0, 0, 0, 0.1)',
-    md: '0 2px 10px rgba(0, 0, 0, 0.1)',
-    lg: '0 4px 20px rgba(0, 0, 0, 0.15)',
-    xl: '0 8px 30px rgba(0, 0, 0, 0.2)',
-    '2xl': '0 12px 40px rgba(0, 0, 0, 0.25)',
-    
-    // Dark Theme Shadows
-    dark: {
-      sm: '0 1px 3px rgba(0, 0, 0, 0.3)',
-      md: '0 2px 10px rgba(0, 0, 0, 0.4)',
-      lg: '0 4px 20px rgba(0, 0, 0, 0.5)',
-    },
+    get xs() { return getCSSVariable(CSSVariables.shadowXs); },
+    get sm() { return getCSSVariable(CSSVariables.shadowSm); },
+    get md() { return getCSSVariable(CSSVariables.shadowMd); },
+    get lg() { return getCSSVariable(CSSVariables.shadowLg); },
+    get xl() { return getCSSVariable(CSSVariables.shadowXl); },
   },
   
   /**
@@ -213,9 +216,9 @@ export const DesignTokens = {
    */
   transitions: {
     duration: {
-      fast: '0.15s',
-      base: '0.3s',
-      slow: '0.5s',
+      get fast() { return getCSSVariable(CSSVariables.transitionFast); },
+      get base() { return getCSSVariable(CSSVariables.transitionBase); },
+      get slow() { return getCSSVariable(CSSVariables.transitionSlow); },
     },
     easing: {
       linear: 'linear',

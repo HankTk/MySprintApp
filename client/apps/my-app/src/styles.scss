@@ -2,7 +2,7 @@
 @use "sass:map";
 
 /* Import Design Tokens */
-@import 'design-tokens';
+@use 'design-tokens' as *;
 
 /* Angular Material Theme */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
@@ -72,6 +72,22 @@ body {
   mat-toolbar {
     background-color: var(--bg-toolbar) !important;
     color: var(--text-primary) !important;
+
+    mat-icon {
+      color: var(--text-primary) !important;
+    }
+
+    button {
+      color: var(--text-primary) !important;
+
+      mat-icon {
+        color: var(--text-primary) !important;
+      }
+    }
+
+    .toolbar-title {
+      color: var(--text-primary) !important;
+    }
   }
 
   mat-sidenav {
@@ -147,6 +163,112 @@ body {
   /* Fix Material backdrop */
   .cdk-overlay-backdrop {
     background-color: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  /* Material List Items - Dark Mode */
+  app-menu-drawer {
+    .menu-icon,
+    .menu-text {
+      color: var(--text-primary) !important;
+    }
+
+    .menu-item {
+      color: var(--text-primary) !important;
+
+      .menu-icon {
+        color: var(--text-primary) !important;
+      }
+
+      .menu-text {
+        color: var(--text-primary) !important;
+      }
+
+      &.mat-mdc-list-item-active,
+      &.mdc-list-item--activated {
+        .menu-icon {
+          color: var(--color-primary) !important;
+        }
+
+        .menu-text {
+          color: var(--color-primary) !important;
+        }
+      }
+    }
+  }
+
+  app-menu-drawer mat-nav-list,
+  app-menu-drawer mat-list,
+  mat-nav-list,
+  mat-list {
+    mat-list-item {
+      color: var(--text-primary) !important;
+
+      .mat-mdc-list-item-unscoped-content {
+        color: var(--text-primary) !important;
+      }
+
+      .mdc-list-item__content {
+        color: var(--text-primary) !important;
+      }
+
+      .mdc-list-item__primary-text {
+        color: var(--text-primary) !important;
+      }
+
+      mat-icon[matListItemIcon],
+      mat-icon {
+        color: var(--text-primary) !important;
+      }
+
+      span[matListItemTitle],
+      span {
+        color: var(--text-primary) !important;
+      }
+
+      .mdc-list-item__content > * {
+        color: var(--text-primary) !important;
+      }
+
+      * {
+        color: var(--text-primary) !important;
+      }
+
+      &:hover {
+        background-color: var(--bg-hover) !important;
+      }
+
+      &.mat-mdc-list-item-active,
+      &.mdc-list-item--activated {
+        background-color: var(--bg-hover) !important;
+        color: var(--color-primary) !important;
+
+        .mdc-list-item__content {
+          color: var(--color-primary) !important;
+        }
+
+        .mdc-list-item__primary-text {
+          color: var(--color-primary) !important;
+        }
+
+        mat-icon[matListItemIcon],
+        mat-icon {
+          color: var(--color-primary) !important;
+        }
+
+        span[matListItemTitle],
+        span {
+          color: var(--color-primary) !important;
+        }
+
+        .mdc-list-item__content > * {
+          color: var(--color-primary) !important;
+        }
+
+        * {
+          color: var(--color-primary) !important;
+        }
+      }
+    }
   }
 }
 

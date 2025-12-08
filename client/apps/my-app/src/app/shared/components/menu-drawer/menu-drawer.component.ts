@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -20,12 +20,14 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule
   ],
   templateUrl: './menu-drawer.component.html',
-  styleUrls: ['./menu-drawer.component.scss']
+  styleUrls: ['./menu-drawer.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MenuDrawerComponent {
   @Output() closeDrawer = new EventEmitter<void>();
 
   menuItems = [
+    { icon: 'home', label: 'menu.home', route: '/' },
     { icon: 'people', label: 'menu.users', route: '/users' },
     { icon: 'inventory_2', label: 'menu.products', route: '/products' },
     { icon: 'shopping_cart', label: 'menu.orders', route: '/orders' }

@@ -53,7 +53,7 @@ public class UserController
     public ResponseEntity<?> createUser(@RequestBody User user)
     {
         // Allow user creation in two cases:
-        // 1. When no users exist (initial user setup) - no authentication required
+        // 1. When no users exist (initial user setup) - no authentication required, but role must be Admin
         // 2. When users exist - authentication is required
         boolean hasUsers = authService.hasUsers();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -64,6 +64,14 @@ public class UserController
         if (hasUsers && !isAuthenticated) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Map.of("error", "User creation requires authentication when users already exist."));
+        }
+        
+        // For initial user creation (when no users exist), enforce Admin role
+        if (!hasUsers) {
+            if (user.getRole() == null || !user.getRole().equalsIgnoreCase("Admin")) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Map.of("error", "Initial user creation must have Admin role."));
+            }
         }
         
         User createdUser = userService.createUser(user);
