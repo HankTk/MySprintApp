@@ -1,0 +1,111 @@
+<div class="warehouse-list-container">
+  <mat-card class="main-card">
+    <mat-card-header>
+      <div class="header-content">
+        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <mat-card-title class="card-title">
+          <mat-icon class="title-icon">warehouse</mat-icon>
+          {{ 'warehouseManagement' | translate }}
+        </mat-card-title>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="controls-section">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="openAddWarehouseDialog()"
+          class="add-button">
+          <mat-icon>add</mat-icon>
+          {{ 'addNewWarehouse' | translate }}
+        </button>
+      </div>
+
+      <div class="table-container">
+        <table mat-table [dataSource]="warehouses() || []" class="warehouse-table">
+          <ng-container matColumnDef="warehouseCode">
+            <th mat-header-cell *matHeaderCellDef>{{ 'warehouseCode' | translate }}</th>
+            <td mat-cell *matCellDef="let warehouse">{{ warehouse.warehouseCode || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="warehouseName">
+            <th mat-header-cell *matHeaderCellDef>{{ 'warehouseName' | translate }}</th>
+            <td mat-cell *matCellDef="let warehouse">{{ warehouse.warehouseName || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="address">
+            <th mat-header-cell *matHeaderCellDef>{{ 'address' | translate }}</th>
+            <td mat-cell *matCellDef="let warehouse">{{ warehouse.address || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>{{ 'description' | translate }}</th>
+            <td mat-cell *matCellDef="let warehouse">{{ warehouse.description || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="active">
+            <th mat-header-cell *matHeaderCellDef>{{ 'active' | translate }}</th>
+            <td mat-cell *matCellDef="let warehouse">{{ warehouse.active ? 'Yes' : 'No' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="jsonData">
+            <th mat-header-cell *matHeaderCellDef>{{ 'jsonData' | translate }}</th>
+            <td mat-cell *matCellDef="let warehouse">
+              <pre class="json-data">{{ JsonUtilRef.formatJsonData(warehouse.jsonData) }}</pre>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
+            <td mat-cell *matCellDef="let warehouse">
+              <div class="action-buttons">
+                <button 
+                  mat-icon-button 
+                  color="primary" 
+                  (click)="openEditWarehouseDialog(warehouse)"
+                  [matTooltip]="'edit' | translate">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button 
+                  mat-icon-button 
+                  color="warn" 
+                  (click)="deleteWarehouse(warehouse)" 
+                  [matTooltip]="'delete' | translate">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
+        </table>
+
+        @if (warehouses() && warehouses().length === 0 && !isLoading()) {
+          <div class="no-data">
+            <mat-icon class="no-data-icon">info</mat-icon>
+            <p>{{ 'noWarehouseData' | translate }}</p>
+            <button 
+              mat-raised-button 
+              color="primary" 
+              (click)="openAddWarehouseDialog()">
+              <mat-icon>add</mat-icon>
+              {{ 'addFirstWarehouse' | translate }}
+            </button>
+          </div>
+        }
+
+        @if (isLoading()) {
+          <div class="loading">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>{{ 'loadingData' | translate }}</p>
+          </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+

@@ -17,7 +17,7 @@ export class UserManagementService
   private apiUrl = 'http://localhost:8080/api/users';
 
   private http = inject(HttpClient);
-  private resourceManager = inject(ResourceService);
+  private resourceManager: ResourceService = inject(ResourceService);
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
 

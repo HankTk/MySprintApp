@@ -1,0 +1,103 @@
+<div class="sfc-dialog">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon class="title-icon">{{ isEdit ? 'edit' : 'add_circle' }}</mat-icon>
+    {{ isEdit ? ('editSFC' | translate) : ('addSFC' | translate) }}
+  </h2>
+
+  <form [formGroup]="sfcForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content class="dialog-content">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'rmaId' | translate }}</mat-label>
+          <input matInput formControlName="rmaId">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'rmaNumber' | translate }}</mat-label>
+          <input matInput formControlName="rmaNumber">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'orderId' | translate }}</mat-label>
+          <input matInput formControlName="orderId">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'orderNumber' | translate }}</mat-label>
+          <input matInput formControlName="orderNumber">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'customerId' | translate }}</mat-label>
+          <input matInput formControlName="customerId">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'customerName' | translate }}</mat-label>
+          <input matInput formControlName="customerName">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'status' | translate }}</mat-label>
+          <input matInput formControlName="status">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'assignedTo' | translate }}</mat-label>
+          <input matInput formControlName="assignedTo">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>{{ 'notes' | translate }}</mat-label>
+          <textarea matInput formControlName="notes" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>{{ 'jsonData' | translate }}</mat-label>
+          <textarea
+            matInput
+            formControlName="jsonData"
+            rows="4"
+            [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
+          <mat-hint>{{ 'jsonDataHint' | translate }}</mat-hint>
+          @if (isFieldInvalid('jsonData')) {
+            <mat-error>
+              {{ getErrorMessage('jsonData') }}
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end" class="dialog-actions">
+      <button
+        mat-button
+        type="button"
+        (click)="onCancel()"
+        class="cancel-button">
+        <mat-icon>cancel</mat-icon>
+        {{ 'cancel' | translate }}
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="sfcForm.invalid"
+        class="submit-button">
+        <mat-icon>{{ isEdit ? 'save' : 'add_circle' }}</mat-icon>
+        {{ isEdit ? ('update' | translate) : ('add' | translate) }}
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>
+

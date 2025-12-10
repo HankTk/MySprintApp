@@ -1,0 +1,129 @@
+<div class="customer-list-container">
+  <mat-card class="main-card">
+    <mat-card-header>
+      <div class="header-content">
+        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <mat-card-title class="card-title">
+          <mat-icon class="title-icon">people</mat-icon>
+          {{ 'customerManagement' | translate }}
+        </mat-card-title>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="controls-section">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="openAddCustomerDialog()"
+          class="add-button">
+          <mat-icon>add</mat-icon>
+          {{ 'addNewCustomer' | translate }}
+        </button>
+      </div>
+
+      <!-- Customer List Table -->
+      <div class="table-container">
+        <table mat-table [dataSource]="customers() || []" class="customer-table">
+          <!-- Customer Number Column -->
+          <ng-container matColumnDef="customerNumber">
+            <th mat-header-cell *matHeaderCellDef>{{ 'customerNumber' | translate }}</th>
+            <td mat-cell *matCellDef="let customer">{{ customer.customerNumber || '-' }}</td>
+          </ng-container>
+
+          <!-- Company Name Column -->
+          <ng-container matColumnDef="companyName">
+            <th mat-header-cell *matHeaderCellDef>{{ 'companyName' | translate }}</th>
+            <td mat-cell *matCellDef="let customer">{{ customer.companyName || '-' }}</td>
+          </ng-container>
+
+          <!-- Last Name Column -->
+          <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef>{{ 'lastName' | translate }}</th>
+            <td mat-cell *matCellDef="let customer">{{ customer.lastName || '-' }}</td>
+          </ng-container>
+
+          <!-- First Name Column -->
+          <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef>{{ 'firstName' | translate }}</th>
+            <td mat-cell *matCellDef="let customer">{{ customer.firstName || '-' }}</td>
+          </ng-container>
+
+          <!-- Email Column -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>{{ 'emailAddress' | translate }}</th>
+            <td mat-cell *matCellDef="let customer">{{ customer.email || '-' }}</td>
+          </ng-container>
+
+          <!-- Phone Column -->
+          <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef>{{ 'phone' | translate }}</th>
+            <td mat-cell *matCellDef="let customer">{{ customer.phone || '-' }}</td>
+          </ng-container>
+
+          <!-- JSON Data Column -->
+          <ng-container matColumnDef="jsonData">
+            <th mat-header-cell *matHeaderCellDef>{{ 'jsonData' | translate }}</th>
+            <td mat-cell *matCellDef="let customer">
+              <pre class="json-data">{{ JsonUtilRef.formatJsonData(customer.jsonData) }}</pre>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
+            <td mat-cell *matCellDef="let customer">
+              <div class="action-buttons">
+                <button 
+                  mat-icon-button 
+                  color="primary" 
+                  (click)="openEditCustomerDialog(customer)"
+                  [matTooltip]="'edit' | translate"
+                  class="edit-button">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button 
+                  mat-icon-button 
+                  color="warn" 
+                  (click)="deleteCustomer(customer)" 
+                  [matTooltip]="'delete' | translate"
+                  class="delete-button">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
+        </table>
+
+        <!-- Display when no data -->
+        @if (customers() && customers().length === 0 && !isLoading()) {
+          <div class="no-data">
+            <mat-icon class="no-data-icon">info</mat-icon>
+            <p>{{ 'noCustomerData' | translate }}</p>
+            <button 
+              mat-raised-button 
+              color="primary" 
+              (click)="openAddCustomerDialog()">
+              <mat-icon>add</mat-icon>
+              {{ 'addFirstCustomer' | translate }}
+            </button>
+          </div>
+        }
+
+        <!-- Loading Display -->
+        @if (isLoading()) {
+          <div class="loading">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>{{ 'loadingData' | translate }}</p>
+          </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+

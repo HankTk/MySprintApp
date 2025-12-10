@@ -1,0 +1,91 @@
+<div class="purchase-order-dialog">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon class="title-icon">{{ isEdit ? 'edit' : 'add_circle' }}</mat-icon>
+    {{ isEdit ? ('editPurchaseOrder' | translate) : ('addPurchaseOrder' | translate) }}
+  </h2>
+
+  <form [formGroup]="poForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content class="dialog-content">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'supplierId' | translate }}</mat-label>
+          <input matInput formControlName="supplierId">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'status' | translate }}</mat-label>
+          <input matInput formControlName="status">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'orderDate' | translate }}</mat-label>
+          <input matInput type="date" formControlName="orderDate">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'expectedDeliveryDate' | translate }}</mat-label>
+          <input matInput type="date" formControlName="expectedDeliveryDate">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'shippingAddressId' | translate }}</mat-label>
+          <input matInput formControlName="shippingAddressId">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'billingAddressId' | translate }}</mat-label>
+          <input matInput formControlName="billingAddressId">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>{{ 'notes' | translate }}</mat-label>
+          <textarea matInput formControlName="notes" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>{{ 'jsonData' | translate }}</mat-label>
+          <textarea
+            matInput
+            formControlName="jsonData"
+            rows="4"
+            [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
+          <mat-hint>{{ 'jsonDataHint' | translate }}</mat-hint>
+          @if (isFieldInvalid('jsonData')) {
+            <mat-error>
+              {{ getErrorMessage('jsonData') }}
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end" class="dialog-actions">
+      <button
+        mat-button
+        type="button"
+        (click)="onCancel()"
+        class="cancel-button">
+        <mat-icon>cancel</mat-icon>
+        {{ 'cancel' | translate }}
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="poForm.invalid"
+        class="submit-button">
+        <mat-icon>{{ isEdit ? 'save' : 'add_circle' }}</mat-icon>
+        {{ isEdit ? ('update' | translate) : ('add' | translate) }}
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>
+

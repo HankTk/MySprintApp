@@ -1,0 +1,33 @@
+<div class="master-container">
+  <div class="master-content">
+    <div class="header-section">
+      <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="header-text">
+        <h1 class="master-title">{{ 'master.title' | translate }}</h1>
+        <p class="master-subtitle">{{ 'master.subtitle' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="master-cards-grid">
+      @for (item of masterItems; track item.id) {
+        <mat-card 
+          class="master-card"
+          (click)="navigateTo(item.route)"
+          [attr.role]="'button'"
+          [attr.tabindex]="0"
+          (keydown.enter)="navigateTo(item.route)"
+          (keydown.space)="navigateTo(item.route)">
+          <mat-card-content>
+            <div class="master-card-content">
+              <mat-icon class="master-card-icon">{{ item.icon }}</mat-icon>
+              <h3 class="master-card-title">{{ item.labelKey | translate }}</h3>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  </div>
+</div>
+

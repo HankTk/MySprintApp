@@ -1,0 +1,116 @@
+<div class="sfc-list-container">
+  <mat-card class="main-card">
+    <mat-card-header>
+      <div class="header-content">
+        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <mat-card-title class="card-title">
+          <mat-icon class="title-icon">build</mat-icon>
+          {{ 'sfcManagement' | translate }}
+        </mat-card-title>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="controls-section">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="openAddSFCDialog()"
+          class="add-button">
+          <mat-icon>add</mat-icon>
+          {{ 'addNewSFC' | translate }}
+        </button>
+      </div>
+
+      <div class="table-container">
+        <table mat-table [dataSource]="sfcs() || []" class="sfc-table">
+          <ng-container matColumnDef="sfcNumber">
+            <th mat-header-cell *matHeaderCellDef>{{ 'sfcNumber' | translate }}</th>
+            <td mat-cell *matCellDef="let sfc">{{ sfc.sfcNumber || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="rmaNumber">
+            <th mat-header-cell *matHeaderCellDef>{{ 'rmaNumber' | translate }}</th>
+            <td mat-cell *matCellDef="let sfc">{{ sfc.rmaNumber || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="orderNumber">
+            <th mat-header-cell *matHeaderCellDef>{{ 'orderNumber' | translate }}</th>
+            <td mat-cell *matCellDef="let sfc">{{ sfc.orderNumber || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="customerName">
+            <th mat-header-cell *matHeaderCellDef>{{ 'customerName' | translate }}</th>
+            <td mat-cell *matCellDef="let sfc">{{ sfc.customerName || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>{{ 'status' | translate }}</th>
+            <td mat-cell *matCellDef="let sfc">{{ sfc.status || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="assignedTo">
+            <th mat-header-cell *matHeaderCellDef>{{ 'assignedTo' | translate }}</th>
+            <td mat-cell *matCellDef="let sfc">{{ sfc.assignedTo || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="jsonData">
+            <th mat-header-cell *matHeaderCellDef>{{ 'jsonData' | translate }}</th>
+            <td mat-cell *matCellDef="let sfc">
+              <pre class="json-data">{{ JsonUtilRef.formatJsonData(sfc.jsonData) }}</pre>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
+            <td mat-cell *matCellDef="let sfc">
+              <div class="action-buttons">
+                <button 
+                  mat-icon-button 
+                  color="primary" 
+                  (click)="openEditSFCDialog(sfc)"
+                  [matTooltip]="'edit' | translate">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button 
+                  mat-icon-button 
+                  color="warn" 
+                  (click)="deleteSFC(sfc)" 
+                  [matTooltip]="'delete' | translate">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
+        </table>
+
+        @if (sfcs() && sfcs().length === 0 && !isLoading()) {
+          <div class="no-data">
+            <mat-icon class="no-data-icon">info</mat-icon>
+            <p>{{ 'noSFCData' | translate }}</p>
+            <button 
+              mat-raised-button 
+              color="primary" 
+              (click)="openAddSFCDialog()">
+              <mat-icon>add</mat-icon>
+              {{ 'addFirstSFC' | translate }}
+            </button>
+          </div>
+        }
+
+        @if (isLoading()) {
+          <div class="loading">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>{{ 'loadingData' | translate }}</p>
+          </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+

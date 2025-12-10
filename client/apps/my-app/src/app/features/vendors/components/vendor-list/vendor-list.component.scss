@@ -1,0 +1,108 @@
+@use '../../../../../_design-tokens' as *;
+
+.vendor-list-container {
+  padding: 20px;
+
+  .main-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+
+      .back-button {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+        
+        ::ng-deep {
+          .mat-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+          }
+        }
+      }
+
+      .card-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+
+        .title-icon {
+          font-size: 28px;
+          width: 28px;
+          height: 28px;
+        }
+      }
+    }
+
+    .controls-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+      gap: var(--spacing-md);
+
+      .add-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+
+    .table-container {
+      position: relative;
+      overflow-x: auto;
+
+      .vendor-table {
+        width: 100%;
+
+        .json-data {
+          font-size: 12px;
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .action-buttons {
+          display: flex;
+          gap: 8px;
+        }
+      }
+
+      .no-data {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+
+        .no-data-icon {
+          font-size: 48px;
+          width: 48px;
+          height: 48px;
+          margin-bottom: 16px;
+          color: #999;
+        }
+      }
+
+      .loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        gap: 16px;
+      }
+    }
+  }
+}
+

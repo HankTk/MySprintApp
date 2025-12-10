@@ -1,0 +1,138 @@
+@use '../../../../../_design-tokens' as *;
+
+.customer-list-container {
+  padding: 24px;
+  height: calc(100dvh - var(--header-height));
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .main-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    height: 100%;
+
+    mat-card-header {
+      padding-top: 0 !important;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 16px 0;
+      gap: 12px;
+
+      .back-button {
+        flex-shrink: 0;
+        color: var(--text-primary);
+        background-color: rgba(0, 0, 0, 0.04);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color var(--transition-base);
+
+        mat-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+      }
+
+      .card-title {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        font-weight: 500;
+        color: var(--accent-primary);
+        margin: 0;
+        flex: 1;
+
+        .title-icon {
+          margin-right: 12px;
+          font-size: 28px;
+          width: 28px;
+          height: 28px;
+        }
+      }
+    }
+
+    .controls-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+      gap: var(--spacing-md);
+
+      .add-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+
+    .table-container {
+      position: relative;
+      overflow-x: auto;
+
+      .customer-table {
+        width: 100%;
+
+        .json-data {
+          font-size: 12px;
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .action-buttons {
+          display: flex;
+          gap: 8px;
+        }
+      }
+
+      .no-data {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+
+        .no-data-icon {
+          font-size: 48px;
+          width: 48px;
+          height: 48px;
+          margin-bottom: 16px;
+          color: #999;
+        }
+      }
+
+      .loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+        gap: 16px;
+      }
+    }
+  }
+}
+
+:host-context(.dark-theme) .customer-list-container {
+  .main-card {
+    .header-content {
+      .back-button {
+        background-color: rgba(255, 255, 255, 0.04) !important;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.08) !important;
+        }
+      }
+    }
+  }
+}
+

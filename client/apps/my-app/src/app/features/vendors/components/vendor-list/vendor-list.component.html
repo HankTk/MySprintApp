@@ -1,0 +1,116 @@
+<div class="vendor-list-container">
+  <mat-card class="main-card">
+    <mat-card-header>
+      <div class="header-content">
+        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <mat-card-title class="card-title">
+          <mat-icon class="title-icon">business</mat-icon>
+          {{ 'vendorManagement' | translate }}
+        </mat-card-title>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="controls-section">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="openAddVendorDialog()"
+          class="add-button">
+          <mat-icon>add</mat-icon>
+          {{ 'addNewVendor' | translate }}
+        </button>
+      </div>
+
+      <div class="table-container">
+        <table mat-table [dataSource]="vendors() || []" class="vendor-table">
+          <ng-container matColumnDef="vendorNumber">
+            <th mat-header-cell *matHeaderCellDef>{{ 'vendorNumber' | translate }}</th>
+            <td mat-cell *matCellDef="let vendor">{{ vendor.vendorNumber || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="companyName">
+            <th mat-header-cell *matHeaderCellDef>{{ 'companyName' | translate }}</th>
+            <td mat-cell *matCellDef="let vendor">{{ vendor.companyName || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef>{{ 'lastName' | translate }}</th>
+            <td mat-cell *matCellDef="let vendor">{{ vendor.lastName || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef>{{ 'firstName' | translate }}</th>
+            <td mat-cell *matCellDef="let vendor">{{ vendor.firstName || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>{{ 'emailAddress' | translate }}</th>
+            <td mat-cell *matCellDef="let vendor">{{ vendor.email || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef>{{ 'phone' | translate }}</th>
+            <td mat-cell *matCellDef="let vendor">{{ vendor.phone || '-' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="jsonData">
+            <th mat-header-cell *matHeaderCellDef>{{ 'jsonData' | translate }}</th>
+            <td mat-cell *matCellDef="let vendor">
+              <pre class="json-data">{{ JsonUtilRef.formatJsonData(vendor.jsonData) }}</pre>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
+            <td mat-cell *matCellDef="let vendor">
+              <div class="action-buttons">
+                <button 
+                  mat-icon-button 
+                  color="primary" 
+                  (click)="openEditVendorDialog(vendor)"
+                  [matTooltip]="'edit' | translate">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button 
+                  mat-icon-button 
+                  color="warn" 
+                  (click)="deleteVendor(vendor)" 
+                  [matTooltip]="'delete' | translate">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
+        </table>
+
+        @if (vendors() && vendors().length === 0 && !isLoading()) {
+          <div class="no-data">
+            <mat-icon class="no-data-icon">info</mat-icon>
+            <p>{{ 'noVendorData' | translate }}</p>
+            <button 
+              mat-raised-button 
+              color="primary" 
+              (click)="openAddVendorDialog()">
+              <mat-icon>add</mat-icon>
+              {{ 'addFirstVendor' | translate }}
+            </button>
+          </div>
+        }
+
+        @if (isLoading()) {
+          <div class="loading">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>{{ 'loadingData' | translate }}</p>
+          </div>
+        }
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+

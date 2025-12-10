@@ -1,0 +1,104 @@
+<div class="product-dialog">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon class="title-icon">{{ isEdit ? 'edit' : 'add_circle' }}</mat-icon>
+    {{ isEdit ? ('editProduct' | translate) : ('addProduct' | translate) }}
+  </h2>
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content class="dialog-content">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'productCode' | translate }}</mat-label>
+          <input matInput formControlName="productCode">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'productName' | translate }}</mat-label>
+          <input matInput formControlName="productName">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>{{ 'description' | translate }}</mat-label>
+          <textarea matInput formControlName="description" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'unitPrice' | translate }}</mat-label>
+          <input matInput type="number" formControlName="unitPrice" [class.is-invalid]="isFieldInvalid('unitPrice')">
+          @if (isFieldInvalid('unitPrice')) {
+            <mat-error>
+              {{ getErrorMessage('unitPrice') }}
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'cost' | translate }}</mat-label>
+          <input matInput type="number" formControlName="cost" [class.is-invalid]="isFieldInvalid('cost')">
+          @if (isFieldInvalid('cost')) {
+            <mat-error>
+              {{ getErrorMessage('cost') }}
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'unitOfMeasure' | translate }}</mat-label>
+          <input matInput formControlName="unitOfMeasure">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'active' | translate }}</mat-label>
+          <mat-select formControlName="active">
+            <mat-option [value]="true">{{ 'yes' | translate }}</mat-option>
+            <mat-option [value]="false">{{ 'no' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>{{ 'jsonData' | translate }}</mat-label>
+          <textarea
+            matInput
+            formControlName="jsonData"
+            rows="4"
+            [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
+          <mat-hint>{{ 'jsonDataHint' | translate }}</mat-hint>
+          @if (isFieldInvalid('jsonData')) {
+            <mat-error>
+              {{ getErrorMessage('jsonData') }}
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end" class="dialog-actions">
+      <button
+        mat-button
+        type="button"
+        (click)="onCancel()"
+        class="cancel-button">
+        <mat-icon>cancel</mat-icon>
+        {{ 'cancel' | translate }}
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="productForm.invalid"
+        class="submit-button">
+        <mat-icon>{{ isEdit ? 'save' : 'add_circle' }}</mat-icon>
+        {{ isEdit ? ('update' | translate) : ('add' | translate) }}
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>
+

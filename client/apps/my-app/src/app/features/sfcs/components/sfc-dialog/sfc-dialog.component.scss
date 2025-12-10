@@ -1,0 +1,48 @@
+@use '../../../../../_design-tokens' as *;
+
+.sfc-dialog {
+  .dialog-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 20px 0;
+
+    .title-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .dialog-content {
+    min-width: 600px;
+    max-width: 90vw;
+
+    .form-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+
+      .form-field {
+        flex: 1;
+
+        &.full-width {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .dialog-actions {
+    margin-top: 20px;
+    padding: 16px 0 0 0;
+    border-top: 1px solid #e0e0e0;
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}
+
