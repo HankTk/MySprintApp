@@ -87,7 +87,14 @@
   "master": {
     "title": "マスター",
     "subtitle": "マスターデータを管理",
-    "back": "戻る"
+    "back": "戻る",
+    "maintenance": "マスターメンテナンス",
+    "maintenanceSubtitle": "マスターデータのメンテナンス操作",
+    "maintenanceCategory": {
+      "dataManagement": "データ管理",
+      "backupRestore": "バックアップと復元",
+      "dataQuality": "データ品質"
+    }
   },
   "customerManagement": "顧客管理",
   "addNewCustomer": "新規顧客追加",
@@ -157,9 +164,19 @@
   "orderNumber": "注文番号",
   "customerName": "顧客名",
   "orderDate": "注文日",
+  "shipDate": "出荷日",
+  "invoiceNumber": "請求書番号",
+  "invoiceDate": "請求日",
+  "subtotal": "小計",
+  "tax": "税",
+  "shippingCost": "送料",
   "status": "ステータス",
   "total": "合計",
   "noOrderData": "注文データがありません",
+  "addNewOrder": "新規注文追加",
+  "addFirstOrder": "最初の注文を追加",
+  "editOrder": "注文編集",
+  "addOrder": "注文追加",
   "filterByStatus": "ステータスでフィルター",
   "allStatuses": "すべてのステータス",
   "order": {

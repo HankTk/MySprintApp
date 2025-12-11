@@ -6,6 +6,7 @@ import { Order, CreateOrderRequest } from '../models/order.model';
 import { ResourceService } from '../../../shared/services/resource.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import { OrderDialogComponent, OrderDialogData } from '../components/order-dialog/order-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -87,15 +88,33 @@ export class OrderService {
   }
 
   openAddOrderDialog(isLoading: WritableSignal<boolean>): void {
-    // TODO: Implement OrderDialogComponent
-    // For now, this is a placeholder
-    console.log('openAddOrderDialog called - OrderDialogComponent needs to be implemented');
+    const dialogRef = this.dialog.open(OrderDialogComponent, {
+      data: { isEdit: false } as OrderDialogData,
+      width: '800px',
+      maxWidth: '90vw',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.action === 'create') {
+        this.createOrderWithNotification(result.order, isLoading);
+      }
+    });
   }
 
   openEditOrderDialog(order: Order, isLoading: WritableSignal<boolean>): void {
-    // TODO: Implement OrderDialogComponent
-    // For now, this is a placeholder
-    console.log('openEditOrderDialog called - OrderDialogComponent needs to be implemented');
+    const dialogRef = this.dialog.open(OrderDialogComponent, {
+      data: { order, isEdit: true } as OrderDialogData,
+      width: '800px',
+      maxWidth: '90vw',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.action === 'update') {
+        this.updateOrderWithNotification(result.order, isLoading);
+      }
+    });
   }
 
   openDeleteOrderDialog(order: Order, isLoading: WritableSignal<boolean>): void {

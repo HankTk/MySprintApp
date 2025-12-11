@@ -1,0 +1,137 @@
+<div class="order-dialog">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon class="title-icon">{{ isEdit ? 'edit' : 'add_circle' }}</mat-icon>
+    {{ isEdit ? ('editOrder' | translate) : ('addOrder' | translate) }}
+  </h2>
+
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content class="dialog-content">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'customerId' | translate }}</mat-label>
+          <input matInput formControlName="customerId">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'status' | translate }}</mat-label>
+          <mat-select formControlName="status">
+            <mat-option value="DRAFT">{{ 'order.status.draft' | translate }}</mat-option>
+            <mat-option value="PENDING_APPROVAL">{{ 'order.status.pendingApproval' | translate }}</mat-option>
+            <mat-option value="APPROVED">{{ 'order.status.approved' | translate }}</mat-option>
+            <mat-option value="SHIPPING_INSTRUCTED">{{ 'order.status.shippingInstructed' | translate }}</mat-option>
+            <mat-option value="SHIPPED">{{ 'order.status.shipped' | translate }}</mat-option>
+            <mat-option value="INVOICED">{{ 'order.status.invoiced' | translate }}</mat-option>
+            <mat-option value="PAID">{{ 'order.status.paid' | translate }}</mat-option>
+            <mat-option value="CANCELLED">{{ 'order.status.cancelled' | translate }}</mat-option>
+            <mat-option value="PENDING">{{ 'order.status.pending' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'orderDate' | translate }}</mat-label>
+          <input matInput type="date" formControlName="orderDate">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'shipDate' | translate }}</mat-label>
+          <input matInput type="date" formControlName="shipDate">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'shippingAddressId' | translate }}</mat-label>
+          <input matInput formControlName="shippingAddressId">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'billingAddressId' | translate }}</mat-label>
+          <input matInput formControlName="billingAddressId">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'invoiceNumber' | translate }}</mat-label>
+          <input matInput formControlName="invoiceNumber">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'invoiceDate' | translate }}</mat-label>
+          <input matInput type="date" formControlName="invoiceDate">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'subtotal' | translate }}</mat-label>
+          <input matInput type="number" formControlName="subtotal" step="0.01">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'tax' | translate }}</mat-label>
+          <input matInput type="number" formControlName="tax" step="0.01">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'shippingCost' | translate }}</mat-label>
+          <input matInput type="number" formControlName="shippingCost" step="0.01">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>{{ 'total' | translate }}</mat-label>
+          <input matInput type="number" formControlName="total" step="0.01">
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>{{ 'notes' | translate }}</mat-label>
+          <textarea matInput formControlName="notes" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>{{ 'jsonData' | translate }}</mat-label>
+          <textarea
+            matInput
+            formControlName="jsonData"
+            rows="4"
+            [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
+          <mat-hint>{{ 'jsonDataHint' | translate }}</mat-hint>
+          @if (isFieldInvalid('jsonData')) {
+            <mat-error>
+              {{ getErrorMessage('jsonData') }}
+            </mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end" class="dialog-actions">
+      <button
+        mat-button
+        type="button"
+        (click)="onCancel()"
+        class="cancel-button">
+        <mat-icon>cancel</mat-icon>
+        {{ 'cancel' | translate }}
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="orderForm.invalid"
+        class="submit-button">
+        <mat-icon>{{ isEdit ? 'save' : 'add_circle' }}</mat-icon>
+        {{ isEdit ? ('update' | translate) : ('add' | translate) }}
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>
+

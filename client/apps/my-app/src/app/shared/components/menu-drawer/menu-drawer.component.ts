@@ -28,11 +28,7 @@ export class MenuDrawerComponent {
 
   menuItems = [
     { icon: 'home', label: 'menu.home', route: '/' },
-    { icon: 'people', label: 'menu.users', route: '/users' },
-    { icon: 'inventory_2', label: 'menu.products', route: '/products' },
-    { icon: 'person', label: 'menu.customers', route: '/customers' },
-    { icon: 'location_on', label: 'menu.addresses', route: '/addresses' },
-    { icon: 'business', label: 'menu.vendors', route: '/vendors' },
+    { icon: 'settings', label: 'menu.master', route: '/master' },
     { icon: 'warehouse', label: 'menu.warehouses', route: '/warehouses' },
     { icon: 'inventory', label: 'menu.inventory', route: '/inventory' },
     { icon: 'shopping_cart', label: 'menu.orders', route: '/orders' },

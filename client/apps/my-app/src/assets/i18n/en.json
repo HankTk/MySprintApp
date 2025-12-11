@@ -83,7 +83,14 @@
   "master": {
     "title": "Master",
     "subtitle": "Manage master data",
-    "back": "Back"
+    "back": "Back",
+    "maintenance": "Master Maintenance",
+    "maintenanceSubtitle": "Maintenance operations for master data",
+    "maintenanceCategory": {
+      "dataManagement": "Data Management",
+      "backupRestore": "Backup & Restore",
+      "dataQuality": "Data Quality"
+    }
   },
   "customerManagement": "Customer Management",
   "addNewCustomer": "Add New Customer",
@@ -153,9 +160,19 @@
   "orderNumber": "Order Number",
   "customerName": "Customer Name",
   "orderDate": "Order Date",
+  "shipDate": "Ship Date",
+  "invoiceNumber": "Invoice Number",
+  "invoiceDate": "Invoice Date",
+  "subtotal": "Subtotal",
+  "tax": "Tax",
+  "shippingCost": "Shipping Cost",
   "status": "Status",
   "total": "Total",
   "noOrderData": "No order data available",
+  "addNewOrder": "Add New Order",
+  "addFirstOrder": "Add First Order",
+  "editOrder": "Edit Order",
+  "addOrder": "Add Order",
   "filterByStatus": "Filter by Status",
   "allStatuses": "All Statuses",
   "order": {

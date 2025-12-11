@@ -66,6 +66,10 @@ export const routes: Routes = [
       {
         path: 'master',
         component: MasterComponent
+      },
+      {
+        path: 'master/maintenance',
+        loadComponent: () => import('../master/components/master-maintenance/master-maintenance.component').then(m => m.MasterMaintenanceComponent)
       }
     ]
   }
