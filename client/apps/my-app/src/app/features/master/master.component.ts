@@ -35,6 +35,7 @@ export class MasterComponent {
     { id: 'vendors', route: '/vendors', icon: 'local_shipping', labelKey: 'menu.vendors' },
     { id: 'products', route: '/products', icon: 'inventory_2', labelKey: 'menu.products' },
     { id: 'addresses', route: '/addresses', icon: 'location_on', labelKey: 'menu.addresses' },
+    { id: 'warehouses', route: '/warehouses', icon: 'warehouse', labelKey: 'menu.warehouses' },
     { id: 'master-maintenance', route: '/master/maintenance', icon: 'build', labelKey: 'master.maintenance' }
   ];
 

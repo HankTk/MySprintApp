@@ -28,14 +28,13 @@ export class MenuDrawerComponent {
 
   menuItems = [
     { icon: 'home', label: 'menu.home', route: '/' },
-    { icon: 'settings', label: 'menu.master', route: '/master' },
-    { icon: 'warehouse', label: 'menu.warehouses', route: '/warehouses' },
-    { icon: 'inventory', label: 'menu.inventory', route: '/inventory' },
     { icon: 'shopping_cart', label: 'menu.orders', route: '/orders' },
+    { icon: 'inventory', label: 'menu.inventory', route: '/inventory' },
     { icon: 'shopping_bag', label: 'menu.purchaseOrders', route: '/purchase-orders' },
     { icon: 'assignment_return', label: 'menu.rmas', route: '/rmas' },
     { icon: 'build', label: 'menu.sfcs', route: '/sfcs' },
-    { icon: 'account_balance', label: 'menu.generalLedger', route: '/general-ledger' }
+    { icon: 'account_balance', label: 'menu.generalLedger', route: '/general-ledger' },
+    { icon: 'settings', label: 'menu.master', route: '/master' },
   ];
 
   onClose(): void {
