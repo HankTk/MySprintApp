@@ -1,16 +1,19 @@
 <div class="master-container">
-  <div class="master-content">
-    <div class="header-section">
-      <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-      <div class="header-text">
-        <h1 class="master-title">{{ 'master.title' | translate }}</h1>
-        <p class="master-subtitle">{{ 'master.subtitle' | translate }}</p>
+  <mat-card class="main-card">
+    <mat-card-header>
+      <div class="header-content">
+        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <mat-card-title class="card-title">
+          <mat-icon class="title-icon">storage</mat-icon>
+          {{ 'master.title' | translate }}
+        </mat-card-title>
       </div>
-    </div>
+    </mat-card-header>
 
-    <div class="master-cards-grid">
+    <mat-card-content>
+      <div class="master-cards-grid">
       @for (item of masterItems; track item.id) {
         <mat-card 
           class="master-card"
@@ -27,7 +30,8 @@
           </mat-card-content>
         </mat-card>
       }
-    </div>
-  </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>
 
