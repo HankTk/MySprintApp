@@ -1,68 +1,53 @@
 .user-management-container {
-  padding: 24px;
+  padding: 20px;
   height: calc(100dvh - var(--header-height));
-  max-width: 1400px;
-  margin: 0 auto;
 
   .main-card {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     height: 100%;
-
-    mat-card-header {
-      padding-top: 0 !important;
-    }
 
     .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 100%;
-      padding: 16px 0;
-      gap: 12px;
+      gap: 16px;
       
       .back-button {
         flex-shrink: 0;
-        color: var(--text-primary);
-        background-color: rgba(0, 0, 0, 0.04);
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: background-color var(--transition-base);
-
-        mat-icon {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.08);
+        margin-right: 8px;
+        
+        ::ng-deep {
+          .mat-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+          }
         }
       }
       
       .card-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
         flex: 1;
-        margin-right: 16px;
+
+        .title-icon {
+          font-size: 28px;
+          width: 28px;
+          height: 28px;
+        }
       }
       
       app-language-switcher {
         flex-shrink: 0;
         margin-left: auto;
-      }
-    }
-
-    .card-title {
-      display: flex;
-      align-items: center;
-      font-size: 24px;
-      font-weight: 500;
-      color: var(--accent-primary);
-      margin: 0;
-
-      .title-icon {
-        margin-right: 12px;
-        font-size: 28px;
       }
     }
   }
