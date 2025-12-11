@@ -66,11 +66,11 @@ export class RMAListComponent implements OnInit, OnDestroy {
   }
 
   openAddRMADialog(): void {
-    this.rmaService.openAddRMADialog(this.isLoading);
+    this.rmaService.openAddRMAEntry(this.isLoading);
   }
 
   openEditRMADialog(rma: RMA): void {
-    this.rmaService.openEditRMADialog(rma, this.isLoading);
+    this.rmaService.openEditRMAEntry(rma, this.isLoading);
   }
 
   deleteRMA(rma: RMA): void {
@@ -78,11 +78,7 @@ export class RMAListComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      this.router.navigate(['/']);
-    }
+    this.router.navigate(['/']);
   }
 }
 

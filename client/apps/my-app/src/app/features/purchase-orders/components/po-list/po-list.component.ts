@@ -66,11 +66,11 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy {
   }
 
   openAddPurchaseOrderDialog(): void {
-    this.purchaseOrderService.openAddPurchaseOrderDialog(this.isLoading);
+    this.purchaseOrderService.openAddPurchaseOrderEntry(this.isLoading);
   }
 
   openEditPurchaseOrderDialog(po: PurchaseOrder): void {
-    this.purchaseOrderService.openEditPurchaseOrderDialog(po, this.isLoading);
+    this.purchaseOrderService.openEditPurchaseOrderEntry(po, this.isLoading);
   }
 
   deletePurchaseOrder(po: PurchaseOrder): void {
@@ -78,11 +78,7 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      this.router.navigate(['/']);
-    }
+    this.router.navigate(['/']);
   }
 }
 

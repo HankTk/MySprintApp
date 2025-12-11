@@ -2,6 +2,7 @@ import { Injectable, inject, WritableSignal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { RMA, CreateRMARequest } from '../models/rma.model';
 import { ResourceService } from '../../../shared/services/resource.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,6 +19,7 @@ export class RMAService {
   private resourceManager: ResourceService = inject(ResourceService);
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   getRMAs(): Observable<RMA[]> {
     return this.http.get<RMA[]>(this.apiUrl);
@@ -134,6 +136,42 @@ export class RMAService {
         this.deleteRMAWithNotification(rma.id!, isLoading);
       }
     });
+  }
+
+  addRMAItem(rmaId: string, productId: string, quantity: number, reason?: string): Observable<RMA> {
+    return this.http.post<RMA>(`${this.apiUrl}/${rmaId}/items`, {
+      productId,
+      quantity,
+      reason: reason || ''
+    });
+  }
+
+  updateRMAItemQuantity(rmaId: string, itemId: string, quantity: number): Observable<RMA> {
+    return this.http.put<RMA>(`${this.apiUrl}/${rmaId}/items/${itemId}/quantity`, {
+      quantity
+    });
+  }
+
+  updateRMAItemReturnedQuantity(rmaId: string, itemId: string, returnedQuantity: number): Observable<RMA> {
+    return this.http.put<RMA>(`${this.apiUrl}/${rmaId}/items/${itemId}/returned-quantity`, {
+      returnedQuantity
+    });
+  }
+
+  removeRMAItem(rmaId: string, itemId: string): Observable<RMA> {
+    return this.http.delete<RMA>(`${this.apiUrl}/${rmaId}/items/${itemId}`);
+  }
+
+  openAddRMAEntry(isLoading: WritableSignal<boolean>): void {
+    // Navigate to RMA entry page instead of opening dialog
+    this.router.navigate(['/rmas/new']);
+  }
+
+  openEditRMAEntry(rma: RMA, isLoading: WritableSignal<boolean>): void {
+    // Navigate to RMA entry page instead of opening dialog
+    if (rma.id) {
+      this.router.navigate(['/rmas', rma.id]);
+    }
   }
 }
 

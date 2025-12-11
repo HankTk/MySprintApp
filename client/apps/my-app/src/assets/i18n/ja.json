@@ -146,6 +146,11 @@
   "addNewSFC": "新規SFC追加",
   "addFirstSFC": "最初のSFCを追加",
   "noSFCData": "SFCデータがありません",
+  "sfcListing": {
+    "rmasNeedingSFC": "SFC作成が必要なRMA",
+    "createSFC": "SFC作成",
+    "creating": "作成中..."
+  },
   "editSFC": "SFC編集",
   "addSFC": "SFC追加",
   "addNewProduct": "新規商品追加",
@@ -159,6 +164,23 @@
   "cost": "原価",
   "unitOfMeasure": "単位",
   "active": "有効",
+  "customer": "顧客",
+  "selectCustomer": "顧客を選択",
+  "selectSupplier": "仕入先を選択",
+  "selectOrder": "注文を選択",
+  "orderItems": "注文アイテム",
+  "product": "商品",
+  "selectProduct": "商品を選択",
+  "expectedDeliveryDate": "希望納期",
+  "returnReason": "返品理由",
+  "returnedQuantity": "返品数量",
+  "restockingFee": "再入荷手数料",
+  "reason": "理由",
+  "noOrderItems": "注文アイテムがありません。商品を追加して始めましょう。",
+  "shippingAddress": "配送先住所",
+  "billingAddress": "請求先住所",
+  "selectAddress": "住所を選択",
+  "lineTotal": "行合計",
   "yes": "はい",
   "no": "いいえ",
   "orderNumber": "注文番号",
@@ -193,6 +215,216 @@
       "all": "すべてのステータス"
     }
   },
+  "orderEntry": {
+    "title": "注文入力",
+    "step": {
+      "entry": "入力",
+      "approval": "承認",
+      "confirmation": "確認",
+      "shippingInstruction": "出荷指示",
+      "shipping": "出荷",
+      "invoicing": "請求",
+      "history": "履歴",
+      "comingSoon": "このステップは近日公開予定です"
+    },
+    "subStep": {
+      "customer": "顧客",
+      "products": "商品",
+      "shipping": "配送",
+      "review": "確認"
+    },
+    "approval": {
+      "title": "注文承認",
+      "description": "注文を確認し、承認してください。すべてのチェックを完了してから承認してください。",
+      "notes": "承認ノート",
+      "creditCheck": "信用チェック合格",
+      "inventoryConfirmed": "在庫確認済み",
+      "priceApproved": "価格承認済み"
+    },
+    "shippingInstruction": {
+      "instructions": "配送指示",
+      "requestedShipDate": "希望出荷日"
+    },
+    "shipping": {
+      "actualShipDate": "実際の出荷日",
+      "trackingNumber": "トラッキング番号"
+    },
+    "history": {
+      "addNote": "ノート追加",
+      "history": "注文履歴",
+      "noHistory": "履歴レコードが見つかりません",
+      "step": {
+        "entry": "受注入力",
+        "approval": "Order Review / Approval",
+        "confirmation": "Order Confirmation",
+        "shippingInstruction": "Shipping Instruction",
+        "shipping": "Shipping / Fulfillment",
+        "invoicing": "Billing / Invoicing",
+        "payment": "Payment / Settlement",
+        "note": "備考"
+      }
+    },
+    "completeEntry": "入力完了",
+    "approve": "注文承認",
+    "confirm": "注文確認",
+    "submitShippingInstruction": "配送指示送信",
+    "shipOrder": "注文出荷",
+    "invoiceOrder": "注文請求"
+  },
+  "purchaseOrderEntry": {
+    "title": "発注入力",
+    "step": {
+      "entry": "入力",
+      "approval": "承認",
+      "received": "受入",
+      "invoicing": "請求",
+      "history": "履歴"
+    },
+    "subStep": {
+      "supplier": "仕入先",
+      "products": "商品",
+      "shipping": "配送",
+      "review": "確認"
+    },
+    "approval": {
+      "title": "発注承認",
+      "description": "発注を確認し、承認してください。",
+      "notes": "承認ノート"
+    },
+    "received": {
+      "receivedDate": "受入日"
+    },
+    "history": {
+      "addNote": "ノート追加",
+      "history": "発注履歴",
+      "noHistory": "履歴レコードが見つかりません",
+      "step": {
+        "entry": "発注入力",
+        "approval": "発注承認",
+        "received": "商品受入",
+        "invoicing": "請求",
+        "note": "備考"
+      },
+      "data": {
+        "supplierId": "仕入先ID",
+        "itemCount": "商品数",
+        "total": "合計",
+        "receivedDate": "受入日",
+        "invoiceNumber": "請求書番号",
+        "invoiceDate": "請求日"
+      }
+    },
+    "completeEntry": "入力完了",
+    "approve": "発注承認",
+    "receive": "商品受入",
+    "invoice": "発注請求"
+  },
+  "rmaEntry": {
+    "title": "RMA入力",
+    "step": {
+      "entry": "入力",
+      "approval": "承認",
+      "received": "受入",
+      "processed": "処理済み",
+      "history": "履歴"
+    },
+    "subStep": {
+      "order": "注文",
+      "products": "商品",
+      "reason": "理由",
+      "review": "確認"
+    },
+    "approval": {
+      "title": "RMA承認",
+      "description": "RMAを確認し、承認してください。",
+      "notes": "承認ノート"
+    },
+    "received": {
+      "receivedDate": "受入日"
+    },
+    "processed": {
+      "processedDate": "処理日"
+    },
+    "reason": {
+      "description": "各商品の返品理由を入力してください。"
+    },
+    "history": {
+      "addNote": "ノート追加",
+      "history": "RMA履歴",
+      "noHistory": "履歴レコードが見つかりません",
+      "step": {
+        "entry": "RMA入力",
+        "approval": "RMA承認",
+        "received": "商品受入",
+        "processed": "RMA処理済み",
+        "note": "備考"
+      },
+      "data": {
+        "orderId": "注文ID",
+        "itemCount": "商品数",
+        "total": "合計",
+        "receivedDate": "受入日",
+        "processedDate": "処理日"
+      }
+    },
+    "completeEntry": "入力完了",
+    "approve": "RMA承認",
+    "receive": "商品受入",
+    "process": "RMA処理"
+  },
+  "sfcEntry": {
+    "title": "SFC入力",
+    "step": {
+      "entry": "入力",
+      "in_progress": "処理中",
+      "completed": "完了",
+      "history": "履歴"
+    },
+    "subStep": {
+      "rma": "RMA選択",
+      "assignment": "担当者割り当て",
+      "review": "確認"
+    },
+    "entry": {
+      "selectRMA": "RMAを選択",
+      "assignedTo": "担当者",
+      "selectUser": "ユーザーを選択"
+    },
+    "in_progress": {
+      "title": "SFC処理中",
+      "description": "SFCの進捗を追跡します。",
+      "startedDate": "開始日"
+    },
+    "completed": {
+      "title": "SFC完了",
+      "description": "SFCを完了としてマークします。",
+      "completedDate": "完了日"
+    },
+    "history": {
+      "addNote": "ノート追加",
+      "history": "SFC履歴",
+      "noHistory": "履歴レコードが見つかりません",
+      "step": {
+        "entry": "SFC入力",
+        "in_progress": "SFC処理中",
+        "completed": "SFC完了",
+        "note": "備考"
+      },
+      "data": {
+        "rmaId": "RMA ID",
+        "orderId": "注文ID",
+        "assignedTo": "担当者",
+        "startedDate": "開始日",
+        "completedDate": "完了日"
+      }
+    },
+    "completeEntry": "入力完了",
+    "startProcessing": "処理開始",
+    "completeProcessing": "処理完了",
+    "complete": "SFC完了"
+  },
+  "previous": "前へ",
+  "next": "次へ",
   "messages": {
     "failedToLoad": "{{resource}}の読み込みに失敗しました",
     "userCreatedSuccessfully": "ユーザーが正常に作成されました",
@@ -347,5 +579,209 @@
       "poPayment": "発注 {{poNumber}} の支払い",
       "poPaymentWithInvoice": "発注 {{poNumber}} / 請求書 {{invoiceNumber}} の支払い"
     }
+  },
+  "accountsReceivable": {
+    "title": "売掛金",
+    "subtitle": "請求書の詳細と支払い状況を表示・管理",
+    "notFound": "請求書が見つかりません",
+    "noInvoices": "請求書が見つかりません",
+    "customer": "顧客",
+    "total": "合計",
+    "outstanding": "未払い",
+    "back": "← 戻る",
+    "previous": "前へ",
+    "filter": {
+      "status": "ステータスでフィルター",
+      "all": "すべてのステータス"
+    },
+    "status": {
+      "invoiced": "請求済み",
+      "paid": "支払済み"
+    },
+    "table": {
+      "invoiceNumber": "請求書番号",
+      "orderNumber": "注文番号",
+      "invoiceDate": "請求日",
+      "invoiceAmount": "請求金額",
+      "paidAmount": "支払済み金額",
+      "status": "ステータス"
+    },
+    "step": {
+      "invoice": "請求書",
+      "payment": "支払い",
+      "history": "履歴"
+    },
+    "invoice": {
+      "title": "請求書詳細",
+      "description": "請求書情報と明細を確認",
+      "invoiceNumber": "請求書番号",
+      "invoiceDate": "請求日",
+      "orderNumber": "注文番号",
+      "customer": "顧客",
+      "product": "商品",
+      "quantity": "数量",
+      "unitPrice": "単価",
+      "lineTotal": "行合計",
+      "subtotal": "小計",
+      "tax": "税金",
+      "shipping": "送料",
+      "total": "合計"
+    },
+    "payment": {
+      "title": "支払い",
+      "description": "この請求書の支払いを記録",
+      "paymentAmount": "支払金額",
+      "paymentDate": "支払日",
+      "paymentMethod": "支払方法",
+      "paymentMethodPlaceholder": "支払方法を選択してください",
+      "invoiceAmount": "請求金額",
+      "paidAmount": "支払済み金額",
+      "outstanding": "未払い金額",
+      "record": "支払いを記録",
+      "processing": "処理中...",
+      "method": {
+        "bankTransfer": "銀行振込",
+        "creditCard": "クレジットカード",
+        "cash": "現金",
+        "check": "小切手",
+        "other": "その他"
+      }
+    },
+    "history": {
+      "title": "履歴",
+      "description": "支払いと請求書の履歴を表示",
+      "empty": "履歴レコードが見つかりません",
+      "timestamp": "タイムスタンプ",
+      "step": "ステップ",
+      "status": "ステータス",
+      "note": "ノート",
+      "data": "データ",
+      "step": {
+        "invoicing": "請求書作成",
+        "payment": "支払い",
+        "statusChange": "ステータス変更"
+      },
+      "status": {
+        "invoiced": "請求済み",
+        "paid": "支払済み"
+      },
+      "data": {
+        "invoiceNumber": "請求書番号",
+        "invoiceDate": "請求日",
+        "paymentAmount": "支払金額",
+        "paymentDate": "支払日",
+        "paymentMethod": "支払方法",
+        "oldStatus": "旧ステータス",
+        "newStatus": "新ステータス"
+      }
+    }
+  },
+  "accountsPayable": {
+    "title": "買掛金",
+    "subtitle": "請求書の詳細と支払い状況を表示・管理",
+    "notFound": "請求書が見つかりません",
+    "noInvoices": "請求書が見つかりません",
+    "supplier": "サプライヤー",
+    "total": "合計",
+    "outstanding": "未払い",
+    "back": "← 戻る",
+    "previous": "前へ",
+    "filter": {
+      "status": "ステータスでフィルター",
+      "all": "すべてのステータス"
+    },
+    "status": {
+      "invoiced": "請求済み",
+      "paid": "支払済み"
+    },
+    "table": {
+      "invoiceNumber": "請求書番号",
+      "poNumber": "発注番号",
+      "invoiceDate": "請求日",
+      "invoiceAmount": "請求金額",
+      "paidAmount": "支払済み金額",
+      "status": "ステータス"
+    },
+    "step": {
+      "invoice": "請求書",
+      "payment": "支払い",
+      "history": "履歴"
+    },
+    "invoice": {
+      "title": "請求書詳細",
+      "description": "請求書情報と明細を確認",
+      "invoiceNumber": "請求書番号",
+      "invoiceDate": "請求日",
+      "poNumber": "発注番号",
+      "supplier": "サプライヤー",
+      "product": "商品",
+      "quantity": "数量",
+      "unitPrice": "単価",
+      "lineTotal": "行合計",
+      "subtotal": "小計",
+      "tax": "税金",
+      "shipping": "送料",
+      "total": "合計"
+    },
+    "payment": {
+      "title": "支払い",
+      "description": "この請求書の支払いを記録",
+      "paymentAmount": "支払金額",
+      "paymentDate": "支払日",
+      "paymentMethod": "支払方法",
+      "paymentMethodPlaceholder": "支払方法を選択してください",
+      "invoiceAmount": "請求金額",
+      "paidAmount": "支払済み金額",
+      "outstanding": "未払い金額",
+      "record": "支払いを記録",
+      "processing": "処理中...",
+      "method": {
+        "bankTransfer": "銀行振込",
+        "creditCard": "クレジットカード",
+        "cash": "現金",
+        "check": "小切手",
+        "other": "その他"
+      }
+    },
+    "history": {
+      "title": "履歴",
+      "description": "支払いと請求書の履歴を表示",
+      "empty": "履歴レコードが見つかりません",
+      "timestamp": "タイムスタンプ",
+      "step": "ステップ",
+      "status": "ステータス",
+      "note": "ノート",
+      "data": "データ",
+      "step": {
+        "invoicing": "請求書作成",
+        "payment": "支払い",
+        "statusChange": "ステータス変更"
+      },
+      "status": {
+        "invoiced": "請求済み",
+        "paid": "支払済み"
+      },
+      "data": {
+        "invoiceNumber": "請求書番号",
+        "invoiceDate": "請求日",
+        "paymentAmount": "支払金額",
+        "paymentDate": "支払日",
+        "paymentMethod": "支払方法",
+        "oldStatus": "旧ステータス",
+        "newStatus": "新ステータス"
+      }
+    }
+  },
+  "menu": {
+    "home": "ホーム",
+    "orders": "注文",
+    "inventory": "在庫",
+    "purchaseOrders": "発注",
+    "rmas": "RMA",
+    "sfcs": "SFC",
+    "generalLedger": "総勘定元帳",
+    "accountsReceivable": "売掛金",
+    "accountsPayable": "買掛金",
+    "master": "マスタ"
   }
 }

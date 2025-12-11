@@ -61,6 +61,50 @@
       }
     }
 
+    .rma-section {
+      margin-bottom: var(--spacing-xl);
+      padding: var(--spacing-lg);
+      background-color: var(--bg-secondary, #f9fafb);
+      border-radius: 8px;
+
+      h3 {
+        margin-top: 0;
+        margin-bottom: var(--spacing-md);
+        color: var(--text-heading, #1f2937);
+      }
+
+      .rma-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+
+        .rma-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: var(--spacing-md);
+          background-color: white;
+          border-radius: 4px;
+          border: 1px solid var(--border-primary, #e5e7eb);
+
+          .rma-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+
+            strong {
+              color: var(--text-heading, #1f2937);
+            }
+
+            .rma-details {
+              font-size: 14px;
+              color: var(--text-secondary, #6b7280);
+            }
+          }
+        }
+      }
+    }
+
     .table-container {
       position: relative;
       overflow-x: auto;

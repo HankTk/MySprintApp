@@ -5,8 +5,10 @@ package com.edge.service;
  */
 import com.edge.entity.Address;
 import com.edge.entity.Customer;
+import com.edge.entity.Vendor;
 import com.edge.repository.AddressRepository;
 import com.edge.repository.CustomerRepository;
+import com.edge.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,9 @@ public class AddressService {
     
     @Autowired
     private CustomerRepository customerRepository;
+    
+    @Autowired
+    private VendorRepository vendorRepository;
     
     @Autowired(required = false)
     private WebSocketService webSocketService;
@@ -83,6 +88,44 @@ public class AddressService {
         
         return addresses.stream()
             .filter(address -> addressType.equals(address.getAddressType()))
+            .collect(Collectors.toList());
+    }
+    
+    public List<Address> getAddressesByVendorId(String vendorId) {
+        if (vendorId == null || vendorId.trim().isEmpty()) {
+            return java.util.Collections.emptyList();
+        }
+        
+        // Get vendor to retrieve addressIds
+        Optional<Vendor> vendorOpt = vendorRepository.getVendorById(vendorId);
+        if (!vendorOpt.isPresent()) {
+            return java.util.Collections.emptyList();
+        }
+        
+        Vendor vendor = vendorOpt.get();
+        List<String> addressIds = null;
+        
+        // Get addressIds from vendor's jsonData
+        if (vendor.getJsonData() != null && vendor.getJsonData().containsKey("addressIds")) {
+            Object addressIdsObj = vendor.getJsonData().get("addressIds");
+            if (addressIdsObj instanceof List) {
+                @SuppressWarnings("unchecked")
+                List<String> ids = (List<String>) addressIdsObj;
+                addressIds = ids;
+            }
+        }
+        
+        if (addressIds == null || addressIds.isEmpty()) {
+            return java.util.Collections.emptyList();
+        }
+        
+        // Create a final copy for use in lambda
+        final List<String> finalAddressIds = new java.util.ArrayList<>(addressIds);
+        
+        // Get all addresses and filter by IDs
+        List<Address> allAddresses = addressRepository.getAllAddresses();
+        return allAddresses.stream()
+            .filter(address -> address.getId() != null && finalAddressIds.contains(address.getId()))
             .collect(Collectors.toList());
     }
     

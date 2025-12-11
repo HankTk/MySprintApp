@@ -1,5 +1,6 @@
-import { Component, OnInit, inject, OnDestroy, signal, effect } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, inject, OnDestroy, signal, effect, computed } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -48,7 +49,17 @@ export class OrderListComponent implements OnInit, OnDestroy {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['orderNumber', 'customerName', 'orderDate', 'status', 'total', 'jsonData', 'actions']);
   statusFilter = signal<string | null>(null);
-  filteredOrders = signal<Order[]>([]);
+  
+  // Use computed signal for filtered orders
+  filteredOrders = computed(() => {
+    const orders = this.orders() || [];
+    const filter = this.statusFilter();
+    
+    if (filter) {
+      return orders.filter((order: Order) => order.status === filter);
+    }
+    return orders;
+  });
 
   private store = inject(StoreService);
   private orderService = inject(OrderService);
@@ -67,11 +78,16 @@ export class OrderListComponent implements OnInit, OnDestroy {
     this.loadOrders();
     this.loadCustomers();
     
-    // Apply filter when orders change
-    effect(() => {
-      this.orders();
-      this.applyFilter();
-    });
+    // Reload orders when navigating back to this page
+    this.subscriptions.add(
+      this.router.events
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe((event: any) => {
+          if (event.url === '/orders' || event.urlAfterRedirects === '/orders') {
+            this.loadOrders();
+          }
+        })
+    );
   }
 
   ngOnDestroy(): void {
@@ -94,20 +110,9 @@ export class OrderListComponent implements OnInit, OnDestroy {
     this.orderService.openEditOrderDialog(order, this.isLoading);
   }
 
-  applyFilter(): void {
-    const orders = this.orders() || [];
-    const filter = this.statusFilter();
-    
-    if (filter) {
-      this.filteredOrders.set(orders.filter((order: Order) => order.status === filter));
-    } else {
-      this.filteredOrders.set(orders);
-    }
-  }
-
   onStatusFilterChange(value: string): void {
     this.statusFilter.set(value || null);
-    this.applyFilter();
+    // filteredOrders is now a computed signal, so it will automatically update
   }
 
   getCustomerName(customerId?: string): string {
@@ -149,10 +154,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      this.router.navigate(['/']);
-    }
+    this.router.navigate(['/']);
   }
 }

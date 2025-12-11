@@ -31,6 +31,10 @@ export class AddressService {
     return this.http.get<Address[]>(`${this.apiUrl}/customer/${customerId}`);
   }
 
+  getAddressesByVendorId(vendorId: string): Observable<Address[]> {
+    return this.http.get<Address[]>(`${this.apiUrl}/vendor/${vendorId}`);
+  }
+
   createAddress(address: CreateAddressRequest): Observable<Address> {
     return this.http.post<Address>(this.apiUrl, address);
   }

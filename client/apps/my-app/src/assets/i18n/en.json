@@ -142,6 +142,11 @@
   "addNewSFC": "Add New SFC",
   "addFirstSFC": "Add First SFC",
   "noSFCData": "No SFC data available",
+  "sfcListing": {
+    "rmasNeedingSFC": "RMAs Needing SFC Creation",
+    "createSFC": "Create SFC",
+    "creating": "Creating..."
+  },
   "editSFC": "Edit SFC",
   "addSFC": "Add SFC",
   "addNewProduct": "Add New Product",
@@ -155,6 +160,23 @@
   "cost": "Cost",
   "unitOfMeasure": "Unit of Measure",
   "active": "Active",
+  "customer": "Customer",
+  "selectCustomer": "Select Customer",
+  "selectSupplier": "Select Supplier",
+  "selectOrder": "Select Order",
+  "orderItems": "Order Items",
+  "product": "Product",
+  "selectProduct": "Select Product",
+  "expectedDeliveryDate": "Expected Delivery Date",
+  "returnReason": "Return Reason",
+  "returnedQuantity": "Returned Quantity",
+  "restockingFee": "Restocking Fee",
+  "reason": "Reason",
+  "noOrderItems": "No order items. Add products to get started.",
+  "shippingAddress": "Shipping Address",
+  "billingAddress": "Billing Address",
+  "selectAddress": "Select Address",
+  "lineTotal": "Line Total",
   "yes": "Yes",
   "no": "No",
   "orderNumber": "Order Number",
@@ -189,6 +211,216 @@
       "all": "All Statuses"
     }
   },
+  "orderEntry": {
+    "title": "Order Entry",
+    "step": {
+      "entry": "Entry",
+      "approval": "Approval",
+      "confirmation": "Confirmation",
+      "shippingInstruction": "Shipping Instruction",
+      "shipping": "Shipping",
+      "invoicing": "Invoicing",
+      "history": "History",
+      "comingSoon": "This step is coming soon"
+    },
+    "subStep": {
+      "customer": "Customer",
+      "products": "Products",
+      "shipping": "Shipping",
+      "review": "Review"
+    },
+    "approval": {
+      "title": "Order Approval",
+      "description": "Review and approve the order. Complete all checks before approving.",
+      "notes": "Approval Notes",
+      "creditCheck": "Credit Check Passed",
+      "inventoryConfirmed": "Inventory Confirmed",
+      "priceApproved": "Price Approved"
+    },
+    "shippingInstruction": {
+      "instructions": "Shipping Instructions",
+      "requestedShipDate": "Requested Ship Date"
+    },
+    "shipping": {
+      "actualShipDate": "Actual Ship Date",
+      "trackingNumber": "Tracking Number"
+    },
+    "history": {
+      "addNote": "Add Note",
+      "history": "Order History",
+      "noHistory": "No history records found",
+      "step": {
+        "entry": "Order Entry",
+        "approval": "Order Review / Approval",
+        "confirmation": "Order Confirmation",
+        "shippingInstruction": "Shipping Instruction",
+        "shipping": "Shipping / Fulfillment",
+        "invoicing": "Billing / Invoicing",
+        "payment": "Payment / Settlement",
+        "note": "Remarks"
+      }
+    },
+    "completeEntry": "Complete Entry",
+    "approve": "Approve Order",
+    "confirm": "Confirm Order",
+    "submitShippingInstruction": "Submit Shipping Instruction",
+    "shipOrder": "Ship Order",
+    "invoiceOrder": "Invoice Order"
+  },
+  "purchaseOrderEntry": {
+    "title": "Purchase Order Entry",
+    "step": {
+      "entry": "Entry",
+      "approval": "Approval",
+      "received": "Received",
+      "invoicing": "Invoicing",
+      "history": "History"
+    },
+    "subStep": {
+      "supplier": "Supplier",
+      "products": "Products",
+      "shipping": "Shipping",
+      "review": "Review"
+    },
+    "approval": {
+      "title": "Purchase Order Approval",
+      "description": "Review and approve the purchase order.",
+      "notes": "Approval Notes"
+    },
+    "received": {
+      "receivedDate": "Received Date"
+    },
+    "history": {
+      "addNote": "Add Note",
+      "history": "Purchase Order History",
+      "noHistory": "No history records found",
+      "step": {
+        "entry": "Purchase Order Entry",
+        "approval": "Purchase Order Approval",
+        "received": "Goods Received",
+        "invoicing": "Invoicing",
+        "note": "Remarks"
+      },
+      "data": {
+        "supplierId": "Supplier ID",
+        "itemCount": "Item Count",
+        "total": "Total",
+        "receivedDate": "Received Date",
+        "invoiceNumber": "Invoice Number",
+        "invoiceDate": "Invoice Date"
+      }
+    },
+    "completeEntry": "Complete Entry",
+    "approve": "Approve Purchase Order",
+    "receive": "Receive Goods",
+    "invoice": "Invoice Purchase Order"
+  },
+  "rmaEntry": {
+    "title": "RMA Entry",
+    "step": {
+      "entry": "Entry",
+      "approval": "Approval",
+      "received": "Received",
+      "processed": "Processed",
+      "history": "History"
+    },
+    "subStep": {
+      "order": "Order",
+      "products": "Products",
+      "reason": "Reason",
+      "review": "Review"
+    },
+    "approval": {
+      "title": "RMA Approval",
+      "description": "Review and approve the RMA.",
+      "notes": "Approval Notes"
+    },
+    "received": {
+      "receivedDate": "Received Date"
+    },
+    "processed": {
+      "processedDate": "Processed Date"
+    },
+    "reason": {
+      "description": "Please provide a return reason for each item."
+    },
+    "history": {
+      "addNote": "Add Note",
+      "history": "RMA History",
+      "noHistory": "No history records found",
+      "step": {
+        "entry": "RMA Entry",
+        "approval": "RMA Approval",
+        "received": "Items Received",
+        "processed": "RMA Processed",
+        "note": "Remarks"
+      },
+      "data": {
+        "orderId": "Order ID",
+        "itemCount": "Item Count",
+        "total": "Total",
+        "receivedDate": "Received Date",
+        "processedDate": "Processed Date"
+      }
+    },
+    "completeEntry": "Complete Entry",
+    "approve": "Approve RMA",
+    "receive": "Receive Items",
+    "process": "Process RMA"
+  },
+  "sfcEntry": {
+    "title": "SFC Entry",
+    "step": {
+      "entry": "Entry",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "history": "History"
+    },
+    "subStep": {
+      "rma": "RMA Selection",
+      "assignment": "Assignment",
+      "review": "Review"
+    },
+    "entry": {
+      "selectRMA": "Select RMA",
+      "assignedTo": "Assigned To",
+      "selectUser": "Select User"
+    },
+    "in_progress": {
+      "title": "SFC In Progress",
+      "description": "Track the progress of the SFC.",
+      "startedDate": "Started Date"
+    },
+    "completed": {
+      "title": "SFC Completed",
+      "description": "Mark the SFC as completed.",
+      "completedDate": "Completed Date"
+    },
+    "history": {
+      "addNote": "Add Note",
+      "history": "SFC History",
+      "noHistory": "No history records found",
+      "step": {
+        "entry": "SFC Entry",
+        "in_progress": "SFC In Progress",
+        "completed": "SFC Completed",
+        "note": "Remarks"
+      },
+      "data": {
+        "rmaId": "RMA ID",
+        "orderId": "Order ID",
+        "assignedTo": "Assigned To",
+        "startedDate": "Started Date",
+        "completedDate": "Completed Date"
+      }
+    },
+    "completeEntry": "Complete Entry",
+    "startProcessing": "Start Processing",
+    "completeProcessing": "Complete Processing",
+    "complete": "Complete SFC"
+  },
+  "previous": "Previous",
+  "next": "Next",
   "messages": {
     "failedToLoad": "Failed to load {{resource}}",
     "userCreatedSuccessfully": "User created successfully",
@@ -343,5 +575,209 @@
       "poPayment": "Payment made for PO {{poNumber}}",
       "poPaymentWithInvoice": "Payment made for PO {{poNumber}} / Invoice {{invoiceNumber}}"
     }
+  },
+  "accountsReceivable": {
+    "title": "Account Receivable",
+    "subtitle": "View and manage invoice details and payment status",
+    "notFound": "Invoice not found",
+    "noInvoices": "No invoices found",
+    "customer": "Customer",
+    "total": "Total",
+    "outstanding": "Outstanding",
+    "back": "← Back",
+    "previous": "Previous",
+    "filter": {
+      "status": "Filter by Status",
+      "all": "All Statuses"
+    },
+    "status": {
+      "invoiced": "Invoiced",
+      "paid": "Paid"
+    },
+    "table": {
+      "invoiceNumber": "Invoice Number",
+      "orderNumber": "Order Number",
+      "invoiceDate": "Invoice Date",
+      "invoiceAmount": "Invoice Amount",
+      "paidAmount": "Paid Amount",
+      "status": "Status"
+    },
+    "step": {
+      "invoice": "Invoice",
+      "payment": "Payment",
+      "history": "History"
+    },
+    "invoice": {
+      "title": "Invoice Details",
+      "description": "View invoice information and line items",
+      "invoiceNumber": "Invoice Number",
+      "invoiceDate": "Invoice Date",
+      "orderNumber": "Order Number",
+      "customer": "Customer",
+      "product": "Product",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "lineTotal": "Line Total",
+      "subtotal": "Subtotal",
+      "tax": "Tax",
+      "shipping": "Shipping",
+      "total": "Total"
+    },
+    "payment": {
+      "title": "Payment",
+      "description": "Record payment for this invoice",
+      "paymentAmount": "Payment Amount",
+      "paymentDate": "Payment Date",
+      "paymentMethod": "Payment Method",
+      "paymentMethodPlaceholder": "Select payment method",
+      "invoiceAmount": "Invoice Amount",
+      "paidAmount": "Paid Amount",
+      "outstanding": "Outstanding",
+      "record": "Record Payment",
+      "processing": "Processing...",
+      "method": {
+        "bankTransfer": "Bank Transfer",
+        "creditCard": "Credit Card",
+        "cash": "Cash",
+        "check": "Check",
+        "other": "Other"
+      }
+    },
+    "history": {
+      "title": "History",
+      "description": "View payment and invoice history",
+      "empty": "No history records found",
+      "timestamp": "Timestamp",
+      "step": "Step",
+      "status": "Status",
+      "note": "Note",
+      "data": "Data",
+      "step": {
+        "invoicing": "Invoice Creation",
+        "payment": "Payment",
+        "statusChange": "Status Change"
+      },
+      "status": {
+        "invoiced": "Invoiced",
+        "paid": "Paid"
+      },
+      "data": {
+        "invoiceNumber": "Invoice Number",
+        "invoiceDate": "Invoice Date",
+        "paymentAmount": "Payment Amount",
+        "paymentDate": "Payment Date",
+        "paymentMethod": "Payment Method",
+        "oldStatus": "Old Status",
+        "newStatus": "New Status"
+      }
+    }
+  },
+  "accountsPayable": {
+    "title": "Account Payable",
+    "subtitle": "View and manage invoice details and payment status",
+    "notFound": "Invoice not found",
+    "noInvoices": "No invoices found",
+    "supplier": "Supplier",
+    "total": "Total",
+    "outstanding": "Outstanding",
+    "back": "← Back",
+    "previous": "Previous",
+    "filter": {
+      "status": "Filter by Status",
+      "all": "All Statuses"
+    },
+    "status": {
+      "invoiced": "Invoiced",
+      "paid": "Paid"
+    },
+    "table": {
+      "invoiceNumber": "Invoice Number",
+      "poNumber": "PO Number",
+      "invoiceDate": "Invoice Date",
+      "invoiceAmount": "Invoice Amount",
+      "paidAmount": "Paid Amount",
+      "status": "Status"
+    },
+    "step": {
+      "invoice": "Invoice",
+      "payment": "Payment",
+      "history": "History"
+    },
+    "invoice": {
+      "title": "Invoice Details",
+      "description": "View invoice information and line items",
+      "invoiceNumber": "Invoice Number",
+      "invoiceDate": "Invoice Date",
+      "poNumber": "PO Number",
+      "supplier": "Supplier",
+      "product": "Product",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "lineTotal": "Line Total",
+      "subtotal": "Subtotal",
+      "tax": "Tax",
+      "shipping": "Shipping",
+      "total": "Total"
+    },
+    "payment": {
+      "title": "Payment",
+      "description": "Record payment for this invoice",
+      "paymentAmount": "Payment Amount",
+      "paymentDate": "Payment Date",
+      "paymentMethod": "Payment Method",
+      "paymentMethodPlaceholder": "Select payment method",
+      "invoiceAmount": "Invoice Amount",
+      "paidAmount": "Paid Amount",
+      "outstanding": "Outstanding",
+      "record": "Record Payment",
+      "processing": "Processing...",
+      "method": {
+        "bankTransfer": "Bank Transfer",
+        "creditCard": "Credit Card",
+        "cash": "Cash",
+        "check": "Check",
+        "other": "Other"
+      }
+    },
+    "history": {
+      "title": "History",
+      "description": "View payment and invoice history",
+      "empty": "No history records found",
+      "timestamp": "Timestamp",
+      "step": "Step",
+      "status": "Status",
+      "note": "Note",
+      "data": "Data",
+      "step": {
+        "invoicing": "Invoice Creation",
+        "payment": "Payment",
+        "statusChange": "Status Change"
+      },
+      "status": {
+        "invoiced": "Invoiced",
+        "paid": "Paid"
+      },
+      "data": {
+        "invoiceNumber": "Invoice Number",
+        "invoiceDate": "Invoice Date",
+        "paymentAmount": "Payment Amount",
+        "paymentDate": "Payment Date",
+        "paymentMethod": "Payment Method",
+        "oldStatus": "Old Status",
+        "newStatus": "New Status"
+      }
+    }
+  },
+  "menu": {
+    "home": "Home",
+    "orders": "Orders",
+    "inventory": "Inventory",
+    "purchaseOrders": "Purchase Orders",
+    "rmas": "RMAs",
+    "sfcs": "SFCs",
+    "generalLedger": "General Ledger",
+    "accountsReceivable": "Accounts Receivable",
+    "accountsPayable": "Accounts Payable",
+    "master": "Master"
   }
 }

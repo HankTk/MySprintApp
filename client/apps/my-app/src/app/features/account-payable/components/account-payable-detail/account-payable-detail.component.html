@@ -1,0 +1,255 @@
+<div class="account-payable-detail-container">
+  @if (loading()) {
+    <mat-card class="main-card">
+      <mat-card-content>
+        <div class="loading-container">
+          <mat-spinner diameter="50"></mat-spinner>
+          <p>{{ 'loadingData' | translate }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  } @else if (!po()) {
+    <mat-card class="main-card">
+      <mat-card-content>
+        <div class="not-found">
+          <mat-icon>error_outline</mat-icon>
+          <p>{{ 'accountsPayable.notFound' | translate }}</p>
+          <button mat-raised-button (click)="goBack()">
+            {{ 'back' | translate }}
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <mat-card class="main-card">
+      <mat-card-header>
+        <div class="header-content">
+          <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <mat-card-title class="card-title">
+            <mat-icon class="title-icon">account_balance</mat-icon>
+            {{ 'accountsPayable.title' | translate }}
+          </mat-card-title>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="info-section">
+          <div class="info-box">
+            <label>{{ 'accountsPayable.invoice.invoiceNumber' | translate }}</label>
+            <span>{{ po()?.invoiceNumber || '-' }}</span>
+          </div>
+          <div class="info-box">
+            <label>{{ 'accountsPayable.supplier' | translate }}</label>
+            <span>{{ getSupplierName() }}</span>
+          </div>
+          <div class="info-box">
+            <label>{{ 'accountsPayable.total' | translate }}</label>
+            <span>{{ po()?.total || 0 | currency }}</span>
+          </div>
+          <div class="info-box">
+            <label>{{ 'accountsPayable.outstanding' | translate }}</label>
+            <span [class.outstanding-positive]="outstandingAmount() > 0">
+              {{ outstandingAmount() | currency }}
+            </span>
+          </div>
+        </div>
+
+        <mat-tab-group [selectedIndex]="currentStep() === 'invoice' ? 0 : currentStep() === 'payment' ? 1 : 2" (selectedIndexChange)="currentStep.set($event === 0 ? 'invoice' : $event === 1 ? 'payment' : 'history')">
+          <mat-tab label="{{ 'accountsPayable.step.invoice' | translate }}">
+            <div class="tab-content">
+              <h3>{{ 'accountsPayable.invoice.title' | translate }}</h3>
+              <p>{{ 'accountsPayable.invoice.description' | translate }}</p>
+
+              <div class="info-grid">
+                <div class="info-row">
+                  <strong>{{ 'accountsPayable.invoice.invoiceNumber' | translate }}</strong>
+                  <span>{{ po()?.invoiceNumber || 'N/A' }}</span>
+                </div>
+                <div class="info-row">
+                  <strong>{{ 'accountsPayable.invoice.invoiceDate' | translate }}</strong>
+                  <span>{{ formatDate(po()?.invoiceDate) }}</span>
+                </div>
+                <div class="info-row">
+                  <strong>{{ 'accountsPayable.invoice.poNumber' | translate }}</strong>
+                  <span>{{ po()?.orderNumber || 'N/A' }}</span>
+                </div>
+                <div class="info-row">
+                  <strong>{{ 'accountsPayable.invoice.supplier' | translate }}</strong>
+                  <span>{{ getSupplierName() }}</span>
+                </div>
+              </div>
+
+              @if (po()?.items && po()!.items!.length > 0) {
+                <table mat-table [dataSource]="po()!.items!" class="items-table">
+                  <ng-container matColumnDef="product">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.invoice.product' | translate }}</th>
+                    <td mat-cell *matCellDef="let item">{{ item.productName || item.productCode || 'N/A' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsPayable.invoice.quantity' | translate }}</th>
+                    <td mat-cell *matCellDef="let item" class="text-right">{{ item.quantity || 0 }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="unitPrice">
+                    <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsPayable.invoice.unitPrice' | translate }}</th>
+                    <td mat-cell *matCellDef="let item" class="text-right">{{ item.unitPrice || 0 | currency }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="lineTotal">
+                    <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsPayable.invoice.lineTotal' | translate }}</th>
+                    <td mat-cell *matCellDef="let item" class="text-right">{{ item.lineTotal || 0 | currency }}</td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+              }
+
+              <div class="totals-section">
+                <div class="total-row">
+                  <strong>{{ 'accountsPayable.invoice.subtotal' | translate }}</strong>
+                  <span>{{ po()?.subtotal || 0 | currency }}</span>
+                </div>
+                <div class="total-row">
+                  <strong>{{ 'accountsPayable.invoice.tax' | translate }}</strong>
+                  <span>{{ po()?.tax || 0 | currency }}</span>
+                </div>
+                <div class="total-row">
+                  <strong>{{ 'accountsPayable.invoice.shipping' | translate }}</strong>
+                  <span>{{ po()?.shippingCost || 0 | currency }}</span>
+                </div>
+                <div class="total-row total">
+                  <strong>{{ 'accountsPayable.invoice.total' | translate }}</strong>
+                  <span>{{ po()?.total || 0 | currency }}</span>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="{{ 'accountsPayable.step.payment' | translate }}">
+            <div class="tab-content">
+              <h3>{{ 'accountsPayable.payment.title' | translate }}</h3>
+              <p>{{ 'accountsPayable.payment.description' | translate }}</p>
+
+              <div class="form-section">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ 'accountsPayable.payment.paymentAmount' | translate }}</mat-label>
+                  <input matInput type="number" [value]="paymentAmount()" (input)="paymentAmount.set(+$any($event.target).value || 0)">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ 'accountsPayable.payment.paymentDate' | translate }}</mat-label>
+                  <input matInput type="date" [value]="paymentDate()" (input)="paymentDate.set($any($event.target).value)">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ 'accountsPayable.payment.paymentMethod' | translate }}</mat-label>
+                  <mat-select [value]="paymentMethod()" (selectionChange)="paymentMethod.set($event.value)">
+                    <mat-option value="BANK_TRANSFER">{{ 'accountsPayable.payment.method.bankTransfer' | translate }}</mat-option>
+                    <mat-option value="CREDIT_CARD">{{ 'accountsPayable.payment.method.creditCard' | translate }}</mat-option>
+                    <mat-option value="CASH">{{ 'accountsPayable.payment.method.cash' | translate }}</mat-option>
+                    <mat-option value="CHECK">{{ 'accountsPayable.payment.method.check' | translate }}</mat-option>
+                    <mat-option value="OTHER">{{ 'accountsPayable.payment.method.other' | translate }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <div class="payment-summary">
+                  <div class="summary-row">
+                    <strong>{{ 'accountsPayable.payment.invoiceAmount' | translate }}</strong>
+                    <span>{{ po()?.total || 0 | currency }}</span>
+                  </div>
+                  @if (paymentAmount() > 0) {
+                    <div class="summary-row">
+                      <strong>{{ 'accountsPayable.payment.paidAmount' | translate }}</strong>
+                      <span>{{ paymentAmount() | currency }}</span>
+                    </div>
+                  }
+                  <div class="summary-row outstanding">
+                    <strong>{{ 'accountsPayable.payment.outstanding' | translate }}</strong>
+                    <span [class.outstanding-positive]="outstandingAmount() > 0">
+                      {{ outstandingAmount() | currency }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="button-group">
+                  <button mat-raised-button (click)="currentStep.set('invoice')">
+                    {{ 'previous' | translate }}
+                  </button>
+                  <button 
+                    mat-raised-button 
+                    color="primary" 
+                    (click)="handlePayment()"
+                    [disabled]="submitting() || !paymentAmount() || !paymentDate() || !paymentMethod()">
+                    @if (submitting()) {
+                      <mat-spinner diameter="20"></mat-spinner>
+                    } @else {
+                      {{ 'accountsPayable.payment.record' | translate }}
+                    }
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="{{ 'accountsPayable.step.history' | translate }}">
+            <div class="tab-content">
+              <h3>{{ 'accountsPayable.history.title' | translate }}</h3>
+              <p>{{ 'accountsPayable.history.description' | translate }}</p>
+
+              @if (poHistory().length === 0) {
+                <div class="empty-state">
+                  <p>{{ 'accountsPayable.history.empty' | translate }}</p>
+                </div>
+              } @else {
+                <table mat-table [dataSource]="poHistory()" class="history-table">
+                  <ng-container matColumnDef="timestamp">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.timestamp' | translate }}</th>
+                    <td mat-cell *matCellDef="let record">{{ formatDateTime(record.timestamp) }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="step">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.step' | translate }}</th>
+                    <td mat-cell *matCellDef="let record">{{ getStepLabel(record.step) | translate }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.status' | translate }}</th>
+                    <td mat-cell *matCellDef="let record">{{ getStatusLabel(record.status) | translate }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="note">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.note' | translate }}</th>
+                    <td mat-cell *matCellDef="let record">{{ record.note || 'N/A' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="data">
+                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.data' | translate }}</th>
+                    <td mat-cell *matCellDef="let record">
+                      @if (hasDataKeys(record.data)) {
+                        <div class="data-container">
+                          @for (item of record.data | keyvalue; track item.key) {
+                            <div class="data-item">
+                              <strong>{{ getDataKeyLabel(toString(item.key)) | translate }}:</strong> 
+                              {{ formatDataValue(toString(item.key), item.value) }}
+                            </div>
+                          }
+                        </div>
+                      } @else {
+                        N/A
+                      }
+                    </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="['timestamp', 'step', 'status', 'note', 'data']"></tr>
+                  <tr mat-row *matRowDef="let row; columns: ['timestamp', 'step', 'status', 'note', 'data']"></tr>
+                </table>
+              }
+
+              <div class="button-group">
+                <button mat-raised-button (click)="currentStep.set('payment')">
+                  {{ 'previous' | translate }}
+                </button>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
+

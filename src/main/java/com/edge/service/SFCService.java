@@ -3,6 +3,7 @@ package com.edge.service;
 /**
  * @author Hidenori Takaku
  */
+import com.edge.config.DataChangeNotification;
 import com.edge.entity.SFC;
 import com.edge.entity.RMA;
 import com.edge.repository.SFCRepository;
@@ -27,8 +28,10 @@ public class SFCService {
     @Autowired
     private CustomerRepository customerRepository;
     
-    @Autowired(required = false)
-    private WebSocketService webSocketService;
+    @Autowired
+    private WebSocketNotificationService notificationService;
+    
+    private static final String DATA_TYPE_ID = "sfcs";
     
     public List<SFC> getAllSFCs() {
         return sfcRepository.getAllSFCs();
@@ -80,9 +83,7 @@ public class SFCService {
         }
         
         SFC created = sfcRepository.createSFC(sfc);
-        if (webSocketService != null) {
-            webSocketService.broadcastSFCUpdate(created);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
@@ -93,9 +94,7 @@ public class SFCService {
         }
         
         SFC created = sfcRepository.createSFC(sfc);
-        if (webSocketService != null) {
-            webSocketService.broadcastSFCUpdate(created);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
@@ -118,19 +117,18 @@ public class SFCService {
         SFC updated = sfcRepository.updateSFC(id, sfcDetails);
         
         // Broadcast update via WebSocket
-        if (webSocketService != null) {
-            webSocketService.broadcastSFCUpdate(updated);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         
         return updated;
     }
     
     public void deleteSFC(String id) {
+        Optional<SFC> sfcToDelete = sfcRepository.getSFCById(id);
         sfcRepository.deleteSFC(id);
         
         // Broadcast deletion via WebSocket
-        if (webSocketService != null) {
-            webSocketService.broadcastSFCDelete(id);
+        if (sfcToDelete.isPresent()) {
+            notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, sfcToDelete.get());
         }
     }
     

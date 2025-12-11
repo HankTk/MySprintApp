@@ -2,6 +2,7 @@ import { Injectable, inject, WritableSignal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Order, CreateOrderRequest } from '../models/order.model';
 import { ResourceService } from '../../../shared/services/resource.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,6 +19,7 @@ export class OrderService {
   private resourceManager: ResourceService = inject(ResourceService);
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(this.apiUrl);
@@ -37,6 +39,22 @@ export class OrderService {
 
   deleteOrder(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  addOrderItem(orderId: string, productId: string, quantity: number): Observable<Order> {
+    return this.http.post<Order>(`${this.apiUrl}/${orderId}/items`, { productId, quantity });
+  }
+
+  updateOrderItemQuantity(orderId: string, itemId: string, quantity: number): Observable<Order> {
+    return this.http.put<Order>(`${this.apiUrl}/${orderId}/items/${itemId}/quantity`, { quantity });
+  }
+
+  removeOrderItem(orderId: string, itemId: string): Observable<Order> {
+    return this.http.delete<Order>(`${this.apiUrl}/${orderId}/items/${itemId}`);
+  }
+
+  getNextInvoiceNumber(): Observable<{ invoiceNumber: string }> {
+    return this.http.get<{ invoiceNumber: string }>(`${this.apiUrl}/invoice/next-number`);
   }
 
   loadOrders(isLoading: WritableSignal<boolean>): void {
@@ -88,33 +106,15 @@ export class OrderService {
   }
 
   openAddOrderDialog(isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(OrderDialogComponent, {
-      data: { isEdit: false } as OrderDialogData,
-      width: '800px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'create') {
-        this.createOrderWithNotification(result.order, isLoading);
-      }
-    });
+    // Navigate to order entry page instead of opening dialog
+    this.router.navigate(['/orders/new']);
   }
 
   openEditOrderDialog(order: Order, isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(OrderDialogComponent, {
-      data: { order, isEdit: true } as OrderDialogData,
-      width: '800px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'update') {
-        this.updateOrderWithNotification(result.order, isLoading);
-      }
-    });
+    // Navigate to order entry page instead of opening dialog
+    if (order.id) {
+      this.router.navigate(['/orders', order.id]);
+    }
   }
 
   openDeleteOrderDialog(order: Order, isLoading: WritableSignal<boolean>): void {

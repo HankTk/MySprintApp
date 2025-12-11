@@ -2,6 +2,7 @@ import { Injectable, inject, WritableSignal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { PurchaseOrder, CreatePurchaseOrderRequest } from '../models/purchase-order.model';
 import { ResourceService } from '../../../shared/services/resource.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,6 +19,7 @@ export class PurchaseOrderService {
   private resourceManager: ResourceService = inject(ResourceService);
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   getPurchaseOrders(): Observable<PurchaseOrder[]> {
     return this.http.get<PurchaseOrder[]>(this.apiUrl);
@@ -135,5 +137,37 @@ export class PurchaseOrderService {
       }
     });
   }
-}
 
+  addPurchaseOrderItem(poId: string, productId: string, quantity: number): Observable<PurchaseOrder> {
+    return this.http.post<PurchaseOrder>(`${this.apiUrl}/${poId}/items`, {
+      productId,
+      quantity
+    });
+  }
+
+  updatePurchaseOrderItemQuantity(poId: string, itemId: string, quantity: number): Observable<PurchaseOrder> {
+    return this.http.put<PurchaseOrder>(`${this.apiUrl}/${poId}/items/${itemId}/quantity`, {
+      quantity
+    });
+  }
+
+  removePurchaseOrderItem(poId: string, itemId: string): Observable<PurchaseOrder> {
+    return this.http.delete<PurchaseOrder>(`${this.apiUrl}/${poId}/items/${itemId}`);
+  }
+
+  getNextInvoiceNumber(): Observable<{ invoiceNumber: string }> {
+    return this.http.get<{ invoiceNumber: string }>(`${this.apiUrl}/invoice/next-number`);
+  }
+
+  openAddPurchaseOrderEntry(isLoading: WritableSignal<boolean>): void {
+    // Navigate to purchase order entry page instead of opening dialog
+    this.router.navigate(['/purchase-orders/new']);
+  }
+
+  openEditPurchaseOrderEntry(po: PurchaseOrder, isLoading: WritableSignal<boolean>): void {
+    // Navigate to purchase order entry page instead of opening dialog
+    if (po.id) {
+      this.router.navigate(['/purchase-orders', po.id]);
+    }
+  }
+}

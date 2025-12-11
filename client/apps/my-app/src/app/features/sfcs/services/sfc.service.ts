@@ -2,6 +2,7 @@ import { Injectable, inject, WritableSignal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { SFC, CreateSFCRequest } from '../models/sfc.model';
 import { ResourceService } from '../../../shared/services/resource.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,6 +19,7 @@ export class SFCService {
   private resourceManager: ResourceService = inject(ResourceService);
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   getSFCs(): Observable<SFC[]> {
     return this.http.get<SFC[]>(this.apiUrl);
@@ -134,6 +136,22 @@ export class SFCService {
         this.deleteSFCWithNotification(sfc.id!, isLoading);
       }
     });
+  }
+
+  openAddSFCEntry(isLoading: WritableSignal<boolean>): void {
+    // Navigate to SFC entry page instead of opening dialog
+    this.router.navigate(['/sfcs/new']);
+  }
+
+  openEditSFCEntry(sfc: SFC, isLoading: WritableSignal<boolean>): void {
+    // Navigate to SFC entry page instead of opening dialog
+    if (sfc.id) {
+      this.router.navigate(['/sfcs', sfc.id]);
+    }
+  }
+
+  createSFCFromRMA(rmaId: string): Observable<SFC> {
+    return this.http.post<SFC>(`${this.apiUrl}/from-rma/${rmaId}`, {});
   }
 }
 

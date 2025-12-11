@@ -3,6 +3,7 @@ package com.edge.service;
 /**
  * @author Hidenori Takaku
  */
+import com.edge.config.DataChangeNotification;
 import com.edge.entity.PurchaseOrder;
 import com.edge.entity.PurchaseOrderItem;
 import com.edge.entity.Product;
@@ -31,8 +32,10 @@ public class PurchaseOrderService {
     @Autowired
     private InventoryService inventoryService;
     
-    @Autowired(required = false)
-    private WebSocketService webSocketService;
+    @Autowired
+    private WebSocketNotificationService notificationService;
+    
+    private static final String DATA_TYPE_ID = "purchase-orders";
     
     public List<PurchaseOrder> getAllPurchaseOrders() {
         return purchaseOrderRepository.getAllPurchaseOrders();
@@ -58,9 +61,7 @@ public class PurchaseOrderService {
         // Enrich PO items with product information
         enrichPurchaseOrderItems(po);
         PurchaseOrder created = purchaseOrderRepository.createPurchaseOrder(po);
-        if (webSocketService != null) {
-            webSocketService.broadcastPurchaseOrderUpdate(created);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
@@ -83,9 +84,7 @@ public class PurchaseOrderService {
         }
         
         // Broadcast update via WebSocket
-        if (webSocketService != null) {
-            webSocketService.broadcastPurchaseOrderUpdate(updated);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         
         return updated;
     }
@@ -154,11 +153,12 @@ public class PurchaseOrderService {
     }
     
     public void deletePurchaseOrder(String id) {
+        Optional<PurchaseOrder> poToDelete = purchaseOrderRepository.getPurchaseOrderById(id);
         purchaseOrderRepository.deletePurchaseOrder(id);
         
         // Broadcast deletion via WebSocket
-        if (webSocketService != null) {
-            webSocketService.broadcastPurchaseOrderDelete(id);
+        if (poToDelete.isPresent()) {
+            notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, poToDelete.get());
         }
     }
     

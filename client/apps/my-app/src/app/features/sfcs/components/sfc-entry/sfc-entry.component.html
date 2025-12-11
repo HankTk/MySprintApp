@@ -1,0 +1,250 @@
+<div class="sfc-entry-container">
+  <mat-card class="main-card">
+    <mat-card-header>
+      <div class="header-content">
+        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <mat-card-title class="card-title">
+          <mat-icon class="title-icon">factory</mat-icon>
+          {{ 'sfcEntry.title' | translate }}
+        </mat-card-title>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (loading()) {
+        <div class="loading-container">
+          <mat-spinner diameter="50"></mat-spinner>
+        </div>
+      } @else {
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+          <div class="step-list">
+            @for (step of steps; track step.key) {
+              <div 
+                class="step-item"
+                [class.active]="currentStep() === step.key"
+                [class.completed]="isStepCompleted(step.key)"
+                [class.clickable]="isStepCompleted(step.key) || currentStep() === step.key"
+                (click)="onStepClick(step.key)">
+                <div class="step-number">{{ $index + 1 }}</div>
+                <div class="step-label">{{ step.label | translate }}</div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Entry Step with Sub-steps -->
+        @if (currentStep() === 'entry') {
+          <div class="entry-sub-steps">
+            <div class="sub-step-indicator">
+              @for (subStep of entrySubSteps; track subStep.key) {
+                <button
+                  mat-button
+                  class="sub-step-button"
+                  [class.active]="currentEntrySubStep() === subStep.key"
+                  [class.completed]="isSubStepCompleted(subStep.key)"
+                  (click)="currentEntrySubStep.set(subStep.key)">
+                  {{ subStep.label | translate }}
+                </button>
+              }
+            </div>
+
+            <div class="step-content">
+              <!-- RMA Sub-step -->
+              @if (currentEntrySubStep() === 'rma') {
+                <div class="sub-step-content">
+                  <h3>{{ 'sfcEntry.subStep.rma' | translate }}</h3>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>{{ 'rma' | translate }}</mat-label>
+                    <mat-select [value]="sfc()?.rmaId || null" (selectionChange)="onRMAChange($event.value)">
+                      <mat-option [value]="null">{{ 'selectRMA' | translate }}</mat-option>
+                      @for (rma of rmas(); track rma.id) {
+                        <mat-option [value]="rma.id">
+                          {{ rma.rmaNumber || rma.id }} - {{ getCustomerName(rma.customerId) }}
+                        </mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                  @if (sfc()?.rmaNumber) {
+                    <p><strong>{{ 'rmaNumber' | translate }}:</strong> {{ sfc()?.rmaNumber }}</p>
+                  }
+                  @if (sfc()?.customerName) {
+                    <p><strong>{{ 'customer' | translate }}:</strong> {{ sfc()?.customerName }}</p>
+                  }
+                  @if (sfc()?.orderNumber) {
+                    <p><strong>{{ 'orderNumber' | translate }}:</strong> {{ sfc()?.orderNumber }}</p>
+                  }
+                </div>
+              }
+
+              <!-- Assignment Sub-step -->
+              @if (currentEntrySubStep() === 'assignment') {
+                <div class="sub-step-content">
+                  <h3>{{ 'sfcEntry.subStep.assignment' | translate }}</h3>
+                  
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>{{ 'assignedTo' | translate }}</mat-label>
+                    <mat-select [value]="assignedTo()" (selectionChange)="onAssignmentChange($event.value, notes())">
+                      <mat-option [value]="null">{{ 'selectUser' | translate }}</mat-option>
+                      @for (user of users(); track user.id) {
+                        <mat-option [value]="user.id">
+                          {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
+                        </mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>{{ 'notes' | translate }}</mat-label>
+                    <textarea matInput [value]="notes()" (input)="onAssignmentChange(assignedTo(), $any($event.target).value)" rows="4"></textarea>
+                  </mat-form-field>
+                </div>
+              }
+
+              <!-- Review Sub-step -->
+              @if (currentEntrySubStep() === 'review') {
+                <div class="sub-step-content">
+                  <h3>{{ 'sfcEntry.subStep.review' | translate }}</h3>
+                  <div class="review-summary">
+                    <p><strong>{{ 'rmaNumber' | translate }}:</strong> {{ sfc()?.rmaNumber || getRMANumber(sfc()?.rmaId) || 'N/A' }}</p>
+                    <p><strong>{{ 'customer' | translate }}:</strong> {{ sfc()?.customerName || getCustomerName(sfc()?.customerId) || 'N/A' }}</p>
+                    <p><strong>{{ 'orderNumber' | translate }}:</strong> {{ sfc()?.orderNumber || 'N/A' }}</p>
+                    <p><strong>{{ 'assignedTo' | translate }}:</strong> {{ getUserName(sfc()?.assignedTo) || 'N/A' }}</p>
+                    @if (sfc()?.notes) {
+                      <p><strong>{{ 'notes' | translate }}:</strong> {{ sfc()?.notes }}</p>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- In Progress Step -->
+        @if (currentStep() === 'in_progress') {
+          <div class="step-content">
+            <h3>{{ 'sfcEntry.step.inProgress' | translate }}</h3>
+            
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'sfcEntry.inProgress.startedDate' | translate }}</mat-label>
+              <input matInput type="date" [value]="startedDate()" (input)="startedDate.set($any($event.target).value)">
+            </mat-form-field>
+          </div>
+        }
+
+        <!-- Completed Step -->
+        @if (currentStep() === 'completed') {
+          <div class="step-content">
+            <h3>{{ 'sfcEntry.step.completed' | translate }}</h3>
+            
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>{{ 'sfcEntry.completed.completedDate' | translate }}</mat-label>
+              <input matInput type="date" [value]="completedDate()" (input)="completedDate.set($any($event.target).value)">
+            </mat-form-field>
+          </div>
+        }
+
+        <!-- History Step -->
+        @if (currentStep() === 'history') {
+          <div class="step-content">
+            <h3>{{ 'sfcEntry.step.history' | translate }}</h3>
+            
+            <div class="history-section">
+              <h4>{{ 'sfcEntry.history.addNote' | translate }}</h4>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'notes' | translate }}</mat-label>
+                <textarea matInput [value]="historyNote()" (input)="historyNote.set($any($event.target).value)" rows="3"></textarea>
+              </mat-form-field>
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="handleAddHistoryNote()"
+                [disabled]="!historyNote() || submitting()">
+                {{ 'add' | translate }}
+              </button>
+            </div>
+
+            <div class="history-list">
+              <h4>{{ 'sfcEntry.history.history' | translate }}</h4>
+              @if (sfcHistory().length > 0) {
+                @for (record of sfcHistory(); track record.timestamp) {
+                  <div class="history-item">
+                    <div class="history-header">
+                      <strong>{{ record.stepLabel || record.step }}</strong>
+                      <span class="history-date">{{ record.timestamp | date:'short' }}</span>
+                    </div>
+                    @if (record.notes || record.note) {
+                      <p class="history-notes">{{ record.notes || record.note }}</p>
+                    }
+                    @if (hasDataKeys(record.data)) {
+                      <div class="history-data">
+                        @for (item of record.data | keyvalue; track item.key) {
+                          <div class="data-item">
+                            <strong>{{ getDataKeyLabel(toString(item.key)) | translate }}:</strong> 
+                            {{ formatDataValue(toString(item.key), item.value) }}
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              } @else {
+                <p>{{ 'sfcEntry.history.noHistory' | translate }}</p>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+          <button
+            mat-button
+            (click)="handlePrevious()"
+            [disabled]="currentStep() === 'entry' && currentEntrySubStep() === 'rma'">
+            <mat-icon>arrow_back</mat-icon>
+            {{ 'previous' | translate }}
+          </button>
+          
+          <!-- Step-specific action buttons -->
+          @if (currentStep() === 'entry' && currentEntrySubStep() === 'review') {
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="handleCompleteEntry()"
+              [disabled]="!canProceedToNext() || submitting()">
+              {{ 'sfcEntry.completeEntry' | translate }}
+            </button>
+          } @else if (currentStep() === 'in_progress') {
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="handleStartProcessing()"
+              [disabled]="!canProceedToNext() || submitting()">
+              {{ 'sfcEntry.startProcessing' | translate }}
+            </button>
+          } @else if (currentStep() === 'completed') {
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="handleCompleteProcessing()"
+              [disabled]="!canProceedToNext() || submitting()">
+              {{ 'sfcEntry.completeProcessing' | translate }}
+            </button>
+          } @else {
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="handleNext()"
+              [disabled]="!canProceedToNext()">
+              {{ 'next' | translate }}
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          }
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>
+

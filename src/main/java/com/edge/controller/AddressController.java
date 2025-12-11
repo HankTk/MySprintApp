@@ -45,6 +45,11 @@ public class AddressController {
         return addressService.getAddressesByCustomerIdAndType(customerId, addressType);
     }
 
+    @GetMapping(value = "/vendor/{vendorId}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+    public List<Address> getAddressesByVendorId(@PathVariable String vendorId) {
+        return addressService.getAddressesByVendorId(vendorId);
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public Address createAddress(@RequestBody Address address) {
         return addressService.createAddress(address);

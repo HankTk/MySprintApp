@@ -34,6 +34,8 @@ export class MenuDrawerComponent {
     { icon: 'assignment_return', label: 'menu.rmas', route: '/rmas' },
     { icon: 'build', label: 'menu.sfcs', route: '/sfcs' },
     { icon: 'account_balance', label: 'menu.generalLedger', route: '/general-ledger' },
+    { icon: 'account_balance_wallet', label: 'menu.accountsReceivable', route: '/account-receivable' },
+    { icon: 'account_balance', label: 'menu.accountsPayable', route: '/account-payable' },
     { icon: 'settings', label: 'menu.master', route: '/master' },
   ];
 

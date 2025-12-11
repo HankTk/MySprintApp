@@ -24,6 +24,36 @@
         </button>
       </div>
 
+      <!-- RMAs Needing SFC Creation -->
+      @if (rmasNeedingSFC().length > 0) {
+        <div class="rma-section">
+          <h3>{{ 'sfcListing.rmasNeedingSFC' | translate }}</h3>
+          <div class="rma-list">
+            @for (rma of rmasNeedingSFC(); track rma.id) {
+              <div class="rma-item">
+                <div class="rma-info">
+                  <strong>{{ rma.rmaNumber || rma.id }}</strong>
+                  <span class="rma-details">
+                    {{ 'orderNumber' | translate }}: {{ rma.orderNumber || 'N/A' }} | 
+                    {{ 'status' | translate }}: {{ rma.status }}
+                  </span>
+                </div>
+                <button 
+                  mat-raised-button 
+                  color="primary" 
+                  (click)="createSFCFromRMA(rma)"
+                  [disabled]="processingRMA() === rma.id">
+                  @if (processingRMA() === rma.id) {
+                    <mat-spinner diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
+                  }
+                  {{ processingRMA() === rma.id ? ('sfcListing.creating' | translate) : ('sfcListing.createSFC' | translate) }}
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
       <div class="table-container">
         <table mat-table [dataSource]="sfcs() || []" class="sfc-table">
           <ng-container matColumnDef="sfcNumber">
