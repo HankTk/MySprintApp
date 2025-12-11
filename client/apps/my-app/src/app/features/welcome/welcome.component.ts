@@ -44,6 +44,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     { id: 'rmas', route: '/rmas', icon: 'assignment_return', labelKey: 'menu.rmas' },
     { id: 'sfcs', route: '/sfcs', icon: 'factory', labelKey: 'menu.sfcs' },
     { id: 'warehouses', route: '/warehouses', icon: 'warehouse', labelKey: 'menu.warehouses' },
+    { id: 'general-ledger', route: '/general-ledger', icon: 'account_balance', labelKey: 'menu.generalLedger' },
     { id: 'master', route: '/master', icon: 'settings', labelKey: 'menu.master' }
   ];
 

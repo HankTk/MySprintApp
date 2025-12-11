@@ -60,6 +60,10 @@ export const routes: Routes = [
         loadComponent: () => import('../orders/components/order-list/order-list.component').then(m => m.OrderListComponent)
       },
       {
+        path: 'general-ledger',
+        loadComponent: () => import('../general-ledger/components/general-ledger-list/general-ledger-list.component').then(m => m.GeneralLedgerListComponent)
+      },
+      {
         path: 'master',
         component: MasterComponent
       }

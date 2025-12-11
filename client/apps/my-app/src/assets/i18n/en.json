@@ -77,6 +77,7 @@
     "purchaseOrders": "Purchase Orders",
     "rmas": "RMAs",
     "sfcs": "SFCs",
+    "generalLedger": "General Ledger",
     "master": "Master"
   },
   "master": {
@@ -259,6 +260,71 @@
         "title": "Order Management",
         "description": "Track and manage orders throughout their lifecycle."
       }
+    }
+  },
+  "generalLedger": {
+    "title": "General Ledger",
+    "subtitle": "Central financial repository aggregating all financial transactions",
+    "loading": "Loading general ledger entries...",
+    "error": "Error",
+    "errorLoadFailed": "Failed to load general ledger entries",
+    "noEntries": "No general ledger entries found",
+    "unknown": "Unknown",
+    "notAvailable": "N/A",
+    "back": "Back",
+    "table": {
+      "date": "Date",
+      "type": "Type",
+      "orderPoInvoice": "Order/PO/Invoice",
+      "customerSupplier": "Customer/Supplier",
+      "description": "Description",
+      "quantity": "Quantity",
+      "debit": "Debit",
+      "credit": "Credit",
+      "actions": "Actions",
+      "view": "View"
+    },
+    "filter": {
+      "fromDate": "From Date",
+      "toDate": "To Date",
+      "allTypes": "All Types",
+      "byType": "Filter by type"
+    },
+    "type": {
+      "revenue": "Revenue",
+      "cost": "Cost",
+      "expense": "Expense",
+      "accountsPayable": "Accounts Payable",
+      "payment": "Payment",
+      "ap": "A/P"
+    },
+    "poPrefix": "PO:",
+    "orderPrefix": "Order:",
+    "summary": {
+      "totalDebit": "Total Debit",
+      "totalCredit": "Total Credit",
+      "totalRevenue": "Total Revenue",
+      "totalCost": "Total Cost",
+      "totalExpense": "Total Expense",
+      "totalAccountsPayable": "Total A/P",
+      "totalPayments": "Total Payments",
+      "netIncome": "Net Income"
+    },
+    "description": {
+      "revenue": "Revenue from Order {{orderNumber}}",
+      "revenueWithInvoice": "Revenue from Order {{orderNumber}} / Invoice {{invoiceNumber}}",
+      "cost": "Cost for Order {{orderNumber}}",
+      "costWithInvoice": "Cost for Order {{orderNumber}} / Invoice {{invoiceNumber}}",
+      "costDetails": " (Product Cost: ${{productCost}}, Shipping Cost: ${{shippingCost}})",
+      "payment": "Payment received for Order {{orderNumber}}",
+      "paymentWithInvoice": "Payment received for Order {{orderNumber}} / Invoice {{invoiceNumber}}",
+      "expense": "Expense for PO {{poNumber}}",
+      "expenseWithInvoice": "Expense for PO {{poNumber}} / Invoice {{invoiceNumber}}",
+      "expenseDetails": " (Product Cost: ${{productCost}}, Shipping Cost: ${{shippingCost}})",
+      "ap": "Accounts Payable for PO {{poNumber}}",
+      "apWithInvoice": "Accounts Payable for PO {{poNumber}} / Invoice {{invoiceNumber}}",
+      "poPayment": "Payment made for PO {{poNumber}}",
+      "poPaymentWithInvoice": "Payment made for PO {{poNumber}} / Invoice {{invoiceNumber}}"
     }
   }
 }

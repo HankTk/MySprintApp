@@ -81,6 +81,7 @@
     "purchaseOrders": "発注",
     "rmas": "RMA",
     "sfcs": "SFC",
+    "generalLedger": "総勘定元帳",
     "master": "マスター"
   },
   "master": {
@@ -263,6 +264,71 @@
         "title": "注文管理",
         "description": "注文をライフサイクル全体で追跡・管理します。"
       }
+    }
+  },
+  "generalLedger": {
+    "title": "総勘定元帳",
+    "subtitle": "すべての財務取引を集約する中央財務リポジトリ",
+    "loading": "総勘定元帳エントリを読み込み中...",
+    "error": "エラー",
+    "errorLoadFailed": "総勘定元帳エントリの読み込みに失敗しました",
+    "noEntries": "総勘定元帳エントリが見つかりません",
+    "unknown": "不明",
+    "notAvailable": "N/A",
+    "back": "戻る",
+    "table": {
+      "date": "日付",
+      "type": "タイプ",
+      "orderPoInvoice": "注文/発注/請求書",
+      "customerSupplier": "顧客/サプライヤー",
+      "description": "説明",
+      "quantity": "数量",
+      "debit": "借方",
+      "credit": "貸方",
+      "actions": "操作",
+      "view": "表示"
+    },
+    "filter": {
+      "fromDate": "開始日",
+      "toDate": "終了日",
+      "allTypes": "すべてのタイプ",
+      "byType": "タイプでフィルター"
+    },
+    "type": {
+      "revenue": "収益",
+      "cost": "原価",
+      "expense": "経費",
+      "accountsPayable": "買掛金",
+      "payment": "支払い",
+      "ap": "買掛"
+    },
+    "poPrefix": "発注:",
+    "orderPrefix": "注文:",
+    "summary": {
+      "totalDebit": "借方合計",
+      "totalCredit": "貸方合計",
+      "totalRevenue": "収益合計",
+      "totalCost": "原価合計",
+      "totalExpense": "経費合計",
+      "totalAccountsPayable": "買掛金合計",
+      "totalPayments": "支払い合計",
+      "netIncome": "純利益"
+    },
+    "description": {
+      "revenue": "注文 {{orderNumber}} からの収益",
+      "revenueWithInvoice": "注文 {{orderNumber}} / 請求書 {{invoiceNumber}} からの収益",
+      "cost": "注文 {{orderNumber}} の原価",
+      "costWithInvoice": "注文 {{orderNumber}} / 請求書 {{invoiceNumber}} の原価",
+      "costDetails": " (商品原価: ${{productCost}}, 配送費: ${{shippingCost}})",
+      "payment": "注文 {{orderNumber}} の支払い受領",
+      "paymentWithInvoice": "注文 {{orderNumber}} / 請求書 {{invoiceNumber}} の支払い受領",
+      "expense": "発注 {{poNumber}} の経費",
+      "expenseWithInvoice": "発注 {{poNumber}} / 請求書 {{invoiceNumber}} の経費",
+      "expenseDetails": " (商品原価: ${{productCost}}, 配送費: ${{shippingCost}})",
+      "ap": "発注 {{poNumber}} の買掛金",
+      "apWithInvoice": "発注 {{poNumber}} / 請求書 {{invoiceNumber}} の買掛金",
+      "poPayment": "発注 {{poNumber}} の支払い",
+      "poPaymentWithInvoice": "発注 {{poNumber}} / 請求書 {{invoiceNumber}} の支払い"
     }
   }
 }

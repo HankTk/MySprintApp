@@ -38,7 +38,8 @@ export class MenuDrawerComponent {
     { icon: 'shopping_cart', label: 'menu.orders', route: '/orders' },
     { icon: 'shopping_bag', label: 'menu.purchaseOrders', route: '/purchase-orders' },
     { icon: 'assignment_return', label: 'menu.rmas', route: '/rmas' },
-    { icon: 'build', label: 'menu.sfcs', route: '/sfcs' }
+    { icon: 'build', label: 'menu.sfcs', route: '/sfcs' },
+    { icon: 'account_balance', label: 'menu.generalLedger', route: '/general-ledger' }
   ];
 
   onClose(): void {
