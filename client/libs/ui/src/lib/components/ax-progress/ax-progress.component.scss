@@ -1,0 +1,27 @@
+.ax-progress-container {
+  width: 100%;
+  
+  mat-progress-bar {
+    width: 100%;
+  }
+  
+  .ax-progress-label {
+    margin-top: 8px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+    text-align: center;
+  }
+}
+
+.ax-progress-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  
+  .ax-progress-label {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+

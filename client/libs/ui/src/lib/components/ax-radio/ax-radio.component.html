@@ -1,0 +1,16 @@
+<mat-radio-button
+  [attr.id]="id || null"
+  [name]="name || ''"
+  [value]="value || ''"
+  [checked]="checked"
+  [disabled]="disabled"
+  [color]="error ? 'warn' : 'primary'"
+  (change)="onRadioChange()"
+  (blur)="onTouched()">
+  @if (label) {
+    {{ label }}
+  } @else {
+    <ng-content></ng-content>
+  }
+</mat-radio-button>
+

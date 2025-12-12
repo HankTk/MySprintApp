@@ -1,0 +1,20 @@
+@if (type === 'bar') {
+  <div class="ax-progress-container">
+    <mat-progress-bar
+      [mode]="mode"
+      [value]="clampedValue"
+      [color]="variant">
+    </mat-progress-bar>
+    @if (showLabel) {
+      <div class="ax-progress-label">{{ displayLabel }}</div>
+    }
+  </div>
+} @else {
+  <div class="ax-progress-spinner-container">
+    <mat-spinner [diameter]="50" [color]="variant"></mat-spinner>
+    @if (showLabel) {
+      <div class="ax-progress-label">{{ displayLabel }}</div>
+    }
+  </div>
+}
+

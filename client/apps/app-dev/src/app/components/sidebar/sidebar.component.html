@@ -1,0 +1,17 @@
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <h2>Component Library</h2>
+  </div>
+  <mat-nav-list>
+    @for (item of menuItems; track item.id) {
+      <a
+        mat-list-item
+        [class.active]="currentPage === item.id"
+        (click)="onItemClick(item.id)">
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.label }}</span>
+      </a>
+    }
+  </mat-nav-list>
+</nav>
+

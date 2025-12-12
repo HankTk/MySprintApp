@@ -1,0 +1,7 @@
+<div class="app-container">
+  <app-sidebar [currentPage]="currentPage" (pageChange)="onPageChange($event)"></app-sidebar>
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+

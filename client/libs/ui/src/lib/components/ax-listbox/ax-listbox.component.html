@@ -1,0 +1,25 @@
+<mat-form-field appearance="outline" class="ax-listbox-field">
+  @if (label) {
+    <mat-label>{{ label }}</mat-label>
+  }
+  <mat-select
+    [multiple]="multiple"
+    [disabled]="disabled"
+    [value]="value"
+    (selectionChange)="onSelectionChange($event)"
+    (blur)="onTouched()"
+    [placeholder]="placeholder || ''">
+    @for (option of options; track option.value) {
+      <mat-option [value]="option.value" [disabled]="option.disabled || false">
+        {{ option.label }}
+      </mat-option>
+    }
+  </mat-select>
+  @if (hint) {
+    <mat-hint>{{ hint }}</mat-hint>
+  }
+  @if (error) {
+    <mat-error>Please select a value</mat-error>
+  }
+</mat-form-field>
+

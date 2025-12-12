@@ -1,0 +1,24 @@
+<div class="page-container">
+  <h1>Card Component</h1>
+  <p class="description">A reusable card component with title and subtitle support.</p>
+
+  <div class="card-grid">
+    <ax-card title="Basic Card" [elevation]="1">
+      <p>This is a basic card with a title and default elevation.</p>
+    </ax-card>
+
+    <ax-card title="Card with Subtitle" subtitle="This is a subtitle" [elevation]="2">
+      <p>This card has both a title and subtitle with higher elevation.</p>
+    </ax-card>
+
+    <ax-card [elevation]="3">
+      <p>This card has no title but has higher elevation for emphasis.</p>
+    </ax-card>
+
+    <ax-card title="Card Title" subtitle="Card Subtitle" [elevation]="4">
+      <p>This is a card with maximum elevation. It stands out more from the background.</p>
+      <p>You can add any content inside the card.</p>
+    </ax-card>
+  </div>
+</div>
+

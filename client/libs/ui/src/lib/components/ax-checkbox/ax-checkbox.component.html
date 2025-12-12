@@ -1,0 +1,13 @@
+<mat-checkbox
+  [attr.id]="id || null"
+  [checked]="checked"
+  [disabled]="disabled"
+  [color]="error ? 'warn' : 'primary'"
+  (change)="onCheckboxChange($event)">
+  @if (label) {
+    {{ label }}
+  } @else {
+    <ng-content></ng-content>
+  }
+</mat-checkbox>
+

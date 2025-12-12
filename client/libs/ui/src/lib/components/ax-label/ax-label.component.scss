@@ -1,0 +1,15 @@
+.ax-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+  margin-bottom: 8px;
+  
+  &.required {
+    .ax-label-required {
+      color: #f44336;
+      margin-left: 4px;
+    }
+  }
+}
+

@@ -1,0 +1,29 @@
+<div class="page-container">
+  <h1>Dialog Component</h1>
+  <p class="description">A reusable dialog component for modals and popups.</p>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Dialog Examples</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="button-group">
+        <ax-button variant="raised" label="Open Standard Dialog" (click)="openDialog()"></ax-button>
+        <ax-button variant="raised" label="Open Large Dialog" (click)="openLargeDialog()"></ax-button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Dialog Usage</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Click the buttons above to see dialog examples. The dialog component can be used with Angular Material's MatDialog service.</p>
+      <pre><code>this.dialog.open(DialogComponent, &#123;
+  width: '500px'
+&#125;);</code></pre>
+    </mat-card-content>
+  </mat-card>
+</div>
+

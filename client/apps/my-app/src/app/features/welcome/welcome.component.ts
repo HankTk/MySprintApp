@@ -43,7 +43,6 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     { id: 'purchase-orders', route: '/purchase-orders', icon: 'receipt', labelKey: 'menu.purchaseOrders' },
     { id: 'rmas', route: '/rmas', icon: 'assignment_return', labelKey: 'menu.rmas' },
     { id: 'sfcs', route: '/sfcs', icon: 'factory', labelKey: 'menu.sfcs' },
-    { id: 'warehouses', route: '/warehouses', icon: 'warehouse', labelKey: 'menu.warehouses' },
     { id: 'general-ledger', route: '/general-ledger', icon: 'account_balance', labelKey: 'menu.generalLedger' },
     { id: 'accounts-receivable', route: '/account-receivable', icon: 'account_balance_wallet', labelKey: 'menu.accountsReceivable' },
     { id: 'accounts-payable', route: '/account-payable', icon: 'account_balance', labelKey: 'menu.accountsPayable' },

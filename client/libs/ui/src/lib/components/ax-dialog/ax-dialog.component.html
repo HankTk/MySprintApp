@@ -1,0 +1,27 @@
+<div class="ax-dialog-container" [style.width]="width">
+  @if (title) {
+    <div class="ax-dialog-header">
+      <h2 class="ax-dialog-title">{{ title }}</h2>
+      @if (showCloseButton) {
+        <button mat-icon-button (click)="onClose()" class="ax-dialog-close">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </div>
+  }
+  
+  <div class="ax-dialog-content">
+    @if (contentTemplate) {
+      <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+    } @else {
+      <ng-content></ng-content>
+    }
+  </div>
+
+  @if (actionsTemplate) {
+    <div class="ax-dialog-actions">
+      <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+    </div>
+  }
+</div>
+

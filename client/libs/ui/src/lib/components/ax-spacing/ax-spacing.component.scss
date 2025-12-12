@@ -1,0 +1,38 @@
+.ax-spacing {
+  display: flex;
+  
+  &.vertical {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  &.horizontal {
+    flex-direction: row;
+    gap: 16px;
+  }
+  
+  &.size-xs {
+    gap: 4px;
+  }
+  
+  &.size-sm {
+    gap: 8px;
+  }
+  
+  &.size-md {
+    gap: 16px;
+  }
+  
+  &.size-lg {
+    gap: 24px;
+  }
+  
+  &.size-xl {
+    gap: 32px;
+  }
+  
+  &.size-2xl {
+    gap: 48px;
+  }
+}
+

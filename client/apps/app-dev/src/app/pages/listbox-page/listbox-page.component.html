@@ -1,0 +1,72 @@
+<div class="page-container">
+  <h1>Listbox Component</h1>
+  <p class="description">A reusable dropdown listbox component with single and multiple selection support.</p>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Single Selection</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-listbox
+        label="Select an option"
+        [options]="options"
+        [(ngModel)]="singleValue"
+        placeholder="Please select">
+      </ax-listbox>
+      <p style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
+        Selected: {{ singleValue || 'None' }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Multiple Selection</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-listbox
+        label="Select multiple options"
+        [options]="options"
+        [(ngModel)]="multipleValue"
+        [multiple]="true"
+        placeholder="Please select">
+      </ax-listbox>
+      <p style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
+        Selected: {{ multipleValue.length > 0 ? multipleValue.join(', ') : 'None' }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>States</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="listbox-group">
+        <ax-listbox
+          label="Normal"
+          [options]="options"
+          placeholder="Please select">
+        </ax-listbox>
+        <ax-listbox
+          label="Error State"
+          [options]="options"
+          [error]="true"
+          placeholder="Please select">
+        </ax-listbox>
+        <ax-listbox
+          label="Disabled"
+          [options]="options"
+          [disabled]="true"
+          placeholder="Please select">
+        </ax-listbox>
+        <ax-listbox
+          label="With Disabled Options"
+          [options]="disabledOptions"
+          placeholder="Please select">
+        </ax-listbox>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+

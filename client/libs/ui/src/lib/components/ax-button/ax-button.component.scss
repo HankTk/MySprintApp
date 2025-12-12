@@ -1,0 +1,22 @@
+ax-button {
+  display: inline-block;
+  
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    
+    mat-spinner {
+      margin-right: 8px;
+    }
+    
+    // Material button wraps content in .mdc-button__label
+    // Ensure the label is visible and displays content correctly
+    ::ng-deep .mdc-button__label {
+      display: inline-flex !important;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+  }
+}

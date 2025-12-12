@@ -1,0 +1,7 @@
+<label [for]="for" class="ax-label" [class.required]="required">
+  <ng-content></ng-content>
+  @if (required) {
+    <span class="ax-label-required">*</span>
+  }
+</label>
+

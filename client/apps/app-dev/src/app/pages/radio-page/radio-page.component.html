@@ -1,0 +1,80 @@
+<div class="page-container">
+  <h1>Radio Component</h1>
+  <p class="description">A reusable radio button component with form integration support.</p>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Basic Usage</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-form-group>
+        <ax-radio
+          id="radio-option1"
+          name="radio-group-1"
+          label="Option 1"
+          value="option1"
+          [(ngModel)]="radioValue">
+        </ax-radio>
+        <ax-radio
+          id="radio-option2"
+          name="radio-group-1"
+          label="Option 2"
+          value="option2"
+          [(ngModel)]="radioValue">
+        </ax-radio>
+        <ax-radio
+          id="radio-option3"
+          name="radio-group-1"
+          label="Option 3"
+          value="option3"
+          [(ngModel)]="radioValue">
+        </ax-radio>
+      </ax-form-group>
+      <p style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
+        Selected: {{ radioValue }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>States</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-form-group>
+        <ax-radio
+          id="radio-normal"
+          name="radio-group-2"
+          label="Normal"
+          value="option1"
+          [(ngModel)]="radioValue2">
+        </ax-radio>
+        <ax-radio
+          id="radio-error"
+          name="radio-group-2"
+          label="Error State"
+          value="option2"
+          [error]="true"
+          [checked]="false">
+        </ax-radio>
+        <ax-radio
+          id="radio-disabled"
+          name="radio-group-2"
+          label="Disabled"
+          value="option3"
+          [disabled]="true"
+          [checked]="false">
+        </ax-radio>
+        <ax-radio
+          id="radio-disabled-checked"
+          name="radio-group-2"
+          label="Disabled Checked"
+          value="option4"
+          [disabled]="true"
+          [checked]="true">
+        </ax-radio>
+      </ax-form-group>
+    </mat-card-content>
+  </mat-card>
+</div>
+

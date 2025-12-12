@@ -1,0 +1,62 @@
+@switch (variant) {
+  @case ('raised') {
+    <button mat-raised-button [type]="type" [color]="color" [disabled]="disabled || loading">
+      @if (loading) {
+        <mat-spinner diameter="20"></mat-spinner>
+      }
+      @if (label) {
+        {{ label }}
+      } @else {
+        <ng-content></ng-content>
+      }
+    </button>
+  }
+  @case ('flat') {
+    <button mat-flat-button [type]="type" [color]="color" [disabled]="disabled || loading">
+      @if (loading) {
+        <mat-spinner diameter="20"></mat-spinner>
+      }
+      @if (label) {
+        {{ label }}
+      } @else {
+        <ng-content></ng-content>
+      }
+    </button>
+  }
+  @case ('stroked') {
+    <button mat-stroked-button [type]="type" [color]="color" [disabled]="disabled || loading">
+      @if (loading) {
+        <mat-spinner diameter="20"></mat-spinner>
+      }
+      @if (label) {
+        {{ label }}
+      } @else {
+        <ng-content></ng-content>
+      }
+    </button>
+  }
+  @case ('icon') {
+    <button mat-icon-button [type]="type" [color]="color" [disabled]="disabled || loading">
+      @if (loading) {
+        <mat-spinner diameter="20"></mat-spinner>
+      }
+      @if (label) {
+        {{ label }}
+      } @else {
+        <ng-content></ng-content>
+      }
+    </button>
+  }
+  @default {
+    <button mat-raised-button [type]="type" [color]="color" [disabled]="disabled || loading">
+      @if (loading) {
+        <mat-spinner diameter="20"></mat-spinner>
+      }
+      @if (label) {
+        {{ label }}
+      } @else {
+        <ng-content></ng-content>
+      }
+    </button>
+  }
+}
