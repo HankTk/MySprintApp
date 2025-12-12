@@ -17,12 +17,16 @@
         <div class="filter-section">
           <mat-form-field appearance="outline" class="date-filter">
             <mat-label>{{ 'generalLedger.filter.fromDate' | translate }}</mat-label>
-            <input matInput type="date" [value]="dateFrom()" (change)="onDateFromChange($event)">
+            <input matInput [matDatepicker]="dateFromPicker" [value]="dateFrom()" (dateChange)="onDateFromChange($event.value)">
+            <mat-datepicker-toggle matIconSuffix [for]="dateFromPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dateFromPicker></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="date-filter">
             <mat-label>{{ 'generalLedger.filter.toDate' | translate }}</mat-label>
-            <input matInput type="date" [value]="dateTo()" (change)="onDateToChange($event)">
+            <input matInput [matDatepicker]="dateToPicker" [value]="dateTo()" (dateChange)="onDateToChange($event.value)">
+            <mat-datepicker-toggle matIconSuffix [for]="dateToPicker"></mat-datepicker-toggle>
+            <mat-datepicker #dateToPicker></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="type-filter">

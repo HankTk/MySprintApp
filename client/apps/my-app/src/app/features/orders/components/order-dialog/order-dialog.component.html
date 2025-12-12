@@ -145,14 +145,18 @@
 
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'orderDate' | translate }}</mat-label>
-          <input matInput type="date" formControlName="orderDate">
+          <input matInput [matDatepicker]="orderDatePicker" formControlName="orderDate">
+          <mat-datepicker-toggle matIconSuffix [for]="orderDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #orderDatePicker></mat-datepicker>
         </mat-form-field>
       </div>
 
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'shipDate' | translate }}</mat-label>
-          <input matInput type="date" formControlName="shipDate">
+          <input matInput [matDatepicker]="shipDatePicker" formControlName="shipDate">
+          <mat-datepicker-toggle matIconSuffix [for]="shipDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #shipDatePicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
@@ -164,7 +168,9 @@
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'invoiceDate' | translate }}</mat-label>
-          <input matInput type="date" formControlName="invoiceDate">
+          <input matInput [matDatepicker]="invoiceDatePicker" formControlName="invoiceDate">
+          <mat-datepicker-toggle matIconSuffix [for]="invoiceDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #invoiceDatePicker></mat-datepicker>
         </mat-form-field>
       </div>
 

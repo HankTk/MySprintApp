@@ -21,12 +21,16 @@
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'orderDate' | translate }}</mat-label>
-          <input matInput type="date" formControlName="orderDate">
+          <input matInput [matDatepicker]="orderDatePicker" formControlName="orderDate">
+          <mat-datepicker-toggle matIconSuffix [for]="orderDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #orderDatePicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'expectedDeliveryDate' | translate }}</mat-label>
-          <input matInput type="date" formControlName="expectedDeliveryDate">
+          <input matInput [matDatepicker]="expectedDeliveryDatePicker" formControlName="expectedDeliveryDate">
+          <mat-datepicker-toggle matIconSuffix [for]="expectedDeliveryDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #expectedDeliveryDatePicker></mat-datepicker>
         </mat-form-field>
       </div>
 

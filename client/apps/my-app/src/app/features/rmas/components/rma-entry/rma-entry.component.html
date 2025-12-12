@@ -280,7 +280,9 @@
             
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>{{ 'rmaEntry.received.receivedDate' | translate }}</mat-label>
-              <input matInput type="date" [value]="receivedDate()" (input)="receivedDate.set($any($event.target).value)">
+              <input matInput [matDatepicker]="receivedDatePicker" [value]="receivedDate()" (dateChange)="receivedDate.set($event.value)">
+              <mat-datepicker-toggle matIconSuffix [for]="receivedDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #receivedDatePicker></mat-datepicker>
             </mat-form-field>
           </div>
         }
@@ -292,7 +294,9 @@
             
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>{{ 'rmaEntry.processed.processedDate' | translate }}</mat-label>
-              <input matInput type="date" [value]="processedDate()" (input)="processedDate.set($any($event.target).value)">
+              <input matInput [matDatepicker]="processedDatePicker" [value]="processedDate()" (dateChange)="processedDate.set($event.value)">
+              <mat-datepicker-toggle matIconSuffix [for]="processedDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #processedDatePicker></mat-datepicker>
             </mat-form-field>
           </div>
         }

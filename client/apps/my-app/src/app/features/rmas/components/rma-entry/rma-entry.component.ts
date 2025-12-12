@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RMA, CreateRMARequest } from '../../models/rma.model';
 import { Order } from '../../../orders/models/order.model';
@@ -38,6 +39,7 @@ import { firstValueFrom } from 'rxjs';
     MatTableModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     TranslateModule
   ],
   templateUrl: './rma-entry.component.html',
@@ -62,10 +64,10 @@ export class RMAEntryComponent implements OnInit {
   approvalNotes = signal<string>('');
 
   // Received state
-  receivedDate = signal<string>('');
+  receivedDate = signal<Date | null>(null);
 
   // Processed state
-  processedDate = signal<string>('');
+  processedDate = signal<Date | null>(null);
 
   // History state
   historyNote = signal<string>('');
@@ -194,13 +196,15 @@ export class RMAEntryComponent implements OnInit {
       case 'APPROVED':
         this.currentStep.set('received');
         if (rma?.jsonData) {
-          this.receivedDate.set(rma.jsonData.receivedDate || '');
+          const receivedDateStr = rma.jsonData.receivedDate;
+          this.receivedDate.set(receivedDateStr ? new Date(receivedDateStr) : null);
         }
         break;
       case 'RECEIVED':
         this.currentStep.set('processed');
         if (rma?.jsonData) {
-          this.processedDate.set(rma.jsonData.processedDate || '');
+          const processedDateStr = rma.jsonData.processedDate;
+          this.processedDate.set(processedDateStr ? new Date(processedDateStr) : null);
         }
         break;
       case 'PROCESSED':
@@ -575,10 +579,12 @@ export class RMAEntryComponent implements OnInit {
                   this.approvalNotes.set(latestRMA.jsonData.approvalNotes || '');
                   break;
                 case 'received':
-                  this.receivedDate.set(latestRMA.jsonData.receivedDate || '');
+                  const receivedDateStr = latestRMA.jsonData.receivedDate;
+                  this.receivedDate.set(receivedDateStr ? new Date(receivedDateStr) : null);
                   break;
                 case 'processed':
-                  this.processedDate.set(latestRMA.jsonData.processedDate || '');
+                  const processedDateStr = latestRMA.jsonData.processedDate;
+                  this.processedDate.set(processedDateStr ? new Date(processedDateStr) : null);
                   break;
               }
             }
@@ -759,9 +765,9 @@ export class RMAEntryComponent implements OnInit {
     try {
       this.submitting.set(true);
       const jsonData = rma.jsonData || {};
-      jsonData.receivedDate = this.receivedDate();
+      jsonData.receivedDate = this.receivedDate() ? this.receivedDate()!.toISOString().split('T')[0] : null;
       jsonData.receivedAt = new Date().toISOString();
-      const receivedDateObj = this.receivedDate() ? new Date(this.receivedDate() + 'T00:00:00').toISOString() : undefined;
+      const receivedDateObj = this.receivedDate() ? this.receivedDate()!.toISOString() : undefined;
 
       const updated = await firstValueFrom(
         this.rmaService.updateRMA(rma.id, {
@@ -779,7 +785,7 @@ export class RMAEntryComponent implements OnInit {
           '',
           'RECEIVED',
           {
-            receivedDate: this.receivedDate()
+            receivedDate: this.receivedDate() ? this.receivedDate()!.toISOString().split('T')[0] : null
           }
         );
         this.currentStep.set('processed');
@@ -798,9 +804,9 @@ export class RMAEntryComponent implements OnInit {
     try {
       this.submitting.set(true);
       const jsonData = rma.jsonData || {};
-      jsonData.processedDate = this.processedDate();
+      jsonData.processedDate = this.processedDate() ? this.processedDate()!.toISOString().split('T')[0] : null;
       jsonData.processedAt = new Date().toISOString();
-      const processedDateObj = this.processedDate() ? new Date(this.processedDate() + 'T00:00:00').toISOString() : undefined;
+      const processedDateObj = this.processedDate() ? this.processedDate()!.toISOString() : undefined;
 
       const updated = await firstValueFrom(
         this.rmaService.updateRMA(rma.id, {
@@ -817,7 +823,7 @@ export class RMAEntryComponent implements OnInit {
           '',
           'PROCESSED',
           {
-            processedDate: this.processedDate(),
+            processedDate: this.processedDate() ? this.processedDate()!.toISOString().split('T')[0] : null,
             total: rma.total || 0
           }
         );

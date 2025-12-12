@@ -204,7 +204,9 @@
 
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>{{ 'expectedDeliveryDate' | translate }}</mat-label>
-                    <input matInput type="date" [value]="expectedDeliveryDate()" (input)="onExpectedDeliveryDateChange($any($event.target).value)">
+                    <input matInput [matDatepicker]="expectedDeliveryDatePicker" [value]="expectedDeliveryDate()" (dateChange)="onExpectedDeliveryDateChange($event.value)">
+                    <mat-datepicker-toggle matIconSuffix [for]="expectedDeliveryDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #expectedDeliveryDatePicker></mat-datepicker>
                   </mat-form-field>
                 </div>
               }
@@ -247,7 +249,9 @@
             
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>{{ 'purchaseOrderEntry.received.receivedDate' | translate }}</mat-label>
-              <input matInput type="date" [value]="receivedDate()" (input)="receivedDate.set($any($event.target).value)">
+              <input matInput [matDatepicker]="receivedDatePicker" [value]="receivedDate()" (dateChange)="receivedDate.set($event.value)">
+              <mat-datepicker-toggle matIconSuffix [for]="receivedDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #receivedDatePicker></mat-datepicker>
             </mat-form-field>
           </div>
         }
@@ -268,7 +272,9 @@
 
               <mat-form-field appearance="outline" class="form-field">
                 <mat-label>{{ 'invoiceDate' | translate }}</mat-label>
-                <input matInput type="date" [value]="invoiceDate()" (input)="invoiceDate.set($any($event.target).value)">
+                <input matInput [matDatepicker]="invoiceDatePicker" [value]="invoiceDate()" (dateChange)="invoiceDate.set($event.value)">
+                <mat-datepicker-toggle matIconSuffix [for]="invoiceDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #invoiceDatePicker></mat-datepicker>
               </mat-form-field>
             </div>
           </div>

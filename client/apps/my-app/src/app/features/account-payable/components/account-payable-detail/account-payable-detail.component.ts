@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { TranslateModule } from '@ngx-translate/core';
@@ -46,6 +47,7 @@ interface HistoryRecord {
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     MatTableModule,
     MatChipsModule,
     TranslateModule
@@ -59,7 +61,7 @@ export class AccountPayableDetailComponent implements OnInit {
   loading = signal<boolean>(true);
   submitting = signal<boolean>(false);
   paymentAmount = signal<number>(0);
-  paymentDate = signal<string>('');
+  paymentDate = signal<Date | null>(null);
   paymentMethod = signal<string>('');
 
   private route = inject(ActivatedRoute);
@@ -118,7 +120,8 @@ export class AccountPayableDetailComponent implements OnInit {
         // Load payment data from jsonData
         if (po.jsonData) {
           this.paymentAmount.set(po.jsonData.paymentAmount || 0);
-          this.paymentDate.set(po.jsonData.paymentDate || '');
+          const paymentDateStr = po.jsonData.paymentDate;
+          this.paymentDate.set(paymentDateStr ? new Date(paymentDateStr) : null);
           this.paymentMethod.set(po.jsonData.paymentMethod || '');
         }
         
@@ -147,7 +150,7 @@ export class AccountPayableDetailComponent implements OnInit {
       this.submitting.set(true);
       const jsonData = po.jsonData || {};
       jsonData.paymentAmount = this.paymentAmount();
-      jsonData.paymentDate = this.paymentDate();
+      jsonData.paymentDate = this.paymentDate() ? this.paymentDate()!.toISOString().split('T')[0] : null;
       jsonData.paymentMethod = this.paymentMethod();
       
       const updated = await firstValueFrom(
@@ -170,7 +173,7 @@ export class AccountPayableDetailComponent implements OnInit {
           note: `Payment recorded: $${this.paymentAmount().toFixed(2)}`,
           data: {
             paymentAmount: this.paymentAmount(),
-            paymentDate: this.paymentDate(),
+            paymentDate: this.paymentDate() ? this.paymentDate()!.toISOString().split('T')[0] : null,
             paymentMethod: this.paymentMethod()
           }
         };

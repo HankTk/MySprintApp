@@ -12,6 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Order, CreateOrderRequest } from '../../models/order.model';
 import { Customer } from '../../../customers/models/customer.model';
@@ -40,6 +41,7 @@ import { firstValueFrom } from 'rxjs';
     MatProgressSpinnerModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     TranslateModule
   ],
   templateUrl: './order-entry.component.html',
@@ -66,15 +68,15 @@ export class OrderEntryComponent implements OnInit {
 
   // Shipping instruction state
   shippingInstructions = signal<string>('');
-  requestedShipDate = signal<string>('');
+  requestedShipDate = signal<Date | null>(null);
 
   // Shipping state
-  actualShipDate = signal<string>('');
+  actualShipDate = signal<Date | null>(null);
   trackingNumber = signal<string>('');
 
   // Invoicing state
   invoiceNumber = signal<string>('');
-  invoiceDate = signal<string>('');
+  invoiceDate = signal<Date | null>(null);
 
   // History state
   historyNote = signal<string>('');
@@ -213,14 +215,15 @@ export class OrderEntryComponent implements OnInit {
         // Load shipping instruction data
         if (order?.jsonData) {
           this.shippingInstructions.set(order.jsonData.shippingInstructions || '');
-          this.requestedShipDate.set(order.jsonData.requestedShipDate || '');
+          const dateStr = order.jsonData.requestedShipDate;
+          this.requestedShipDate.set(dateStr ? new Date(dateStr) : null);
         }
         break;
       case 'SHIPPED':
         this.currentStep.set('invoicing');
         // Load shipping data
         if (order?.jsonData) {
-          this.actualShipDate.set(order.shipDate ? new Date(order.shipDate).toISOString().split('T')[0] : '');
+          this.actualShipDate.set(order.shipDate ? new Date(order.shipDate) : null);
           this.trackingNumber.set(order.jsonData.trackingNumber || '');
         }
         break;
@@ -231,9 +234,10 @@ export class OrderEntryComponent implements OnInit {
         if (order) {
           this.invoiceNumber.set(order.invoiceNumber || order.jsonData?.invoiceNumber || '');
           if (order.invoiceDate) {
-            this.invoiceDate.set(new Date(order.invoiceDate).toISOString().split('T')[0]);
+            this.invoiceDate.set(new Date(order.invoiceDate));
           } else if (order.jsonData?.invoiceDate) {
-            this.invoiceDate.set(order.jsonData.invoiceDate);
+            const dateStr = order.jsonData.invoiceDate;
+            this.invoiceDate.set(dateStr ? new Date(dateStr) : null);
           }
         }
         break;
@@ -555,20 +559,22 @@ export class OrderEntryComponent implements OnInit {
                   break;
                 case 'shipping_instruction':
                   this.shippingInstructions.set(latestOrder.jsonData.shippingInstructions || '');
-                  this.requestedShipDate.set(latestOrder.jsonData.requestedShipDate || '');
+                  const dateStr = latestOrder.jsonData.requestedShipDate;
+                  this.requestedShipDate.set(dateStr ? new Date(dateStr) : null);
                   break;
                 case 'shipping':
                   if (latestOrder.shipDate) {
-                    this.actualShipDate.set(new Date(latestOrder.shipDate).toISOString().split('T')[0]);
+                    this.actualShipDate.set(new Date(latestOrder.shipDate));
                   }
                   this.trackingNumber.set(latestOrder.jsonData.trackingNumber || '');
                   break;
                 case 'invoicing':
                   this.invoiceNumber.set(latestOrder.invoiceNumber || latestOrder.jsonData.invoiceNumber || '');
                   if (latestOrder.invoiceDate) {
-                    this.invoiceDate.set(new Date(latestOrder.invoiceDate).toISOString().split('T')[0]);
+                    this.invoiceDate.set(new Date(latestOrder.invoiceDate));
                   } else if (latestOrder.jsonData.invoiceDate) {
-                    this.invoiceDate.set(latestOrder.jsonData.invoiceDate);
+                    const invDateStr = latestOrder.jsonData.invoiceDate;
+                    this.invoiceDate.set(invDateStr ? new Date(invDateStr) : null);
                   }
                   // Auto-load invoice number if not set
                   if (!this.invoiceNumber()) {
@@ -800,7 +806,7 @@ export class OrderEntryComponent implements OnInit {
       this.submitting.set(true);
       const jsonData = order.jsonData || {};
       jsonData.shippingInstructions = this.shippingInstructions();
-      jsonData.requestedShipDate = this.requestedShipDate();
+      jsonData.requestedShipDate = this.requestedShipDate() ? this.requestedShipDate()!.toISOString().split('T')[0] : null;
 
       const updated = await firstValueFrom(
         this.orderService.updateOrder(order.id, {
@@ -818,7 +824,7 @@ export class OrderEntryComponent implements OnInit {
           this.shippingInstructions(),
           'SHIPPING_INSTRUCTED',
           {
-            requestedShipDate: this.requestedShipDate()
+            requestedShipDate: this.requestedShipDate() ? this.requestedShipDate()!.toISOString().split('T')[0] : null
           }
         );
         this.currentStep.set('shipping');
@@ -838,7 +844,7 @@ export class OrderEntryComponent implements OnInit {
       this.submitting.set(true);
       const jsonData = order.jsonData || {};
       jsonData.trackingNumber = this.trackingNumber();
-      const shipDate = this.actualShipDate() ? new Date(this.actualShipDate()).toISOString() : new Date().toISOString();
+      const shipDate = this.actualShipDate() ? this.actualShipDate()!.toISOString() : new Date().toISOString();
 
       const updated = await firstValueFrom(
         this.orderService.updateOrder(order.id, {
@@ -880,8 +886,8 @@ export class OrderEntryComponent implements OnInit {
       this.submitting.set(true);
       const jsonData = order.jsonData || {};
       jsonData.invoiceNumber = this.invoiceNumber();
-      jsonData.invoiceDate = this.invoiceDate();
-      const invoiceDateObj = this.invoiceDate() ? new Date(this.invoiceDate() + 'T00:00:00').toISOString() : undefined;
+      const invoiceDateObj = this.invoiceDate() ? this.invoiceDate()!.toISOString() : undefined;
+      jsonData.invoiceDate = invoiceDateObj ? invoiceDateObj.split('T')[0] : null;
 
       const updated = await firstValueFrom(
         this.orderService.updateOrder(order.id, {
@@ -921,8 +927,7 @@ export class OrderEntryComponent implements OnInit {
       if (response && response.invoiceNumber) {
         this.invoiceNumber.set(response.invoiceNumber);
         if (!this.invoiceDate()) {
-          const today = new Date().toISOString().split('T')[0];
-          this.invoiceDate.set(today);
+          this.invoiceDate.set(new Date());
         }
       }
     } catch (err) {

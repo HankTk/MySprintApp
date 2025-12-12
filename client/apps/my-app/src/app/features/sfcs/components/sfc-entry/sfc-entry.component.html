@@ -129,7 +129,9 @@
             
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>{{ 'sfcEntry.inProgress.startedDate' | translate }}</mat-label>
-              <input matInput type="date" [value]="startedDate()" (input)="startedDate.set($any($event.target).value)">
+              <input matInput [matDatepicker]="startedDatePicker" [value]="startedDate()" (dateChange)="startedDate.set($event.value)">
+              <mat-datepicker-toggle matIconSuffix [for]="startedDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #startedDatePicker></mat-datepicker>
             </mat-form-field>
           </div>
         }
@@ -141,7 +143,9 @@
             
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>{{ 'sfcEntry.completed.completedDate' | translate }}</mat-label>
-              <input matInput type="date" [value]="completedDate()" (input)="completedDate.set($any($event.target).value)">
+              <input matInput [matDatepicker]="completedDatePicker" [value]="completedDate()" (dateChange)="completedDate.set($event.value)">
+              <mat-datepicker-toggle matIconSuffix [for]="completedDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #completedDatePicker></mat-datepicker>
             </mat-form-field>
           </div>
         }

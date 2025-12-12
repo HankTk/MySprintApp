@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { Order, CreateOrderRequest, OrderItem } from '../../models/order.model';
 import { Customer } from '../../../customers/models/customer.model';
@@ -39,6 +41,8 @@ export interface OrderDialogData {
     MatIconModule,
     MatSelectModule,
     MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     TranslateModule
   ],
   templateUrl: './order-dialog.component.html',

@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SFC, CreateSFCRequest } from '../../models/sfc.model';
 import { RMA } from '../../../rmas/models/rma.model';
@@ -39,6 +40,7 @@ import { firstValueFrom } from 'rxjs';
     MatTableModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     TranslateModule
   ],
   templateUrl: './sfc-entry.component.html',
@@ -59,10 +61,10 @@ export class SFCEntryComponent implements OnInit {
   notes = signal<string>('');
 
   // In Progress state
-  startedDate = signal<string>('');
+  startedDate = signal<Date | null>(null);
 
   // Completed state
-  completedDate = signal<string>('');
+  completedDate = signal<Date | null>(null);
 
   // History state
   historyNote = signal<string>('');
@@ -180,10 +182,10 @@ export class SFCEntryComponent implements OnInit {
         this.assignedTo.set(sfc.assignedTo || null);
         this.notes.set(sfc.notes || '');
         if (sfc.startedDate) {
-          this.startedDate.set(new Date(sfc.startedDate).toISOString().split('T')[0]);
+          this.startedDate.set(new Date(sfc.startedDate));
         }
         if (sfc.completedDate) {
-          this.completedDate.set(new Date(sfc.completedDate).toISOString().split('T')[0]);
+          this.completedDate.set(new Date(sfc.completedDate));
         }
         // Set step based on SFC status
         this.setStepFromStatus(sfc.status);
@@ -214,13 +216,13 @@ export class SFCEntryComponent implements OnInit {
       case 'IN_PROGRESS':
         this.currentStep.set('in_progress');
         if (sfc?.startedDate) {
-          this.startedDate.set(new Date(sfc.startedDate).toISOString().split('T')[0]);
+          this.startedDate.set(new Date(sfc.startedDate));
         }
         break;
       case 'COMPLETED':
         this.currentStep.set('history');
         if (sfc?.completedDate) {
-          this.completedDate.set(new Date(sfc.completedDate).toISOString().split('T')[0]);
+          this.completedDate.set(new Date(sfc.completedDate));
         }
         break;
       default:
@@ -484,12 +486,12 @@ export class SFCEntryComponent implements OnInit {
               switch (stepKey) {
                 case 'in_progress':
                   if (latestSFC.startedDate) {
-                    this.startedDate.set(new Date(latestSFC.startedDate).toISOString().split('T')[0]);
+                    this.startedDate.set(new Date(latestSFC.startedDate));
                   }
                   break;
                 case 'completed':
                   if (latestSFC.completedDate) {
-                    this.completedDate.set(new Date(latestSFC.completedDate).toISOString().split('T')[0]);
+                    this.completedDate.set(new Date(latestSFC.completedDate));
                   }
                   break;
               }
@@ -626,8 +628,8 @@ export class SFCEntryComponent implements OnInit {
     try {
       this.submitting.set(true);
       const jsonData = sfc.jsonData || {};
-      jsonData.startedDate = this.startedDate();
-      const startedDateObj = this.startedDate() ? new Date(this.startedDate() + 'T00:00:00').toISOString() : undefined;
+      const startedDateObj = this.startedDate() ? this.startedDate()!.toISOString() : undefined;
+      jsonData.startedDate = startedDateObj ? startedDateObj.split('T')[0] : null;
 
       const updated = await firstValueFrom(
         this.sfcService.updateSFC(sfc.id, {
@@ -645,7 +647,7 @@ export class SFCEntryComponent implements OnInit {
           '',
           'IN_PROGRESS',
           {
-            startedDate: this.startedDate()
+            startedDate: this.startedDate() ? this.startedDate()!.toISOString().split('T')[0] : null
           }
         );
         this.currentStep.set('completed');
@@ -664,8 +666,8 @@ export class SFCEntryComponent implements OnInit {
     try {
       this.submitting.set(true);
       const jsonData = sfc.jsonData || {};
-      jsonData.completedDate = this.completedDate();
-      const completedDateObj = this.completedDate() ? new Date(this.completedDate() + 'T00:00:00').toISOString() : undefined;
+      const completedDateObj = this.completedDate() ? this.completedDate()!.toISOString() : undefined;
+      jsonData.completedDate = completedDateObj ? completedDateObj.split('T')[0] : null;
 
       const updated = await firstValueFrom(
         this.sfcService.updateSFC(sfc.id, {
@@ -683,7 +685,7 @@ export class SFCEntryComponent implements OnInit {
           '',
           'COMPLETED',
           {
-            completedDate: this.completedDate()
+            completedDate: this.completedDate() ? this.completedDate()!.toISOString().split('T')[0] : null
           }
         );
         this.currentStep.set('history');

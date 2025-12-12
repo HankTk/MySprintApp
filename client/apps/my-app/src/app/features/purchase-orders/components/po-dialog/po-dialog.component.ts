@@ -5,6 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { PurchaseOrder, CreatePurchaseOrderRequest } from '../../models/purchase-order.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
@@ -25,6 +27,8 @@ export interface PurchaseOrderDialogData {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     TranslateModule
   ],
   templateUrl: './po-dialog.component.html',

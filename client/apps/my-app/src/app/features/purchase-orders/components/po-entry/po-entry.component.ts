@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PurchaseOrder, CreatePurchaseOrderRequest } from '../../models/purchase-order.model';
 import { Vendor } from '../../../vendors/models/vendor.model';
@@ -38,6 +39,7 @@ import { firstValueFrom } from 'rxjs';
     MatTableModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     TranslateModule
   ],
   templateUrl: './po-entry.component.html',
@@ -59,17 +61,17 @@ export class PurchaseOrderEntryComponent implements OnInit {
   // Shipping address state
   shippingId = signal<string | null>(null);
   billingId = signal<string | null>(null);
-  expectedDeliveryDate = signal<string>('');
+  expectedDeliveryDate = signal<Date | null>(null);
 
   // Approval state
   approvalNotes = signal<string>('');
 
   // Received state
-  receivedDate = signal<string>('');
+  receivedDate = signal<Date | null>(null);
 
   // Invoicing state
   invoiceNumber = signal<string>('');
-  invoiceDate = signal<string>('');
+  invoiceDate = signal<Date | null>(null);
 
   // History state
   historyNote = signal<string>('');
@@ -157,6 +159,10 @@ export class PurchaseOrderEntryComponent implements OnInit {
         if (po.supplierId) {
           await this.loadAddresses(po.supplierId);
         }
+        // Load expected delivery date
+        if (po.expectedDeliveryDate) {
+          this.expectedDeliveryDate.set(new Date(po.expectedDeliveryDate));
+        }
         // Set step based on PO status
         await this.setStepFromStatus(po.status);
       }
@@ -196,7 +202,8 @@ export class PurchaseOrderEntryComponent implements OnInit {
       case 'APPROVED':
         this.currentStep.set('received');
         if (po?.jsonData) {
-          this.receivedDate.set(po.jsonData.receivedDate || '');
+          const receivedDateStr = po.jsonData.receivedDate;
+          this.receivedDate.set(receivedDateStr ? new Date(receivedDateStr) : null);
         }
         break;
       case 'RECEIVED':
@@ -204,9 +211,10 @@ export class PurchaseOrderEntryComponent implements OnInit {
         if (po) {
           this.invoiceNumber.set(po.invoiceNumber || po.jsonData?.invoiceNumber || '');
           if (po.invoiceDate) {
-            this.invoiceDate.set(new Date(po.invoiceDate).toISOString().split('T')[0]);
+            this.invoiceDate.set(new Date(po.invoiceDate));
           } else if (po.jsonData?.invoiceDate) {
-            this.invoiceDate.set(po.jsonData.invoiceDate);
+            const invoiceDateStr = po.jsonData.invoiceDate;
+            this.invoiceDate.set(invoiceDateStr ? new Date(invoiceDateStr) : null);
           }
           if (!this.invoiceNumber()) {
             await this.loadInvoiceNumber();
@@ -219,9 +227,10 @@ export class PurchaseOrderEntryComponent implements OnInit {
         if (po) {
           this.invoiceNumber.set(po.invoiceNumber || po.jsonData?.invoiceNumber || '');
           if (po.invoiceDate) {
-            this.invoiceDate.set(new Date(po.invoiceDate).toISOString().split('T')[0]);
+            this.invoiceDate.set(new Date(po.invoiceDate));
           } else if (po.jsonData?.invoiceDate) {
-            this.invoiceDate.set(po.jsonData.invoiceDate);
+            const invoiceDateStr = po.jsonData.invoiceDate;
+            this.invoiceDate.set(invoiceDateStr ? new Date(invoiceDateStr) : null);
           }
         }
         break;
@@ -414,7 +423,7 @@ export class PurchaseOrderEntryComponent implements OnInit {
     }
   }
 
-  async onExpectedDeliveryDateChange(date: string): Promise<void> {
+  async onExpectedDeliveryDateChange(date: Date | null): Promise<void> {
     const po = this.po();
     if (!po || !po.id) {
       return;
@@ -422,7 +431,7 @@ export class PurchaseOrderEntryComponent implements OnInit {
 
     try {
       this.loading.set(true);
-      const dateObj = date ? new Date(date + 'T00:00:00').toISOString() : undefined;
+      const dateObj = date ? date.toISOString() : undefined;
       const updated = await firstValueFrom(
         this.poService.updatePurchaseOrder(po.id, {
           ...po,
@@ -546,14 +555,16 @@ export class PurchaseOrderEntryComponent implements OnInit {
                   this.approvalNotes.set(latestPO.jsonData.approvalNotes || '');
                   break;
                 case 'received':
-                  this.receivedDate.set(latestPO.jsonData.receivedDate || '');
+                  const receivedDateStr = latestPO.jsonData.receivedDate;
+                  this.receivedDate.set(receivedDateStr ? new Date(receivedDateStr) : null);
                   break;
                 case 'invoicing':
                   this.invoiceNumber.set(latestPO.invoiceNumber || latestPO.jsonData.invoiceNumber || '');
                   if (latestPO.invoiceDate) {
-                    this.invoiceDate.set(new Date(latestPO.invoiceDate).toISOString().split('T')[0]);
+                    this.invoiceDate.set(new Date(latestPO.invoiceDate));
                   } else if (latestPO.jsonData.invoiceDate) {
-                    this.invoiceDate.set(latestPO.jsonData.invoiceDate);
+                    const invDateStr = latestPO.jsonData.invoiceDate;
+                    this.invoiceDate.set(invDateStr ? new Date(invDateStr) : null);
                   }
                   if (!this.invoiceNumber()) {
                     await this.loadInvoiceNumber();
@@ -740,7 +751,7 @@ export class PurchaseOrderEntryComponent implements OnInit {
     try {
       this.submitting.set(true);
       const jsonData = po.jsonData || {};
-      jsonData.receivedDate = this.receivedDate();
+      jsonData.receivedDate = this.receivedDate() ? this.receivedDate()!.toISOString().split('T')[0] : null;
       jsonData.receivedAt = new Date().toISOString();
 
       const updated = await firstValueFrom(
@@ -758,7 +769,7 @@ export class PurchaseOrderEntryComponent implements OnInit {
           '',
           'RECEIVED',
           {
-            receivedDate: this.receivedDate()
+            receivedDate: this.receivedDate() ? this.receivedDate()!.toISOString().split('T')[0] : null
           }
         );
         await this.loadInvoiceNumber();
@@ -779,8 +790,8 @@ export class PurchaseOrderEntryComponent implements OnInit {
       this.submitting.set(true);
       const jsonData = po.jsonData || {};
       jsonData.invoiceNumber = this.invoiceNumber();
-      jsonData.invoiceDate = this.invoiceDate();
-      const invoiceDateObj = this.invoiceDate() ? new Date(this.invoiceDate() + 'T00:00:00').toISOString() : undefined;
+      const invoiceDateObj = this.invoiceDate() ? this.invoiceDate()!.toISOString() : undefined;
+      jsonData.invoiceDate = invoiceDateObj ? invoiceDateObj.split('T')[0] : null;
 
       const updated = await firstValueFrom(
         this.poService.updatePurchaseOrder(po.id, {
@@ -800,7 +811,7 @@ export class PurchaseOrderEntryComponent implements OnInit {
           'INVOICED',
           {
             invoiceNumber: this.invoiceNumber(),
-            invoiceDate: this.invoiceDate(),
+            invoiceDate: this.invoiceDate() ? this.invoiceDate()!.toISOString().split('T')[0] : null,
             total: po.total || 0
           }
         );
@@ -819,8 +830,7 @@ export class PurchaseOrderEntryComponent implements OnInit {
       if (response && response.invoiceNumber) {
         this.invoiceNumber.set(response.invoiceNumber);
         if (!this.invoiceDate()) {
-          const today = new Date().toISOString().split('T')[0];
-          this.invoiceDate.set(today);
+          this.invoiceDate.set(new Date());
         }
       }
     } catch (err) {

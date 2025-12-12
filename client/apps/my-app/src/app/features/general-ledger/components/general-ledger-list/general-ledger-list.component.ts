@@ -10,6 +10,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { GeneralLedgerService } from '../../services/general-ledger.service';
 import { GLEntry, GLEntryType } from '../../models/general-ledger-entry.model';
@@ -29,6 +31,8 @@ import { GLEntry, GLEntryType } from '../../models/general-ledger-entry.model';
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     TranslateModule
   ],
   templateUrl: './general-ledger-list.component.html',
@@ -39,8 +43,8 @@ export class GeneralLedgerListComponent implements OnInit {
   glEntries = signal<GLEntry[]>([]);
   filteredEntries = signal<GLEntry[]>([]);
   typeFilter = signal<GLEntryType | null>(null);
-  dateFrom = signal<string>('');
-  dateTo = signal<string>('');
+  dateFrom = signal<Date | null>(null);
+  dateTo = signal<Date | null>(null);
 
   displayedColumns = signal<string[]>(['date', 'type', 'orderPoInvoice', 'customerSupplier', 'description', 'quantity', 'debit', 'credit', 'actions']);
 
@@ -80,11 +84,13 @@ export class GeneralLedgerListComponent implements OnInit {
     }
     
     if (this.dateFrom()) {
-      entries = entries.filter(e => e.date >= this.dateFrom());
+      const fromDateStr = this.dateFrom()!.toISOString().split('T')[0];
+      entries = entries.filter(e => e.date >= fromDateStr);
     }
     
     if (this.dateTo()) {
-      entries = entries.filter(e => e.date <= this.dateTo());
+      const toDateStr = this.dateTo()!.toISOString().split('T')[0];
+      entries = entries.filter(e => e.date <= toDateStr);
     }
     
     this.filteredEntries.set(entries);
@@ -94,14 +100,12 @@ export class GeneralLedgerListComponent implements OnInit {
     this.typeFilter.set(value as GLEntryType | null);
   }
 
-  onDateFromChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.dateFrom.set(input.value);
+  onDateFromChange(date: Date | null): void {
+    this.dateFrom.set(date);
   }
 
-  onDateToChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.dateTo.set(input.value);
+  onDateToChange(date: Date | null): void {
+    this.dateTo.set(date);
   }
 
   formatDate(dateString: string): string {

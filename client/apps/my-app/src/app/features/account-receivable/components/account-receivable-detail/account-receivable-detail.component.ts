@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { TranslateModule } from '@ngx-translate/core';
@@ -49,6 +50,7 @@ interface HistoryRecord {
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     MatTableModule,
     MatChipsModule,
     TranslateModule
@@ -62,7 +64,7 @@ export class AccountReceivableDetailComponent implements OnInit {
   loading = signal<boolean>(true);
   submitting = signal<boolean>(false);
   paymentAmount = signal<number>(0);
-  paymentDate = signal<string>('');
+  paymentDate = signal<Date | null>(null);
   paymentMethod = signal<string>('');
 
   private route = inject(ActivatedRoute);
@@ -123,7 +125,8 @@ export class AccountReceivableDetailComponent implements OnInit {
         // Load payment data from jsonData
         if (order.jsonData) {
           this.paymentAmount.set(order.jsonData.paymentAmount || 0);
-          this.paymentDate.set(order.jsonData.paymentDate || '');
+          const paymentDateStr = order.jsonData.paymentDate;
+          this.paymentDate.set(paymentDateStr ? new Date(paymentDateStr) : null);
           this.paymentMethod.set(order.jsonData.paymentMethod || '');
         }
         
@@ -166,7 +169,7 @@ export class AccountReceivableDetailComponent implements OnInit {
       this.submitting.set(true);
       const jsonData = order.jsonData || {};
       jsonData.paymentAmount = this.paymentAmount();
-      jsonData.paymentDate = this.paymentDate();
+      jsonData.paymentDate = this.paymentDate() ? this.paymentDate()!.toISOString().split('T')[0] : null;
       jsonData.paymentMethod = this.paymentMethod();
       
       const updated = await firstValueFrom(
@@ -189,7 +192,7 @@ export class AccountReceivableDetailComponent implements OnInit {
           note: `Payment recorded: $${this.paymentAmount().toFixed(2)}`,
           data: {
             paymentAmount: this.paymentAmount(),
-            paymentDate: this.paymentDate(),
+            paymentDate: this.paymentDate() ? this.paymentDate()!.toISOString().split('T')[0] : null,
             paymentMethod: this.paymentMethod()
           }
         };

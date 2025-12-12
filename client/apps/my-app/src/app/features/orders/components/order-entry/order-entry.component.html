@@ -273,15 +273,19 @@
           <div class="step-content">
             <h3>{{ 'orderEntry.step.shippingInstruction' | translate }}</h3>
             
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>{{ 'orderEntry.shippingInstruction.instructions' | translate }}</mat-label>
-              <textarea matInput [value]="shippingInstructions()" (input)="shippingInstructions.set($any($event.target).value)" rows="4"></textarea>
-            </mat-form-field>
+            <div class="form-fields">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'orderEntry.shippingInstruction.instructions' | translate }}</mat-label>
+                <textarea matInput [value]="shippingInstructions()" (input)="shippingInstructions.set($any($event.target).value)" rows="4"></textarea>
+              </mat-form-field>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>{{ 'orderEntry.shippingInstruction.requestedShipDate' | translate }}</mat-label>
-              <input matInput type="date" [value]="requestedShipDate()" (input)="requestedShipDate.set($any($event.target).value)">
-            </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'orderEntry.shippingInstruction.requestedShipDate' | translate }}</mat-label>
+                <input matInput [matDatepicker]="requestedShipDatePicker" [value]="requestedShipDate()" (dateChange)="requestedShipDate.set($event.value)">
+                <mat-datepicker-toggle matIconSuffix [for]="requestedShipDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #requestedShipDatePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
           </div>
         }
 
@@ -290,15 +294,19 @@
           <div class="step-content">
             <h3>{{ 'orderEntry.step.shipping' | translate }}</h3>
             
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>{{ 'orderEntry.shipping.actualShipDate' | translate }}</mat-label>
-              <input matInput type="date" [value]="actualShipDate()" (input)="actualShipDate.set($any($event.target).value)">
-            </mat-form-field>
+            <div class="form-fields">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'orderEntry.shipping.actualShipDate' | translate }}</mat-label>
+                <input matInput [matDatepicker]="actualShipDatePicker" [value]="actualShipDate()" (dateChange)="actualShipDate.set($event.value)">
+                <mat-datepicker-toggle matIconSuffix [for]="actualShipDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #actualShipDatePicker></mat-datepicker>
+              </mat-form-field>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>{{ 'orderEntry.shipping.trackingNumber' | translate }}</mat-label>
-              <input matInput [value]="trackingNumber()" (input)="trackingNumber.set($any($event.target).value)">
-            </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'orderEntry.shipping.trackingNumber' | translate }}</mat-label>
+                <input matInput [value]="trackingNumber()" (input)="trackingNumber.set($any($event.target).value)">
+              </mat-form-field>
+            </div>
           </div>
         }
 
@@ -307,8 +315,8 @@
           <div class="step-content">
             <h3>{{ 'orderEntry.step.invoicing' | translate }}</h3>
             
-            <div class="form-row">
-              <mat-form-field appearance="outline" class="form-field">
+            <div class="form-fields">
+              <mat-form-field appearance="outline" class="full-width">
                 <mat-label>{{ 'invoiceNumber' | translate }}</mat-label>
                 <input matInput [value]="invoiceNumber()" (input)="invoiceNumber.set($any($event.target).value)">
                 <button mat-icon-button matSuffix (click)="loadInvoiceNumber()" [disabled]="loading()">
@@ -316,9 +324,11 @@
                 </button>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field appearance="outline" class="full-width">
                 <mat-label>{{ 'invoiceDate' | translate }}</mat-label>
-                <input matInput type="date" [value]="invoiceDate()" (input)="invoiceDate.set($any($event.target).value)">
+                <input matInput [matDatepicker]="invoiceDatePicker" [value]="invoiceDate()" (dateChange)="invoiceDate.set($event.value)">
+                <mat-datepicker-toggle matIconSuffix [for]="invoiceDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #invoiceDatePicker></mat-datepicker>
               </mat-form-field>
             </div>
           </div>
@@ -329,38 +339,44 @@
           <div class="step-content">
             <h3>{{ 'orderEntry.step.history' | translate }}</h3>
             
-            <div class="history-section">
-              <h4>{{ 'orderEntry.history.addNote' | translate }}</h4>
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>{{ 'notes' | translate }}</mat-label>
-                <textarea matInput [value]="historyNote()" (input)="historyNote.set($any($event.target).value)" rows="3"></textarea>
-              </mat-form-field>
-              <button
-                mat-raised-button
-                color="primary"
-                (click)="handleAddHistoryNote()"
-                [disabled]="!historyNote() || submitting()">
-                {{ 'add' | translate }}
-              </button>
-            </div>
+            <div class="history-content">
+              <div class="history-section">
+                <h4>{{ 'orderEntry.history.addNote' | translate }}</h4>
+                <div class="form-fields">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>{{ 'notes' | translate }}</mat-label>
+                    <textarea matInput [value]="historyNote()" (input)="historyNote.set($any($event.target).value)" rows="3"></textarea>
+                  </mat-form-field>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="handleAddHistoryNote()"
+                    [disabled]="!historyNote() || submitting()">
+                    {{ 'add' | translate }}
+                  </button>
+                </div>
+              </div>
 
-            <div class="history-list">
-              <h4>{{ 'orderEntry.history.history' | translate }}</h4>
-              @if (orderHistory().length > 0) {
-                @for (record of orderHistory(); track record.timestamp) {
-                  <div class="history-item">
-                    <div class="history-header">
-                      <strong>{{ record.stepLabel || record.step }}</strong>
-                      <span class="history-date">{{ record.timestamp | date:'short' }}</span>
-                    </div>
-                    @if (record.notes || record.note) {
-                      <p class="history-notes">{{ record.notes || record.note }}</p>
+              <div class="history-list">
+                <h4>{{ 'orderEntry.history.history' | translate }}</h4>
+                @if (orderHistory().length > 0) {
+                  <div class="history-items">
+                    @for (record of orderHistory(); track record.timestamp) {
+                      <div class="history-item">
+                        <div class="history-header">
+                          <strong>{{ record.stepLabel || record.step }}</strong>
+                          <span class="history-date">{{ record.timestamp | date:'short' }}</span>
+                        </div>
+                        @if (record.notes || record.note) {
+                          <p class="history-notes">{{ record.notes || record.note }}</p>
+                        }
+                      </div>
                     }
                   </div>
+                } @else {
+                  <p class="no-history">{{ 'orderEntry.history.noHistory' | translate }}</p>
                 }
-              } @else {
-                <p>{{ 'orderEntry.history.noHistory' | translate }}</p>
-              }
+              </div>
             </div>
           </div>
         }

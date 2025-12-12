@@ -33,7 +33,9 @@
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'rmaDate' | translate }}</mat-label>
-          <input matInput type="date" formControlName="rmaDate">
+          <input matInput [matDatepicker]="rmaDatePicker" formControlName="rmaDate">
+          <mat-datepicker-toggle matIconSuffix [for]="rmaDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #rmaDatePicker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
