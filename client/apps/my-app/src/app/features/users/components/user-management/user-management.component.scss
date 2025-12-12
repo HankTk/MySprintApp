@@ -6,6 +6,9 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 
     .header-content {
       display: flex;
@@ -50,12 +53,22 @@
         margin-left: auto;
       }
     }
+
+    mat-card-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      padding: 0;
+    }
   }
 
   .add-user-section {
-    padding: 16px 0;
+    padding: var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg);
     border-bottom: 1px solid var(--border-primary);
-    margin-bottom: 24px;
+    margin-bottom: var(--spacing-lg);
+    flex-shrink: 0;
 
     .add-user-button {
       .mat-icon {
@@ -66,10 +79,28 @@
 
   .table-container {
     position: relative;
-    min-height: 200px;
+    overflow-x: auto;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    padding: 0 var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
 
     .user-table {
       width: 100%;
+
+      ::ng-deep {
+        thead tr {
+          position: sticky;
+          top: 0;
+          background-color: var(--bg-table-header, white);
+          z-index: 10;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+          background-color: var(--bg-table-header, white);
+        }
+      }
       background: var(--bg-table);
       border-radius: 4px;
       overflow: hidden;
