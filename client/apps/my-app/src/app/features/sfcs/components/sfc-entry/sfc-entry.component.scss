@@ -4,8 +4,22 @@
   padding: var(--spacing-lg);
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+  min-height: calc(100dvh - var(--header-height));
 
   .main-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: calc(100dvh - var(--header-height) - 148px);
+
+    mat-card-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding-bottom: 0;
+      overflow: hidden;
+    }
     .header-content {
       display: flex;
       align-items: center;
@@ -183,7 +197,7 @@
 
   .step-content {
     padding: var(--spacing-lg);
-    min-height: 400px;
+    min-height: 370px;
 
     h3 {
       margin-top: 0;
@@ -255,17 +269,29 @@
   }
 
   .navigation-buttons {
+    position: sticky;
+    bottom: 0;
     display: flex;
     justify-content: space-between;
-    margin-top: var(--spacing-xl);
-    padding-top: var(--spacing-lg);
+    margin-top: auto;
+    margin-bottom: 0;
+    padding: var(--spacing-lg);
     border-top: 1px solid var(--border-primary, #e5e7eb);
+    background-color: white;
+    z-index: 10;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
 
     button {
       display: flex;
       align-items: center;
       gap: var(--spacing-xs);
     }
+  }
+}
+
+:host-context(.dark-theme) .sfc-entry-container {
+  .navigation-buttons {
+    background-color: var(--bg-primary, #121212);
   }
 }
 

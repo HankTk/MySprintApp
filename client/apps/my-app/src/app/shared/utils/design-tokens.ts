@@ -139,7 +139,7 @@ export const DesignTokens = {
     xxxl: 64,    // 64px
     
     // Layout Spacing
-    headerHeight: 64,
+    headerHeight: 70,
     sidebarWidth: 280,
     sidebarCollapsedWidth: 64,
     containerPadding: 24,

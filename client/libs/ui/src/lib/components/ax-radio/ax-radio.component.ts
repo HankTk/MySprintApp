@@ -33,9 +33,7 @@ export class AxRadioComponent implements ControlValueAccessor {
   onTouched = () => {};
 
   writeValue(value: string): void {
-    if (this.value !== undefined) {
-      this.checked = this.value === value;
-    }
+    this.checked = this.value === value;
   }
 
   registerOnChange(fn: (value: string) => void): void {
