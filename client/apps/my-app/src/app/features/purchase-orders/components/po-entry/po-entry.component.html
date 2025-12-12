@@ -247,12 +247,14 @@
           <div class="step-content">
             <h3>{{ 'purchaseOrderEntry.step.received' | translate }}</h3>
             
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>{{ 'purchaseOrderEntry.received.receivedDate' | translate }}</mat-label>
-              <input matInput [matDatepicker]="receivedDatePicker" [value]="receivedDate()" (dateChange)="receivedDate.set($event.value)">
-              <mat-datepicker-toggle matIconSuffix [for]="receivedDatePicker"></mat-datepicker-toggle>
-              <mat-datepicker #receivedDatePicker></mat-datepicker>
-            </mat-form-field>
+            <div class="form-fields">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'purchaseOrderEntry.received.receivedDate' | translate }}</mat-label>
+                <input matInput [matDatepicker]="receivedDatePicker" [value]="receivedDate()" (dateChange)="receivedDate.set($event.value)">
+                <mat-datepicker-toggle matIconSuffix [for]="receivedDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #receivedDatePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
           </div>
         }
 
@@ -261,8 +263,8 @@
           <div class="step-content">
             <h3>{{ 'purchaseOrderEntry.step.invoicing' | translate }}</h3>
             
-            <div class="form-row">
-              <mat-form-field appearance="outline" class="form-field">
+            <div class="form-fields">
+              <mat-form-field appearance="outline" class="full-width">
                 <mat-label>{{ 'invoiceNumber' | translate }}</mat-label>
                 <input matInput [value]="invoiceNumber()" (input)="invoiceNumber.set($any($event.target).value)">
                 <button mat-icon-button matSuffix (click)="loadInvoiceNumber()" [disabled]="loading()">
@@ -270,7 +272,7 @@
                 </button>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="form-field">
+              <mat-form-field appearance="outline" class="full-width">
                 <mat-label>{{ 'invoiceDate' | translate }}</mat-label>
                 <input matInput [matDatepicker]="invoiceDatePicker" [value]="invoiceDate()" (dateChange)="invoiceDate.set($event.value)">
                 <mat-datepicker-toggle matIconSuffix [for]="invoiceDatePicker"></mat-datepicker-toggle>
@@ -285,48 +287,54 @@
           <div class="step-content">
             <h3>{{ 'purchaseOrderEntry.step.history' | translate }}</h3>
             
-            <div class="history-section">
-              <h4>{{ 'purchaseOrderEntry.history.addNote' | translate }}</h4>
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>{{ 'notes' | translate }}</mat-label>
-                <textarea matInput [value]="historyNote()" (input)="historyNote.set($any($event.target).value)" rows="3"></textarea>
-              </mat-form-field>
-              <button
-                mat-raised-button
-                color="primary"
-                (click)="handleAddHistoryNote()"
-                [disabled]="!historyNote() || submitting()">
-                {{ 'add' | translate }}
-              </button>
-            </div>
+            <div class="history-content">
+              <div class="history-section">
+                <h4>{{ 'purchaseOrderEntry.history.addNote' | translate }}</h4>
+                <div class="form-fields">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>{{ 'notes' | translate }}</mat-label>
+                    <textarea matInput [value]="historyNote()" (input)="historyNote.set($any($event.target).value)" rows="3"></textarea>
+                  </mat-form-field>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="handleAddHistoryNote()"
+                    [disabled]="!historyNote() || submitting()">
+                    {{ 'add' | translate }}
+                  </button>
+                </div>
+              </div>
 
-            <div class="history-list">
-              <h4>{{ 'purchaseOrderEntry.history.history' | translate }}</h4>
-              @if (poHistory().length > 0) {
-                @for (record of poHistory(); track record.timestamp) {
-                  <div class="history-item">
-                    <div class="history-header">
-                      <strong>{{ record.stepLabel || record.step }}</strong>
-                      <span class="history-date">{{ record.timestamp | date:'short' }}</span>
-                    </div>
-                    @if (record.notes || record.note) {
-                      <p class="history-notes">{{ record.notes || record.note }}</p>
-                    }
-                    @if (hasDataKeys(record.data)) {
-                      <div class="history-data">
-                        @for (item of record.data | keyvalue; track item.key) {
-                          <div class="data-item">
-                            <strong>{{ getDataKeyLabel(toString(item.key)) | translate }}:</strong> 
-                            {{ formatDataValue(toString(item.key), item.value) }}
+              <div class="history-list">
+                <h4>{{ 'purchaseOrderEntry.history.history' | translate }}</h4>
+                @if (poHistory().length > 0) {
+                  <div class="history-items">
+                    @for (record of poHistory(); track record.timestamp) {
+                      <div class="history-item">
+                        <div class="history-header">
+                          <strong>{{ record.stepLabel || record.step }}</strong>
+                          <span class="history-date">{{ record.timestamp | date:'short' }}</span>
+                        </div>
+                        @if (record.notes || record.note) {
+                          <p class="history-notes">{{ record.notes || record.note }}</p>
+                        }
+                        @if (hasDataKeys(record.data)) {
+                          <div class="history-data">
+                            @for (item of record.data | keyvalue; track item.key) {
+                              <div class="data-item">
+                                <strong>{{ getDataKeyLabel(toString(item.key)) | translate }}:</strong> 
+                                {{ formatDataValue(toString(item.key), item.value) }}
+                              </div>
+                            }
                           </div>
                         }
                       </div>
                     }
                   </div>
+                } @else {
+                  <p class="no-history">{{ 'purchaseOrderEntry.history.noHistory' | translate }}</p>
                 }
-              } @else {
-                <p>{{ 'purchaseOrderEntry.history.noHistory' | translate }}</p>
-              }
+              </div>
             </div>
           </div>
         }
