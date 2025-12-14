@@ -1,5 +1,7 @@
 package com.edge.config;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,21 +36,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
 
-            if (jwt != null && tokenProvider.validateToken(jwt, tokenProvider.getUsernameFromToken(jwt))) {
-                String userid = tokenProvider.getUsernameFromToken(jwt);
-                String role = tokenProvider.getRoleFromToken(jwt);
+            if (jwt != null) {
+                try {
+                    // Try to extract username and validate token
+                    String userid = tokenProvider.getUsernameFromToken(jwt);
+                    if (tokenProvider.validateToken(jwt, userid)) {
+                        String role = tokenProvider.getRoleFromToken(jwt);
 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userid,
-                        null,
-                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
-                );
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                                userid,
+                                null,
+                                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
+                        );
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
+                } catch (ExpiredJwtException ex) {
+                    // Expired tokens are normal - just continue without authentication
+                    // No need to log as this is expected behavior
+                } catch (JwtException ex) {
+                    // Other JWT exceptions (malformed, invalid signature, etc.) - log at debug level
+                    logger.debug("Invalid JWT token", ex);
+                } catch (Exception ex) {
+                    // Unexpected errors - log at warn level
+                    logger.warn("Unexpected error processing JWT token", ex);
+                }
             }
         } catch (Exception ex) {
-            logger.error("Could not set user authentication in security context", ex);
+            // Catch any other unexpected errors
+            logger.warn("Error processing JWT authentication", ex);
         }
 
         filterChain.doFilter(request, response);

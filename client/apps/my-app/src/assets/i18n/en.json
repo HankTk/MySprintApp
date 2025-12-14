@@ -652,16 +652,16 @@
       "status": "Status",
       "note": "Note",
       "data": "Data",
-      "step": {
+      "stepLabels": {
         "invoicing": "Invoice Creation",
         "payment": "Payment",
         "statusChange": "Status Change"
       },
-      "status": {
+      "statusLabels": {
         "invoiced": "Invoiced",
         "paid": "Paid"
       },
-      "data": {
+      "dataLabels": {
         "invoiceNumber": "Invoice Number",
         "invoiceDate": "Invoice Date",
         "paymentAmount": "Payment Amount",
@@ -748,16 +748,16 @@
       "status": "Status",
       "note": "Note",
       "data": "Data",
-      "step": {
+      "stepLabels": {
         "invoicing": "Invoice Creation",
         "payment": "Payment",
         "statusChange": "Status Change"
       },
-      "status": {
+      "statusLabels": {
         "invoiced": "Invoiced",
         "paid": "Paid"
       },
-      "data": {
+      "dataLabels": {
         "invoiceNumber": "Invoice Number",
         "invoiceDate": "Invoice Date",
         "paymentAmount": "Payment Amount",

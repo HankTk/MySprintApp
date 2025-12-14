@@ -656,16 +656,16 @@
       "status": "ステータス",
       "note": "ノート",
       "data": "データ",
-      "step": {
+      "stepLabels": {
         "invoicing": "請求書作成",
         "payment": "支払い",
         "statusChange": "ステータス変更"
       },
-      "status": {
+      "statusLabels": {
         "invoiced": "請求済み",
         "paid": "支払済み"
       },
-      "data": {
+      "dataLabels": {
         "invoiceNumber": "請求書番号",
         "invoiceDate": "請求日",
         "paymentAmount": "支払金額",
@@ -752,16 +752,16 @@
       "status": "ステータス",
       "note": "ノート",
       "data": "データ",
-      "step": {
+      "stepLabels": {
         "invoicing": "請求書作成",
         "payment": "支払い",
         "statusChange": "ステータス変更"
       },
-      "status": {
+      "statusLabels": {
         "invoiced": "請求済み",
         "paid": "支払済み"
       },
-      "data": {
+      "dataLabels": {
         "invoiceNumber": "請求書番号",
         "invoiceDate": "請求日",
         "paymentAmount": "支払金額",

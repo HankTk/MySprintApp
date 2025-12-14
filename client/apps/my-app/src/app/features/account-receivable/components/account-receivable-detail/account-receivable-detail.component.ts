@@ -252,9 +252,9 @@ export class AccountReceivableDetailComponent implements OnInit {
 
   getStepLabel(step: string): string {
     const stepLabels: Record<string, string> = {
-      'invoicing': 'accountsReceivable.history.step.invoicing',
-      'payment': 'accountsReceivable.history.step.payment',
-      'status_change': 'accountsReceivable.history.step.statusChange'
+      'invoicing': 'accountsReceivable.history.stepLabels.invoicing',
+      'payment': 'accountsReceivable.history.stepLabels.payment',
+      'status_change': 'accountsReceivable.history.stepLabels.statusChange'
     };
     return stepLabels[step] || step;
   }
@@ -262,26 +262,40 @@ export class AccountReceivableDetailComponent implements OnInit {
   getStatusLabel(status?: string): string {
     if (!status) return 'N/A';
     const statusMap: Record<string, string> = {
-      'INVOICED': 'accountsReceivable.history.status.invoiced',
-      'PAID': 'accountsReceivable.history.status.paid'
+      'INVOICED': 'accountsReceivable.history.statusLabels.invoiced',
+      'PAID': 'accountsReceivable.history.statusLabels.paid'
     };
     return statusMap[status] || status;
   }
 
   getDataKeyLabel(key: string): string {
     const keyMap: Record<string, string> = {
-      'invoiceNumber': 'accountsReceivable.history.data.invoiceNumber',
-      'invoiceDate': 'accountsReceivable.history.data.invoiceDate',
-      'paymentAmount': 'accountsReceivable.history.data.paymentAmount',
-      'paymentDate': 'accountsReceivable.history.data.paymentDate',
-      'paymentMethod': 'accountsReceivable.history.data.paymentMethod',
-      'oldStatus': 'accountsReceivable.history.data.oldStatus',
-      'newStatus': 'accountsReceivable.history.data.newStatus'
+      'invoiceNumber': 'accountsReceivable.history.dataLabels.invoiceNumber',
+      'invoiceDate': 'accountsReceivable.history.dataLabels.invoiceDate',
+      'paymentAmount': 'accountsReceivable.history.dataLabels.paymentAmount',
+      'paymentDate': 'accountsReceivable.history.dataLabels.paymentDate',
+      'paymentMethod': 'accountsReceivable.history.dataLabels.paymentMethod',
+      'oldStatus': 'accountsReceivable.history.dataLabels.oldStatus',
+      'newStatus': 'accountsReceivable.history.dataLabels.newStatus'
     };
     return keyMap[key] || key;
   }
 
   formatDataValue(key: string, value: any): string {
+    // Handle null or undefined
+    if (value == null) {
+      return 'N/A';
+    }
+    
+    // Handle objects - convert to JSON string
+    if (typeof value === 'object' && !(value instanceof Date)) {
+      try {
+        return JSON.stringify(value);
+      } catch {
+        return 'N/A';
+      }
+    }
+    
     if (key === 'oldStatus' || key === 'newStatus') {
       return this.getStatusLabel(String(value));
     }

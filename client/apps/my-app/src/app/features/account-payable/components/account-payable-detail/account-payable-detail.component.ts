@@ -233,9 +233,9 @@ export class AccountPayableDetailComponent implements OnInit {
 
   getStepLabel(step: string): string {
     const stepLabels: Record<string, string> = {
-      'invoicing': 'accountsPayable.history.step.invoicing',
-      'payment': 'accountsPayable.history.step.payment',
-      'status_change': 'accountsPayable.history.step.statusChange'
+      'invoicing': 'accountsPayable.history.stepLabels.invoicing',
+      'payment': 'accountsPayable.history.stepLabels.payment',
+      'status_change': 'accountsPayable.history.stepLabels.statusChange'
     };
     return stepLabels[step] || step;
   }
@@ -243,26 +243,40 @@ export class AccountPayableDetailComponent implements OnInit {
   getStatusLabel(status?: string): string {
     if (!status) return 'N/A';
     const statusMap: Record<string, string> = {
-      'INVOICED': 'accountsPayable.history.status.invoiced',
-      'PAID': 'accountsPayable.history.status.paid'
+      'INVOICED': 'accountsPayable.history.statusLabels.invoiced',
+      'PAID': 'accountsPayable.history.statusLabels.paid'
     };
     return statusMap[status] || status;
   }
 
   getDataKeyLabel(key: string): string {
     const keyMap: Record<string, string> = {
-      'invoiceNumber': 'accountsPayable.history.data.invoiceNumber',
-      'invoiceDate': 'accountsPayable.history.data.invoiceDate',
-      'paymentAmount': 'accountsPayable.history.data.paymentAmount',
-      'paymentDate': 'accountsPayable.history.data.paymentDate',
-      'paymentMethod': 'accountsPayable.history.data.paymentMethod',
-      'oldStatus': 'accountsPayable.history.data.oldStatus',
-      'newStatus': 'accountsPayable.history.data.newStatus'
+      'invoiceNumber': 'accountsPayable.history.dataLabels.invoiceNumber',
+      'invoiceDate': 'accountsPayable.history.dataLabels.invoiceDate',
+      'paymentAmount': 'accountsPayable.history.dataLabels.paymentAmount',
+      'paymentDate': 'accountsPayable.history.dataLabels.paymentDate',
+      'paymentMethod': 'accountsPayable.history.dataLabels.paymentMethod',
+      'oldStatus': 'accountsPayable.history.dataLabels.oldStatus',
+      'newStatus': 'accountsPayable.history.dataLabels.newStatus'
     };
     return keyMap[key] || key;
   }
 
   formatDataValue(key: string, value: any): string {
+    // Handle null or undefined
+    if (value == null) {
+      return 'N/A';
+    }
+    
+    // Handle objects - convert to JSON string
+    if (typeof value === 'object' && !(value instanceof Date)) {
+      try {
+        return JSON.stringify(value);
+      } catch {
+        return 'N/A';
+      }
+    }
+    
     if (key === 'oldStatus' || key === 'newStatus') {
       return this.getStatusLabel(String(value));
     }
