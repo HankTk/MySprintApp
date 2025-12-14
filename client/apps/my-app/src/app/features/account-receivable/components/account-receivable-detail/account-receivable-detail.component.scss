@@ -4,8 +4,21 @@
   padding: var(--spacing-lg);
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+  min-height: calc(100dvh - var(--header-height));
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 
   .main-card {
+    display: flex;
+    flex-direction: column;
+    height: calc(100dvh - var(--header-height) - 48px);
+    max-height: calc(100dvh - var(--header-height) - 48px);
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: hidden;
     .header-content {
       display: flex;
       align-items: center;
@@ -31,11 +44,24 @@
       }
     }
 
+    mat-card-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      width: 100%;
+      box-sizing: border-box;
+      position: relative;
+    }
+
     .info-section {
       display: flex;
       gap: var(--spacing-lg);
       margin-bottom: var(--spacing-lg);
       flex-wrap: wrap;
+      flex-shrink: 0;
+      padding: var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg);
 
       .info-box {
         display: flex;
@@ -62,11 +88,48 @@
       }
     }
 
+    ::ng-deep {
+      .mat-mdc-tab-group {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+
+        .mat-mdc-tab-body-wrapper {
+          flex: 1;
+          min-height: 0;
+          overflow: hidden;
+        }
+
+        .mat-mdc-tab-body {
+          height: 100%;
+        }
+
+        .mat-mdc-tab-body-content {
+          height: 100%;
+          overflow-y: auto;
+          overflow-x: hidden;
+        }
+      }
+    }
+
     .tab-content {
       padding: var(--spacing-lg);
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-sizing: border-box;
 
       h3 {
-        margin-bottom: var(--spacing-md);
+        margin-top: 0;
+        margin-bottom: 0;
+        color: var(--text-heading, #1f2937);
+      }
+
+      p {
+        color: var(--text-secondary, #6b7280);
+        margin-bottom: 0;
       }
 
       .info-grid {
@@ -118,7 +181,20 @@
       .form-section {
         display: flex;
         flex-direction: column;
-        gap: var(--spacing-md);
+        gap: var(--spacing-lg);
+        flex: 1;
+
+        .form-fields {
+          display: flex;
+          flex-direction: column;
+          gap: var(--spacing-lg);
+          flex: 1;
+          max-width: 600px;
+          
+          .full-width {
+            width: 100%;
+          }
+        }
 
         .full-width {
           width: 100%;
@@ -156,7 +232,9 @@
           display: flex;
           gap: var(--spacing-md);
           justify-content: flex-end;
-          margin-top: var(--spacing-lg);
+          margin-top: auto;
+          padding-top: var(--spacing-lg);
+          flex-shrink: 0;
         }
       }
 

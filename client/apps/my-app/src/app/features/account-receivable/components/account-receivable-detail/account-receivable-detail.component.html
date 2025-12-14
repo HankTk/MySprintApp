@@ -131,28 +131,30 @@
               <p>{{ 'accountsReceivable.payment.description' | translate }}</p>
 
               <div class="form-section">
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>{{ 'accountsReceivable.payment.paymentAmount' | translate }}</mat-label>
-                  <input matInput type="number" [value]="paymentAmount()" (input)="paymentAmount.set(+$any($event.target).value || 0)">
-                </mat-form-field>
+                <div class="form-fields">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>{{ 'accountsReceivable.payment.paymentAmount' | translate }}</mat-label>
+                    <input matInput type="number" [value]="paymentAmount()" (input)="paymentAmount.set(+$any($event.target).value || 0)">
+                  </mat-form-field>
 
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>{{ 'accountsReceivable.payment.paymentDate' | translate }}</mat-label>
-                  <input matInput [matDatepicker]="paymentDatePicker" [value]="paymentDate()" (dateChange)="paymentDate.set($event.value)">
-                  <mat-datepicker-toggle matIconSuffix [for]="paymentDatePicker"></mat-datepicker-toggle>
-                  <mat-datepicker #paymentDatePicker></mat-datepicker>
-                </mat-form-field>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>{{ 'accountsReceivable.payment.paymentDate' | translate }}</mat-label>
+                    <input matInput [matDatepicker]="paymentDatePicker" [value]="paymentDate()" (dateChange)="paymentDate.set($event.value)">
+                    <mat-datepicker-toggle matIconSuffix [for]="paymentDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #paymentDatePicker></mat-datepicker>
+                  </mat-form-field>
 
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>{{ 'accountsReceivable.payment.paymentMethod' | translate }}</mat-label>
-                  <mat-select [value]="paymentMethod()" (selectionChange)="paymentMethod.set($event.value)">
-                    <mat-option value="BANK_TRANSFER">{{ 'accountsReceivable.payment.method.bankTransfer' | translate }}</mat-option>
-                    <mat-option value="CREDIT_CARD">{{ 'accountsReceivable.payment.method.creditCard' | translate }}</mat-option>
-                    <mat-option value="CASH">{{ 'accountsReceivable.payment.method.cash' | translate }}</mat-option>
-                    <mat-option value="CHECK">{{ 'accountsReceivable.payment.method.check' | translate }}</mat-option>
-                    <mat-option value="OTHER">{{ 'accountsReceivable.payment.method.other' | translate }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>{{ 'accountsReceivable.payment.paymentMethod' | translate }}</mat-label>
+                    <mat-select [value]="paymentMethod()" (selectionChange)="paymentMethod.set($event.value)">
+                      <mat-option value="BANK_TRANSFER">{{ 'accountsReceivable.payment.method.bankTransfer' | translate }}</mat-option>
+                      <mat-option value="CREDIT_CARD">{{ 'accountsReceivable.payment.method.creditCard' | translate }}</mat-option>
+                      <mat-option value="CASH">{{ 'accountsReceivable.payment.method.cash' | translate }}</mat-option>
+                      <mat-option value="CHECK">{{ 'accountsReceivable.payment.method.check' | translate }}</mat-option>
+                      <mat-option value="OTHER">{{ 'accountsReceivable.payment.method.other' | translate }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
 
                 <div class="payment-summary">
                   <div class="summary-row">
