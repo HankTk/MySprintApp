@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Address, CreateAddressRequest } from '../../models/address.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
+import { AxButtonComponent } from '@ui/components';
 
 export interface AddressDialogData {
   address?: Address;
@@ -27,7 +28,8 @@ export interface AddressDialogData {
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './address-dialog.component.html',
   styleUrls: ['./address-dialog.component.scss']

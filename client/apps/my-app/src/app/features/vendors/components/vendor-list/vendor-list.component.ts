@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StoreService } from '../../../../core/store.service';
@@ -16,6 +15,7 @@ import { LanguageService } from '../../../../shared/services/language.service';
 import { Subscription } from 'rxjs';
 import { JsonUtil } from '../../../../shared/utils/json.util';
 import { VendorService } from '../../services/vendor.service';
+import { AxButtonComponent, AxProgressComponent } from '@ui/components';
 
 @Component({
   selector: 'app-vendor-list',
@@ -27,10 +27,11 @@ import { VendorService } from '../../services/vendor.service';
     MatTableModule,
     MatCardModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule,
     MatToolbarModule,
     MatTooltipModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent,
+    AxProgressComponent
   ],
   templateUrl: './vendor-list.component.html',
   styleUrls: ['./vendor-list.component.scss']

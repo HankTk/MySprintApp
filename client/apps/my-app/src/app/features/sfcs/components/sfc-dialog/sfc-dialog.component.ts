@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SFC, CreateSFCRequest } from '../../models/sfc.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
+import { AxButtonComponent } from '@ui/components';
 
 export interface SFCDialogData {
   sfc?: SFC;
@@ -25,7 +26,8 @@ export interface SFCDialogData {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './sfc-dialog.component.html',
   styleUrls: ['./sfc-dialog.component.scss']

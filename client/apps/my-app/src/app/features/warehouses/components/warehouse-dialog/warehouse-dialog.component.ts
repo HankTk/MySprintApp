@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Warehouse, CreateWarehouseRequest } from '../../models/warehouse.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
+import { AxButtonComponent } from '@ui/components';
 
 export interface WarehouseDialogData {
   warehouse?: Warehouse;
@@ -27,7 +28,8 @@ export interface WarehouseDialogData {
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './warehouse-dialog.component.html',
   styleUrls: ['./warehouse-dialog.component.scss']

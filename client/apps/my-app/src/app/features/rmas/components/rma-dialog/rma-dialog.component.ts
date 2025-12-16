@@ -10,6 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { RMA, CreateRMARequest } from '../../models/rma.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
+import { AxButtonComponent } from '@ui/components';
 
 export interface RMADialogData {
   rma?: RMA;
@@ -29,7 +30,8 @@ export interface RMADialogData {
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './rma-dialog.component.html',
   styleUrls: ['./rma-dialog.component.scss']

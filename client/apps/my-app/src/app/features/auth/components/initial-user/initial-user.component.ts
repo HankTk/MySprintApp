@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AxButtonComponent } from '@ui/components';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpService } from '../../../../core/http.service';
 import { AuthService } from '../../../../core/auth/auth.service';
@@ -27,8 +27,8 @@ import { CreateUserRequest, LoginRequest } from '../../../users/models/user';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './initial-user.component.html',
   styleUrls: ['./initial-user.component.scss']

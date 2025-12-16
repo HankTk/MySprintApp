@@ -14,14 +14,12 @@
 
     <mat-card-content>
       <div class="controls-section">
-        <button 
-          mat-raised-button 
+        <ax-button 
+          variant="raised" 
           color="primary" 
-          (click)="openAddCustomerDialog()"
-          class="add-button">
-          <mat-icon>add</mat-icon>
-          {{ 'addNewCustomer' | translate }}
-        </button>
+          [label]="'addNewCustomer' | translate"
+          (click)="openAddCustomerDialog()">
+        </ax-button>
       </div>
 
       <!-- Customer List Table -->
@@ -105,20 +103,19 @@
           <div class="no-data">
             <mat-icon class="no-data-icon">info</mat-icon>
             <p>{{ 'noCustomerData' | translate }}</p>
-            <button 
-              mat-raised-button 
+            <ax-button 
+              variant="raised" 
               color="primary" 
+              [label]="'addFirstCustomer' | translate"
               (click)="openAddCustomerDialog()">
-              <mat-icon>add</mat-icon>
-              {{ 'addFirstCustomer' | translate }}
-            </button>
+            </ax-button>
           </div>
         }
 
         <!-- Loading Display -->
         @if (isLoading()) {
           <div class="loading">
-            <mat-spinner diameter="40"></mat-spinner>
+            <ax-progress type="spinner" mode="indeterminate"></ax-progress>
             <p>{{ 'loadingData' | translate }}</p>
           </div>
         }

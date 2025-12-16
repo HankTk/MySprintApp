@@ -15,7 +15,7 @@
     <mat-card-content>
       @if (loading()) {
         <div class="loading-container">
-          <mat-spinner diameter="50"></mat-spinner>
+          <ax-progress type="spinner" mode="indeterminate"></ax-progress>
         </div>
       } @else {
         <!-- Step Indicator -->
@@ -96,15 +96,13 @@
                       <input matInput type="number" [value]="quantity()" (input)="quantity.set(+$any($event.target).value)" min="1" step="1">
                     </mat-form-field>
 
-                    <button
-                      mat-raised-button
+                    <ax-button
+                      variant="raised"
                       color="primary"
+                      [label]="'add' | translate"
                       (click)="onAddProduct()"
-                      [disabled]="!selectedProduct() || loading()"
-                      class="add-product-button">
-                      <mat-icon>add</mat-icon>
-                      {{ 'add' | translate }}
-                    </button>
+                      [disabled]="!selectedProduct() || loading()">
+                    </ax-button>
                   </div>
 
                   <div class="items-table-container">
@@ -318,13 +316,13 @@
                     <mat-label>{{ 'notes' | translate }}</mat-label>
                     <textarea matInput [value]="historyNote()" (input)="historyNote.set($any($event.target).value)" rows="3"></textarea>
                   </mat-form-field>
-                  <button
-                    mat-raised-button
+                  <ax-button
+                    variant="raised"
                     color="primary"
+                    [label]="'add' | translate"
                     (click)="handleAddHistoryNote()"
                     [disabled]="!historyNote() || submitting()">
-                    {{ 'add' | translate }}
-                  </button>
+                  </ax-button>
                 </div>
               </div>
 
@@ -374,46 +372,45 @@
           
           <!-- Step-specific action buttons -->
           @if (currentStep() === 'entry' && currentEntrySubStep() === 'review') {
-            <button
-              mat-raised-button
+            <ax-button
+              variant="raised"
               color="primary"
+              [label]="'rmaEntry.completeEntry' | translate"
               (click)="handleCompleteEntry()"
               [disabled]="!canProceedToNext() || submitting()">
-              {{ 'rmaEntry.completeEntry' | translate }}
-            </button>
+            </ax-button>
           } @else if (currentStep() === 'approval') {
-            <button
-              mat-raised-button
+            <ax-button
+              variant="raised"
               color="primary"
+              [label]="'rmaEntry.approve' | translate"
               (click)="handleApproveRMA()"
               [disabled]="!canProceedToNext() || submitting()">
-              {{ 'rmaEntry.approve' | translate }}
-            </button>
+            </ax-button>
           } @else if (currentStep() === 'received') {
-            <button
-              mat-raised-button
+            <ax-button
+              variant="raised"
               color="primary"
+              [label]="'rmaEntry.receive' | translate"
               (click)="handleReceiveRMA()"
               [disabled]="!canProceedToNext() || submitting()">
-              {{ 'rmaEntry.receive' | translate }}
-            </button>
+            </ax-button>
           } @else if (currentStep() === 'processed') {
-            <button
-              mat-raised-button
+            <ax-button
+              variant="raised"
               color="primary"
+              [label]="'rmaEntry.process' | translate"
               (click)="handleProcessRMA()"
               [disabled]="!canProceedToNext() || submitting()">
-              {{ 'rmaEntry.process' | translate }}
-            </button>
+            </ax-button>
           } @else {
-            <button
-              mat-raised-button
+            <ax-button
+              variant="raised"
               color="primary"
+              [label]="'next' | translate"
               (click)="handleNext()"
               [disabled]="!canProceedToNext()">
-              {{ 'next' | translate }}
-              <mat-icon>arrow_forward</mat-icon>
-            </button>
+            </ax-button>
           }
         </div>
       }

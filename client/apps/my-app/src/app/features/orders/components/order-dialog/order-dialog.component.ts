@@ -16,6 +16,7 @@ import { Product } from '../../../products/models/product.model';
 import { Address } from '../../../addresses/models/address.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
+import { AxButtonComponent } from '@ui/components';
 import { OrderService } from '../../services/order.service';
 import { CustomerService } from '../../../customers/services/customer.service';
 import { ProductService } from '../../../products/services/product.service';
@@ -43,7 +44,8 @@ export interface OrderDialogData {
     MatTableModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './order-dialog.component.html',
   styleUrls: ['./order-dialog.component.scss']

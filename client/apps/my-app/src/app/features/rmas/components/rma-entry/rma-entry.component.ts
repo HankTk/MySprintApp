@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AxButtonComponent, AxProgressComponent } from '@ui/components';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -37,7 +37,8 @@ import { firstValueFrom } from 'rxjs';
     MatSelectModule,
     MatInputModule,
     MatTableModule,
-    MatProgressSpinnerModule,
+    AxButtonComponent,
+    AxProgressComponent,
     MatDatepickerModule,
     MatNativeDateModule,
     TranslateModule

@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Product, CreateProductRequest } from '../../models/product.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
+import { AxButtonComponent } from '@ui/components';
 
 export interface ProductDialogData {
   product?: Product;
@@ -29,7 +30,8 @@ export interface ProductDialogData {
     MatCheckboxModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './product-dialog.component.html',
   styleUrls: ['./product-dialog.component.scss']

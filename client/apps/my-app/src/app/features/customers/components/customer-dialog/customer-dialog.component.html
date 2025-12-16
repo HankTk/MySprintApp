@@ -103,23 +103,19 @@
     </mat-dialog-content>
 
     <mat-dialog-actions align="end" class="dialog-actions">
-      <button
-        mat-button
+      <ax-button
+        variant="stroked"
         type="button"
-        (click)="onCancel()"
-        class="cancel-button">
-        <mat-icon>cancel</mat-icon>
-        {{ 'cancel' | translate }}
-      </button>
-      <button
-        mat-raised-button
+        [label]="'cancel' | translate"
+        (click)="onCancel()">
+      </ax-button>
+      <ax-button
+        variant="raised"
         color="primary"
         type="submit"
-        [disabled]="customerForm.invalid"
-        class="submit-button">
-        <mat-icon>{{ isEdit ? 'save' : 'add_circle' }}</mat-icon>
-        {{ isEdit ? ('update' | translate) : ('add' | translate) }}
-      </button>
+        [label]="isEdit ? ('update' | translate) : ('add' | translate)"
+        [disabled]="customerForm.invalid">
+      </ax-button>
     </mat-dialog-actions>
   </form>
 </div>

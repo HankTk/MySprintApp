@@ -14,14 +14,12 @@
 
     <mat-card-content>
       <div class="controls-section">
-        <button 
-          mat-raised-button 
+        <ax-button 
+          variant="raised" 
           color="primary" 
-          (click)="openAddSFCDialog()"
-          class="add-button">
-          <mat-icon>add</mat-icon>
-          {{ 'addNewSFC' | translate }}
-        </button>
+          [label]="'addNewSFC' | translate"
+          (click)="openAddSFCDialog()">
+        </ax-button>
       </div>
 
       <!-- RMAs Needing SFC Creation -->
@@ -38,16 +36,14 @@
                     {{ 'status' | translate }}: {{ rma.status }}
                   </span>
                 </div>
-                <button 
-                  mat-raised-button 
+                <ax-button 
+                  variant="raised" 
                   color="primary" 
+                  [label]="processingRMA() === rma.id ? ('sfcListing.creating' | translate) : ('sfcListing.createSFC' | translate)"
                   (click)="createSFCFromRMA(rma)"
-                  [disabled]="processingRMA() === rma.id">
-                  @if (processingRMA() === rma.id) {
-                    <mat-spinner diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
-                  }
-                  {{ processingRMA() === rma.id ? ('sfcListing.creating' | translate) : ('sfcListing.createSFC' | translate) }}
-                </button>
+                  [disabled]="processingRMA() === rma.id"
+                  [loading]="processingRMA() === rma.id">
+                </ax-button>
               </div>
             }
           </div>
@@ -123,19 +119,18 @@
           <div class="no-data">
             <mat-icon class="no-data-icon">info</mat-icon>
             <p>{{ 'noSFCData' | translate }}</p>
-            <button 
-              mat-raised-button 
+            <ax-button 
+              variant="raised" 
               color="primary" 
+              [label]="'addFirstSFC' | translate"
               (click)="openAddSFCDialog()">
-              <mat-icon>add</mat-icon>
-              {{ 'addFirstSFC' | translate }}
-            </button>
+            </ax-button>
           </div>
         }
 
         @if (isLoading()) {
           <div class="loading">
-            <mat-spinner diameter="40"></mat-spinner>
+            <ax-progress type="spinner" mode="indeterminate"></ax-progress>
             <p>{{ 'loadingData' | translate }}</p>
           </div>
         }

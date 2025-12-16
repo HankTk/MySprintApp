@@ -93,18 +93,14 @@
           </div>
         }
 
-        <button
-          mat-raised-button
+        <ax-button
+          variant="raised"
           color="primary"
           type="submit"
-          class="full-width submit-button"
-          [disabled]="userForm.invalid || isLoading">
-          @if (isLoading) {
-            <mat-spinner diameter="20" class="spinner"></mat-spinner>
-          } @else {
-            {{ 'initialUser.submit' | translate }}
-          }
-        </button>
+          [label]="'initialUser.submit' | translate"
+          [disabled]="userForm.invalid || isLoading"
+          [loading]="isLoading">
+        </ax-button>
       </form>
     </mat-card-content>
   </mat-card>

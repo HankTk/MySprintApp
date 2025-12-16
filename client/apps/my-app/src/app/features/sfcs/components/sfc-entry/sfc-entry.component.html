@@ -15,7 +15,7 @@
     <mat-card-content>
       @if (loading()) {
         <div class="loading-container">
-          <mat-spinner diameter="50"></mat-spinner>
+          <ax-progress type="spinner" mode="indeterminate"></ax-progress>
         </div>
       } @else {
         <!-- Step Indicator -->
@@ -167,13 +167,13 @@
                     <mat-label>{{ 'notes' | translate }}</mat-label>
                     <textarea matInput [value]="historyNote()" (input)="historyNote.set($any($event.target).value)" rows="3"></textarea>
                   </mat-form-field>
-                  <button
-                    mat-raised-button
+                  <ax-button
+                    variant="raised"
                     color="primary"
+                    [label]="'add' | translate"
                     (click)="handleAddHistoryNote()"
                     [disabled]="!historyNote() || submitting()">
-                    {{ 'add' | translate }}
-                  </button>
+                  </ax-button>
                 </div>
               </div>
 
@@ -223,38 +223,37 @@
           
           <!-- Step-specific action buttons -->
           @if (currentStep() === 'entry' && currentEntrySubStep() === 'review') {
-            <button
-              mat-raised-button
+            <ax-button
+              variant="raised"
               color="primary"
+              [label]="'sfcEntry.completeEntry' | translate"
               (click)="handleCompleteEntry()"
               [disabled]="!canProceedToNext() || submitting()">
-              {{ 'sfcEntry.completeEntry' | translate }}
-            </button>
+            </ax-button>
           } @else if (currentStep() === 'in_progress') {
-            <button
-              mat-raised-button
+            <ax-button
+              variant="raised"
               color="primary"
+              [label]="'sfcEntry.startProcessing' | translate"
               (click)="handleStartProcessing()"
               [disabled]="!canProceedToNext() || submitting()">
-              {{ 'sfcEntry.startProcessing' | translate }}
-            </button>
+            </ax-button>
           } @else if (currentStep() === 'completed') {
-            <button
-              mat-raised-button
+            <ax-button
+              variant="raised"
               color="primary"
+              [label]="'sfcEntry.completeProcessing' | translate"
               (click)="handleCompleteProcessing()"
               [disabled]="!canProceedToNext() || submitting()">
-              {{ 'sfcEntry.completeProcessing' | translate }}
-            </button>
+            </ax-button>
           } @else {
-            <button
-              mat-raised-button
+            <ax-button
+              variant="raised"
               color="primary"
+              [label]="'next' | translate"
               (click)="handleNext()"
               [disabled]="!canProceedToNext()">
-              {{ 'next' | translate }}
-              <mat-icon>arrow_forward</mat-icon>
-            </button>
+            </ax-button>
           }
         </div>
       }

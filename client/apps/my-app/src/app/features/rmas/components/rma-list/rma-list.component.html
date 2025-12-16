@@ -14,14 +14,12 @@
 
     <mat-card-content>
       <div class="controls-section">
-        <button 
-          mat-raised-button 
+        <ax-button 
+          variant="raised" 
           color="primary" 
-          (click)="openAddRMADialog()"
-          class="add-button">
-          <mat-icon>add</mat-icon>
-          {{ 'addNewRMA' | translate }}
-        </button>
+          [label]="'addNewRMA' | translate"
+          (click)="openAddRMADialog()">
+        </ax-button>
       </div>
 
       <div class="table-container">
@@ -93,19 +91,18 @@
           <div class="no-data">
             <mat-icon class="no-data-icon">info</mat-icon>
             <p>{{ 'noRMAData' | translate }}</p>
-            <button 
-              mat-raised-button 
+            <ax-button 
+              variant="raised" 
               color="primary" 
+              [label]="'addFirstRMA' | translate"
               (click)="openAddRMADialog()">
-              <mat-icon>add</mat-icon>
-              {{ 'addFirstRMA' | translate }}
-            </button>
+            </ax-button>
           </div>
         }
 
         @if (isLoading()) {
           <div class="loading">
-            <mat-spinner diameter="40"></mat-spinner>
+            <ax-progress type="spinner" mode="indeterminate"></ax-progress>
             <p>{{ 'loadingData' | translate }}</p>
           </div>
         }

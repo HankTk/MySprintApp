@@ -10,6 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { PurchaseOrder, CreatePurchaseOrderRequest } from '../../models/purchase-order.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
+import { AxButtonComponent } from '@ui/components';
 
 export interface PurchaseOrderDialogData {
   purchaseOrder?: PurchaseOrder;
@@ -29,7 +30,8 @@ export interface PurchaseOrderDialogData {
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './po-dialog.component.html',
   styleUrls: ['./po-dialog.component.scss']

@@ -14,14 +14,12 @@
 
     <mat-card-content>
       <div class="controls-section">
-        <button 
-          mat-raised-button 
+        <ax-button 
+          variant="raised" 
           color="primary" 
-          (click)="openAddProductDialog()"
-          class="add-button">
-          <mat-icon>add</mat-icon>
-          {{ 'addNewProduct' | translate }}
-        </button>
+          [label]="'addNewProduct' | translate"
+          (click)="openAddProductDialog()">
+        </ax-button>
       </div>
 
       <div class="table-container">
@@ -98,19 +96,18 @@
           <div class="no-data">
             <mat-icon class="no-data-icon">info</mat-icon>
             <p>{{ 'noProductData' | translate }}</p>
-            <button 
-              mat-raised-button 
+            <ax-button 
+              variant="raised" 
               color="primary" 
+              [label]="'addFirstProduct' | translate"
               (click)="openAddProductDialog()">
-              <mat-icon>add</mat-icon>
-              {{ 'addFirstProduct' | translate }}
-            </button>
+            </ax-button>
           </div>
         }
 
         @if (isLoading()) {
           <div class="loading">
-            <mat-spinner diameter="40"></mat-spinner>
+            <ax-progress type="spinner" mode="indeterminate"></ax-progress>
             <p>{{ 'loadingData' | translate }}</p>
           </div>
         }

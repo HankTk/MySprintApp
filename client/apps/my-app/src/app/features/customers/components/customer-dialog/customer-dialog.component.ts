@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Customer, CreateCustomerRequest } from '../../models/customer.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
+import { AxButtonComponent } from '@ui/components';
 
 export interface CustomerDialogData {
   customer?: Customer;
@@ -25,7 +26,8 @@ export interface CustomerDialogData {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './customer-dialog.component.html',
   styleUrls: ['./customer-dialog.component.scss']

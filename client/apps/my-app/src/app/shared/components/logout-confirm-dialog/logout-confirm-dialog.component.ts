@@ -4,6 +4,7 @@ import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { AxButtonComponent } from '@ui/components';
 
 @Component({
   selector: 'app-logout-confirm-dialog',
@@ -13,7 +14,8 @@ import { TranslateModule } from '@ngx-translate/core';
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './logout-confirm-dialog.component.html',
   styleUrls: ['./logout-confirm-dialog.component.scss']

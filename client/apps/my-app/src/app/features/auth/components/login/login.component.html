@@ -47,18 +47,14 @@
           </div>
         }
 
-        <button
-          mat-raised-button
+        <ax-button
+          variant="raised"
           color="primary"
           type="submit"
-          class="full-width login-button"
-          [disabled]="loginForm.invalid || isLoading">
-          @if (isLoading) {
-            <mat-spinner diameter="20" class="spinner"></mat-spinner>
-          } @else {
-            {{ 'login.submit' | translate }}
-          }
-        </button>
+          [label]="'login.submit' | translate"
+          [disabled]="loginForm.invalid || isLoading"
+          [loading]="isLoading">
+        </ax-button>
       </form>
     </mat-card-content>
   </mat-card>

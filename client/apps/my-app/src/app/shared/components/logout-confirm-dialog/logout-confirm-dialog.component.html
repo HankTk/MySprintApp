@@ -11,22 +11,18 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end" class="dialog-actions">
-    <button 
-      mat-button 
-      type="button" 
-      (click)="onCancel()" 
-      class="cancel-button">
-      <mat-icon>cancel</mat-icon>
-      {{ 'cancel' | translate }}
-    </button>
-    <button 
-      mat-raised-button 
-      color="primary" 
-      type="button" 
-      (click)="onConfirm()"
-      class="confirm-button">
-      <mat-icon>logout</mat-icon>
-      {{ 'logout.confirm' | translate }}
-    </button>
+    <ax-button
+      variant="stroked"
+      type="button"
+      [label]="'cancel' | translate"
+      (click)="onCancel()">
+    </ax-button>
+    <ax-button
+      variant="raised"
+      color="primary"
+      type="button"
+      [label]="'logout.confirm' | translate"
+      (click)="onConfirm()">
+    </ax-button>
   </mat-dialog-actions>
 </div>

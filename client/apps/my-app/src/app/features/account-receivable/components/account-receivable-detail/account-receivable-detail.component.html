@@ -3,7 +3,7 @@
     <mat-card class="main-card">
       <mat-card-content>
         <div class="loading-container">
-          <mat-spinner diameter="50"></mat-spinner>
+          <ax-progress type="spinner" mode="indeterminate"></ax-progress>
           <p>{{ 'loadingData' | translate }}</p>
         </div>
       </mat-card-content>
@@ -14,9 +14,7 @@
         <div class="not-found">
           <mat-icon>error_outline</mat-icon>
           <p>{{ 'accountsReceivable.notFound' | translate }}</p>
-          <button mat-raised-button (click)="goBack()">
-            {{ 'back' | translate }}
-          </button>
+          <ax-button variant="raised" [label]="'back' | translate" (click)="goBack()"></ax-button>
         </div>
       </mat-card-content>
     </mat-card>
@@ -123,9 +121,7 @@
               </div>
 
               <div class="button-group sticky-bottom">
-                <button mat-raised-button color="primary" (click)="currentStep.set('payment')">
-                  {{ 'next' | translate }}
-                </button>
+                <ax-button variant="raised" color="primary" [label]="'next' | translate" (click)="currentStep.set('payment')"></ax-button>
               </div>
             </div>
           </mat-tab>
@@ -181,20 +177,14 @@
               </div>
 
               <div class="button-group sticky-bottom">
-                <button mat-raised-button (click)="currentStep.set('invoice')">
-                  {{ 'previous' | translate }}
-                </button>
-                <button 
-                  mat-raised-button 
+                <ax-button variant="raised" [label]="'previous' | translate" (click)="currentStep.set('invoice')"></ax-button>
+                <ax-button 
+                  variant="raised" 
                   color="primary" 
+                  [label]="'accountsReceivable.payment.record' | translate"
                   (click)="handlePayment()"
-                  [disabled]="submitting() || !paymentAmount() || !paymentDate() || !paymentMethod()">
-                  @if (submitting()) {
-                    <mat-spinner diameter="20"></mat-spinner>
-                  } @else {
-                    {{ 'accountsReceivable.payment.record' | translate }}
-                  }
-                </button>
+                  [disabled]="submitting() || !paymentAmount() || !paymentDate() || !paymentMethod()"
+                  [loading]="submitting()"></ax-button>
               </div>
             </div>
           </mat-tab>
@@ -248,9 +238,7 @@
               </div>
 
               <div class="button-group sticky-bottom">
-                <button mat-raised-button (click)="currentStep.set('payment')">
-                  {{ 'previous' | translate }}
-                </button>
+                <ax-button variant="raised" [label]="'previous' | translate" (click)="currentStep.set('payment')"></ax-button>
               </div>
             </div>
           </mat-tab>

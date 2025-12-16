@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Vendor, CreateVendorRequest } from '../../models/vendor.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
+import { AxButtonComponent } from '@ui/components';
 
 export interface VendorDialogData {
   vendor?: Vendor;
@@ -25,7 +26,8 @@ export interface VendorDialogData {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './vendor-dialog.component.html',
   styleUrls: ['./vendor-dialog.component.scss']

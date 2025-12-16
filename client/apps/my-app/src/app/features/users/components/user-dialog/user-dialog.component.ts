@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { User, CreateUserRequest } from '../../models/user';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
+import { AxButtonComponent } from '@ui/components';
 
 export interface UserDialogData
 {
@@ -29,7 +30,8 @@ export interface UserDialogData
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
 ],
   templateUrl: './user-dialog.component.html',
   styleUrls: ['./user-dialog.component.scss']

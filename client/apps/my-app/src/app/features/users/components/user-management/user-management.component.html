@@ -15,14 +15,12 @@
     <mat-card-content>
       <!-- Add New User Button -->
       <div class="add-user-section">
-        <button 
-          mat-raised-button 
+        <ax-button 
+          variant="raised" 
           color="primary" 
-          (click)="openAddUserDialog()"
-          class="add-user-button">
-          <mat-icon>add</mat-icon>
-          {{ 'addNewUser' | translate }}
-        </button>
+          [label]="'addNewUser' | translate"
+          (click)="openAddUserDialog()">
+        </ax-button>
       </div>
 
       <!-- User List Table -->
@@ -100,20 +98,19 @@
           <div class="no-data">
             <mat-icon class="no-data-icon">info</mat-icon>
             <p>{{ 'noUserData' | translate }}</p>
-            <button 
-              mat-raised-button 
+            <ax-button 
+              variant="raised" 
               color="primary" 
+              [label]="'addFirstUser' | translate"
               (click)="openAddUserDialog()">
-              <mat-icon>add</mat-icon>
-              {{ 'addFirstUser' | translate }}
-            </button>
+            </ax-button>
           </div>
         }
 
         <!-- Loading Display -->
         @if (isLoading()) {
           <div class="loading">
-            <mat-spinner diameter="40"></mat-spinner>
+            <ax-progress type="spinner" mode="indeterminate"></ax-progress>
             <p>{{ 'loadingData' | translate }}</p>
           </div>
         }

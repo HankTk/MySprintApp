@@ -1,12 +1,10 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, KeyValuePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
-import { KeyValuePipe } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -15,6 +13,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { TranslateModule } from '@ngx-translate/core';
+import { AxButtonComponent, AxProgressComponent } from '@ui/components';
 import { firstValueFrom } from 'rxjs';
 import { StoreService } from '../../../../core/store.service';
 import { Order } from '../../../orders/models/order.model';
@@ -44,7 +43,6 @@ interface HistoryRecord {
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatProgressSpinnerModule,
     MatTabsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -53,7 +51,9 @@ interface HistoryRecord {
     MatNativeDateModule,
     MatTableModule,
     MatChipsModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent,
+    AxProgressComponent
   ],
   templateUrl: './account-receivable-detail.component.html',
   styleUrls: ['./account-receivable-detail.component.scss']

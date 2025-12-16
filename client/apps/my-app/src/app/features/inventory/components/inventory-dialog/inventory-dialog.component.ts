@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Inventory, CreateInventoryRequest } from '../../models/inventory.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
+import { AxButtonComponent } from '@ui/components';
 
 export interface InventoryDialogData {
   inventory?: Inventory;
@@ -25,7 +26,8 @@ export interface InventoryDialogData {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent
   ],
   templateUrl: './inventory-dialog.component.html',
   styleUrls: ['./inventory-dialog.component.scss']
