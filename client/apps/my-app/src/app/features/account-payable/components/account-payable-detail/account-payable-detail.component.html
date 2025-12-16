@@ -59,192 +59,195 @@
         <mat-tab-group [selectedIndex]="currentStep() === 'invoice' ? 0 : currentStep() === 'payment' ? 1 : 2" (selectedIndexChange)="currentStep.set($event === 0 ? 'invoice' : $event === 1 ? 'payment' : 'history')">
           <mat-tab label="{{ 'accountsPayable.step.invoice' | translate }}">
             <div class="tab-content">
-              <h3>{{ 'accountsPayable.invoice.title' | translate }}</h3>
-              <p>{{ 'accountsPayable.invoice.description' | translate }}</p>
+              <div class="tab-scrollable-content">
+                <div class="info-grid">
+                  <div class="info-row">
+                    <strong>{{ 'accountsPayable.invoice.invoiceNumber' | translate }}</strong>
+                    <span>{{ po()?.invoiceNumber || 'N/A' }}</span>
+                  </div>
+                  <div class="info-row">
+                    <strong>{{ 'accountsPayable.invoice.invoiceDate' | translate }}</strong>
+                    <span>{{ formatDate(po()?.invoiceDate) }}</span>
+                  </div>
+                  <div class="info-row">
+                    <strong>{{ 'accountsPayable.invoice.poNumber' | translate }}</strong>
+                    <span>{{ po()?.orderNumber || 'N/A' }}</span>
+                  </div>
+                  <div class="info-row">
+                    <strong>{{ 'accountsPayable.invoice.supplier' | translate }}</strong>
+                    <span>{{ getSupplierName() }}</span>
+                  </div>
+                </div>
 
-              <div class="info-grid">
-                <div class="info-row">
-                  <strong>{{ 'accountsPayable.invoice.invoiceNumber' | translate }}</strong>
-                  <span>{{ po()?.invoiceNumber || 'N/A' }}</span>
-                </div>
-                <div class="info-row">
-                  <strong>{{ 'accountsPayable.invoice.invoiceDate' | translate }}</strong>
-                  <span>{{ formatDate(po()?.invoiceDate) }}</span>
-                </div>
-                <div class="info-row">
-                  <strong>{{ 'accountsPayable.invoice.poNumber' | translate }}</strong>
-                  <span>{{ po()?.orderNumber || 'N/A' }}</span>
-                </div>
-                <div class="info-row">
-                  <strong>{{ 'accountsPayable.invoice.supplier' | translate }}</strong>
-                  <span>{{ getSupplierName() }}</span>
+                @if (po()?.items && po()!.items!.length > 0) {
+                  <table mat-table [dataSource]="po()!.items!" class="items-table">
+                    <ng-container matColumnDef="product">
+                      <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.invoice.product' | translate }}</th>
+                      <td mat-cell *matCellDef="let item">{{ item.productName || item.productCode || 'N/A' }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="quantity">
+                      <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsPayable.invoice.quantity' | translate }}</th>
+                      <td mat-cell *matCellDef="let item" class="text-right">{{ item.quantity || 0 }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="unitPrice">
+                      <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsPayable.invoice.unitPrice' | translate }}</th>
+                      <td mat-cell *matCellDef="let item" class="text-right">{{ item.unitPrice || 0 | currency }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="lineTotal">
+                      <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsPayable.invoice.lineTotal' | translate }}</th>
+                      <td mat-cell *matCellDef="let item" class="text-right">{{ item.lineTotal || 0 | currency }}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                  </table>
+                }
+
+                <div class="totals-section">
+                  <div class="total-row">
+                    <strong>{{ 'accountsPayable.invoice.subtotal' | translate }}</strong>
+                    <span>{{ po()?.subtotal || 0 | currency }}</span>
+                  </div>
+                  <div class="total-row">
+                    <strong>{{ 'accountsPayable.invoice.tax' | translate }}</strong>
+                    <span>{{ po()?.tax || 0 | currency }}</span>
+                  </div>
+                  <div class="total-row">
+                    <strong>{{ 'accountsPayable.invoice.shipping' | translate }}</strong>
+                    <span>{{ po()?.shippingCost || 0 | currency }}</span>
+                  </div>
+                  <div class="total-row total">
+                    <strong>{{ 'accountsPayable.invoice.total' | translate }}</strong>
+                    <span>{{ po()?.total || 0 | currency }}</span>
+                  </div>
                 </div>
               </div>
 
-              @if (po()?.items && po()!.items!.length > 0) {
-                <table mat-table [dataSource]="po()!.items!" class="items-table">
-                  <ng-container matColumnDef="product">
-                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.invoice.product' | translate }}</th>
-                    <td mat-cell *matCellDef="let item">{{ item.productName || item.productCode || 'N/A' }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="quantity">
-                    <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsPayable.invoice.quantity' | translate }}</th>
-                    <td mat-cell *matCellDef="let item" class="text-right">{{ item.quantity || 0 }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="unitPrice">
-                    <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsPayable.invoice.unitPrice' | translate }}</th>
-                    <td mat-cell *matCellDef="let item" class="text-right">{{ item.unitPrice || 0 | currency }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="lineTotal">
-                    <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsPayable.invoice.lineTotal' | translate }}</th>
-                    <td mat-cell *matCellDef="let item" class="text-right">{{ item.lineTotal || 0 | currency }}</td>
-                  </ng-container>
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-                </table>
-              }
-
-              <div class="totals-section">
-                <div class="total-row">
-                  <strong>{{ 'accountsPayable.invoice.subtotal' | translate }}</strong>
-                  <span>{{ po()?.subtotal || 0 | currency }}</span>
-                </div>
-                <div class="total-row">
-                  <strong>{{ 'accountsPayable.invoice.tax' | translate }}</strong>
-                  <span>{{ po()?.tax || 0 | currency }}</span>
-                </div>
-                <div class="total-row">
-                  <strong>{{ 'accountsPayable.invoice.shipping' | translate }}</strong>
-                  <span>{{ po()?.shippingCost || 0 | currency }}</span>
-                </div>
-                <div class="total-row total">
-                  <strong>{{ 'accountsPayable.invoice.total' | translate }}</strong>
-                  <span>{{ po()?.total || 0 | currency }}</span>
-                </div>
+              <div class="button-group sticky-bottom">
+                <button mat-raised-button color="primary" (click)="currentStep.set('payment')">
+                  {{ 'next' | translate }}
+                </button>
               </div>
             </div>
           </mat-tab>
 
           <mat-tab label="{{ 'accountsPayable.step.payment' | translate }}">
             <div class="tab-content">
-              <h3>{{ 'accountsPayable.payment.title' | translate }}</h3>
-              <p>{{ 'accountsPayable.payment.description' | translate }}</p>
+              <div class="tab-scrollable-content">
+                <div class="form-section">
+                  <div class="form-fields">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>{{ 'accountsPayable.payment.paymentAmount' | translate }}</mat-label>
+                      <input matInput type="number" [value]="paymentAmount()" (input)="paymentAmount.set(+$any($event.target).value || 0)">
+                    </mat-form-field>
 
-              <div class="form-section">
-                <div class="form-fields">
-                  <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>{{ 'accountsPayable.payment.paymentAmount' | translate }}</mat-label>
-                    <input matInput type="number" [value]="paymentAmount()" (input)="paymentAmount.set(+$any($event.target).value || 0)">
-                  </mat-form-field>
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>{{ 'accountsPayable.payment.paymentDate' | translate }}</mat-label>
+                      <input matInput [matDatepicker]="paymentDatePicker" [value]="paymentDate()" (dateChange)="paymentDate.set($event.value)">
+                      <mat-datepicker-toggle matIconSuffix [for]="paymentDatePicker"></mat-datepicker-toggle>
+                      <mat-datepicker #paymentDatePicker></mat-datepicker>
+                    </mat-form-field>
 
-                  <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>{{ 'accountsPayable.payment.paymentDate' | translate }}</mat-label>
-                    <input matInput [matDatepicker]="paymentDatePicker" [value]="paymentDate()" (dateChange)="paymentDate.set($event.value)">
-                    <mat-datepicker-toggle matIconSuffix [for]="paymentDatePicker"></mat-datepicker-toggle>
-                    <mat-datepicker #paymentDatePicker></mat-datepicker>
-                  </mat-form-field>
-
-                  <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>{{ 'accountsPayable.payment.paymentMethod' | translate }}</mat-label>
-                    <mat-select [value]="paymentMethod()" (selectionChange)="paymentMethod.set($event.value)">
-                      <mat-option value="BANK_TRANSFER">{{ 'accountsPayable.payment.method.bankTransfer' | translate }}</mat-option>
-                      <mat-option value="CREDIT_CARD">{{ 'accountsPayable.payment.method.creditCard' | translate }}</mat-option>
-                      <mat-option value="CASH">{{ 'accountsPayable.payment.method.cash' | translate }}</mat-option>
-                      <mat-option value="CHECK">{{ 'accountsPayable.payment.method.check' | translate }}</mat-option>
-                      <mat-option value="OTHER">{{ 'accountsPayable.payment.method.other' | translate }}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-
-                <div class="payment-summary">
-                  <div class="summary-row">
-                    <strong>{{ 'accountsPayable.payment.invoiceAmount' | translate }}</strong>
-                    <span>{{ po()?.total || 0 | currency }}</span>
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>{{ 'accountsPayable.payment.paymentMethod' | translate }}</mat-label>
+                      <mat-select [value]="paymentMethod()" (selectionChange)="paymentMethod.set($event.value)">
+                        <mat-option value="BANK_TRANSFER">{{ 'accountsPayable.payment.method.bankTransfer' | translate }}</mat-option>
+                        <mat-option value="CREDIT_CARD">{{ 'accountsPayable.payment.method.creditCard' | translate }}</mat-option>
+                        <mat-option value="CASH">{{ 'accountsPayable.payment.method.cash' | translate }}</mat-option>
+                        <mat-option value="CHECK">{{ 'accountsPayable.payment.method.check' | translate }}</mat-option>
+                        <mat-option value="OTHER">{{ 'accountsPayable.payment.method.other' | translate }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
                   </div>
-                  @if (paymentAmount() > 0) {
+
+                  <div class="payment-summary">
                     <div class="summary-row">
-                      <strong>{{ 'accountsPayable.payment.paidAmount' | translate }}</strong>
-                      <span>{{ paymentAmount() | currency }}</span>
+                      <strong>{{ 'accountsPayable.payment.invoiceAmount' | translate }}</strong>
+                      <span>{{ po()?.total || 0 | currency }}</span>
                     </div>
-                  }
-                  <div class="summary-row outstanding">
-                    <strong>{{ 'accountsPayable.payment.outstanding' | translate }}</strong>
-                    <span [class.outstanding-positive]="outstandingAmount() > 0">
-                      {{ outstandingAmount() | currency }}
-                    </span>
+                    @if (paymentAmount() > 0) {
+                      <div class="summary-row">
+                        <strong>{{ 'accountsPayable.payment.paidAmount' | translate }}</strong>
+                        <span>{{ paymentAmount() | currency }}</span>
+                      </div>
+                    }
+                    <div class="summary-row outstanding">
+                      <strong>{{ 'accountsPayable.payment.outstanding' | translate }}</strong>
+                      <span [class.outstanding-positive]="outstandingAmount() > 0">
+                        {{ outstandingAmount() | currency }}
+                      </span>
+                    </div>
                   </div>
                 </div>
+              </div>
 
-                <div class="button-group">
-                  <button mat-raised-button (click)="currentStep.set('invoice')">
-                    {{ 'previous' | translate }}
-                  </button>
-                  <button 
-                    mat-raised-button 
-                    color="primary" 
-                    (click)="handlePayment()"
-                    [disabled]="submitting() || !paymentAmount() || !paymentDate() || !paymentMethod()">
-                    @if (submitting()) {
-                      <mat-spinner diameter="20"></mat-spinner>
-                    } @else {
-                      {{ 'accountsPayable.payment.record' | translate }}
-                    }
-                  </button>
-                </div>
+              <div class="button-group sticky-bottom">
+                <button mat-raised-button (click)="currentStep.set('invoice')">
+                  {{ 'previous' | translate }}
+                </button>
+                <button 
+                  mat-raised-button 
+                  color="primary" 
+                  (click)="handlePayment()"
+                  [disabled]="submitting() || !paymentAmount() || !paymentDate() || !paymentMethod()">
+                  @if (submitting()) {
+                    <mat-spinner diameter="20"></mat-spinner>
+                  } @else {
+                    {{ 'accountsPayable.payment.record' | translate }}
+                  }
+                </button>
               </div>
             </div>
           </mat-tab>
 
           <mat-tab label="{{ 'accountsPayable.step.history' | translate }}">
             <div class="tab-content">
-              <h3>{{ 'accountsPayable.history.title' | translate }}</h3>
-              <p>{{ 'accountsPayable.history.description' | translate }}</p>
+              <div class="tab-scrollable-content">
+                @if (poHistory().length === 0) {
+                  <div class="empty-state">
+                    <p>{{ 'accountsPayable.history.empty' | translate }}</p>
+                  </div>
+                } @else {
+                  <table mat-table [dataSource]="poHistory()" class="history-table">
+                    <ng-container matColumnDef="timestamp">
+                      <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.timestamp' | translate }}</th>
+                      <td mat-cell *matCellDef="let record">{{ formatDateTime(record.timestamp) }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="step">
+                      <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.step' | translate }}</th>
+                      <td mat-cell *matCellDef="let record">{{ getStepLabel(record.step) | translate }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                      <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.status' | translate }}</th>
+                      <td mat-cell *matCellDef="let record">{{ getStatusLabel(record.status) | translate }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="note">
+                      <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.note' | translate }}</th>
+                      <td mat-cell *matCellDef="let record">{{ record.note || 'N/A' }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="data">
+                      <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.data' | translate }}</th>
+                      <td mat-cell *matCellDef="let record">
+                        @if (hasDataKeys(record.data)) {
+                          <div class="data-container">
+                            @for (item of record.data | keyvalue; track item.key) {
+                              <div class="data-item">
+                                <strong>{{ getDataKeyLabel(toString(item.key)) | translate }}:</strong> 
+                                {{ formatDataValue(toString(item.key), item.value) }}
+                              </div>
+                            }
+                          </div>
+                        } @else {
+                          N/A
+                        }
+                      </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="['timestamp', 'step', 'status', 'note', 'data']"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['timestamp', 'step', 'status', 'note', 'data']"></tr>
+                  </table>
+                }
+              </div>
 
-              @if (poHistory().length === 0) {
-                <div class="empty-state">
-                  <p>{{ 'accountsPayable.history.empty' | translate }}</p>
-                </div>
-              } @else {
-                <table mat-table [dataSource]="poHistory()" class="history-table">
-                  <ng-container matColumnDef="timestamp">
-                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.timestamp' | translate }}</th>
-                    <td mat-cell *matCellDef="let record">{{ formatDateTime(record.timestamp) }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="step">
-                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.step' | translate }}</th>
-                    <td mat-cell *matCellDef="let record">{{ getStepLabel(record.step) | translate }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="status">
-                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.status' | translate }}</th>
-                    <td mat-cell *matCellDef="let record">{{ getStatusLabel(record.status) | translate }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="note">
-                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.note' | translate }}</th>
-                    <td mat-cell *matCellDef="let record">{{ record.note || 'N/A' }}</td>
-                  </ng-container>
-                  <ng-container matColumnDef="data">
-                    <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.history.data' | translate }}</th>
-                    <td mat-cell *matCellDef="let record">
-                      @if (hasDataKeys(record.data)) {
-                        <div class="data-container">
-                          @for (item of record.data | keyvalue; track item.key) {
-                            <div class="data-item">
-                              <strong>{{ getDataKeyLabel(toString(item.key)) | translate }}:</strong> 
-                              {{ formatDataValue(toString(item.key), item.value) }}
-                            </div>
-                          }
-                        </div>
-                      } @else {
-                        N/A
-                      }
-                    </td>
-                  </ng-container>
-                  <tr mat-header-row *matHeaderRowDef="['timestamp', 'step', 'status', 'note', 'data']"></tr>
-                  <tr mat-row *matRowDef="let row; columns: ['timestamp', 'step', 'status', 'note', 'data']"></tr>
-                </table>
-              }
-
-              <div class="button-group">
+              <div class="button-group sticky-bottom">
                 <button mat-raised-button (click)="currentStep.set('payment')">
                   {{ 'previous' | translate }}
                 </button>
