@@ -21,3 +21,23 @@ export * from './lib/components/ax-paragraph/ax-paragraph.component';
 export * from './lib/components/ax-heading3/ax-heading3.component';
 export * from './lib/components/ax-grid/ax-grid.component';
 export * from './lib/components/ax-spacing/ax-spacing.component';
+
+// New components
+export * from './lib/components/ax-icon/ax-icon.component';
+export * from './lib/components/ax-select/ax-select.component';
+export * from './lib/components/ax-datepicker/ax-datepicker.component';
+export * from './lib/components/ax-tabs/ax-tabs.component';
+export * from './lib/components/ax-toolbar/ax-toolbar.component';
+export * from './lib/components/ax-sidenav/ax-sidenav.component';
+export * from './lib/components/ax-menu/ax-menu.component';
+export * from './lib/components/ax-chip/ax-chip.component';
+export * from './lib/components/ax-divider/ax-divider.component';
+export * from './lib/components/ax-list/ax-list.component';
+export * from './lib/components/ax-form-field/ax-form-field.component';
+export * from './lib/components/ax-textarea/ax-textarea.component';
+
+// Directives
+export * from './lib/components/ax-tooltip/ax-tooltip.directive';
+
+// Services
+export * from './lib/services/ax-snackbar.service';

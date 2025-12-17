@@ -2,15 +2,17 @@ import { Component, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuDrawerComponent } from '../../shared/components/menu-drawer/menu-drawer.component';
 import { SettingsDrawerComponent } from '../../shared/components/settings-drawer/settings-drawer.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../core/auth/auth.service';
 import { LogoutConfirmDialogComponent } from '../../shared/components/logout-confirm-dialog/logout-confirm-dialog.component';
+import { 
+  AxToolbarComponent, 
+  AxButtonComponent, 
+  AxIconComponent 
+} from '@ui/components';
 
 @Component({
   selector: 'app-main-layout',
@@ -19,12 +21,12 @@ import { LogoutConfirmDialogComponent } from '../../shared/components/logout-con
     CommonModule,
     RouterOutlet,
     MatSidenavModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
     MenuDrawerComponent,
     SettingsDrawerComponent,
-    TranslateModule
+    TranslateModule,
+    AxToolbarComponent,
+    AxButtonComponent,
+    AxIconComponent
   ],
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss']
@@ -63,7 +65,6 @@ export class MainLayoutComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        // If logout is confirmed
         this.authService.logout();
       }
     });

@@ -1,4 +1,5 @@
-<mat-card [style.box-shadow]="'0 ' + elevation + 'px ' + (elevation * 2) + 'px rgba(0,0,0,0.1)'">
+<mat-card [appearance]="appearance" [style.box-shadow]="appearance === 'raised' ? '0 ' + elevation + 'px ' + (elevation * 2) + 'px rgba(0,0,0,0.1)' : 'none'">
+  <ng-content select="[ax-card-header]"></ng-content>
   @if (title || subtitle) {
     <mat-card-header>
       @if (title) {
@@ -12,5 +13,5 @@
   <mat-card-content>
     <ng-content></ng-content>
   </mat-card-content>
+  <ng-content select="[ax-card-actions]"></ng-content>
 </mat-card>
-

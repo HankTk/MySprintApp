@@ -1,12 +1,12 @@
 import { Component, inject, OnInit, OnDestroy, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../core/auth/auth.service';
 import { User } from '../users/models/user';
 import { Subscription } from 'rxjs';
+import { AxIconComponent } from '@ui/components';
+import { MatCardModule } from '@angular/material/card';
 
 interface MenuItem {
   id: string;
@@ -21,9 +21,9 @@ interface MenuItem {
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatIconModule,
-    TranslateModule
+    TranslateModule,
+    AxIconComponent,
+    MatCardModule
   ],
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
@@ -46,11 +46,9 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     { id: 'general-ledger', route: '/general-ledger', icon: 'account_balance', labelKey: 'menu.generalLedger' },
     { id: 'accounts-receivable', route: '/account-receivable', icon: 'account_balance_wallet', labelKey: 'menu.accountsReceivable' },
     { id: 'accounts-payable', route: '/account-payable', icon: 'account_balance', labelKey: 'menu.accountsPayable' },
-    // { id: 'master', route: '/master', icon: 'settings', labelKey: 'menu.master' }
   ];
 
   constructor() {
-    // Watch for user changes
     effect(() => {
       const user = this.authService.currentUser();
       this.currentUser.set(user);
@@ -61,7 +59,6 @@ export class WelcomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.updateWelcomeMessage();
     
-    // Subscribe to language changes
     this.langSubscription = this.translate.onLangChange.subscribe(() => {
       this.updateWelcomeMessage();
     });

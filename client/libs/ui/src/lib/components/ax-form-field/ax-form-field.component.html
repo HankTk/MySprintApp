@@ -1,0 +1,19 @@
+<mat-form-field 
+  [appearance]="appearance" 
+  [floatLabel]="floatLabel"
+  [hideRequiredMarker]="hideRequiredMarker"
+  [subscriptSizing]="subscriptSizing"
+  class="ax-form-field">
+  @if (label) {
+    <mat-label>{{ label }}</mat-label>
+  }
+  <ng-content></ng-content>
+  @if (hint && !error) {
+    <mat-hint>{{ hint }}</mat-hint>
+  }
+  @if (error) {
+    <mat-error>{{ error }}</mat-error>
+  }
+  <ng-content select="mat-icon[matPrefix]"></ng-content>
+  <ng-content select="mat-icon[matSuffix]"></ng-content>
+</mat-form-field>

@@ -1,24 +1,24 @@
-<button
-  mat-icon-button
+<ax-button
+  variant="icon"
   [matMenuTriggerFor]="themeMenu"
-  [matTooltip]="'settings.theme' | translate"
+  [axTooltip]="'settings.theme' | translate"
   class="theme-switcher-button">
-  <mat-icon>{{ themeService.isDark() ? 'dark_mode' : 'light_mode' }}</mat-icon>
-</button>
+  <ax-icon [name]="themeService.isDark() ? 'dark_mode' : 'light_mode'"></ax-icon>
+</ax-button>
 
 <mat-menu #themeMenu="matMenu">
   <button 
     mat-menu-item 
     (click)="switchTheme('light')"
     [class.active]="themeService.isLight()">
-    <mat-icon>light_mode</mat-icon>
+    <ax-icon name="light_mode"></ax-icon>
     <span>{{ 'theme.light' | translate }}</span>
   </button>
   <button 
     mat-menu-item 
     (click)="switchTheme('dark')"
     [class.active]="themeService.isDark()">
-    <mat-icon>dark_mode</mat-icon>
+    <ax-icon name="dark_mode"></ax-icon>
     <span>{{ 'theme.dark' | translate }}</span>
   </button>
 </mat-menu>

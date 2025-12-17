@@ -1,127 +1,75 @@
 <div class="user-dialog">
   <h2 mat-dialog-title class="dialog-title">
-    <mat-icon class="title-icon">{{ isEdit ? 'edit' : 'add_circle' }}</mat-icon>
+    <ax-icon [name]="isEdit ? 'edit' : 'add_circle'" class="title-icon"></ax-icon>
     {{ isEdit ? ('editUser' | translate) : ('addUser' | translate) }}
   </h2>
 
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content class="dialog-content">
       <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'userid' | translate }}</mat-label>
-          <input
-            matInput
-            formControlName="userid"
-            [placeholder]="'useridPlaceholder' | translate"
-            [class.is-invalid]="isFieldInvalid('userid')">
-          @if (isFieldInvalid('userid')) {
-            <mat-error>
-              {{ getErrorMessage('userid') }}
-            </mat-error>
-          }
-        </mat-form-field>
+        <ax-input
+          [label]="'userid' | translate"
+          [placeholder]="'useridPlaceholder' | translate"
+          formControlName="userid"
+          [error]="isFieldInvalid('userid') ? getErrorMessage('userid') : undefined">
+        </ax-input>
       </div>
 
       <div class="form-row">
-        <!-- First Name Field (English: First, Japanese: Second) -->
         @if (isEnglish) {
-          <mat-form-field appearance="outline" class="form-field">
-            <mat-label>{{ 'firstName' | translate }}</mat-label>
-            <input
-              matInput
-              formControlName="firstName"
-              [placeholder]="'firstNamePlaceholder' | translate"
-              [class.is-invalid]="isFieldInvalid('firstName')">
-            @if (isFieldInvalid('firstName')) {
-              <mat-error>
-                {{ getErrorMessage('firstName') }}
-              </mat-error>
-            }
-          </mat-form-field>
+          <ax-input
+            [label]="'firstName' | translate"
+            [placeholder]="'firstNamePlaceholder' | translate"
+            formControlName="firstName"
+            [error]="isFieldInvalid('firstName') ? getErrorMessage('firstName') : undefined">
+          </ax-input>
         }
 
-        <!-- Last Name Field (English: Second, Japanese: First) -->
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'lastName' | translate }}</mat-label>
-          <input
-            matInput
-            formControlName="lastName"
-            [placeholder]="'lastNamePlaceholder' | translate"
-            [class.is-invalid]="isFieldInvalid('lastName')">
-          @if (isFieldInvalid('lastName')) {
-            <mat-error>
-              {{ getErrorMessage('lastName') }}
-            </mat-error>
-          }
-        </mat-form-field>
+        <ax-input
+          [label]="'lastName' | translate"
+          [placeholder]="'lastNamePlaceholder' | translate"
+          formControlName="lastName"
+          [error]="isFieldInvalid('lastName') ? getErrorMessage('lastName') : undefined">
+        </ax-input>
 
-        <!-- First Name Field (English: First, Japanese: Second) -->
         @if (!isEnglish) {
-          <mat-form-field appearance="outline" class="form-field">
-            <mat-label>{{ 'firstName' | translate }}</mat-label>
-            <input
-              matInput
-              formControlName="firstName"
-              [placeholder]="'firstNamePlaceholder' | translate"
-              [class.is-invalid]="isFieldInvalid('firstName')">
-            @if (isFieldInvalid('firstName')) {
-              <mat-error>
-                {{ getErrorMessage('firstName') }}
-              </mat-error>
-            }
-          </mat-form-field>
+          <ax-input
+            [label]="'firstName' | translate"
+            [placeholder]="'firstNamePlaceholder' | translate"
+            formControlName="firstName"
+            [error]="isFieldInvalid('firstName') ? getErrorMessage('firstName') : undefined">
+          </ax-input>
         }
       </div>
 
       <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'emailAddress' | translate }}</mat-label>
-          <input
-            matInput
-            type="email"
-            formControlName="email"
-            [placeholder]="'emailPlaceholder' | translate"
-            [class.is-invalid]="isFieldInvalid('email')">
-          @if (isFieldInvalid('email')) {
-            <mat-error>
-              {{ getErrorMessage('email') }}
-            </mat-error>
-          }
-        </mat-form-field>
+        <ax-input
+          type="email"
+          [label]="'emailAddress' | translate"
+          [placeholder]="'emailPlaceholder' | translate"
+          formControlName="email"
+          [error]="isFieldInvalid('email') ? getErrorMessage('email') : undefined">
+        </ax-input>
       </div>
 
       <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'role' | translate }}</mat-label>
-          <mat-select formControlName="role" [class.is-invalid]="isFieldInvalid('role')">
-            <mat-option value="">{{ 'rolePlaceholder' | translate }}</mat-option>
-            <mat-option value="Admin">{{ 'roleOptions.admin' | translate }}</mat-option>
-            <mat-option value="Basic">{{ 'roleOptions.basic' | translate }}</mat-option>
-          </mat-select>
-          @if (isFieldInvalid('role')) {
-            <mat-error>
-              {{ getErrorMessage('role') }}
-            </mat-error>
-          }
-        </mat-form-field>
+        <ax-select
+          [label]="'role' | translate"
+          [options]="roleOptions"
+          formControlName="role"
+          [error]="isFieldInvalid('role') ? getErrorMessage('role') : undefined">
+        </ax-select>
       </div>
 
       <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field full-width">
-          <mat-label>{{ 'jsonData' | translate }}</mat-label>
-          <textarea
-            matInput
-            formControlName="jsonData"
-            rows="4"
-            [placeholder]="'jsonDataPlaceholder' | translate"
-          [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
-          <mat-hint>{{ 'jsonDataHint' | translate }}</mat-hint>
-          @if (isFieldInvalid('jsonData')) {
-            <mat-error>
-              {{ getErrorMessage('jsonData') }}
-            </mat-error>
-          }
-        </mat-form-field>
+        <ax-textarea
+          [label]="'jsonData' | translate"
+          [placeholder]="'jsonDataPlaceholder' | translate"
+          formControlName="jsonData"
+          [rows]="4"
+          [hint]="'jsonDataHint' | translate"
+          [error]="isFieldInvalid('jsonData') ? getErrorMessage('jsonData') : undefined">
+        </ax-textarea>
       </div>
     </mat-dialog-content>
 

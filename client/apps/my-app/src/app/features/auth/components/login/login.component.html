@@ -2,7 +2,7 @@
   <mat-card class="login-card">
     <mat-card-header>
       <mat-card-title>
-        <mat-icon class="title-icon">lock</mat-icon>
+        <ax-icon name="lock" class="title-icon"></ax-icon>
         {{ 'login.title' | translate }}
       </mat-card-title>
     </mat-card-header>
@@ -17,7 +17,7 @@
             formControlName="userid"
             [placeholder]="'useridPlaceholder' | translate"
             [class.is-invalid]="isFieldInvalid('userid')">
-          <mat-icon matPrefix>badge</mat-icon>
+          <ax-icon name="badge" matPrefix></ax-icon>
           @if (isFieldInvalid('userid')) {
             <mat-error>
               {{ getErrorMessage('userid') | translate }}
@@ -33,7 +33,7 @@
             formControlName="password"
             [placeholder]="'passwordPlaceholder' | translate"
             [class.is-invalid]="isFieldInvalid('password')">
-          <mat-icon matPrefix>lock</mat-icon>
+          <ax-icon name="lock" matPrefix></ax-icon>
           @if (isFieldInvalid('password')) {
             <mat-error>
               {{ getErrorMessage('password') | translate }}
@@ -60,12 +60,12 @@
   </mat-card>
   
   <!-- Shutdown Button -->
-  <button
-    mat-icon-button
+  <ax-button
+    variant="icon"
     class="shutdown-button"
     (click)="shutdown()"
     [attr.aria-label]="'login.shutdown' | translate"
     [title]="'login.shutdown' | translate">
-    <mat-icon>power_settings_new</mat-icon>
-  </button>
+    <ax-icon name="power_settings_new"></ax-icon>
+  </ax-button>
 </div>

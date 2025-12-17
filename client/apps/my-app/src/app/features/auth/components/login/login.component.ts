@@ -2,16 +2,17 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { AxButtonComponent } from '@ui/components';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { LoginRequest } from '../../../users/models/user';
+import { 
+  AxButtonComponent, 
+  AxIconComponent
+} from '@ui/components';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-login',
@@ -20,13 +21,12 @@ import { LoginRequest } from '../../../users/models/user';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    TranslateModule,
+    AxButtonComponent,
+    AxIconComponent,
     MatCardModule,
     MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    TranslateModule,
-    AxButtonComponent
+    MatInputModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -43,26 +43,19 @@ export class LoginComponent implements OnInit {
   private languageService = inject(LanguageService);
 
   ngOnInit(): void {
-    // Ensure LanguageService is initialized (this will initialize TranslateService)
-    // and ensure we're using the current language
     const currentLang = this.languageService.getCurrentLanguage();
     
-    // Ensure default language is set
     if (!this.translate.defaultLang) {
       this.translate.setDefaultLang('en');
     }
     
-    // Use current language and ensure translations are loaded
-    this.translate.use(currentLang).subscribe(() => {
-      // Translations are now loaded
-    });
+    this.translate.use(currentLang).subscribe(() => {});
 
     this.loginForm = this.fb.group({
       userid: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
-    // Check if users exist, if not redirect to initial user creation
     this.authService.checkUsers().subscribe(hasUsers => {
       if (!hasUsers) {
         this.router.navigate(['/initial-user']);
@@ -87,7 +80,6 @@ export class LoginComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          // Always use the translated error message
           this.translate.get('login.error').subscribe(translated => {
             this.errorMessage = translated;
           });
@@ -115,18 +107,15 @@ export class LoginComponent implements OnInit {
 
   shutdown(): void {
     console.log('Shutdown button clicked');
-    console.log('window.electronAPI:', window.electronAPI);
     
     if (window.electronAPI && typeof window.electronAPI.shutdown === 'function') {
       try {
-        console.log('Calling electronAPI.shutdown()');
         window.electronAPI.shutdown();
       } catch (error) {
         console.error('Error shutting down application:', error);
       }
     } else {
-      console.warn('Electron API not available. Application may not be running in Electron.');
-      // Fallback: try to close the window if in browser
+      console.warn('Electron API not available.');
       if (typeof window.close === 'function') {
         window.close();
       }

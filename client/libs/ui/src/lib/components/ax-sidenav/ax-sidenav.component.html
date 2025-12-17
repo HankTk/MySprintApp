@@ -1,0 +1,19 @@
+<mat-sidenav-container class="ax-sidenav-container">
+  <mat-sidenav 
+    #sidenav
+    [mode]="mode"
+    [position]="position"
+    [opened]="opened"
+    [disableClose]="disableClose"
+    [fixedInViewport]="fixedInViewport"
+    [fixedTopGap]="fixedTopGap"
+    [fixedBottomGap]="fixedBottomGap"
+    (openedChange)="onOpenedChange($event)"
+    (closedStart)="onClosedStart()"
+    (openedStart)="onOpenedStart()">
+    <ng-content select="[ax-sidenav-content]"></ng-content>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

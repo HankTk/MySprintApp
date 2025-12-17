@@ -1,0 +1,16 @@
+<mat-nav-list [disableRipple]="disableRipple">
+  @for (item of items; track item.label) {
+    <mat-list-item 
+      [disabled]="item.disabled"
+      (click)="onItemClick(item)">
+      @if (item.icon) {
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+      }
+      <span matListItemTitle>{{ item.label }}</span>
+      @if (item.secondaryText) {
+        <span matListItemLine>{{ item.secondaryText }}</span>
+      }
+    </mat-list-item>
+  }
+  <ng-content></ng-content>
+</mat-nav-list>

@@ -1,15 +1,17 @@
 <nav class="menu-drawer">
   <div class="drawer-header">
     <h2>{{ 'menu.title' | translate }}</h2>
-    <button mat-icon-button (click)="onClose()" aria-label="Close menu" class="close-button">
-      <mat-icon class="close-icon">close</mat-icon>
-    </button>
+    <ax-button variant="icon" (click)="onClose()" class="close-button">
+      <ax-icon name="close" class="close-icon"></ax-icon>
+    </ax-button>
   </div>
   
   <mat-nav-list class="menu-nav-list">
-    <a mat-list-item *ngFor="let item of menuItems" [routerLink]="item.route" (click)="onClose()" class="menu-item">
-      <mat-icon matListItemIcon class="menu-icon">{{ item.icon }}</mat-icon>
-      <span matListItemTitle class="menu-text">{{ item.label | translate }}</span>
-    </a>
+    @for (item of menuItems; track item.route) {
+      <a mat-list-item [routerLink]="item.route" (click)="onClose()" class="menu-item">
+        <ax-icon [name]="item.icon" class="menu-icon"></ax-icon>
+        <span matListItemTitle class="menu-text">{{ item.label | translate }}</span>
+      </a>
+    }
   </mat-nav-list>
 </nav>

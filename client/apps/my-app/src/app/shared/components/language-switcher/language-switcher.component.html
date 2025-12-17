@@ -1,8 +1,10 @@
 <mat-form-field appearance="outline" class="language-select-field">
-  <mat-label *ngIf="showLabel">
-    <mat-icon class="label-icon">language</mat-icon>
-    {{ 'changeLanguage' | translate }}
-  </mat-label>
+  @if (showLabel) {
+    <mat-label>
+      <ax-icon name="language" class="label-icon"></ax-icon>
+      {{ 'changeLanguage' | translate }}
+    </mat-label>
+  }
   <mat-select 
     #languageSelect
     [value]="currentLanguage" 
@@ -10,9 +12,11 @@
     class="language-select" 
     [placeholder]="showLabel ? '' : ('changeLanguage' | translate)"
     panelClass="language-select-panel">
-    <mat-option *ngFor="let lang of languages" [value]="lang.value">
-      <mat-icon class="option-icon">{{ lang.icon }}</mat-icon>
-      <span>{{ lang.label | translate }}</span>
-    </mat-option>
+    @for (lang of languages; track lang.value) {
+      <mat-option [value]="lang.value">
+        <ax-icon name="flag" class="option-icon"></ax-icon>
+        <span>{{ lang.label }}</span>
+      </mat-option>
+    }
   </mat-select>
 </mat-form-field>

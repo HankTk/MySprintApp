@@ -15,7 +15,7 @@
           (keydown.space)="!item.disabled && navigateTo(item.route)">
           <mat-card-content>
             <div class="menu-card-content">
-              <mat-icon class="menu-card-icon">{{ item.icon }}</mat-icon>
+              <ax-icon [name]="item.icon" class="menu-card-icon"></ax-icon>
               <h3 class="menu-card-title">{{ item.labelKey | translate }}</h3>
             </div>
           </mat-card-content>

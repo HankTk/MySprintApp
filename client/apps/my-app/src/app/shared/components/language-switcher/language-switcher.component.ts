@@ -1,12 +1,14 @@
-import { Component, inject, Input, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, inject, Input, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule, MatSelect } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService, Language } from '../../services/language.service';
 import { Subscription } from 'rxjs';
+import { 
+  AxIconComponent
+} from '@ui/components';
+import { MatSelectModule, MatSelect } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-language-switcher',
@@ -14,16 +16,15 @@ import { Subscription } from 'rxjs';
   imports: [
     CommonModule,
     FormsModule,
-    MatFormFieldModule,
+    TranslateModule,
+    AxIconComponent,
     MatSelectModule,
-    MatIconModule,
-    TranslateModule
+    MatFormFieldModule
   ],
   templateUrl: './language-switcher.component.html',
   styleUrl: './language-switcher.component.scss'
 })
-export class LanguageSwitcherComponent implements OnInit, OnDestroy, AfterViewInit
-{
+export class LanguageSwitcherComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() showLabel = true;
   @ViewChild('languageSelect', { static: false }) languageSelect!: MatSelect;
   
@@ -33,15 +34,13 @@ export class LanguageSwitcherComponent implements OnInit, OnDestroy, AfterViewIn
   private subscription = new Subscription();
 
   languages = [
-    { value: 'en' as Language, label: 'english', icon: 'flag' },
-    { value: 'ja' as Language, label: 'japanese', icon: 'flag' }
+    { value: 'en' as Language, label: 'English' },
+    { value: 'ja' as Language, label: '日本語' }
   ];
 
   ngOnInit(): void {
-    // Initialize with current language
     this.currentLanguage = this.languageService.getCurrentLanguage();
     
-    // Subscribe to language changes to keep select in sync
     this.subscription.add(
       this.languageService.currentLanguage$.subscribe(lang => {
         if (this.currentLanguage !== lang) {
@@ -53,7 +52,6 @@ export class LanguageSwitcherComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngAfterViewInit(): void {
-    // Set panel width to match trigger width
     if (this.languageSelect) {
       this.languageSelect.openedChange.subscribe((opened: boolean) => {
         if (opened) {
@@ -77,7 +75,6 @@ export class LanguageSwitcherComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   onLanguageChange(newLanguage: Language): void {
-    console.log('Language change triggered:', newLanguage);
     if (newLanguage && (newLanguage === 'en' || newLanguage === 'ja')) {
       this.languageService.setLanguage(newLanguage);
       this.currentLanguage = newLanguage;

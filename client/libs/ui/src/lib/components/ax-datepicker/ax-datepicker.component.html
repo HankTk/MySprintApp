@@ -1,0 +1,24 @@
+<mat-form-field [appearance]="appearance" class="ax-datepicker-field">
+  @if (label) {
+    <mat-label>{{ label }}</mat-label>
+  }
+  <input 
+    matInput 
+    [matDatepicker]="picker"
+    [placeholder]="placeholder || ''"
+    [value]="value"
+    [required]="required"
+    [disabled]="disabled"
+    [min]="min"
+    [max]="max"
+    (dateChange)="onDateChange($event)"
+    (blur)="onBlur()">
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+  @if (hint && !error) {
+    <mat-hint>{{ hint }}</mat-hint>
+  }
+  @if (error) {
+    <mat-error>{{ error }}</mat-error>
+  }
+</mat-form-field>

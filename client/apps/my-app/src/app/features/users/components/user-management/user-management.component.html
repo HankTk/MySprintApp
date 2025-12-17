@@ -1,30 +1,33 @@
 <div class="user-management-container">
-  <mat-card class="main-card">
-    <mat-card-header>
+  <ax-card class="main-card">
+    <mat-card-header ax-card-header>
       <div class="header-content">
-        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+        <ax-button 
+          variant="icon" 
+          (click)="goBack()" 
+          class="back-button">
+          <ax-icon name="arrow_back"></ax-icon>
+        </ax-button>
         <mat-card-title class="card-title">
-          <mat-icon class="title-icon">people</mat-icon>
+          <ax-icon name="people" class="title-icon"></ax-icon>
           {{ 'userManagementSystem' | translate }}
         </mat-card-title>
       </div>
     </mat-card-header>
 
-    <mat-card-content>
-      <!-- Add New User Button -->
-      <div class="add-user-section">
-        <ax-button 
-          variant="raised" 
-          color="primary" 
-          [label]="'addNewUser' | translate"
-          (click)="openAddUserDialog()">
-        </ax-button>
-      </div>
+    <!-- Add New User Button -->
+    <div class="add-user-section">
+      <ax-button 
+        variant="raised" 
+        color="primary" 
+        [label]="'addNewUser' | translate"
+        (click)="openAddUserDialog()">
+      </ax-button>
+    </div>
 
-      <!-- User List Table -->
-      <div class="table-container">
+    <!-- User List Table -->
+    <div class="table-container">
+      <ax-table [passThrough]="true">
         <table mat-table [dataSource]="users() || []" class="user-table">
           <!-- User ID Column -->
           <ng-container matColumnDef="userid">
@@ -69,22 +72,22 @@
             <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
             <td mat-cell *matCellDef="let user">
               <div class="action-buttons">
-                <button 
-                  mat-icon-button 
+                <ax-button 
+                  variant="icon" 
                   color="primary" 
                   (click)="openEditUserDialog(user)"
-                  [matTooltip]="'edit' | translate"
+                  [axTooltip]="'edit' | translate"
                   class="edit-button">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button 
-                  mat-icon-button 
+                  <ax-icon name="edit"></ax-icon>
+                </ax-button>
+                <ax-button 
+                  variant="icon" 
                   color="warn" 
                   (click)="deleteUser(user)" 
-                  [matTooltip]="'delete' | translate"
+                  [axTooltip]="'delete' | translate"
                   class="delete-button">
-                  <mat-icon>delete</mat-icon>
-                </button>
+                  <ax-icon name="delete"></ax-icon>
+                </ax-button>
               </div>
             </td>
           </ng-container>
@@ -92,29 +95,29 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
         </table>
+      </ax-table>
 
-        <!-- Display when no data -->
-        @if (users() && users().length === 0 && !isLoading()) {
-          <div class="no-data">
-            <mat-icon class="no-data-icon">info</mat-icon>
-            <p>{{ 'noUserData' | translate }}</p>
-            <ax-button 
-              variant="raised" 
-              color="primary" 
-              [label]="'addFirstUser' | translate"
-              (click)="openAddUserDialog()">
-            </ax-button>
-          </div>
-        }
+      <!-- Display when no data -->
+      @if (users() && users().length === 0 && !isLoading()) {
+        <div class="no-data">
+          <ax-icon name="info" class="no-data-icon"></ax-icon>
+          <p>{{ 'noUserData' | translate }}</p>
+          <ax-button 
+            variant="raised" 
+            color="primary" 
+            [label]="'addFirstUser' | translate"
+            (click)="openAddUserDialog()">
+          </ax-button>
+        </div>
+      }
 
-        <!-- Loading Display -->
-        @if (isLoading()) {
-          <div class="loading">
-            <ax-progress type="spinner" mode="indeterminate"></ax-progress>
-            <p>{{ 'loadingData' | translate }}</p>
-          </div>
-        }
-      </div>
-    </mat-card-content>
-  </mat-card>
+      <!-- Loading Display -->
+      @if (isLoading()) {
+        <div class="loading">
+          <ax-progress type="spinner" mode="indeterminate"></ax-progress>
+          <p>{{ 'loadingData' | translate }}</p>
+        </div>
+      }
+    </div>
+  </ax-card>
 </div>

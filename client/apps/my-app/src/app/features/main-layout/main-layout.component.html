@@ -20,19 +20,19 @@
   <!-- Main Content -->
   <mat-sidenav-content>
     <!-- Toolbar -->
-    <mat-toolbar color="primary" class="app-toolbar">
-      <button mat-icon-button (click)="openMenuDrawer()" aria-label="Open menu">
-        <mat-icon>menu</mat-icon>
-      </button>
+    <ax-toolbar color="primary" class="app-toolbar">
+      <ax-button variant="icon" (click)="openMenuDrawer()">
+        <ax-icon name="menu"></ax-icon>
+      </ax-button>
       <span class="toolbar-title">{{ title }}</span>
       <span class="spacer"></span>
-      <button mat-icon-button (click)="logout()" aria-label="Logout" title="Logout">
-        <mat-icon>logout</mat-icon>
-      </button>
-      <button mat-icon-button (click)="openSettingsDrawer()" aria-label="Open settings">
-        <mat-icon>settings</mat-icon>
-      </button>
-    </mat-toolbar>
+      <ax-button variant="icon" (click)="logout()" title="Logout">
+        <ax-icon name="logout"></ax-icon>
+      </ax-button>
+      <ax-button variant="icon" (click)="openSettingsDrawer()">
+        <ax-icon name="settings"></ax-icon>
+      </ax-button>
+    </ax-toolbar>
 
     <!-- Main Content Area -->
     <div class="main-content">

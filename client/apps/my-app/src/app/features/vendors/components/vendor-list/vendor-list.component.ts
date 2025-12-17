@@ -1,13 +1,5 @@
 import { Component, OnInit, inject, OnDestroy, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { StoreService } from '../../../../core/store.service';
 import { Vendor } from '../../models/vendor.model';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,23 +7,30 @@ import { LanguageService } from '../../../../shared/services/language.service';
 import { Subscription } from 'rxjs';
 import { JsonUtil } from '../../../../shared/utils/json.util';
 import { VendorService } from '../../services/vendor.service';
-import { AxButtonComponent, AxProgressComponent } from '@ui/components';
+import { 
+  AxButtonComponent, 
+  AxProgressComponent,
+  AxCardComponent,
+  AxIconComponent,
+  AxTableComponent,
+  MatTableModule,
+  MatCardModule
+} from '@ui/components';
+import { AxTooltipDirective } from '@ui/components';
 
 @Component({
   selector: 'app-vendor-list',
   standalone: true,
   imports: [
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTableModule,
-    MatCardModule,
-    MatSnackBarModule,
-    MatToolbarModule,
-    MatTooltipModule,
     TranslateModule,
     AxButtonComponent,
-    AxProgressComponent
+    AxProgressComponent,
+    AxCardComponent,
+    AxIconComponent,
+    AxTableComponent,
+    MatTableModule,
+    MatCardModule,
+    AxTooltipDirective
   ],
   templateUrl: './vendor-list.component.html',
   styleUrls: ['./vendor-list.component.scss']
@@ -98,4 +97,3 @@ export class VendorListComponent implements OnInit, OnDestroy {
     }
   }
 }
-

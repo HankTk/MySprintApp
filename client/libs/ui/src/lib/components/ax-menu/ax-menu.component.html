@@ -1,0 +1,33 @@
+<button 
+  mat-icon-button 
+  [matMenuTriggerFor]="menu"
+  (menuOpened)="onMenuOpened()"
+  (menuClosed)="onMenuClosed()">
+  @if (triggerIcon) {
+    <mat-icon>{{ triggerIcon }}</mat-icon>
+  }
+  @if (triggerLabel) {
+    {{ triggerLabel }}
+  }
+  <ng-content select="[ax-menu-trigger]"></ng-content>
+</button>
+
+<mat-menu 
+  #menu="matMenu"
+  [xPosition]="xPosition"
+  [yPosition]="yPosition"
+  [overlapTrigger]="overlapTrigger">
+  @for (item of items; track item.label) {
+    @if (item.divider) {
+      <mat-divider></mat-divider>
+    } @else {
+      <button mat-menu-item [disabled]="item.disabled" (click)="onItemClick(item)">
+        @if (item.icon) {
+          <mat-icon>{{ item.icon }}</mat-icon>
+        }
+        <span>{{ item.label }}</span>
+      </button>
+    }
+  }
+  <ng-content></ng-content>
+</mat-menu>

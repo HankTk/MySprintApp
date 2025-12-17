@@ -1,28 +1,28 @@
 <div class="vendor-list-container">
-  <mat-card class="main-card">
-    <mat-card-header>
+  <ax-card class="main-card">
+    <mat-card-header ax-card-header>
       <div class="header-content">
-        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+        <ax-button variant="icon" (click)="goBack()" class="back-button">
+          <ax-icon name="arrow_back"></ax-icon>
+        </ax-button>
         <mat-card-title class="card-title">
-          <mat-icon class="title-icon">business</mat-icon>
+          <ax-icon name="business" class="title-icon"></ax-icon>
           {{ 'vendorManagement' | translate }}
         </mat-card-title>
       </div>
     </mat-card-header>
 
-    <mat-card-content>
-      <div class="controls-section">
-        <ax-button 
-          variant="raised" 
-          color="primary" 
-          [label]="'addNewVendor' | translate"
-          (click)="openAddVendorDialog()">
-        </ax-button>
-      </div>
+    <div class="controls-section">
+      <ax-button 
+        variant="raised" 
+        color="primary" 
+        [label]="'addNewVendor' | translate"
+        (click)="openAddVendorDialog()">
+      </ax-button>
+    </div>
 
-      <div class="table-container">
+    <div class="table-container">
+      <ax-table [passThrough]="true">
         <table mat-table [dataSource]="vendors() || []" class="vendor-table">
           <ng-container matColumnDef="vendorNumber">
             <th mat-header-cell *matHeaderCellDef>{{ 'vendorNumber' | translate }}</th>
@@ -65,20 +65,20 @@
             <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
             <td mat-cell *matCellDef="let vendor">
               <div class="action-buttons">
-                <button 
-                  mat-icon-button 
+                <ax-button 
+                  variant="icon" 
                   color="primary" 
                   (click)="openEditVendorDialog(vendor)"
-                  [matTooltip]="'edit' | translate">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button 
-                  mat-icon-button 
+                  [axTooltip]="'edit' | translate">
+                  <ax-icon name="edit"></ax-icon>
+                </ax-button>
+                <ax-button 
+                  variant="icon" 
                   color="warn" 
                   (click)="deleteVendor(vendor)" 
-                  [matTooltip]="'delete' | translate">
-                  <mat-icon>delete</mat-icon>
-                </button>
+                  [axTooltip]="'delete' | translate">
+                  <ax-icon name="delete"></ax-icon>
+                </ax-button>
               </div>
             </td>
           </ng-container>
@@ -86,28 +86,27 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
         </table>
+      </ax-table>
 
-        @if (vendors() && vendors().length === 0 && !isLoading()) {
-          <div class="no-data">
-            <mat-icon class="no-data-icon">info</mat-icon>
-            <p>{{ 'noVendorData' | translate }}</p>
-            <ax-button 
-              variant="raised" 
-              color="primary" 
-              [label]="'addFirstVendor' | translate"
-              (click)="openAddVendorDialog()">
-            </ax-button>
-          </div>
-        }
+      @if (vendors() && vendors().length === 0 && !isLoading()) {
+        <div class="no-data">
+          <ax-icon name="info" class="no-data-icon"></ax-icon>
+          <p>{{ 'noVendorData' | translate }}</p>
+          <ax-button 
+            variant="raised" 
+            color="primary" 
+            [label]="'addFirstVendor' | translate"
+            (click)="openAddVendorDialog()">
+          </ax-button>
+        </div>
+      }
 
-        @if (isLoading()) {
-          <div class="loading">
-            <ax-progress type="spinner" mode="indeterminate"></ax-progress>
-            <p>{{ 'loadingData' | translate }}</p>
-          </div>
-        }
-      </div>
-    </mat-card-content>
-  </mat-card>
+      @if (isLoading()) {
+        <div class="loading">
+          <ax-progress type="spinner" mode="indeterminate"></ax-progress>
+          <p>{{ 'loadingData' | translate }}</p>
+        </div>
+      }
+    </div>
+  </ax-card>
 </div>
-

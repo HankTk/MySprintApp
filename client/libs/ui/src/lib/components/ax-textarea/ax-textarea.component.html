@@ -1,0 +1,22 @@
+<mat-form-field [appearance]="appearance" class="ax-textarea-field">
+  @if (label) {
+    <mat-label>{{ label }}</mat-label>
+  }
+  <textarea 
+    matInput
+    [placeholder]="placeholder || ''"
+    [rows]="rows"
+    [value]="value"
+    [required]="required"
+    [disabled]="disabled"
+    [attr.maxlength]="maxLength"
+    (input)="onInput($event)"
+    (blur)="onBlur()">
+  </textarea>
+  @if (hint && !error) {
+    <mat-hint>{{ hint }}</mat-hint>
+  }
+  @if (error) {
+    <mat-error>{{ error }}</mat-error>
+  }
+</mat-form-field>

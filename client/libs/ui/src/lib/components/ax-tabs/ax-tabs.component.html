@@ -1,0 +1,20 @@
+<mat-tab-group
+  [selectedIndex]="selectedIndex"
+  [animationDuration]="animationDuration"
+  [backgroundColor]="backgroundColor"
+  [color]="color"
+  [fitInkBarToContent]="fitInkBarToContent"
+  [preserveContent]="preserveContent"
+  (selectedTabChange)="onTabChange($event)">
+  @for (tab of tabs; track tab.label; let i = $index) {
+    <mat-tab [label]="tab.label" [disabled]="tab.disabled">
+      <ng-template matTabLabel>
+        @if (tab.icon) {
+          <span class="tab-icon">{{ tab.icon }}</span>
+        }
+        {{ tab.label }}
+      </ng-template>
+    </mat-tab>
+  }
+  <ng-content></ng-content>
+</mat-tab-group>

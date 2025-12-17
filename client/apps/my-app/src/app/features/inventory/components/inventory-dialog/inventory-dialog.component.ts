@@ -1,14 +1,15 @@
 import { Component, Inject, OnInit, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { Inventory, CreateInventoryRequest } from '../../models/inventory.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
-import { AxButtonComponent } from '@ui/components';
+import { 
+  AxButtonComponent, 
+  AxIconComponent,
+  AxInputComponent,
+  AxTextareaComponent
+} from '@ui/components';
 
 export interface InventoryDialogData {
   inventory?: Inventory;
@@ -22,12 +23,11 @@ export interface InventoryDialogData {
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
     TranslateModule,
-    AxButtonComponent
+    AxButtonComponent,
+    AxIconComponent,
+    AxInputComponent,
+    AxTextareaComponent
   ],
   templateUrl: './inventory-dialog.component.html',
   styleUrls: ['./inventory-dialog.component.scss']
@@ -152,4 +152,3 @@ export class InventoryDialogComponent implements OnInit {
     return '';
   }
 }
-

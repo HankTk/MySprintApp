@@ -1,60 +1,42 @@
 <div class="inventory-dialog">
   <h2 mat-dialog-title class="dialog-title">
-    <mat-icon class="title-icon">{{ isEdit ? 'edit' : 'add_circle' }}</mat-icon>
+    <ax-icon [name]="isEdit ? 'edit' : 'add_circle'" class="title-icon"></ax-icon>
     {{ isEdit ? ('editInventory' | translate) : ('addInventory' | translate) }}
   </h2>
 
   <form [formGroup]="inventoryForm" (ngSubmit)="onSubmit()">
     <mat-dialog-content class="dialog-content">
       <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'productId' | translate }}</mat-label>
-          <input matInput formControlName="productId" [class.is-invalid]="isFieldInvalid('productId')">
-          @if (isFieldInvalid('productId')) {
-            <mat-error>
-              {{ getErrorMessage('productId') }}
-            </mat-error>
-          }
-        </mat-form-field>
+        <ax-input
+          [label]="'productId' | translate"
+          formControlName="productId"
+          [error]="isFieldInvalid('productId') ? getErrorMessage('productId') : undefined">
+        </ax-input>
 
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'warehouseId' | translate }}</mat-label>
-          <input matInput formControlName="warehouseId" [class.is-invalid]="isFieldInvalid('warehouseId')">
-          @if (isFieldInvalid('warehouseId')) {
-            <mat-error>
-              {{ getErrorMessage('warehouseId') }}
-            </mat-error>
-          }
-        </mat-form-field>
+        <ax-input
+          [label]="'warehouseId' | translate"
+          formControlName="warehouseId"
+          [error]="isFieldInvalid('warehouseId') ? getErrorMessage('warehouseId') : undefined">
+        </ax-input>
       </div>
 
       <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'quantity' | translate }}</mat-label>
-          <input matInput type="number" formControlName="quantity" [class.is-invalid]="isFieldInvalid('quantity')">
-          @if (isFieldInvalid('quantity')) {
-            <mat-error>
-              {{ getErrorMessage('quantity') }}
-            </mat-error>
-          }
-        </mat-form-field>
+        <ax-input
+          type="number"
+          [label]="'quantity' | translate"
+          formControlName="quantity"
+          [error]="isFieldInvalid('quantity') ? getErrorMessage('quantity') : undefined">
+        </ax-input>
       </div>
 
       <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field full-width">
-          <mat-label>{{ 'jsonData' | translate }}</mat-label>
-          <textarea
-            matInput
-            formControlName="jsonData"
-            rows="4"
-            [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
-          <mat-hint>{{ 'jsonDataHint' | translate }}</mat-hint>
-          @if (isFieldInvalid('jsonData')) {
-            <mat-error>
-              {{ getErrorMessage('jsonData') }}
-            </mat-error>
-          }
-        </mat-form-field>
+        <ax-textarea
+          [label]="'jsonData' | translate"
+          formControlName="jsonData"
+          [rows]="4"
+          [hint]="'jsonDataHint' | translate"
+          [error]="isFieldInvalid('jsonData') ? getErrorMessage('jsonData') : undefined">
+        </ax-textarea>
       </div>
     </mat-dialog-content>
 
@@ -75,4 +57,3 @@
     </mat-dialog-actions>
   </form>
 </div>
-

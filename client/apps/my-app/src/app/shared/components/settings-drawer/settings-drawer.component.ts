@@ -1,28 +1,28 @@
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
 import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.component';
+import { 
+  AxButtonComponent, 
+  AxIconComponent, 
+  AxDividerComponent
+} from '@ui/components';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-settings-drawer',
   standalone: true,
   imports: [
     CommonModule,
-    MatSidenavModule,
-    MatListModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDividerModule,
     TranslateModule,
     LanguageSwitcherComponent,
-    ThemeSwitcherComponent
+    ThemeSwitcherComponent,
+    AxButtonComponent,
+    AxIconComponent,
+    AxDividerComponent,
+    MatListModule
   ],
   templateUrl: './settings-drawer.component.html',
   styleUrls: ['./settings-drawer.component.scss']

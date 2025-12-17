@@ -1,10 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { AxButtonComponent } from '@ui/components';
+import { AxButtonComponent, AxIconComponent } from '@ui/components';
 
 @Component({
   selector: 'app-logout-confirm-dialog',
@@ -12,10 +10,9 @@ import { AxButtonComponent } from '@ui/components';
   imports: [
     CommonModule,
     MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
     TranslateModule,
-    AxButtonComponent
+    AxButtonComponent,
+    AxIconComponent
   ],
   templateUrl: './logout-confirm-dialog.component.html',
   styleUrls: ['./logout-confirm-dialog.component.scss']

@@ -2,17 +2,17 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { AxButtonComponent } from '@ui/components';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpService } from '../../../../core/http.service';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { CreateUserRequest, LoginRequest } from '../../../users/models/user';
+import { 
+  AxButtonComponent, 
+  AxIconComponent
+} from '@ui/components';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-initial-user',
@@ -21,14 +21,12 @@ import { CreateUserRequest, LoginRequest } from '../../../users/models/user';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    TranslateModule,
+    AxButtonComponent,
+    AxIconComponent,
     MatCardModule,
     MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatButtonModule,
-    MatIconModule,
-    TranslateModule,
-    AxButtonComponent
+    MatInputModule
   ],
   templateUrl: './initial-user.component.html',
   styleUrls: ['./initial-user.component.scss']
@@ -44,7 +42,6 @@ export class InitialUserComponent implements OnInit {
   private router = inject(Router);
 
   ngOnInit(): void {
-    // Check if users already exist, if so redirect to login
     this.authService.checkUsers().subscribe(hasUsers => {
       if (hasUsers) {
         this.router.navigate(['/login']);
@@ -79,16 +76,14 @@ export class InitialUserComponent implements OnInit {
         userid: this.userForm.value.userid,
         firstName: this.userForm.value.firstName,
         lastName: this.userForm.value.lastName,
-        email: '', // Email not required for initial user
+        email: '',
         password: this.userForm.value.password,
-        role: 'Admin', // Initial user must always be Admin
+        role: 'Admin',
         jsonData: {}
       };
 
       this.httpService.post('users', userData).subscribe({
         next: (createdUser) => {
-          // Automatically log in the user after creation
-          // Use form values directly since password is required and validated
           const loginCredentials: LoginRequest = {
             userid: this.userForm.value.userid,
             password: this.userForm.value.password
@@ -97,15 +92,12 @@ export class InitialUserComponent implements OnInit {
           this.authService.login(loginCredentials).subscribe({
             next: () => {
               this.isLoading = false;
-              // Update auth service to reflect that users now exist
               this.authService.checkUsers().subscribe(() => {
-                // Navigate directly to main app, skipping login
                 this.router.navigate(['/']);
               });
             },
             error: (loginError) => {
               this.isLoading = false;
-              // If login fails, still update hasUsers and redirect to login
               this.authService.checkUsers().subscribe(() => {
                 this.router.navigate(['/login']);
               });

@@ -7,13 +7,18 @@ import { MatSortModule, Sort } from '@angular/material/sort';
 /**
  * Reusable table component
  * Provides consistent table styling and functionality
+ * 
+ * Supports two modes:
+ * 1. Simple mode: Pass dataSource and displayedColumns, use rowTemplate for custom cells
+ * 2. Pass-through mode: Set passThrough=true and use ng-content for full mat-table control
  */
 @Component({
   selector: 'ax-table',
   standalone: true,
   imports: [CommonModule, MatTableModule, MatPaginatorModule, MatSortModule],
   templateUrl: './ax-table.component.html',
-  styleUrls: ['./ax-table.component.scss']
+  styleUrls: ['./ax-table.component.scss'],
+  exportAs: 'axTable'
 })
 export class AxTableComponent<T = any> implements OnInit, OnChanges {
   @Input() dataSource: T[] = [];
@@ -22,6 +27,7 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges {
   @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
   @Input() showPaginator = true;
   @Input() showSort = true;
+  @Input() passThrough = false;
 
   @ContentChild('rowTemplate') rowTemplate?: TemplateRef<any>;
   @ContentChild('headerTemplate') headerTemplate?: TemplateRef<any>;
@@ -81,3 +87,5 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges {
   }
 }
 
+// Re-export Material Table module for pass-through usage
+export { MatTableModule } from '@angular/material/table';

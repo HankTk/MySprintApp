@@ -1,18 +1,7 @@
-import { Component, OnInit, inject, OnDestroy, signal, effect, computed } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, signal, computed } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AxButtonComponent, AxProgressComponent } from '@ui/components';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { StoreService } from '../../../../core/store.service';
 import { Order } from '../../models/order.model';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,6 +11,18 @@ import { JsonUtil } from '../../../../shared/utils/json.util';
 import { OrderService } from '../../services/order.service';
 import { CustomerService } from '../../../customers/services/customer.service';
 import { Customer } from '../../../customers/models/customer.model';
+import { 
+  AxButtonComponent, 
+  AxProgressComponent,
+  AxCardComponent,
+  AxIconComponent,
+  AxTableComponent,
+  MatTableModule,
+  MatCardModule
+} from '@ui/components';
+import { AxTooltipDirective } from '@ui/components';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-order-list',
@@ -29,19 +30,17 @@ import { Customer } from '../../../customers/models/customer.model';
   imports: [
     CommonModule,
     CurrencyPipe,
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTableModule,
-    MatCardModule,
-    MatSnackBarModule,
-    MatToolbarModule,
+    TranslateModule,
     AxButtonComponent,
     AxProgressComponent,
-    MatTooltipModule,
-    MatSelectModule,
+    AxCardComponent,
+    AxIconComponent,
+    AxTableComponent,
+    MatTableModule,
+    MatCardModule,
+    AxTooltipDirective,
     MatFormFieldModule,
-    TranslateModule
+    MatSelectModule
   ],
   templateUrl: './order-list.component.html',
   styleUrls: ['./order-list.component.scss']
@@ -51,7 +50,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
   displayedColumns = signal<string[]>(['orderNumber', 'customerName', 'orderDate', 'status', 'total', 'jsonData', 'actions']);
   statusFilter = signal<string | null>(null);
   
-  // Use computed signal for filtered orders
   filteredOrders = computed(() => {
     const orders = this.orders() || [];
     const filter = this.statusFilter();
@@ -79,7 +77,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
     this.loadOrders();
     this.loadCustomers();
     
-    // Reload orders when navigating back to this page
     this.subscriptions.add(
       this.router.events
         .pipe(filter(event => event instanceof NavigationEnd))
@@ -113,7 +110,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   onStatusFilterChange(value: string): void {
     this.statusFilter.set(value || null);
-    // filteredOrders is now a computed signal, so it will automatically update
   }
 
   getCustomerName(customerId?: string): string {

@@ -2,7 +2,7 @@
   <mat-card class="initial-user-card">
     <mat-card-header>
       <mat-card-title>
-        <mat-icon class="title-icon">person_add</mat-icon>
+        <ax-icon name="person_add" class="title-icon"></ax-icon>
         {{ 'initialUser.title' | translate }}
       </mat-card-title>
       <mat-card-subtitle>
@@ -19,7 +19,7 @@
             formControlName="userid"
             [placeholder]="'useridPlaceholder' | translate"
             [class.is-invalid]="isFieldInvalid('userid')">
-          <mat-icon matPrefix>badge</mat-icon>
+          <ax-icon name="badge" matPrefix></ax-icon>
           @if (isFieldInvalid('userid')) {
             <mat-error>
               {{ getErrorMessage('userid') | translate }}
@@ -63,7 +63,7 @@
             formControlName="password"
             [placeholder]="'passwordPlaceholder' | translate"
             [class.is-invalid]="isFieldInvalid('password')">
-          <mat-icon matPrefix>lock</mat-icon>
+          <ax-icon name="lock" matPrefix></ax-icon>
           @if (isFieldInvalid('password')) {
             <mat-error>
               {{ getErrorMessage('password') | translate }}
@@ -79,7 +79,7 @@
             formControlName="confirmPassword"
             [placeholder]="'initialUser.confirmPasswordPlaceholder' | translate"
             [class.is-invalid]="isFieldInvalid('confirmPassword')">
-          <mat-icon matPrefix>lock</mat-icon>
+          <ax-icon name="lock" matPrefix></ax-icon>
           @if (isFieldInvalid('confirmPassword')) {
             <mat-error>
               {{ getErrorMessage('confirmPassword') | translate }}

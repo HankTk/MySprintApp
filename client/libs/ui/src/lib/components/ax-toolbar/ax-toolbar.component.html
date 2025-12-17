@@ -1,0 +1,8 @@
+<mat-toolbar [color]="color">
+  <ng-content></ng-content>
+</mat-toolbar>
+@if (multiple) {
+  <mat-toolbar-row>
+    <ng-content select="[ax-toolbar-row]"></ng-content>
+  </mat-toolbar-row>
+}

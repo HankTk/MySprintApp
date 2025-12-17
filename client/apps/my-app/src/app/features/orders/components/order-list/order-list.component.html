@@ -1,45 +1,45 @@
 <div class="order-list-container">
-  <mat-card class="main-card">
-    <mat-card-header>
+  <ax-card class="main-card">
+    <mat-card-header ax-card-header>
       <div class="header-content">
-        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+        <ax-button variant="icon" (click)="goBack()" class="back-button">
+          <ax-icon name="arrow_back"></ax-icon>
+        </ax-button>
         <mat-card-title class="card-title">
-          <mat-icon class="title-icon">shopping_cart</mat-icon>
+          <ax-icon name="shopping_cart" class="title-icon"></ax-icon>
           {{ 'orderManagement' | translate }}
         </mat-card-title>
       </div>
     </mat-card-header>
 
-    <mat-card-content>
-      <div class="controls-section">
-        <ax-button 
-          variant="raised" 
-          color="primary" 
-          [label]="'addNewOrder' | translate"
-          (click)="openAddOrderDialog()">
-        </ax-button>
+    <div class="controls-section">
+      <ax-button 
+        variant="raised" 
+        color="primary" 
+        [label]="'addNewOrder' | translate"
+        (click)="openAddOrderDialog()">
+      </ax-button>
 
-        <div class="filter-section">
-          <mat-form-field appearance="outline" class="status-filter">
-            <mat-label>{{ 'filterByStatus' | translate }}</mat-label>
-            <mat-select [value]="statusFilter()" (selectionChange)="onStatusFilterChange($event.value)">
-              <mat-option [value]="null">{{ 'order.status.all' | translate }}</mat-option>
-              <mat-option value="DRAFT">{{ 'order.status.draft' | translate }}</mat-option>
-              <mat-option value="PENDING_APPROVAL">{{ 'order.status.pendingApproval' | translate }}</mat-option>
-              <mat-option value="APPROVED">{{ 'order.status.approved' | translate }}</mat-option>
-              <mat-option value="SHIPPING_INSTRUCTED">{{ 'order.status.shippingInstructed' | translate }}</mat-option>
-              <mat-option value="SHIPPED">{{ 'order.status.shipped' | translate }}</mat-option>
-              <mat-option value="INVOICED">{{ 'order.status.invoiced' | translate }}</mat-option>
-              <mat-option value="PAID">{{ 'order.status.paid' | translate }}</mat-option>
-              <mat-option value="CANCELLED">{{ 'order.status.cancelled' | translate }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+      <div class="filter-section">
+        <mat-form-field appearance="outline" class="status-filter">
+          <mat-label>{{ 'filterByStatus' | translate }}</mat-label>
+          <mat-select [value]="statusFilter()" (selectionChange)="onStatusFilterChange($event.value)">
+            <mat-option [value]="null">{{ 'order.status.all' | translate }}</mat-option>
+            <mat-option value="DRAFT">{{ 'order.status.draft' | translate }}</mat-option>
+            <mat-option value="PENDING_APPROVAL">{{ 'order.status.pendingApproval' | translate }}</mat-option>
+            <mat-option value="APPROVED">{{ 'order.status.approved' | translate }}</mat-option>
+            <mat-option value="SHIPPING_INSTRUCTED">{{ 'order.status.shippingInstructed' | translate }}</mat-option>
+            <mat-option value="SHIPPED">{{ 'order.status.shipped' | translate }}</mat-option>
+            <mat-option value="INVOICED">{{ 'order.status.invoiced' | translate }}</mat-option>
+            <mat-option value="PAID">{{ 'order.status.paid' | translate }}</mat-option>
+            <mat-option value="CANCELLED">{{ 'order.status.cancelled' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
+    </div>
 
-      <div class="table-container">
+    <div class="table-container">
+      <ax-table [passThrough]="true">
         <table mat-table [dataSource]="filteredOrders() || []" class="order-table">
           <ng-container matColumnDef="orderNumber">
             <th mat-header-cell *matHeaderCellDef>{{ 'orderNumber' | translate }}</th>
@@ -84,20 +84,20 @@
             <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
             <td mat-cell *matCellDef="let order">
               <div class="action-buttons">
-                <button 
-                  mat-icon-button 
+                <ax-button 
+                  variant="icon" 
                   color="primary" 
                   (click)="openEditOrderDialog(order)" 
-                  [matTooltip]="'edit' | translate">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button 
-                  mat-icon-button 
+                  [axTooltip]="'edit' | translate">
+                  <ax-icon name="edit"></ax-icon>
+                </ax-button>
+                <ax-button 
+                  variant="icon" 
                   color="warn" 
                   (click)="deleteOrder(order)" 
-                  [matTooltip]="'delete' | translate">
-                  <mat-icon>delete</mat-icon>
-                </button>
+                  [axTooltip]="'delete' | translate">
+                  <ax-icon name="delete"></ax-icon>
+                </ax-button>
               </div>
             </td>
           </ng-container>
@@ -105,27 +105,27 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
         </table>
+      </ax-table>
 
-        @if (filteredOrders() && filteredOrders().length === 0 && !isLoading()) {
-          <div class="no-data">
-            <mat-icon class="no-data-icon">info</mat-icon>
-            <p>{{ 'noOrderData' | translate }}</p>
-            <ax-button 
-              variant="raised" 
-              color="primary" 
-              [label]="'addFirstOrder' | translate"
-              (click)="openAddOrderDialog()">
-            </ax-button>
-          </div>
-        }
+      @if (filteredOrders() && filteredOrders().length === 0 && !isLoading()) {
+        <div class="no-data">
+          <ax-icon name="info" class="no-data-icon"></ax-icon>
+          <p>{{ 'noOrderData' | translate }}</p>
+          <ax-button 
+            variant="raised" 
+            color="primary" 
+            [label]="'addFirstOrder' | translate"
+            (click)="openAddOrderDialog()">
+          </ax-button>
+        </div>
+      }
 
-        @if (isLoading()) {
-          <div class="loading">
-            <ax-progress type="spinner" mode="indeterminate"></ax-progress>
-            <p>{{ 'loadingData' | translate }}</p>
-          </div>
-        }
-      </div>
-    </mat-card-content>
-  </mat-card>
+      @if (isLoading()) {
+        <div class="loading">
+          <ax-progress type="spinner" mode="indeterminate"></ax-progress>
+          <p>{{ 'loadingData' | translate }}</p>
+        </div>
+      }
+    </div>
+  </ax-card>
 </div>
