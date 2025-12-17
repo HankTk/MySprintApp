@@ -1,20 +1,24 @@
-<mat-chip
-  [color]="color"
-  [disabled]="disabled"
-  [highlighted]="highlighted"
-  [removable]="removable"
+<span 
+  class="ax-chip-wrapper"
   [style.color]="customColor"
   [style.background-color]="customBackgroundColor"
-  (removed)="onRemove()">
-  @if (leadingIcon) {
-    <mat-icon matChipAvatar>{{ leadingIcon }}</mat-icon>
-  }
-  {{ label }}
-  <ng-content></ng-content>
-  @if (trailingIcon) {
-    <mat-icon matChipTrailingIcon>{{ trailingIcon }}</mat-icon>
-  }
-  @if (removable) {
-    <mat-icon matChipRemove>cancel</mat-icon>
-  }
-</mat-chip>
+  [class.has-custom-colors]="customColor || customBackgroundColor">
+  <mat-chip
+    [color]="color"
+    [disabled]="disabled"
+    [highlighted]="highlighted"
+    [removable]="removable"
+    (removed)="onRemove()">
+    @if (leadingIcon) {
+      <mat-icon matChipAvatar>{{ leadingIcon }}</mat-icon>
+    }
+    {{ label }}
+    <ng-content></ng-content>
+    @if (trailingIcon) {
+      <mat-icon matChipTrailingIcon>{{ trailingIcon }}</mat-icon>
+    }
+    @if (removable) {
+      <mat-icon matChipRemove>cancel</mat-icon>
+    }
+  </mat-chip>
+</span>

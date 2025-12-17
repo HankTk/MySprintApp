@@ -1,19 +1,16 @@
 <div class="master-container">
-  <mat-card class="main-card">
-    <mat-card-header>
-      <div class="header-content">
-        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-        <mat-card-title class="card-title">
-          <mat-icon class="title-icon">storage</mat-icon>
-          {{ 'master.title' | translate }}
-        </mat-card-title>
-      </div>
-    </mat-card-header>
-
-    <mat-card-content>
-      <div class="master-cards-grid">
+  <ax-button variant="icon" (click)="goBack()" class="back-button">
+    <ax-icon name="arrow_back"></ax-icon>
+  </ax-button>
+  
+  <div class="master-content">
+    <h1 class="master-title">
+      <ax-icon name="storage" class="title-icon"></ax-icon>
+      {{ 'master.title' | translate }}
+    </h1>
+    <p class="master-subtitle">{{ 'master.subtitle' | translate }}</p>
+    
+    <div class="master-cards-grid">
       @for (item of masterItems; track item.id) {
         <mat-card 
           class="master-card"
@@ -24,14 +21,13 @@
           (keydown.space)="navigateTo(item.route)">
           <mat-card-content>
             <div class="master-card-content">
-              <mat-icon class="master-card-icon">{{ item.icon }}</mat-icon>
+              <ax-icon [name]="item.icon" class="master-card-icon"></ax-icon>
               <h3 class="master-card-title">{{ item.labelKey | translate }}</h3>
             </div>
           </mat-card-content>
         </mat-card>
       }
-      </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 </div>
 

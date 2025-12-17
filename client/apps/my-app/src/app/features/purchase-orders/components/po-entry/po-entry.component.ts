@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -95,6 +95,7 @@ export class PurchaseOrderEntryComponent implements OnInit {
 
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private location = inject(Location);
   private poService = inject(PurchaseOrderService);
   private vendorService = inject(VendorService);
   private productService = inject(ProductService);
@@ -531,7 +532,11 @@ export class PurchaseOrderEntryComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/purchase-orders']);
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/purchase-orders']);
+    }
   }
 
   async onStepClick(stepKey: PurchaseOrderStep): Promise<void> {

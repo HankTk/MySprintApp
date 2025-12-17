@@ -53,6 +53,28 @@
   "email": "Email:",
   "operationIrreversible": "This operation cannot be undone.",
   "confirm": "Delete",
+  "deleteDialog": {
+    "confirmOrderDeletion": "Confirm Order Deletion",
+    "deleteOrderMessage": "Are you sure you want to delete this order?",
+    "confirmCustomerDeletion": "Confirm Customer Deletion",
+    "deleteCustomerMessage": "Are you sure you want to delete this customer?",
+    "confirmProductDeletion": "Confirm Product Deletion",
+    "deleteProductMessage": "Are you sure you want to delete this product?",
+    "confirmVendorDeletion": "Confirm Vendor Deletion",
+    "deleteVendorMessage": "Are you sure you want to delete this vendor?",
+    "confirmAddressDeletion": "Confirm Address Deletion",
+    "deleteAddressMessage": "Are you sure you want to delete this address?",
+    "confirmWarehouseDeletion": "Confirm Warehouse Deletion",
+    "deleteWarehouseMessage": "Are you sure you want to delete this warehouse?",
+    "confirmInventoryDeletion": "Confirm Inventory Deletion",
+    "deleteInventoryMessage": "Are you sure you want to delete this inventory?",
+    "confirmPurchaseOrderDeletion": "Confirm Purchase Order Deletion",
+    "deletePurchaseOrderMessage": "Are you sure you want to delete this purchase order?",
+    "confirmRMADeletion": "Confirm RMA Deletion",
+    "deleteRMAMessage": "Are you sure you want to delete this RMA?",
+    "confirmSFCDeletion": "Confirm SFC Deletion",
+    "deleteSFCMessage": "Are you sure you want to delete this SFC?"
+  },
   "changeLanguage": "Change Language",
   "english": "English",
   "japanese": "Japanese",
@@ -78,6 +100,8 @@
     "rmas": "RMAs",
     "sfcs": "SFCs",
     "generalLedger": "General Ledger",
+    "accountsReceivable": "Accounts Receivable",
+    "accountsPayable": "Accounts Payable",
     "master": "Master"
   },
   "master": {
@@ -767,17 +791,5 @@
         "newStatus": "New Status"
       }
     }
-  },
-  "menu": {
-    "home": "Home",
-    "orders": "Orders",
-    "inventory": "Inventory",
-    "purchaseOrders": "Purchase Orders",
-    "rmas": "RMAs",
-    "sfcs": "SFCs",
-    "generalLedger": "General Ledger",
-    "accountsReceivable": "Accounts Receivable",
-    "accountsPayable": "Accounts Payable",
-    "master": "Master"
   }
 }

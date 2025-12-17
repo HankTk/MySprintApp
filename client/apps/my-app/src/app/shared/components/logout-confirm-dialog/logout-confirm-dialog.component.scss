@@ -38,21 +38,7 @@
     border-top: 1px solid #e0e0e0;
     background-color: #fafafa;
     margin: 0;
-
-    .cancel-button {
-      margin-right: 8px;
-      color: #666;
-
-      .mat-icon {
-        margin-right: 8px;
-      }
-    }
-
-    .confirm-button {
-      .mat-icon {
-        margin-right: 8px;
-      }
-    }
+    gap: 12px;
   }
 }
 

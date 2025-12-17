@@ -2,11 +2,12 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule, MatTabChangeEvent } from '@angular/material/tabs';
 import { TranslateModule } from '@ngx-translate/core';
+import { 
+  AxButtonComponent,
+  AxIconComponent
+} from '@ui/components';
 
 interface MaintenanceItem {
   id: string;
@@ -30,11 +31,10 @@ interface MaintenanceCategory {
   imports: [
     CommonModule,
     MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
-    MatSidenavModule,
-    TranslateModule
+    MatTabsModule,
+    TranslateModule,
+    AxButtonComponent,
+    AxIconComponent
   ],
   templateUrl: './master-maintenance.component.html',
   styleUrls: ['./master-maintenance.component.scss']
@@ -43,6 +43,15 @@ export class MasterMaintenanceComponent {
   private router = inject(Router);
   
   selectedCategory = signal<string>('data-management');
+  
+  selectedCategoryIndex = computed(() => {
+    const index = this.categories.findIndex(cat => cat.id === this.selectedCategory());
+    return index >= 0 ? index : 0;
+  });
+  
+  get selectedIndex(): number {
+    return this.selectedCategoryIndex();
+  }
 
   categories: MaintenanceCategory[] = [
     {
@@ -113,12 +122,12 @@ export class MasterMaintenanceComponent {
     }
   ];
 
-  selectedCategoryData = computed(() => {
-    return this.categories.find(cat => cat.id === this.selectedCategory());
-  });
-
-  selectCategory(categoryId: string): void {
-    this.selectedCategory.set(categoryId);
+  onTabChange(event: MatTabChangeEvent | number): void {
+    const index = typeof event === 'number' ? event : event.index;
+    const category = this.categories[index];
+    if (category) {
+      this.selectedCategory.set(category.id);
+    }
   }
 
   goBack(): void {

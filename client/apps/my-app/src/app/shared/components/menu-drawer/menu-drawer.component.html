@@ -9,8 +9,10 @@
   <mat-nav-list class="menu-nav-list">
     @for (item of menuItems; track item.route) {
       <a mat-list-item [routerLink]="item.route" (click)="onClose()" class="menu-item">
-        <ax-icon [name]="item.icon" class="menu-icon"></ax-icon>
-        <span matListItemTitle class="menu-text">{{ item.label | translate }}</span>
+        <div class="menu-item-content">
+          <ax-icon [name]="item.icon" class="menu-icon"></ax-icon>
+          <span class="menu-text">{{ item.label | translate }}</span>
+        </div>
       </a>
     }
   </mat-nav-list>

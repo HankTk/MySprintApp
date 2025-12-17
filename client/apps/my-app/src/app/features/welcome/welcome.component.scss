@@ -112,11 +112,14 @@
 }
 
 .menu-card-icon {
-  font-size: 48px;
-  width: 48px;
-  height: 48px;
   color: var(--color-primary);
   margin-bottom: var(--spacing-md);
+
+  ::ng-deep mat-icon {
+    font-size: 48px !important;
+    width: 48px !important;
+    height: 48px !important;
+  }
 }
 
 .menu-card-title {

@@ -1,10 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { 
+  AxButtonComponent, 
+  AxIconComponent,
+  MatCardModule 
+} from '@ui/components';
 
 interface MasterItem {
   id: string;
@@ -18,10 +20,10 @@ interface MasterItem {
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    TranslateModule
+    TranslateModule,
+    AxButtonComponent,
+    AxIconComponent,
+    MatCardModule
   ],
   templateUrl: './master.component.html',
   styleUrls: ['./master.component.scss']

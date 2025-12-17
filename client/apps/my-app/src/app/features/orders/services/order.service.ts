@@ -121,8 +121,9 @@ export class OrderService {
     const orderName = order.orderNumber || order.id || 'Order';
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
       data: {
-        userName: orderName,
-        userEmail: ''
+        title: this.translate.instant('deleteDialog.confirmOrderDeletion'),
+        message: this.translate.instant('deleteDialog.deleteOrderMessage'),
+        itemName: orderName
       } as DeleteConfirmDialogData,
       width: '500px',
       maxWidth: '90vw',

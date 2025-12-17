@@ -1,6 +1,6 @@
 app-menu-drawer {
   .menu-drawer {
-    width: 280px;
+    width: 300px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -12,7 +12,7 @@ app-menu-drawer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px;
+    padding: 16px 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 
     h2 {
@@ -45,87 +45,67 @@ app-menu-drawer {
   }
 
   .menu-nav-list {
-    padding-top: 8px;
+    padding: 8px 12px;
+    overflow-y: auto;
+    flex: 1;
 
-    .menu-item {
-      margin: 4px 8px;
-      border-radius: 4px;
-      color: var(--text-primary) !important;
-
-      .menu-icon {
-        color: var(--text-primary) !important;
-      }
-
-      .menu-text {
-        color: var(--text-primary) !important;
-      }
-
-      .mat-mdc-list-item-unscoped-content {
-        color: var(--text-primary) !important;
+    ::ng-deep .mat-mdc-list-item {
+      margin: 4px 0;
+      border-radius: 8px;
+      height: 48px !important;
+      
+      &:hover {
+        background-color: var(--bg-hover) !important;
       }
 
       .mdc-list-item__content {
-        color: var(--text-primary) !important;
+        padding: 0 !important;
+      }
+    }
+
+    .menu-item {
+      .menu-item-content {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        width: 100%;
+        padding: 0 12px;
       }
 
-      .mdc-list-item__primary-text {
+      .menu-icon {
+        flex-shrink: 0;
         color: var(--text-primary) !important;
+        
+        ::ng-deep mat-icon {
+          font-size: 24px;
+          width: 24px;
+          height: 24px;
+        }
       }
 
-      mat-icon[matListItemIcon] {
+      .menu-text {
+        flex: 1;
+        font-size: 15px;
+        font-weight: 500;
         color: var(--text-primary) !important;
-      }
-
-      span[matListItemTitle] {
-        color: var(--text-primary) !important;
-      }
-
-      .mdc-list-item__content > * {
-        color: var(--text-primary) !important;
-      }
-
-      * {
-        color: var(--text-primary) !important;
-      }
-
-      &:hover {
-        background-color: var(--bg-hover) !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       &.mat-mdc-list-item-active,
       &.mdc-list-item--activated {
         background-color: var(--bg-hover) !important;
-        color: var(--color-primary) !important;
 
         .menu-icon {
           color: var(--color-primary) !important;
+          
+          ::ng-deep mat-icon {
+            color: var(--color-primary) !important;
+          }
         }
 
         .menu-text {
-          color: var(--color-primary) !important;
-        }
-
-        .mdc-list-item__content {
-          color: var(--color-primary) !important;
-        }
-
-        .mdc-list-item__primary-text {
-          color: var(--color-primary) !important;
-        }
-
-        mat-icon[matListItemIcon] {
-          color: var(--color-primary) !important;
-        }
-
-        span[matListItemTitle] {
-          color: var(--color-primary) !important;
-        }
-
-        .mdc-list-item__content > * {
-          color: var(--color-primary) !important;
-        }
-
-        * {
           color: var(--color-primary) !important;
         }
       }
@@ -158,41 +138,15 @@ app-menu-drawer {
 
   .menu-nav-list {
     .menu-item {
-      color: var(--text-primary) !important;
-
       .menu-icon {
         color: var(--text-primary) !important;
+        
+        ::ng-deep mat-icon {
+          color: var(--text-primary) !important;
+        }
       }
 
       .menu-text {
-        color: var(--text-primary) !important;
-      }
-
-      .mat-mdc-list-item-unscoped-content {
-        color: var(--text-primary) !important;
-      }
-
-      .mdc-list-item__content {
-        color: var(--text-primary) !important;
-      }
-
-      .mdc-list-item__primary-text {
-        color: var(--text-primary) !important;
-      }
-
-      mat-icon[matListItemIcon] {
-        color: var(--text-primary) !important;
-      }
-
-      span[matListItemTitle] {
-        color: var(--text-primary) !important;
-      }
-
-      .mdc-list-item__content > * {
-        color: var(--text-primary) !important;
-      }
-
-      * {
         color: var(--text-primary) !important;
       }
 
@@ -203,37 +157,16 @@ app-menu-drawer {
       &.mat-mdc-list-item-active,
       &.mdc-list-item--activated {
         background-color: var(--bg-hover) !important;
-        color: var(--color-primary) !important;
 
         .menu-icon {
           color: var(--color-primary) !important;
+          
+          ::ng-deep mat-icon {
+            color: var(--color-primary) !important;
+          }
         }
 
         .menu-text {
-          color: var(--color-primary) !important;
-        }
-
-        .mdc-list-item__content {
-          color: var(--color-primary) !important;
-        }
-
-        .mdc-list-item__primary-text {
-          color: var(--color-primary) !important;
-        }
-
-        mat-icon[matListItemIcon] {
-          color: var(--color-primary) !important;
-        }
-
-        span[matListItemTitle] {
-          color: var(--color-primary) !important;
-        }
-
-        .mdc-list-item__content > * {
-          color: var(--color-primary) !important;
-        }
-
-        * {
           color: var(--color-primary) !important;
         }
       }

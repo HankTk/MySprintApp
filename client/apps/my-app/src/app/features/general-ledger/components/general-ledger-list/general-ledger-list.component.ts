@@ -146,9 +146,9 @@ export class GeneralLedgerListComponent implements OnInit {
 
   viewEntry(entry: GLEntry): void {
     if (entry.orderId) {
-      this.router.navigate(['/orders'], { queryParams: { id: entry.orderId } });
+      this.router.navigate(['/orders', entry.orderId]);
     } else if (entry.poId) {
-      this.router.navigate(['/purchase-orders'], { queryParams: { id: entry.poId } });
+      this.router.navigate(['/purchase-orders', entry.poId]);
     }
   }
 

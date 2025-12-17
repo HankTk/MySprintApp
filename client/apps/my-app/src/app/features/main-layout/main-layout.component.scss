@@ -29,6 +29,20 @@ app-main-layout {
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  // Ensure toolbar icons are visible (white on primary background)
+  ::ng-deep {
+    ax-button {
+      button {
+        color: white !important;
+      }
+    }
+    
+    ax-icon,
+    mat-icon {
+      color: white !important;
+    }
+  }
 }
 
 .back-button {
@@ -55,7 +69,12 @@ app-main-layout {
 }
 
 /* Sidenav Styles */
-::ng-deep .menu-sidenav,
+::ng-deep .menu-sidenav {
+  width: 300px !important;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  overflow: visible !important;
+}
+
 ::ng-deep .settings-sidenav {
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
   overflow: visible !important;

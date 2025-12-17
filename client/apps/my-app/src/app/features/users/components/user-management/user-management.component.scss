@@ -3,8 +3,6 @@
   height: calc(100dvh - var(--header-height));
 
   .main-card {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -16,6 +14,8 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
       }
 
       mat-card-content {
@@ -36,18 +36,20 @@
       
       .back-button {
         flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         margin-right: 8px;
         
         ::ng-deep {
-          .mat-icon {
+          button {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 24px;
-            height: 24px;
+          }
+          
+          ax-icon,
+          mat-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
         }
       }
@@ -76,7 +78,6 @@
 
   .add-user-section {
     padding: var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg);
-    border-bottom: 1px solid var(--border-primary);
     margin-bottom: var(--spacing-lg);
     flex-shrink: 0;
 
@@ -292,9 +293,6 @@
     }
   }
 
-  .add-user-section {
-    border-bottom: 1px solid var(--border-primary) !important;
-  }
 
   .table-container {
     .user-table {

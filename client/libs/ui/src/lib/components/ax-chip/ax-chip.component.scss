@@ -1,3 +1,46 @@
 :host {
   display: inline-block;
 }
+
+.ax-chip-wrapper {
+  display: inline-flex;
+  border-radius: 16px;
+  
+  &.has-custom-colors {
+    // When custom colors are applied, style the wrapper and make mat-chip transparent
+    mat-chip.mat-mdc-chip {
+      --mdc-chip-elevated-container-color: transparent;
+      --mdc-chip-flat-container-color: transparent;
+      --mdc-chip-label-text-color: inherit;
+      background: transparent !important;
+      color: inherit;
+    }
+    
+    ::ng-deep {
+      .mat-mdc-chip {
+        background: transparent !important;
+        
+        .mdc-evolution-chip__action--primary {
+          background: transparent !important;
+          color: inherit;
+          
+          &::before {
+            background: transparent !important;
+          }
+        }
+        
+        .mat-mdc-chip-action-label {
+          color: inherit;
+        }
+        
+        .mat-mdc-chip-focus-overlay {
+          background: transparent !important;
+        }
+      }
+    }
+  }
+}
+
+mat-chip.mat-mdc-chip {
+  border-radius: 16px !important;
+}

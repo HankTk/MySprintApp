@@ -81,28 +81,7 @@
     border-top: 1px solid #e0e0e0;
     background-color: #fafafa;
     margin: 0;
-
-    .cancel-button {
-      margin-right: 8px;
-      color: #666;
-
-      .mat-icon {
-        margin-right: 8px;
-      }
-    }
-
-    .confirm-button {
-      background-color: #d32f2f;
-      color: white;
-
-      .mat-icon {
-        margin-right: 8px;
-      }
-
-      &:hover {
-        background-color: #b71c1c;
-      }
-    }
+    gap: 12px;
   }
 }
 
@@ -127,12 +106,7 @@
       flex-direction: column-reverse;
       gap: 8px;
 
-      .cancel-button {
-        margin-right: 0;
-        width: 100%;
-      }
-
-      .confirm-button {
+      ax-button {
         width: 100%;
       }
     }

@@ -37,9 +37,22 @@
       gap: var(--spacing-md);
 
       .back-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        flex-shrink: 0;
+        
+        ::ng-deep {
+          button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          
+          ax-icon,
+          mat-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
       }
 
       .card-title {

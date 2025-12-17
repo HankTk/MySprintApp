@@ -1,19 +1,23 @@
 <div class="delete-confirm-dialog">
   <h2 mat-dialog-title class="dialog-title">
     <ax-icon name="warning" class="title-icon warning"></ax-icon>
-    {{ 'confirmUserDeletion' | translate }}
+    {{ data.title || ('confirmUserDeletion' | translate) }}
   </h2>
 
   <mat-dialog-content class="dialog-content">
     <div class="warning-message">
-      <p>{{ 'deleteUserMessage' | translate }}</p>
-      <div class="user-info">
-        <div class="user-name">
-          <strong>{{ 'name' | translate }}</strong> {{ data.userName }}
-        </div>
-        <div class="user-email">
-          <strong>{{ 'email' | translate }}</strong> {{ data.userEmail }}
-        </div>
+      <p>{{ data.message || ('deleteUserMessage' | translate) }}</p>
+      <div class="user-info" *ngIf="displayName || displayDetails">
+        @if (displayName) {
+          <div class="user-name">
+            <strong>{{ 'name' | translate }}</strong> {{ displayName }}
+          </div>
+        }
+        @if (displayDetails) {
+          <div class="user-email">
+            <strong>{{ 'email' | translate }}</strong> {{ displayDetails }}
+          </div>
+        }
       </div>
       <p class="caution">
         <ax-icon name="info" class="caution-icon"></ax-icon>

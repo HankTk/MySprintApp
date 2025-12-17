@@ -1,109 +1,133 @@
 @use '../../../_design-tokens' as *;
 
 .master-container {
-  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
   height: calc(100dvh - var(--header-height));
-  width: 100%;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  background-color: var(--color-background-page);
+  transition: background-color var(--transition-base);
+  overflow-y: auto;
+  overflow-x: hidden;
   box-sizing: border-box;
+  position: relative;
 
-  .main-card {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
+  .back-button {
+    position: absolute;
+    top: var(--spacing-lg);
+    left: var(--spacing-lg);
+    z-index: 10;
+    color: var(--color-text-primary);
+    transition: background-color var(--transition-base);
 
-    mat-card-header {
-      padding-top: 0 !important;
-    }
-
-    .header-content {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      padding: 16px 0;
-      gap: 12px;
-
-      .back-button {
-        flex-shrink: 0;
-        color: var(--text-primary);
-        background-color: rgba(0, 0, 0, 0.04);
+    ::ng-deep {
+      button {
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: background-color var(--transition-base);
-
-        mat-icon {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
+        background-color: rgba(0, 0, 0, 0.04);
+        
         &:hover {
           background-color: rgba(0, 0, 0, 0.08);
         }
       }
 
-      .card-title {
+      ax-icon,
+      mat-icon {
         display: flex;
         align-items: center;
-        font-size: 24px;
-        font-weight: 500;
-        color: var(--accent-primary);
-        margin: 0;
-        flex: 1;
-
-        .title-icon {
-          margin-right: 12px;
-          font-size: 28px;
-          width: 28px;
-          height: 28px;
-        }
+        justify-content: center;
       }
     }
   }
+}
+
+.master-content {
+  max-width: 1800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0 var(--spacing-md);
+}
+
+.master-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  margin-top: var(--spacing-4xl);
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-text-primary);
+  line-height: 1.2;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  
+  .title-icon {
+    color: var(--color-primary);
+    
+    ::ng-deep mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    font-size: 48px;
+  }
+}
+
+.master-subtitle {
+  font-size: var(--font-size-xl);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xl);
+  line-height: var(--line-height-relaxed);
+  text-align: center;
 }
 
 .master-cards-grid {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 300px));
   gap: var(--spacing-lg);
-  padding: var(--spacing-lg);
+  margin: var(--spacing-4xl) 0;
   justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  flex: 1;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
+  padding: 0 var(--spacing-sm);
+  
+  @media (max-width: 1400px) {
+    grid-template-columns: repeat(3, minmax(0, 300px));
+  }
+  
+  @media (max-width: 1050px) {
+    grid-template-columns: repeat(2, minmax(0, 300px));
+  }
   
   @media (max-width: 700px) {
-    flex-direction: column;
-  }
-}
-
-:host-context(.dark-theme) .master-container {
-  .main-card {
-    .header-content {
-      .back-button {
-        background-color: rgba(255, 255, 255, 0.04) !important;
-
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.08) !important;
-        }
-      }
-    }
+    grid-template-columns: minmax(0, 300px);
   }
 }
 
 .master-card {
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  max-width: 300px;
   padding: var(--spacing-3xl);
+  min-height: 150px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
+  opacity: 1;
+  box-sizing: border-box;
   
   &:hover {
     transform: translateY(-4px);
@@ -126,18 +150,55 @@
 }
 
 .master-card-icon {
-  font-size: 64px;
-  width: 64px;
-  height: 64px;
   color: var(--color-primary);
   margin-bottom: var(--spacing-md);
+
+  ::ng-deep mat-icon {
+    font-size: 48px !important;
+    width: 48px !important;
+    height: 48px !important;
+  }
 }
 
 .master-card-title {
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--color-text-primary);
   margin: 0;
   text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .master-container {
+    padding: var(--spacing-md);
+
+    .back-button {
+      top: var(--spacing-md);
+      left: var(--spacing-md);
+    }
+  }
+
+  .master-title {
+    font-size: var(--font-size-xxl);
+    margin-top: var(--spacing-xl);
+  }
+
+  .master-cards-grid {
+    margin: var(--spacing-xl) 0;
+  }
+}
+
+/* Dark theme support */
+:host-context(.dark-theme) .master-container {
+  .back-button {
+    ::ng-deep button {
+      background-color: rgba(255, 255, 255, 0.04) !important;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+    }
+  }
 }
 

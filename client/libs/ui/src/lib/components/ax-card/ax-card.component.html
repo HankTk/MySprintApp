@@ -1,4 +1,4 @@
-<mat-card [appearance]="appearance" [style.box-shadow]="appearance === 'raised' ? '0 ' + elevation + 'px ' + (elevation * 2) + 'px rgba(0,0,0,0.1)' : 'none'">
+<mat-card [appearance]="appearance">
   <ng-content select="[ax-card-header]"></ng-content>
   @if (title || subtitle) {
     <mat-card-header>

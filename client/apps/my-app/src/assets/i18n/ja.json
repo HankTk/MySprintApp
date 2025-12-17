@@ -57,6 +57,28 @@
   "email": "メールアドレス:",
   "operationIrreversible": "この操作は取り消すことができません。",
   "confirm": "削除",
+  "deleteDialog": {
+    "confirmOrderDeletion": "注文削除の確認",
+    "deleteOrderMessage": "この注文を削除しますか？",
+    "confirmCustomerDeletion": "顧客削除の確認",
+    "deleteCustomerMessage": "この顧客を削除しますか？",
+    "confirmProductDeletion": "商品削除の確認",
+    "deleteProductMessage": "この商品を削除しますか？",
+    "confirmVendorDeletion": "ベンダー削除の確認",
+    "deleteVendorMessage": "このベンダーを削除しますか？",
+    "confirmAddressDeletion": "住所削除の確認",
+    "deleteAddressMessage": "この住所を削除しますか？",
+    "confirmWarehouseDeletion": "倉庫削除の確認",
+    "deleteWarehouseMessage": "この倉庫を削除しますか？",
+    "confirmInventoryDeletion": "在庫削除の確認",
+    "deleteInventoryMessage": "この在庫を削除しますか？",
+    "confirmPurchaseOrderDeletion": "発注削除の確認",
+    "deletePurchaseOrderMessage": "この発注を削除しますか？",
+    "confirmRMADeletion": "RMA削除の確認",
+    "deleteRMAMessage": "このRMAを削除しますか？",
+    "confirmSFCDeletion": "SFC削除の確認",
+    "deleteSFCMessage": "このSFCを削除しますか？"
+  },
   "changeLanguage": "言語を変更",
   "english": "英語",
   "japanese": "日本語",
@@ -82,6 +104,8 @@
     "rmas": "RMA",
     "sfcs": "SFC",
     "generalLedger": "総勘定元帳",
+    "accountsReceivable": "売掛金",
+    "accountsPayable": "買掛金",
     "master": "マスター"
   },
   "master": {
@@ -771,17 +795,5 @@
         "newStatus": "新ステータス"
       }
     }
-  },
-  "menu": {
-    "home": "ホーム",
-    "orders": "注文",
-    "inventory": "在庫",
-    "purchaseOrders": "発注",
-    "rmas": "RMA",
-    "sfcs": "SFC",
-    "generalLedger": "総勘定元帳",
-    "accountsReceivable": "売掛金",
-    "accountsPayable": "買掛金",
-    "master": "マスタ"
   }
 }
