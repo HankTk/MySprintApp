@@ -2,65 +2,61 @@
   <h1>Checkbox Component</h1>
   <p class="description">A reusable checkbox component with form integration support.</p>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Basic Usage</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <ax-form-group>
-        <ax-checkbox
-          id="checkbox-basic-1"
-          label="Option 1"
-          [(ngModel)]="checkbox1">
-        </ax-checkbox>
-        <ax-checkbox
-          id="checkbox-basic-2"
-          label="Option 2"
-          [(ngModel)]="checkbox2">
-        </ax-checkbox>
-        <ax-checkbox
-          id="checkbox-basic-3"
-          label="Option 3"
-          [(ngModel)]="checkbox3">
-        </ax-checkbox>
-      </ax-form-group>
-      <p style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
-        Option 1: {{ checkbox1 }}, Option 2: {{ checkbox2 }}, Option 3: {{ checkbox3 }}
-      </p>
-    </mat-card-content>
-  </mat-card>
+    <ax-form-group>
+      <ax-checkbox
+        id="checkbox-basic-1"
+        label="Option 1"
+        [(ngModel)]="checkbox1">
+      </ax-checkbox>
+      <ax-checkbox
+        id="checkbox-basic-2"
+        label="Option 2"
+        [(ngModel)]="checkbox2">
+      </ax-checkbox>
+      <ax-checkbox
+        id="checkbox-basic-3"
+        label="Option 3"
+        [(ngModel)]="checkbox3">
+      </ax-checkbox>
+    </ax-form-group>
+    <p style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
+      Option 1: {{ checkbox1 }}, Option 2: {{ checkbox2 }}, Option 3: {{ checkbox3 }}
+    </p>
+  </ax-card>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>States</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <ax-form-group>
-        <ax-checkbox
-          id="checkbox-normal"
-          label="Normal"
-          [(ngModel)]="checkbox4">
-        </ax-checkbox>
-        <ax-checkbox
-          id="checkbox-error"
-          label="Error State"
-          [error]="true"
-          [checked]="false">
-        </ax-checkbox>
-        <ax-checkbox
-          id="checkbox-disabled"
-          label="Disabled"
-          [disabled]="true"
-          [checked]="false">
-        </ax-checkbox>
-        <ax-checkbox
-          id="checkbox-disabled-checked"
-          label="Disabled Checked"
-          [disabled]="true"
-          [checked]="true">
-        </ax-checkbox>
-      </ax-form-group>
-    </mat-card-content>
-  </mat-card>
+    <ax-form-group>
+      <ax-checkbox
+        id="checkbox-normal"
+        label="Normal"
+        [(ngModel)]="checkbox4">
+      </ax-checkbox>
+      <ax-checkbox
+        id="checkbox-error"
+        label="Error State"
+        [error]="true"
+        [checked]="false">
+      </ax-checkbox>
+      <ax-checkbox
+        id="checkbox-disabled"
+        label="Disabled"
+        [disabled]="true"
+        [checked]="false">
+      </ax-checkbox>
+      <ax-checkbox
+        id="checkbox-disabled-checked"
+        label="Disabled Checked"
+        [disabled]="true"
+        [checked]="true">
+      </ax-checkbox>
+    </ax-form-group>
+  </ax-card>
 </div>
 

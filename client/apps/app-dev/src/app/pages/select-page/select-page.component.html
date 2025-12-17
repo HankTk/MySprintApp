@@ -1,0 +1,58 @@
+<div class="page-container">
+  <h1>Select Component</h1>
+  <p class="description">A reusable dropdown select component with form integration support.</p>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Basic Usage</mat-card-title>
+    </mat-card-header>
+    <div class="select-group">
+      <ax-select
+        label="Select an option"
+        [options]="options"
+        [(ngModel)]="selectedValue"
+        placeholder="Please select">
+      </ax-select>
+      <p class="selected-value">Selected: {{ selectedValue || 'None' }}</p>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Country Selection</mat-card-title>
+    </mat-card-header>
+    <div class="select-group">
+      <ax-select
+        label="Select a country"
+        [options]="countries"
+        [(ngModel)]="selectedCountry"
+        placeholder="Choose your country">
+      </ax-select>
+      <p class="selected-value">Selected: {{ selectedCountry || 'None' }}</p>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>States</mat-card-title>
+    </mat-card-header>
+    <div class="select-states">
+      <ax-select
+        label="Normal"
+        [options]="options"
+        placeholder="Please select">
+      </ax-select>
+      <ax-select
+        label="Disabled"
+        [options]="options"
+        [disabled]="true"
+        placeholder="Cannot select">
+      </ax-select>
+      <ax-select
+        label="With Disabled Options"
+        [options]="disabledOptions"
+        placeholder="Some options disabled">
+      </ax-select>
+    </div>
+  </ax-card>
+</div>

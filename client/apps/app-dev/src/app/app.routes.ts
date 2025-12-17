@@ -45,6 +45,34 @@ export const routes: Routes = [
   {
     path: 'date-range-picker',
     loadComponent: () => import('./pages/date-range-picker-page/date-range-picker-page.component').then(m => m.DateRangePickerPageComponent)
+  },
+  {
+    path: 'icon',
+    loadComponent: () => import('./pages/icon-page/icon-page.component').then(m => m.IconPageComponent)
+  },
+  {
+    path: 'select',
+    loadComponent: () => import('./pages/select-page/select-page.component').then(m => m.SelectPageComponent)
+  },
+  {
+    path: 'datepicker',
+    loadComponent: () => import('./pages/datepicker-page/datepicker-page.component').then(m => m.DatepickerPageComponent)
+  },
+  {
+    path: 'tabs',
+    loadComponent: () => import('./pages/tabs-page/tabs-page.component').then(m => m.TabsPageComponent)
+  },
+  {
+    path: 'chip',
+    loadComponent: () => import('./pages/chip-page/chip-page.component').then(m => m.ChipPageComponent)
+  },
+  {
+    path: 'textarea',
+    loadComponent: () => import('./pages/textarea-page/textarea-page.component').then(m => m.TextareaPageComponent)
+  },
+  {
+    path: 'tooltip',
+    loadComponent: () => import('./pages/tooltip-page/tooltip-page.component').then(m => m.TooltipPageComponent)
   }
 ];
 

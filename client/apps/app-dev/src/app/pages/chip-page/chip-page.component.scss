@@ -1,0 +1,38 @@
+.page-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    margin-bottom: 8px;
+  }
+
+  .description {
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 24px;
+  }
+
+  .example-card {
+    margin-bottom: 24px;
+  }
+
+  .chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px 0;
+  }
+
+  .use-case {
+    margin-bottom: 24px;
+
+    h4 {
+      margin-bottom: 12px;
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

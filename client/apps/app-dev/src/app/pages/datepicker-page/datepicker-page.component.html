@@ -1,0 +1,53 @@
+<div class="page-container">
+  <h1>Datepicker Component</h1>
+  <p class="description">A reusable datepicker component for selecting single dates.</p>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Basic Usage</mat-card-title>
+    </mat-card-header>
+    <div class="datepicker-group">
+      <ax-datepicker
+        label="Select a date"
+        [(ngModel)]="selectedDate"
+        placeholder="Choose date">
+      </ax-datepicker>
+      <p class="selected-value">
+        Selected: {{ selectedDate ? (selectedDate | date: 'fullDate') : 'None' }}
+      </p>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Another Example</mat-card-title>
+    </mat-card-header>
+    <div class="datepicker-group">
+      <ax-datepicker
+        label="Birth Date"
+        [(ngModel)]="birthDate"
+        placeholder="Select your birth date">
+      </ax-datepicker>
+      <p class="selected-value">
+        Selected: {{ birthDate ? (birthDate | date: 'fullDate') : 'None' }}
+      </p>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>States</mat-card-title>
+    </mat-card-header>
+    <div class="datepicker-states">
+      <ax-datepicker
+        label="Normal"
+        placeholder="Select date">
+      </ax-datepicker>
+      <ax-datepicker
+        label="Disabled"
+        [disabled]="true"
+        placeholder="Cannot select">
+      </ax-datepicker>
+    </div>
+  </ax-card>
+</div>

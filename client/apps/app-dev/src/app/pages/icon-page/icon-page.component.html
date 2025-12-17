@@ -1,0 +1,86 @@
+<div class="page-container">
+  <h1>Icon Component</h1>
+  <p class="description">A reusable icon component wrapping Material Icons.</p>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Common Icons</mat-card-title>
+    </mat-card-header>
+    <div class="icon-grid">
+      @for (icon of commonIcons; track icon) {
+        <div class="icon-item">
+          <ax-icon [name]="icon"></ax-icon>
+          <span class="icon-name">{{ icon }}</span>
+        </div>
+      }
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Action Icons</mat-card-title>
+    </mat-card-header>
+    <div class="icon-grid">
+      @for (icon of actionIcons; track icon) {
+        <div class="icon-item">
+          <ax-icon [name]="icon"></ax-icon>
+          <span class="icon-name">{{ icon }}</span>
+        </div>
+      }
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Navigation Icons</mat-card-title>
+    </mat-card-header>
+    <div class="icon-grid">
+      @for (icon of navigationIcons; track icon) {
+        <div class="icon-item">
+          <ax-icon [name]="icon"></ax-icon>
+          <span class="icon-name">{{ icon }}</span>
+        </div>
+      }
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Icon Sizes</mat-card-title>
+    </mat-card-header>
+    <div class="icon-sizes">
+      <div class="size-item">
+        <ax-icon name="home" style="font-size: 18px;"></ax-icon>
+        <span>18px</span>
+      </div>
+      <div class="size-item">
+        <ax-icon name="home" style="font-size: 24px;"></ax-icon>
+        <span>24px</span>
+      </div>
+      <div class="size-item">
+        <ax-icon name="home" style="font-size: 36px;"></ax-icon>
+        <span>36px</span>
+      </div>
+      <div class="size-item">
+        <ax-icon name="home" style="font-size: 48px;"></ax-icon>
+        <span>48px</span>
+      </div>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Icon Colors</mat-card-title>
+    </mat-card-header>
+    <div class="icon-colors">
+      <ax-icon name="favorite" style="color: #f44336;"></ax-icon>
+      <ax-icon name="favorite" style="color: #e91e63;"></ax-icon>
+      <ax-icon name="favorite" style="color: #9c27b0;"></ax-icon>
+      <ax-icon name="favorite" style="color: #673ab7;"></ax-icon>
+      <ax-icon name="favorite" style="color: #3f51b5;"></ax-icon>
+      <ax-icon name="favorite" style="color: #2196f3;"></ax-icon>
+      <ax-icon name="favorite" style="color: #00bcd4;"></ax-icon>
+      <ax-icon name="favorite" style="color: #4caf50;"></ax-icon>
+    </div>
+  </ax-card>
+</div>

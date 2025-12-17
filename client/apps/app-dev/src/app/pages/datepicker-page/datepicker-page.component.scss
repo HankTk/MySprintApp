@@ -1,0 +1,48 @@
+.page-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    margin-bottom: 8px;
+  }
+
+  .description {
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 24px;
+  }
+
+  .example-card {
+    margin-bottom: 24px;
+  }
+
+  .datepicker-group {
+    padding: 16px 0;
+    max-width: 400px;
+
+    .selected-value {
+      margin-top: 16px;
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .datepicker-states {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 16px 0;
+
+    ax-datepicker {
+      flex: 1;
+      min-width: 200px;
+      max-width: 300px;
+    }
+  }
+}

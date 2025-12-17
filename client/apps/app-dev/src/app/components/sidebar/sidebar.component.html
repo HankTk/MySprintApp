@@ -8,7 +8,7 @@
         mat-list-item
         [class.active]="currentPage === item.id"
         (click)="onItemClick(item.id)">
-        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <ax-icon [name]="item.icon" matListItemIcon></ax-icon>
         <span matListItemTitle>{{ item.label }}</span>
       </a>
     }

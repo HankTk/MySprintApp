@@ -2,69 +2,63 @@
   <h1>Input Component</h1>
   <p class="description">A reusable input component with form integration support.</p>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Basic Inputs</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <div class="input-group">
-        <ax-input
-          label="Email"
-          type="email"
-          placeholder="Enter your email"
-          [(ngModel)]="email">
-        </ax-input>
-        <ax-input
-          label="Password"
-          type="password"
-          placeholder="Enter your password"
-          [(ngModel)]="password">
-        </ax-input>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <div class="input-group">
+      <ax-input
+        label="Email"
+        type="email"
+        placeholder="Enter your email"
+        [(ngModel)]="email">
+      </ax-input>
+      <ax-input
+        label="Password"
+        type="password"
+        placeholder="Enter your password"
+        [(ngModel)]="password">
+      </ax-input>
+    </div>
+  </ax-card>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Input States</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <div class="input-group">
-        <ax-input
-          label="Required Field"
-          placeholder="This field is required"
-          [required]="true"
-          [(ngModel)]="requiredField">
-        </ax-input>
-        <ax-input
-          label="Disabled Field"
-          [disabled]="true"
-          [(ngModel)]="disabledField">
-        </ax-input>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <div class="input-group">
+      <ax-input
+        label="Required Field"
+        placeholder="This field is required"
+        [required]="true"
+        [(ngModel)]="requiredField">
+      </ax-input>
+      <ax-input
+        label="Disabled Field"
+        [disabled]="true"
+        [(ngModel)]="disabledField">
+      </ax-input>
+    </div>
+  </ax-card>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Input with Hint and Error</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <div class="input-group">
-        <ax-input
-          label="Field with Hint"
-          placeholder="Enter text"
-          hint="This is a helpful hint"
-          [(ngModel)]="hintField">
-        </ax-input>
-        <ax-input
-          label="Field with Error"
-          placeholder="Enter at least 3 characters"
-          [error]="hasError ? 'Must be at least 3 characters' : undefined"
-          [(ngModel)]="errorField">
-        </ax-input>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <div class="input-group">
+      <ax-input
+        label="Field with Hint"
+        placeholder="Enter text"
+        hint="This is a helpful hint"
+        [(ngModel)]="hintField">
+      </ax-input>
+      <ax-input
+        label="Field with Error"
+        placeholder="Enter at least 3 characters"
+        [error]="hasError ? 'Must be at least 3 characters' : undefined"
+        [(ngModel)]="errorField">
+      </ax-input>
+    </div>
+  </ax-card>
 </div>
 

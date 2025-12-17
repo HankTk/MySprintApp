@@ -1,0 +1,50 @@
+.page-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    margin-bottom: 8px;
+  }
+
+  .description {
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 24px;
+  }
+
+  .example-card {
+    margin-bottom: 24px;
+  }
+
+  .tooltip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px 0;
+    align-items: center;
+
+    &.icon-tooltips {
+      gap: 8px;
+    }
+  }
+
+  .text-tooltips {
+    padding: 16px 0;
+
+    p {
+      margin-bottom: 16px;
+      line-height: 1.8;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .tooltip-text {
+      color: #1976d2;
+      cursor: help;
+      border-bottom: 1px dashed #1976d2;
+      padding-bottom: 2px;
+    }
+  }
+}

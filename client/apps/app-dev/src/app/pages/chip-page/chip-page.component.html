@@ -1,0 +1,61 @@
+<div class="page-container">
+  <h1>Chip Component</h1>
+  <p class="description">A reusable chip component for displaying tags, categories, or status indicators.</p>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Basic Chips</mat-card-title>
+    </mat-card-header>
+    <div class="chip-group">
+      @for (tag of tags; track tag) {
+        <ax-chip [label]="tag"></ax-chip>
+      }
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Colored Chips</mat-card-title>
+    </mat-card-header>
+    <div class="chip-group">
+      <ax-chip label="Primary" color="primary"></ax-chip>
+      <ax-chip label="Accent" color="accent"></ax-chip>
+      <ax-chip label="Warn" color="warn"></ax-chip>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Status Chips</mat-card-title>
+    </mat-card-header>
+    <div class="chip-group">
+      @for (status of statusChips; track status.label) {
+        <ax-chip [label]="status.label" [color]="status.color"></ax-chip>
+      }
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Use Cases</mat-card-title>
+    </mat-card-header>
+    <div class="use-case">
+      <h4>Categories</h4>
+      <div class="chip-group">
+        <ax-chip label="Electronics"></ax-chip>
+        <ax-chip label="Clothing"></ax-chip>
+        <ax-chip label="Books"></ax-chip>
+        <ax-chip label="Sports"></ax-chip>
+      </div>
+    </div>
+    <div class="use-case">
+      <h4>Technologies</h4>
+      <div class="chip-group">
+        <ax-chip label="React" color="primary"></ax-chip>
+        <ax-chip label="Angular" color="primary"></ax-chip>
+        <ax-chip label="Vue" color="primary"></ax-chip>
+        <ax-chip label="Svelte" color="primary"></ax-chip>
+      </div>
+    </div>
+  </ax-card>
+</div>

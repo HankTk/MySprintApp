@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AxTableComponent } from '@ui/components';
-import { MatCardModule } from '@angular/material/card';
+import { AxTableComponent, AxCardComponent, MatCardModule } from '@ui/components';
 
 interface SampleData {
   id: number;
@@ -14,7 +13,7 @@ interface SampleData {
 @Component({
   selector: 'app-table-page',
   standalone: true,
-  imports: [CommonModule, AxTableComponent, MatCardModule],
+  imports: [CommonModule, AxTableComponent, AxCardComponent, MatCardModule],
   templateUrl: './table-page.component.html',
   styleUrls: ['./table-page.component.scss']
 })

@@ -1,0 +1,50 @@
+.page-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    margin-bottom: 8px;
+  }
+
+  .description {
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 24px;
+  }
+
+  .example-card {
+    margin-bottom: 24px;
+  }
+
+  .textarea-group {
+    padding: 16px 0;
+    max-width: 500px;
+
+    .char-count {
+      margin-top: 8px;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .textarea-states {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 16px 0;
+
+    ax-textarea {
+      flex: 1;
+      min-width: 250px;
+      max-width: 350px;
+    }
+  }
+
+  .textarea-sizes {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 16px 0;
+    max-width: 500px;
+  }
+}

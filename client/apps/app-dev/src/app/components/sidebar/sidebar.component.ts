@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
+import { AxIconComponent } from '@ui/components';
 
 interface MenuItem {
   id: string;
@@ -12,7 +12,7 @@ interface MenuItem {
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, MatListModule, MatIconModule],
+  imports: [CommonModule, MatListModule, AxIconComponent],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
@@ -24,13 +24,20 @@ export class SidebarComponent {
     { id: 'button', label: 'Button', icon: 'radio_button_checked' },
     { id: 'card', label: 'Card', icon: 'view_module' },
     { id: 'input', label: 'Input', icon: 'input' },
-    { id: 'table', label: 'Table', icon: 'table_chart' },
-    { id: 'dialog', label: 'Dialog', icon: 'open_in_new' },
+    { id: 'textarea', label: 'Textarea', icon: 'notes' },
+    { id: 'select', label: 'Select', icon: 'arrow_drop_down_circle' },
     { id: 'checkbox', label: 'Checkbox', icon: 'check_box' },
     { id: 'radio', label: 'Radio', icon: 'radio_button_checked' },
-    { id: 'progress', label: 'Progress', icon: 'linear_scale' },
+    { id: 'datepicker', label: 'Datepicker', icon: 'event' },
+    { id: 'date-range-picker', label: 'Date Range Picker', icon: 'date_range' },
     { id: 'listbox', label: 'Listbox', icon: 'list' },
-    { id: 'date-range-picker', label: 'Date Range Picker', icon: 'date_range' }
+    { id: 'table', label: 'Table', icon: 'table_chart' },
+    { id: 'tabs', label: 'Tabs', icon: 'tab' },
+    { id: 'dialog', label: 'Dialog', icon: 'open_in_new' },
+    { id: 'chip', label: 'Chip', icon: 'label' },
+    { id: 'icon', label: 'Icon', icon: 'insert_emoticon' },
+    { id: 'tooltip', label: 'Tooltip', icon: 'info' },
+    { id: 'progress', label: 'Progress', icon: 'linear_scale' }
   ];
 
   onItemClick(itemId: string): void {

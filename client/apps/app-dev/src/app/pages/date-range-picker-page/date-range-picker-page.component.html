@@ -2,46 +2,42 @@
   <h1>Date Range Picker Component</h1>
   <p class="description">A reusable date range picker component for selecting start and end dates.</p>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Basic Usage</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <ax-date-range-picker
-        label="Date Range"
-        [(startDate)]="startDate"
-        [(endDate)]="endDate"
-        placeholder="Select dates">
-      </ax-date-range-picker>
-      <div style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
-        <p><strong>Start Date:</strong> {{ startDate ? (startDate | date: 'short') : 'Not selected' }}</p>
-        <p><strong>End Date:</strong> {{ endDate ? (endDate | date: 'short') : 'Not selected' }}</p>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <ax-date-range-picker
+      label="Date Range"
+      [(startDate)]="startDate"
+      [(endDate)]="endDate"
+      placeholder="Select dates">
+    </ax-date-range-picker>
+    <div style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
+      <p><strong>Start Date:</strong> {{ startDate ? (startDate | date: 'short') : 'Not selected' }}</p>
+      <p><strong>End Date:</strong> {{ endDate ? (endDate | date: 'short') : 'Not selected' }}</p>
+    </div>
+  </ax-card>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>States</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <div class="picker-group">
-        <ax-date-range-picker
-          label="Normal"
-          placeholder="Select dates">
-        </ax-date-range-picker>
-        <ax-date-range-picker
-          label="Error State"
-          [error]="true"
-          placeholder="Select dates">
-        </ax-date-range-picker>
-        <ax-date-range-picker
-          label="Disabled"
-          [disabled]="true"
-          placeholder="Select dates">
-        </ax-date-range-picker>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <div class="picker-group">
+      <ax-date-range-picker
+        label="Normal"
+        placeholder="Select dates">
+      </ax-date-range-picker>
+      <ax-date-range-picker
+        label="Error State"
+        [error]="true"
+        placeholder="Select dates">
+      </ax-date-range-picker>
+      <ax-date-range-picker
+        label="Disabled"
+        [disabled]="true"
+        placeholder="Select dates">
+      </ax-date-range-picker>
+    </div>
+  </ax-card>
 </div>
 

@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AxProgressComponent } from '@ui/components';
-import { MatCardModule } from '@angular/material/card';
+import { AxProgressComponent, AxCardComponent, MatCardModule } from '@ui/components';
 
 @Component({
   selector: 'app-progress-page',
   standalone: true,
-  imports: [CommonModule, AxProgressComponent, MatCardModule],
+  imports: [CommonModule, AxProgressComponent, AxCardComponent, MatCardModule],
   templateUrl: './progress-page.component.html',
   styleUrls: ['./progress-page.component.scss']
 })

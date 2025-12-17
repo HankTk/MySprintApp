@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AxListboxComponent, ListboxOption } from '@ui/components';
-import { MatCardModule } from '@angular/material/card';
+import { AxListboxComponent, ListboxOption, AxCardComponent, MatCardModule } from '@ui/components';
 
 @Component({
   selector: 'app-listbox-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, AxListboxComponent, MatCardModule],
+  imports: [CommonModule, FormsModule, AxListboxComponent, AxCardComponent, MatCardModule],
   templateUrl: './listbox-page.component.html',
   styleUrls: ['./listbox-page.component.scss']
 })

@@ -2,71 +2,65 @@
   <h1>Progress Component</h1>
   <p class="description">A reusable progress bar component for displaying completion status.</p>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Progress Bar Variants</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <div class="progress-group">
-        <div class="progress-item">
-          <label>Primary ({{ progressValue }}%)</label>
-          <ax-progress [value]="progressValue" variant="primary" [showLabel]="true"></ax-progress>
-        </div>
-        <div class="progress-item">
-          <label>Accent ({{ progressValue }}%)</label>
-          <ax-progress [value]="progressValue" variant="accent" [showLabel]="true"></ax-progress>
-        </div>
-        <div class="progress-item">
-          <label>Warn ({{ progressValue }}%)</label>
-          <ax-progress [value]="progressValue" variant="warn" [showLabel]="true"></ax-progress>
-        </div>
+    <div class="progress-group">
+      <div class="progress-item">
+        <label>Primary ({{ progressValue }}%)</label>
+        <ax-progress [value]="progressValue" variant="primary" [showLabel]="true"></ax-progress>
       </div>
-    </mat-card-content>
-  </mat-card>
+      <div class="progress-item">
+        <label>Accent ({{ progressValue }}%)</label>
+        <ax-progress [value]="progressValue" variant="accent" [showLabel]="true"></ax-progress>
+      </div>
+      <div class="progress-item">
+        <label>Warn ({{ progressValue }}%)</label>
+        <ax-progress [value]="progressValue" variant="warn" [showLabel]="true"></ax-progress>
+      </div>
+    </div>
+  </ax-card>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Fixed Values</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <div class="progress-group">
-        <div class="progress-item">
-          <label>25%</label>
-          <ax-progress [value]="25" variant="primary"></ax-progress>
-        </div>
-        <div class="progress-item">
-          <label>50%</label>
-          <ax-progress [value]="50" variant="primary"></ax-progress>
-        </div>
-        <div class="progress-item">
-          <label>75%</label>
-          <ax-progress [value]="75" variant="primary"></ax-progress>
-        </div>
-        <div class="progress-item">
-          <label>100%</label>
-          <ax-progress [value]="100" variant="primary"></ax-progress>
-        </div>
+    <div class="progress-group">
+      <div class="progress-item">
+        <label>25%</label>
+        <ax-progress [value]="25" variant="primary"></ax-progress>
       </div>
-    </mat-card-content>
-  </mat-card>
+      <div class="progress-item">
+        <label>50%</label>
+        <ax-progress [value]="50" variant="primary"></ax-progress>
+      </div>
+      <div class="progress-item">
+        <label>75%</label>
+        <ax-progress [value]="75" variant="primary"></ax-progress>
+      </div>
+      <div class="progress-item">
+        <label>100%</label>
+        <ax-progress [value]="100" variant="primary"></ax-progress>
+      </div>
+    </div>
+  </ax-card>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Progress Spinner</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <div class="spinner-group">
-        <div class="spinner-item">
-          <ax-progress type="spinner" variant="primary" [showLabel]="true" [value]="progressValue"></ax-progress>
-        </div>
-        <div class="spinner-item">
-          <ax-progress type="spinner" variant="accent" [showLabel]="true" [value]="progressValue"></ax-progress>
-        </div>
-        <div class="spinner-item">
-          <ax-progress type="spinner" variant="warn" [showLabel]="true" [value]="progressValue"></ax-progress>
-        </div>
+    <div class="spinner-group">
+      <div class="spinner-item">
+        <ax-progress type="spinner" variant="primary" [showLabel]="true" [value]="progressValue"></ax-progress>
       </div>
-    </mat-card-content>
-  </mat-card>
+      <div class="spinner-item">
+        <ax-progress type="spinner" variant="accent" [showLabel]="true" [value]="progressValue"></ax-progress>
+      </div>
+      <div class="spinner-item">
+        <ax-progress type="spinner" variant="warn" [showLabel]="true" [value]="progressValue"></ax-progress>
+      </div>
+    </div>
+  </ax-card>
 </div>
 

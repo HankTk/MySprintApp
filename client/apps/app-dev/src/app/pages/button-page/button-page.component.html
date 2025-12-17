@@ -2,46 +2,40 @@
   <h1>Button Component</h1>
   <p class="description">A reusable button component with loading state support.</p>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Variants</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <div class="button-group">
-        <ax-button variant="raised" color="primary" label="Raised Primary"></ax-button>
-        <ax-button variant="flat" color="primary" label="Flat Primary"></ax-button>
-        <ax-button variant="stroked" color="primary" label="Stroked Primary"></ax-button>
-        <ax-button variant="icon" color="primary">
-          <mat-icon>favorite</mat-icon>
-        </ax-button>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <div class="button-group">
+      <ax-button variant="raised" color="primary" label="Raised Primary"></ax-button>
+      <ax-button variant="flat" color="primary" label="Flat Primary"></ax-button>
+      <ax-button variant="stroked" color="primary" label="Stroked Primary"></ax-button>
+      <ax-button variant="icon" color="primary">
+        <ax-icon name="favorite"></ax-icon>
+      </ax-button>
+    </div>
+  </ax-card>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Colors</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <div class="button-group">
-        <ax-button variant="raised" color="primary" label="Primary"></ax-button>
-        <ax-button variant="raised" color="accent" label="Accent"></ax-button>
-        <ax-button variant="raised" color="warn" label="Warn"></ax-button>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <div class="button-group">
+      <ax-button variant="raised" color="primary" label="Primary"></ax-button>
+      <ax-button variant="raised" color="accent" label="Accent"></ax-button>
+      <ax-button variant="raised" color="warn" label="Warn"></ax-button>
+    </div>
+  </ax-card>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>States</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <div class="button-group">
-        <ax-button variant="raised" label="Normal"></ax-button>
-        <ax-button variant="raised" [disabled]="true" label="Disabled"></ax-button>
-        <ax-button variant="raised" [loading]="isLoading" (click)="onLoadingClick()" [label]="isLoading ? 'Loading...' : 'Click to Load'"></ax-button>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <div class="button-group">
+      <ax-button variant="raised" label="Normal"></ax-button>
+      <ax-button variant="raised" [disabled]="true" label="Disabled"></ax-button>
+      <ax-button variant="raised" [loading]="isLoading" (click)="onLoadingClick()" [label]="isLoading ? 'Loading...' : 'Click to Load'"></ax-button>
+    </div>
+  </ax-card>
 </div>
 

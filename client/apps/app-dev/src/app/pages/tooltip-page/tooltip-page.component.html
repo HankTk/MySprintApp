@@ -1,0 +1,85 @@
+<div class="page-container">
+  <h1>Tooltip Directive</h1>
+  <p class="description">A reusable tooltip directive for displaying helpful information on hover.</p>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Basic Tooltips</mat-card-title>
+    </mat-card-header>
+    <div class="tooltip-group">
+      <ax-button 
+        variant="raised" 
+        label="Hover me" 
+        axTooltip="This is a tooltip message">
+      </ax-button>
+      <ax-button 
+        variant="stroked" 
+        label="Another button" 
+        axTooltip="Another helpful tip">
+      </ax-button>
+      <ax-button 
+        variant="flat" 
+        color="primary"
+        label="Primary action" 
+        axTooltip="Click to perform action">
+      </ax-button>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Tooltips on Icons</mat-card-title>
+    </mat-card-header>
+    <div class="tooltip-group icon-tooltips">
+      <ax-button variant="icon" axTooltip="Home">
+        <ax-icon name="home"></ax-icon>
+      </ax-button>
+      <ax-button variant="icon" axTooltip="Settings">
+        <ax-icon name="settings"></ax-icon>
+      </ax-button>
+      <ax-button variant="icon" axTooltip="Add new item">
+        <ax-icon name="add_circle"></ax-icon>
+      </ax-button>
+      <ax-button variant="icon" axTooltip="Delete">
+        <ax-icon name="delete"></ax-icon>
+      </ax-button>
+      <ax-button variant="icon" axTooltip="Edit">
+        <ax-icon name="edit"></ax-icon>
+      </ax-button>
+      <ax-button variant="icon" axTooltip="Save changes">
+        <ax-icon name="save"></ax-icon>
+      </ax-button>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Tooltips on Text</mat-card-title>
+    </mat-card-header>
+    <div class="text-tooltips">
+      <p>
+        Hover over the 
+        <span class="tooltip-text" axTooltip="This is a tooltip on text">highlighted text</span> 
+        to see a tooltip.
+      </p>
+      <p>
+        You can also add tooltips to 
+        <span class="tooltip-text" axTooltip="Provides additional context">any inline element</span> 
+        for additional context.
+      </p>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Long Tooltips</mat-card-title>
+    </mat-card-header>
+    <div class="tooltip-group">
+      <ax-button 
+        variant="raised" 
+        label="Long tooltip" 
+        axTooltip="This is a much longer tooltip message that provides more detailed information about the element or action.">
+      </ax-button>
+    </div>
+  </ax-card>
+</div>

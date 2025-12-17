@@ -2,33 +2,29 @@
   <h1>Table Component</h1>
   <p class="description">A reusable table component with sorting and pagination support.</p>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Basic Table</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <ax-table
-        [dataSource]="dataSource"
-        [displayedColumns]="displayedColumns"
-        [pageSize]="5"
-        [showPaginator]="true"
-        [showSort]="true">
-      </ax-table>
-    </mat-card-content>
-  </mat-card>
+    <ax-table
+      [dataSource]="dataSource"
+      [displayedColumns]="displayedColumns"
+      [pageSize]="5"
+      [showPaginator]="true"
+      [showSort]="true">
+    </ax-table>
+  </ax-card>
 
-  <mat-card class="example-card">
-    <mat-card-header>
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Table without Pagination</mat-card-title>
     </mat-card-header>
-    <mat-card-content>
-      <ax-table
-        [dataSource]="dataSource"
-        [displayedColumns]="displayedColumns"
-        [showPaginator]="false"
-        [showSort]="true">
-      </ax-table>
-    </mat-card-content>
-  </mat-card>
+    <ax-table
+      [dataSource]="dataSource"
+      [displayedColumns]="displayedColumns"
+      [showPaginator]="false"
+      [showSort]="true">
+    </ax-table>
+  </ax-card>
 </div>
 
