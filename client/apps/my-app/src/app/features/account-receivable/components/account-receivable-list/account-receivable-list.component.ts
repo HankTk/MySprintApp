@@ -1,16 +1,19 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
-import { AxProgressComponent } from '@ui/components';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { 
+  AxButtonComponent, 
+  AxProgressComponent,
+  AxCardComponent,
+  AxIconComponent,
+  AxTableComponent,
+  AxChipComponent,
+  MatTableModule,
+  MatCardModule
+} from '@ui/components';
+import { AxTooltipDirective } from '@ui/components';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { StoreService } from '../../../../core/store.service';
 import { Order } from '../../../orders/models/order.model';
@@ -24,17 +27,18 @@ import { Customer } from '../../../customers/models/customer.model';
   imports: [
     CommonModule,
     CurrencyPipe,
-    MatButtonModule,
-    MatIconModule,
+    TranslateModule,
+    AxButtonComponent,
+    AxProgressComponent,
+    AxCardComponent,
+    AxIconComponent,
+    AxTableComponent,
+    AxChipComponent,
     MatTableModule,
     MatCardModule,
-    MatToolbarModule,
-    AxProgressComponent,
+    AxTooltipDirective,
     MatSelectModule,
-    MatFormFieldModule,
-    MatChipsModule,
-    MatTooltipModule,
-    TranslateModule
+    MatFormFieldModule
   ],
   templateUrl: './account-receivable-list.component.html',
   styleUrls: ['./account-receivable-list.component.scss']

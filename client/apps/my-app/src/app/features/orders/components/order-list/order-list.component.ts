@@ -17,12 +17,12 @@ import {
   AxCardComponent,
   AxIconComponent,
   AxTableComponent,
+  AxSelectComponent,
+  AxSelectOption,
   MatTableModule,
   MatCardModule
 } from '@ui/components';
 import { AxTooltipDirective } from '@ui/components';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-order-list',
@@ -36,11 +36,10 @@ import { MatSelectModule } from '@angular/material/select';
     AxCardComponent,
     AxIconComponent,
     AxTableComponent,
+    AxSelectComponent,
     MatTableModule,
     MatCardModule,
-    AxTooltipDirective,
-    MatFormFieldModule,
-    MatSelectModule
+    AxTooltipDirective
   ],
   templateUrl: './order-list.component.html',
   styleUrls: ['./order-list.component.scss']
@@ -49,6 +48,18 @@ export class OrderListComponent implements OnInit, OnDestroy {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['orderNumber', 'customerName', 'orderDate', 'status', 'total', 'jsonData', 'actions']);
   statusFilter = signal<string | null>(null);
+  
+  statusOptions: AxSelectOption[] = [
+    { value: null, label: 'All' },
+    { value: 'DRAFT', label: 'Draft' },
+    { value: 'PENDING_APPROVAL', label: 'Pending Approval' },
+    { value: 'APPROVED', label: 'Approved' },
+    { value: 'SHIPPING_INSTRUCTED', label: 'Shipping Instructed' },
+    { value: 'SHIPPED', label: 'Shipped' },
+    { value: 'INVOICED', label: 'Invoiced' },
+    { value: 'PAID', label: 'Paid' },
+    { value: 'CANCELLED', label: 'Cancelled' }
+  ];
   
   filteredOrders = computed(() => {
     const orders = this.orders() || [];
@@ -108,8 +119,8 @@ export class OrderListComponent implements OnInit, OnDestroy {
     this.orderService.openEditOrderDialog(order, this.isLoading);
   }
 
-  onStatusFilterChange(value: string): void {
-    this.statusFilter.set(value || null);
+  onStatusFilterChange(value: any): void {
+    this.statusFilter.set(value);
   }
 
   getCustomerName(customerId?: string): string {

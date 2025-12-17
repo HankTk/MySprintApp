@@ -1,6 +1,6 @@
 <div class="vendor-dialog">
   <h2 mat-dialog-title class="dialog-title">
-    <mat-icon class="title-icon">{{ isEdit ? 'edit' : 'add_circle' }}</mat-icon>
+    <ax-icon [name]="isEdit ? 'edit' : 'add_circle'" class="title-icon"></ax-icon>
     {{ isEdit ? ('editVendor' | translate) : ('addVendor' | translate) }}
   </h2>
 

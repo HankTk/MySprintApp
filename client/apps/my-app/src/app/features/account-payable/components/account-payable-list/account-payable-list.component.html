@@ -1,32 +1,32 @@
 <div class="account-payable-list-container">
-  <mat-card class="main-card">
-    <mat-card-header>
+  <ax-card class="main-card">
+    <mat-card-header ax-card-header>
       <div class="header-content">
-        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+        <ax-button variant="icon" (click)="goBack()" class="back-button">
+          <ax-icon name="arrow_back"></ax-icon>
+        </ax-button>
         <mat-card-title class="card-title">
-          <mat-icon class="title-icon">account_balance</mat-icon>
+          <ax-icon name="account_balance" class="title-icon"></ax-icon>
           {{ 'accountsPayable.title' | translate }}
         </mat-card-title>
       </div>
     </mat-card-header>
 
-    <mat-card-content>
-      <div class="controls-section">
-        <div class="filter-section">
-          <mat-form-field appearance="outline" class="status-filter">
-            <mat-label>{{ 'accountsPayable.filter.status' | translate }}</mat-label>
-            <mat-select [value]="statusFilter()" (selectionChange)="statusFilter.set($event.value)">
-              <mat-option [value]="null">{{ 'accountsPayable.filter.all' | translate }}</mat-option>
-              <mat-option value="INVOICED">{{ 'accountsPayable.status.invoiced' | translate }}</mat-option>
-              <mat-option value="PAID">{{ 'accountsPayable.status.paid' | translate }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+    <div class="controls-section">
+      <div class="filter-section">
+        <mat-form-field appearance="outline" class="status-filter">
+          <mat-label>{{ 'accountsPayable.filter.status' | translate }}</mat-label>
+          <mat-select [value]="statusFilter()" (selectionChange)="statusFilter.set($event.value)">
+            <mat-option [value]="null">{{ 'accountsPayable.filter.all' | translate }}</mat-option>
+            <mat-option value="INVOICED">{{ 'accountsPayable.status.invoiced' | translate }}</mat-option>
+            <mat-option value="PAID">{{ 'accountsPayable.status.paid' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
+    </div>
 
-      <div class="table-container">
+    <div class="table-container">
+      <ax-table [passThrough]="true">
         <table mat-table [dataSource]="filteredPOs() || []" class="invoice-table">
           <ng-container matColumnDef="invoiceNumber">
             <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.table.invoiceNumber' | translate }}</th>
@@ -70,44 +70,42 @@
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef>{{ 'accountsPayable.table.status' | translate }}</th>
             <td mat-cell *matCellDef="let po">
-              <mat-chip [style.color]="getStatusColor(po.status)" [style.background-color]="getStatusBackgroundColor(po.status)">
-                {{ getStatusLabel(po.status) }}
-              </mat-chip>
+              <ax-chip [label]="getStatusLabel(po.status)" [style.color]="getStatusColor(po.status)" [style.background-color]="getStatusBackgroundColor(po.status)">
+              </ax-chip>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
             <td mat-cell *matCellDef="let po">
-              <button 
-                mat-icon-button 
+              <ax-button 
+                variant="icon" 
                 color="primary" 
                 (click)="viewInvoice(po)" 
-                [matTooltip]="'view' | translate">
-                <mat-icon>visibility</mat-icon>
-              </button>
+                [axTooltip]="'view' | translate">
+                <ax-icon name="visibility"></ax-icon>
+              </ax-button>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
         </table>
+      </ax-table>
 
-        @if (filteredPOs() && filteredPOs().length === 0 && !isLoading()) {
-          <div class="no-data">
-            <mat-icon class="no-data-icon">info</mat-icon>
-            <p>{{ 'accountsPayable.noInvoices' | translate }}</p>
-          </div>
-        }
+      @if (filteredPOs() && filteredPOs().length === 0 && !isLoading()) {
+        <div class="no-data">
+          <ax-icon name="info" class="no-data-icon"></ax-icon>
+          <p>{{ 'accountsPayable.noInvoices' | translate }}</p>
+        </div>
+      }
 
-        @if (isLoading()) {
-          <div class="loading">
-            <ax-progress type="spinner" mode="indeterminate"></ax-progress>
-            <p>{{ 'loadingData' | translate }}</p>
-          </div>
-        }
-      </div>
-    </mat-card-content>
-  </mat-card>
+      @if (isLoading()) {
+        <div class="loading">
+          <ax-progress type="spinner" mode="indeterminate"></ax-progress>
+          <p>{{ 'loadingData' | translate }}</p>
+        </div>
+      }
+    </div>
+  </ax-card>
 </div>
-

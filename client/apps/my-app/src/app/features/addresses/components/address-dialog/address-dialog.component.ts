@@ -4,12 +4,10 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { Address, CreateAddressRequest } from '../../models/address.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
-import { AxButtonComponent } from '@ui/components';
+import { AxButtonComponent, AxIconComponent } from '@ui/components';
 
 export interface AddressDialogData {
   address?: Address;
@@ -26,10 +24,9 @@ export interface AddressDialogData {
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatButtonModule,
-    MatIconModule,
     TranslateModule,
-    AxButtonComponent
+    AxButtonComponent,
+    AxIconComponent
   ],
   templateUrl: './address-dialog.component.html',
   styleUrls: ['./address-dialog.component.scss']

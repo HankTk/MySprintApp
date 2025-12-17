@@ -3,12 +3,10 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { Vendor, CreateVendorRequest } from '../../models/vendor.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
-import { AxButtonComponent } from '@ui/components';
+import { AxButtonComponent, AxIconComponent } from '@ui/components';
 
 export interface VendorDialogData {
   vendor?: Vendor;
@@ -24,10 +22,9 @@ export interface VendorDialogData {
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
-    MatIconModule,
     TranslateModule,
-    AxButtonComponent
+    AxButtonComponent,
+    AxIconComponent
   ],
   templateUrl: './vendor-dialog.component.html',
   styleUrls: ['./vendor-dialog.component.scss']

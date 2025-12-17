@@ -1,49 +1,49 @@
 <div class="gl-list-container">
-  <mat-card class="main-card">
-    <mat-card-header>
+  <ax-card class="main-card">
+    <mat-card-header ax-card-header>
       <div class="header-content">
-        <button mat-icon-button (click)="goBack()" aria-label="Go back" class="back-button">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+        <ax-button variant="icon" (click)="goBack()" class="back-button">
+          <ax-icon name="arrow_back"></ax-icon>
+        </ax-button>
         <mat-card-title class="card-title">
-          <mat-icon class="title-icon">account_balance</mat-icon>
+          <ax-icon name="account_balance" class="title-icon"></ax-icon>
           {{ 'generalLedger.title' | translate }}
         </mat-card-title>
       </div>
     </mat-card-header>
 
-    <mat-card-content>
-      <div class="controls-section">
-        <div class="filter-section">
-          <mat-form-field appearance="outline" class="date-filter">
-            <mat-label>{{ 'generalLedger.filter.fromDate' | translate }}</mat-label>
-            <input matInput [matDatepicker]="dateFromPicker" [value]="dateFrom()" (dateChange)="onDateFromChange($event.value)">
-            <mat-datepicker-toggle matIconSuffix [for]="dateFromPicker"></mat-datepicker-toggle>
-            <mat-datepicker #dateFromPicker></mat-datepicker>
-          </mat-form-field>
+    <div class="controls-section">
+      <div class="filter-section">
+        <mat-form-field appearance="outline" class="date-filter">
+          <mat-label>{{ 'generalLedger.filter.fromDate' | translate }}</mat-label>
+          <input matInput [matDatepicker]="dateFromPicker" [value]="dateFrom()" (dateChange)="onDateFromChange($event.value)">
+          <mat-datepicker-toggle matIconSuffix [for]="dateFromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #dateFromPicker></mat-datepicker>
+        </mat-form-field>
 
-          <mat-form-field appearance="outline" class="date-filter">
-            <mat-label>{{ 'generalLedger.filter.toDate' | translate }}</mat-label>
-            <input matInput [matDatepicker]="dateToPicker" [value]="dateTo()" (dateChange)="onDateToChange($event.value)">
-            <mat-datepicker-toggle matIconSuffix [for]="dateToPicker"></mat-datepicker-toggle>
-            <mat-datepicker #dateToPicker></mat-datepicker>
-          </mat-form-field>
+        <mat-form-field appearance="outline" class="date-filter">
+          <mat-label>{{ 'generalLedger.filter.toDate' | translate }}</mat-label>
+          <input matInput [matDatepicker]="dateToPicker" [value]="dateTo()" (dateChange)="onDateToChange($event.value)">
+          <mat-datepicker-toggle matIconSuffix [for]="dateToPicker"></mat-datepicker-toggle>
+          <mat-datepicker #dateToPicker></mat-datepicker>
+        </mat-form-field>
 
-          <mat-form-field appearance="outline" class="type-filter">
-            <mat-label>{{ 'generalLedger.filter.byType' | translate }}</mat-label>
-            <mat-select [value]="typeFilter()" (selectionChange)="onTypeFilterChange($event.value)">
-              <mat-option [value]="null">{{ 'generalLedger.filter.allTypes' | translate }}</mat-option>
-              <mat-option value="REVENUE">{{ 'generalLedger.type.revenue' | translate }}</mat-option>
-              <mat-option value="COST">{{ 'generalLedger.type.cost' | translate }}</mat-option>
-              <mat-option value="EXPENSE">{{ 'generalLedger.type.expense' | translate }}</mat-option>
-              <mat-option value="ACCOUNTS_PAYABLE">{{ 'generalLedger.type.accountsPayable' | translate }}</mat-option>
-              <mat-option value="PAYMENT">{{ 'generalLedger.type.payment' | translate }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+        <mat-form-field appearance="outline" class="type-filter">
+          <mat-label>{{ 'generalLedger.filter.byType' | translate }}</mat-label>
+          <mat-select [value]="typeFilter()" (selectionChange)="onTypeFilterChange($event.value)">
+            <mat-option [value]="null">{{ 'generalLedger.filter.allTypes' | translate }}</mat-option>
+            <mat-option value="REVENUE">{{ 'generalLedger.type.revenue' | translate }}</mat-option>
+            <mat-option value="COST">{{ 'generalLedger.type.cost' | translate }}</mat-option>
+            <mat-option value="EXPENSE">{{ 'generalLedger.type.expense' | translate }}</mat-option>
+            <mat-option value="ACCOUNTS_PAYABLE">{{ 'generalLedger.type.accountsPayable' | translate }}</mat-option>
+            <mat-option value="PAYMENT">{{ 'generalLedger.type.payment' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
+    </div>
 
-      <div class="table-container">
+    <div class="table-container">
+      <ax-table [passThrough]="true">
         <table mat-table [dataSource]="filteredEntries() || []" class="gl-table">
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef>{{ 'generalLedger.table.date' | translate }}</th>
@@ -108,75 +108,74 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'generalLedger.table.actions' | translate }}</th>
             <td mat-cell *matCellDef="let entry" class="text-center">
-              <button 
+              <ax-button 
                 *ngIf="entry.orderId || entry.poId"
-                mat-icon-button 
+                variant="icon" 
                 color="primary" 
                 (click)="viewEntry(entry)" 
-                [matTooltip]="'generalLedger.table.view' | translate">
-                <mat-icon>visibility</mat-icon>
-              </button>
+                [axTooltip]="'generalLedger.table.view' | translate">
+                <ax-icon name="visibility"></ax-icon>
+              </ax-button>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
         </table>
+      </ax-table>
 
-        @if (filteredEntries() && filteredEntries().length === 0 && !isLoading()) {
-          <div class="no-data">
-            <mat-icon class="no-data-icon">info</mat-icon>
-            <p>{{ 'generalLedger.noEntries' | translate }}</p>
-          </div>
-        }
-
-        @if (isLoading()) {
-          <div class="loading">
-            <ax-progress type="spinner" mode="indeterminate"></ax-progress>
-            <p>{{ 'generalLedger.loading' | translate }}</p>
-          </div>
-        }
-      </div>
-
-      @if (filteredEntries() && filteredEntries().length > 0) {
-        <div class="summary-section">
-          <div class="summary-item">
-            <span class="summary-label">{{ 'generalLedger.summary.totalDebit' | translate }}</span>
-            <span class="summary-value debit">{{ totalDebit | currency }}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">{{ 'generalLedger.summary.totalCredit' | translate }}</span>
-            <span class="summary-value credit">{{ totalCredit | currency }}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">{{ 'generalLedger.summary.totalRevenue' | translate }}</span>
-            <span class="summary-value credit">{{ totalRevenue | currency }}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">{{ 'generalLedger.summary.totalCost' | translate }}</span>
-            <span class="summary-value debit">{{ totalCost | currency }}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">{{ 'generalLedger.summary.totalExpense' | translate }}</span>
-            <span class="summary-value debit">{{ totalExpense | currency }}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">{{ 'generalLedger.summary.totalAccountsPayable' | translate }}</span>
-            <span class="summary-value debit">{{ totalAccountsPayable | currency }}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">{{ 'generalLedger.summary.totalPayments' | translate }}</span>
-            <span class="summary-value credit">{{ totalPayment | currency }}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">{{ 'generalLedger.summary.netIncome' | translate }}</span>
-            <span class="summary-value" [class.debit]="netIncome < 0" [class.credit]="netIncome >= 0">
-              {{ netIncome | currency }}
-            </span>
-          </div>
+      @if (filteredEntries() && filteredEntries().length === 0 && !isLoading()) {
+        <div class="no-data">
+          <ax-icon name="info" class="no-data-icon"></ax-icon>
+          <p>{{ 'generalLedger.noEntries' | translate }}</p>
         </div>
       }
-    </mat-card-content>
-  </mat-card>
-</div>
 
+      @if (isLoading()) {
+        <div class="loading">
+          <ax-progress type="spinner" mode="indeterminate"></ax-progress>
+          <p>{{ 'generalLedger.loading' | translate }}</p>
+        </div>
+      }
+    </div>
+
+    @if (filteredEntries() && filteredEntries().length > 0) {
+      <div class="summary-section">
+        <div class="summary-item">
+          <span class="summary-label">{{ 'generalLedger.summary.totalDebit' | translate }}</span>
+          <span class="summary-value debit">{{ totalDebit | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">{{ 'generalLedger.summary.totalCredit' | translate }}</span>
+          <span class="summary-value credit">{{ totalCredit | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">{{ 'generalLedger.summary.totalRevenue' | translate }}</span>
+          <span class="summary-value credit">{{ totalRevenue | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">{{ 'generalLedger.summary.totalCost' | translate }}</span>
+          <span class="summary-value debit">{{ totalCost | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">{{ 'generalLedger.summary.totalExpense' | translate }}</span>
+          <span class="summary-value debit">{{ totalExpense | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">{{ 'generalLedger.summary.totalAccountsPayable' | translate }}</span>
+          <span class="summary-value debit">{{ totalAccountsPayable | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">{{ 'generalLedger.summary.totalPayments' | translate }}</span>
+          <span class="summary-value credit">{{ totalPayment | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">{{ 'generalLedger.summary.netIncome' | translate }}</span>
+          <span class="summary-value" [class.debit]="netIncome < 0" [class.credit]="netIncome >= 0">
+            {{ netIncome | currency }}
+          </span>
+        </div>
+      </div>
+    }
+  </ax-card>
+</div>

@@ -21,20 +21,13 @@
       </ax-button>
 
       <div class="filter-section">
-        <mat-form-field appearance="outline" class="status-filter">
-          <mat-label>{{ 'filterByStatus' | translate }}</mat-label>
-          <mat-select [value]="statusFilter()" (selectionChange)="onStatusFilterChange($event.value)">
-            <mat-option [value]="null">{{ 'order.status.all' | translate }}</mat-option>
-            <mat-option value="DRAFT">{{ 'order.status.draft' | translate }}</mat-option>
-            <mat-option value="PENDING_APPROVAL">{{ 'order.status.pendingApproval' | translate }}</mat-option>
-            <mat-option value="APPROVED">{{ 'order.status.approved' | translate }}</mat-option>
-            <mat-option value="SHIPPING_INSTRUCTED">{{ 'order.status.shippingInstructed' | translate }}</mat-option>
-            <mat-option value="SHIPPED">{{ 'order.status.shipped' | translate }}</mat-option>
-            <mat-option value="INVOICED">{{ 'order.status.invoiced' | translate }}</mat-option>
-            <mat-option value="PAID">{{ 'order.status.paid' | translate }}</mat-option>
-            <mat-option value="CANCELLED">{{ 'order.status.cancelled' | translate }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <ax-select 
+          class="status-filter"
+          [label]="'filterByStatus' | translate"
+          [options]="statusOptions"
+          [value]="statusFilter()"
+          (selectionChange)="onStatusFilterChange($event)">
+        </ax-select>
       </div>
     </div>
 

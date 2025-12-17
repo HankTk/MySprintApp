@@ -1,14 +1,15 @@
 import { Component, OnInit, inject, OnDestroy, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AxButtonComponent, AxProgressComponent } from '@ui/components';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { 
+  AxButtonComponent, 
+  AxProgressComponent,
+  AxCardComponent,
+  AxIconComponent,
+  AxTableComponent,
+  MatTableModule,
+  MatCardModule
+} from '@ui/components';
+import { AxTooltipDirective } from '@ui/components';
 import { StoreService } from '../../../../core/store.service';
 import { Warehouse } from '../../models/warehouse.model';
 import { TranslateModule } from '@ngx-translate/core';
@@ -21,17 +22,15 @@ import { WarehouseService } from '../../services/warehouse.service';
   selector: 'app-warehouse-list',
   standalone: true,
   imports: [
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTableModule,
-    MatCardModule,
-    MatSnackBarModule,
-    MatToolbarModule,
+    TranslateModule,
     AxButtonComponent,
     AxProgressComponent,
-    MatTooltipModule,
-    TranslateModule
+    AxCardComponent,
+    AxIconComponent,
+    AxTableComponent,
+    MatTableModule,
+    MatCardModule,
+    AxTooltipDirective
   ],
   templateUrl: './warehouse-list.component.html',
   styleUrls: ['./warehouse-list.component.scss']

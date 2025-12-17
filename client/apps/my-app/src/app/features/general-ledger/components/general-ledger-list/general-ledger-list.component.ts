@@ -1,12 +1,16 @@
 import { Component, OnInit, inject, signal, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
-import { AxProgressComponent } from '@ui/components';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { 
+  AxButtonComponent, 
+  AxProgressComponent,
+  AxCardComponent,
+  AxIconComponent,
+  AxTableComponent,
+  MatTableModule,
+  MatCardModule
+} from '@ui/components';
+import { AxTooltipDirective } from '@ui/components';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -22,18 +26,20 @@ import { GLEntry, GLEntryType } from '../../models/general-ledger-entry.model';
   imports: [
     CommonModule,
     CurrencyPipe,
-    MatButtonModule,
-    MatIconModule,
+    TranslateModule,
+    AxButtonComponent,
+    AxProgressComponent,
+    AxCardComponent,
+    AxIconComponent,
+    AxTableComponent,
     MatTableModule,
     MatCardModule,
-    MatTooltipModule,
-    AxProgressComponent,
+    AxTooltipDirective,
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
-    MatNativeDateModule,
-    TranslateModule
+    MatNativeDateModule
   ],
   templateUrl: './general-ledger-list.component.html',
   styleUrls: ['./general-ledger-list.component.scss']

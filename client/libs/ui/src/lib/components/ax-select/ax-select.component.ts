@@ -41,7 +41,7 @@ export class AxSelectComponent implements ControlValueAccessor {
   @Input() appearance: 'fill' | 'outline' = 'outline';
   @Output() selectionChange = new EventEmitter<any>();
 
-  value: any;
+  @Input() value: any;
   private onChange = (value: any) => {};
   private onTouched = () => {};
 

@@ -1,14 +1,15 @@
 import { Component, OnInit, inject, OnDestroy, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatCardModule } from '@angular/material/card';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AxButtonComponent, AxProgressComponent } from '@ui/components';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { 
+  AxButtonComponent, 
+  AxProgressComponent,
+  AxCardComponent,
+  AxIconComponent,
+  AxTableComponent,
+  MatTableModule,
+  MatCardModule
+} from '@ui/components';
+import { AxTooltipDirective } from '@ui/components';
 import { StoreService } from '../../../../core/store.service';
 import { SFC } from '../../models/sfc.model';
 import { RMA } from '../../../rmas/models/rma.model';
@@ -24,17 +25,15 @@ import { firstValueFrom } from 'rxjs';
   selector: 'app-sfc-list',
   standalone: true,
   imports: [
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTableModule,
-    MatCardModule,
-    MatSnackBarModule,
-    MatToolbarModule,
+    TranslateModule,
     AxButtonComponent,
     AxProgressComponent,
-    MatTooltipModule,
-    TranslateModule
+    AxCardComponent,
+    AxIconComponent,
+    AxTableComponent,
+    MatTableModule,
+    MatCardModule,
+    AxTooltipDirective
   ],
   templateUrl: './sfc-list.component.html',
   styleUrls: ['./sfc-list.component.scss']
