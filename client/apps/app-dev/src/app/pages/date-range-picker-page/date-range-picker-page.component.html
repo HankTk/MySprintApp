@@ -39,5 +39,55 @@
       </ax-date-range-picker>
     </div>
   </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Single Field Date Range Picker (Table Filter Style)</mat-card-title>
+    </mat-card-header>
+    <p class="description">This demonstrates the single input field with popup approach used in table filters.</p>
+    
+    <div class="single-field-wrapper">
+      <div class="date-range-single-wrapper">
+        <mat-form-field appearance="outline" class="filter-field-inline date-range-single">
+          <input
+            matInput
+            [value]="getDateRangeDisplay()"
+            placeholder="Date Range"
+            readonly
+            (click)="toggleDateRangePicker()">
+          <button
+            matIconSuffix
+            mat-icon-button
+            type="button"
+            (click)="toggleDateRangePicker(); $event.stopPropagation()"
+            aria-label="Open date range picker">
+            <mat-icon>calendar_today</mat-icon>
+          </button>
+        </mat-form-field>
+        
+        @if (isDateRangePickerOpen) {
+          <div class="date-range-popup">
+            <div class="date-range-popup-content">
+              <ax-date-range-picker
+                [startDate]="singleFieldStartDate"
+                [endDate]="singleFieldEndDate"
+                (startDateChange)="onSingleFieldStartDateChange($event)"
+                (endDateChange)="onSingleFieldEndDateChange($event)">
+              </ax-date-range-picker>
+              <div class="date-range-actions">
+                <button mat-button (click)="clearSingleFieldDateRange(); $event.stopPropagation()">Clear</button>
+                <button mat-button color="primary" (click)="closeSingleFieldDateRangePicker(); $event.stopPropagation()">Apply</button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+    
+    <div style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
+      <p><strong>Start Date:</strong> {{ singleFieldStartDate ? (singleFieldStartDate | date: 'short') : 'Not selected' }}</p>
+      <p><strong>End Date:</strong> {{ singleFieldEndDate ? (singleFieldEndDate | date: 'short') : 'Not selected' }}</p>
+    </div>
+  </ax-card>
 </div>
 

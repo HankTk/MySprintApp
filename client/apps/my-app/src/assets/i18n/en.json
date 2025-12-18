@@ -230,6 +230,7 @@
   "editOrder": "Edit Order",
   "addOrder": "Add Order",
   "filterByStatus": "Filter by Status",
+  "clearFilters": "Clear Filters",
   "allStatuses": "All Statuses",
   "order": {
     "status": {

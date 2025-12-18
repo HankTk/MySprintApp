@@ -4,25 +4,6 @@
   </div>
 } @else {
   <div class="ax-table-container">
-    <!-- Filter bar (if filtering is enabled) -->
-    @if (showFilter) {
-      <div class="filter-bar">
-        @for (column of computedColumns; track column.key) {
-          @if (column.filterable) {
-            <mat-form-field appearance="outline" class="filter-field">
-              <mat-label>{{ column.header }}</mat-label>
-              <input
-                matInput
-                [placeholder]="'Filter ' + column.header"
-                [(ngModel)]="columnFilters[column.key]"
-                (ngModelChange)="onFilterChange(column.key, $event)">
-            </mat-form-field>
-          }
-        }
-        <button mat-button (click)="clearFilters()" class="clear-filters-btn">Clear Filters</button>
-      </div>
-    }
-
     <table mat-table [dataSource]="paginatedData" class="ax-table" matSort (matSortChange)="onSortChange($event)">
       <!-- Selection column -->
       @if (selectionMode !== 'none') {
@@ -50,6 +31,86 @@
             }
           </td>
         </ng-container>
+      }
+      
+
+      <!-- Filter columns (if filtering is enabled) -->
+      @if (showFilter) {
+        @for (column of computedColumns; track column.key) {
+          <ng-container [matColumnDef]="column.key + '_filter'">
+            <th mat-header-cell *matHeaderCellDef class="filter-header" [style.width]="column.width">
+              @if (column.filterable) {
+                @if (column.filterType === 'date-range') {
+                  <div class="date-range-single-wrapper" (click)="$event.stopPropagation()">
+                    <mat-form-field appearance="outline" class="filter-field-inline date-range-single">
+                      <input
+                        matInput
+                        [value]="getDateRangeDisplay(column.key)"
+                        placeholder="Date Range"
+                        readonly
+                        (click)="toggleDateRangePicker(column.key)">
+                      <button
+                        matIconSuffix
+                        mat-icon-button
+                        type="button"
+                        (click)="toggleDateRangePicker(column.key); $event.stopPropagation()"
+                        aria-label="Open date range picker">
+                        <mat-icon>calendar_today</mat-icon>
+                      </button>
+                    </mat-form-field>
+                    
+                    @if (openDateRangePicker[column.key]) {
+                      <div class="date-range-popup">
+                        <div class="date-range-popup-content">
+                          <ax-date-range-picker
+                            [startDate]="dateRangeFilters[column.key]?.start"
+                            [endDate]="dateRangeFilters[column.key]?.end"
+                            (startDateChange)="onDateRangeStartDateChange(column.key, $event)"
+                            (endDateChange)="onDateRangeEndDateChange(column.key, $event)">
+                          </ax-date-range-picker>
+                          <div class="date-range-actions">
+                            <button mat-button (click)="clearDateRange(column.key); $event.stopPropagation()">Clear</button>
+                            <button mat-button color="primary" (click)="closeDateRangePicker(column.key); $event.stopPropagation()">Apply</button>
+                          </div>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                } @else if (column.filterType === 'select') {
+                  <ax-select
+                    class="filter-field-inline"
+                    [options]="getFilterOptions(column)"
+                    [value]="getFilterValue(column.key)"
+                    (selectionChange)="onFilterChange(column.key, $event)">
+                  </ax-select>
+                } @else if (column.filterType === 'autocomplete') {
+                  <mat-form-field appearance="outline" class="filter-field-inline">
+                    <input
+                      matInput
+                      [matAutocomplete]="auto"
+                      [placeholder]="'Filter ' + column.header"
+                      [(ngModel)]="columnFilters[column.key]"
+                      (ngModelChange)="onFilterChange(column.key, $event)">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="getFilterDisplayFn(column)">
+                      @for (option of getFilterOptions(column); track option.value) {
+                        <mat-option [value]="option.value">{{ option.label }}</mat-option>
+                      }
+                    </mat-autocomplete>
+                  </mat-form-field>
+                } @else {
+                  <mat-form-field appearance="outline" class="filter-field-inline">
+                    <input
+                      matInput
+                      [placeholder]="'Filter ' + column.header"
+                      [(ngModel)]="columnFilters[column.key]"
+                      (ngModelChange)="onFilterChange(column.key, $event)">
+                  </mat-form-field>
+                }
+              }
+            </th>
+            <td mat-cell *matCellDef="let row"></td>
+          </ng-container>
+        }
       }
 
       <!-- Data columns -->
@@ -88,6 +149,10 @@
         </ng-container>
       }
 
+      <!-- Filter row (if filtering is enabled) -->
+      @if (showFilter) {
+        <tr mat-header-row *matHeaderRowDef="getFilterRowColumns()" class="filter-row"></tr>
+      }
       <tr mat-header-row *matHeaderRowDef="allColumnKeys"></tr>
       <tr 
         mat-row 

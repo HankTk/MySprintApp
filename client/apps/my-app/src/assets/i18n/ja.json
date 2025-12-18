@@ -234,6 +234,7 @@
   "editOrder": "注文編集",
   "addOrder": "注文追加",
   "filterByStatus": "ステータスでフィルター",
+  "clearFilters": "フィルターをクリア",
   "allStatuses": "すべてのステータス",
   "order": {
     "status": {

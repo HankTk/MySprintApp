@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, OnDestroy, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, signal, computed, ViewChild, TemplateRef, AfterViewInit, effect } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonModule, CurrencyPipe } from '@angular/common';
@@ -17,7 +17,8 @@ import {
   AxCardComponent,
   AxIconComponent,
   AxTableComponent,
-  AxSelectComponent,
+  AxTableColumnDef,
+  FilterOption,
   AxSelectOption,
   MatTableModule,
   MatCardModule
@@ -36,7 +37,6 @@ import { AxTooltipDirective } from '@ui/components';
     AxCardComponent,
     AxIconComponent,
     AxTableComponent,
-    AxSelectComponent,
     MatTableModule,
     MatCardModule,
     AxTooltipDirective
@@ -44,10 +44,20 @@ import { AxTooltipDirective } from '@ui/components';
   templateUrl: './order-list.component.html',
   styleUrls: ['./order-list.component.scss']
 })
-export class OrderListComponent implements OnInit, OnDestroy {
+export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['orderNumber', 'customerName', 'orderDate', 'status', 'total', 'actions']);
-  statusFilter = signal<string | null>(null);
+  
+  // Column definitions for the new ax-table
+  columns = signal<AxTableColumnDef<Order>[]>([]);
+  
+  // Template references for custom cells
+  @ViewChild('statusCell') statusCellTemplate?: TemplateRef<any>;
+  @ViewChild('totalCell') totalCellTemplate?: TemplateRef<any>;
+  @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
+  
+  // Reference to the table component
+  @ViewChild('axTable') axTable?: AxTableComponent<Order>;
   
   statusOptions: AxSelectOption[] = [
     { value: null, label: 'All' },
@@ -60,16 +70,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
     { value: 'PAID', label: 'Paid' },
     { value: 'CANCELLED', label: 'Cancelled' }
   ];
-  
-  filteredOrders = computed(() => {
-    const orders = this.orders() || [];
-    const filter = this.statusFilter();
-    
-    if (filter) {
-      return orders.filter((order: Order) => order.status === filter);
-    }
-    return orders;
-  });
 
   private store = inject(StoreService);
   private orderService = inject(OrderService);
@@ -83,6 +83,22 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   orders = this.store.select('orders');
   customers = this.store.select('customers');
+  
+  // No need for separate filteredOrders computed - ax-table handles filtering internally
+  filteredOrders = this.orders;
+  
+  constructor() {
+    // Reinitialize columns when orders or customers change (using effect)
+    effect(() => {
+      // Access signals to create dependency
+      this.orders();
+      this.customers();
+      // Reinitialize columns if templates are available
+      if (this.statusCellTemplate) {
+        this.initializeColumns();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadOrders();
@@ -97,6 +113,94 @@ export class OrderListComponent implements OnInit, OnDestroy {
           }
         })
     );
+  }
+
+  ngAfterViewInit(): void {
+    // Initialize columns after view init so templates are available
+    this.initializeColumns();
+  }
+
+  private initializeColumns(): void {
+    this.columns.set([
+      {
+        key: 'orderNumber',
+        header: this.languageService.instant('orderNumber'),
+        field: 'orderNumber',
+        sortable: true,
+        filterable: true,
+        filterType: 'text',
+        formatter: (value) => value || '-'
+      },
+      {
+        key: 'customerName',
+        header: this.languageService.instant('customerName'),
+        field: 'customerId',
+        sortable: true,
+        filterable: true,
+        filterType: 'select',
+        filterOptions: (data: Order[]): FilterOption[] => {
+          const customers = this.customers() || [];
+          const customerMap = new Map<string, string>();
+          data.forEach(order => {
+            if (order.customerId && !customerMap.has(order.customerId)) {
+              const customer = customers.find((c: Customer) => c.id === order.customerId);
+              const name = customer ? (customer.companyName || `${customer.lastName} ${customer.firstName}` || customer.email || order.customerId) : (order.customerId || '');
+              customerMap.set(order.customerId, name);
+            }
+          });
+          const customerNames = Array.from(customerMap.entries())
+            .map(([id, name]) => ({ value: id || '', label: name || '' }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+          return [
+            { value: '', label: 'All' },
+            ...customerNames
+          ];
+        },
+        formatter: (value, row) => this.getCustomerName(row.customerId)
+      },
+      {
+        key: 'orderDate',
+        header: this.languageService.instant('orderDate'),
+        field: 'orderDate',
+        sortable: true,
+        filterable: true,
+        filterType: 'date-range',
+        formatter: (value) => this.formatDate(value)
+      },
+      {
+        key: 'status',
+        header: this.languageService.instant('status'),
+        field: 'status',
+        sortable: true,
+        filterable: true,
+        filterType: 'select',
+        filterOptions: [
+          { value: '', label: 'All' },
+          ...this.statusOptions.filter(opt => opt.value !== null).map(opt => ({
+            value: opt.value as string,
+            label: opt.label
+          }))
+        ],
+        cellTemplate: this.statusCellTemplate
+      },
+      {
+        key: 'total',
+        header: this.languageService.instant('total'),
+        field: 'total',
+        sortable: true,
+        filterable: false,
+        align: 'right',
+        cellTemplate: this.totalCellTemplate
+      },
+      {
+        key: 'actions',
+        header: this.languageService.instant('actions'),
+        field: 'id',
+        sortable: false,
+        filterable: false,
+        cellTemplate: this.actionsCellTemplate
+      }
+    ]);
   }
 
   ngOnDestroy(): void {
@@ -119,9 +223,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
     this.orderService.openEditOrderDialog(order, this.isLoading);
   }
 
-  onStatusFilterChange(value: any): void {
-    this.statusFilter.set(value);
-  }
 
   getCustomerName(customerId?: string): string {
     if (!customerId) return 'N/A';
@@ -169,5 +270,17 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   goBack(): void {
     this.router.navigate(['/']);
+  }
+
+  clearTableFilters(): void {
+    if (this.axTable) {
+      this.axTable.clearFilters();
+    }
+  }
+
+  getClearFiltersLabel(): string {
+    const translated = this.languageService.instant('clearFilters');
+    // If translation returns the key itself, it means the key wasn't found
+    return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 }
