@@ -4,33 +4,103 @@
   </div>
 } @else {
   <div class="ax-table-container">
+    <!-- Filter bar (if filtering is enabled) -->
+    @if (showFilter) {
+      <div class="filter-bar">
+        @for (column of computedColumns; track column.key) {
+          @if (column.filterable) {
+            <mat-form-field appearance="outline" class="filter-field">
+              <mat-label>{{ column.header }}</mat-label>
+              <input
+                matInput
+                [placeholder]="'Filter ' + column.header"
+                [(ngModel)]="columnFilters[column.key]"
+                (ngModelChange)="onFilterChange(column.key, $event)">
+            </mat-form-field>
+          }
+        }
+        <button mat-button (click)="clearFilters()" class="clear-filters-btn">Clear Filters</button>
+      </div>
+    }
+
     <table mat-table [dataSource]="paginatedData" class="ax-table" matSort (matSortChange)="onSortChange($event)">
-      @for (column of displayedColumns; track column) {
-        <ng-container [matColumnDef]="column">
-          <th mat-header-cell *matHeaderCellDef [mat-sort-header]="showSort ? column : ''">
-            @if (headerTemplate) {
-              <ng-container *ngTemplateOutlet="headerTemplate; context: { $implicit: column }"></ng-container>
-            } @else {
-              {{ column }}
+      <!-- Selection column -->
+      @if (selectionMode !== 'none') {
+        <ng-container matColumnDef="_select">
+          <th mat-header-cell *matHeaderCellDef class="selection-header">
+            @if (selectionMode === 'multiple') {
+              <mat-checkbox
+                [checked]="isAllSelected()"
+                [indeterminate]="selection.selected.length > 0 && !isAllSelected()"
+                (change)="$event ? masterToggle() : null">
+              </mat-checkbox>
             }
           </th>
-          <td mat-cell *matCellDef="let row">
-            @if (rowTemplate) {
-              <ng-container *ngTemplateOutlet="rowTemplate; context: { $implicit: row, column: column }"></ng-container>
-            } @else {
-              {{ row[column] }}
+          <td mat-cell *matCellDef="let row" class="selection-cell">
+            @if (selectionMode === 'multiple') {
+              <mat-checkbox
+                [checked]="isSelected(row)"
+                (change)="$event ? toggleRow(row) : null">
+              </mat-checkbox>
+            } @else if (selectionMode === 'single') {
+              <mat-checkbox
+                [checked]="isSelected(row)"
+                (change)="$event ? toggleRow(row) : null">
+              </mat-checkbox>
             }
           </td>
         </ng-container>
       }
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <!-- Data columns -->
+      @for (column of computedColumns; track column.key) {
+        <ng-container [matColumnDef]="column.key">
+          <th 
+            mat-header-cell 
+            *matHeaderCellDef 
+            [mat-sort-header]="showSort && column.sortable ? column.key : ''"
+            [style.width]="column.width"
+            [style.text-align]="column.align">
+            @if (column.headerTemplate) {
+              <ng-container *ngTemplateOutlet="column.headerTemplate; context: { $implicit: column }"></ng-container>
+            } @else if (headerTemplate) {
+              <ng-container *ngTemplateOutlet="headerTemplate; context: { $implicit: column }"></ng-container>
+            } @else {
+              {{ column.header }}
+            }
+          </th>
+          <td 
+            mat-cell 
+            *matCellDef="let row"
+            [style.text-align]="column.align">
+            @if (column.cellTemplate) {
+              <ng-container *ngTemplateOutlet="column.cellTemplate; context: { $implicit: row, column: column }"></ng-container>
+            } @else if (rowTemplate) {
+              <ng-container *ngTemplateOutlet="rowTemplate; context: { $implicit: row, column: column }"></ng-container>
+            } @else {
+              @if (column.formatter) {
+                {{ column.formatter(getCellValue(row, column), row) }}
+              } @else {
+                {{ getCellValue(row, column) }}
+              }
+            }
+          </td>
+        </ng-container>
+      }
+
+      <tr mat-header-row *matHeaderRowDef="allColumnKeys"></tr>
+      <tr 
+        mat-row 
+        *matRowDef="let row; columns: allColumnKeys"
+        [class.selected-row]="isSelected(row)"
+        (click)="selectionMode !== 'none' ? toggleRow(row) : null"
+        [class.selectable-row]="selectionMode !== 'none'">
+      </tr>
     </table>
 
     @if (showPaginator) {
       <mat-paginator
-        [length]="sortedData.length"
+        [length]="totalFilteredCount"
         [pageSize]="currentPageSize"
         [pageSizeOptions]="pageSizeOptions"
         [pageIndex]="currentPage"
