@@ -3,6 +3,7 @@ package com.edge.service;
 /**
  * @author Hidenori Takaku
  */
+import com.edge.config.DataChangeNotification;
 import com.edge.entity.Customer;
 import com.edge.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,10 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
     
-    @Autowired(required = false)
-    private WebSocketService webSocketService;
+    @Autowired
+    private WebSocketNotificationService notificationService;
+    
+    private static final String DATA_TYPE_ID = "customers";
     
     public List<Customer> getAllCustomers() {
         return customerRepository.getAllCustomers();
@@ -38,24 +41,21 @@ public class CustomerService {
     
     public Customer createCustomer(Customer customer) {
         Customer created = customerRepository.createCustomer(customer);
-        if (webSocketService != null) {
-            webSocketService.broadcastCustomerUpdate(created);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
     public Customer updateCustomer(String id, Customer customerDetails) {
         Customer updated = customerRepository.updateCustomer(id, customerDetails);
-        if (webSocketService != null) {
-            webSocketService.broadcastCustomerUpdate(updated);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         return updated;
     }
     
     public void deleteCustomer(String id) {
+        Optional<Customer> customerToDelete = customerRepository.getCustomerById(id);
         customerRepository.deleteCustomer(id);
-        if (webSocketService != null) {
-            webSocketService.broadcastCustomerDelete(id);
+        if (customerToDelete.isPresent()) {
+            notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, customerToDelete.get());
         }
     }
 }

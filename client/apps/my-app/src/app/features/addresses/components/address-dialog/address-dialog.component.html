@@ -8,17 +8,17 @@
     <mat-dialog-content class="dialog-content">
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'customerId' | translate }}</mat-label>
-          <input matInput formControlName="customerId">
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'addressType' | translate }}</mat-label>
-          <mat-select formControlName="addressType">
+          <mat-select formControlName="addressType" required>
             <mat-option value="">{{ 'selectAddressType' | translate }}</mat-option>
             <mat-option value="SHIPPING">{{ 'shipping' | translate }}</mat-option>
             <mat-option value="BILLING">{{ 'billing' | translate }}</mat-option>
           </mat-select>
+          @if (isFieldInvalid('addressType')) {
+            <mat-error>
+              {{ 'validation.required' | translate }}
+            </mat-error>
+          }
         </mat-form-field>
       </div>
 
@@ -57,18 +57,6 @@
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'country' | translate }}</mat-label>
           <input matInput formControlName="country">
-        </mat-form-field>
-      </div>
-
-      <div class="form-row">
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'contactName' | translate }}</mat-label>
-          <input matInput formControlName="contactName">
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>{{ 'contactPhone' | translate }}</mat-label>
-          <input matInput formControlName="contactPhone">
         </mat-form-field>
       </div>
 

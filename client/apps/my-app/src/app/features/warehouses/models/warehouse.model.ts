@@ -2,7 +2,7 @@ export interface Warehouse {
   id?: string;
   warehouseCode?: string;
   warehouseName?: string;
-  address?: string;
+  addressId?: string;
   description?: string;
   active?: boolean;
   jsonData?: any;
@@ -11,7 +11,7 @@ export interface Warehouse {
 export interface CreateWarehouseRequest {
   warehouseCode?: string;
   warehouseName?: string;
-  address?: string;
+  addressId?: string;
   description?: string;
   active?: boolean;
   jsonData?: any;

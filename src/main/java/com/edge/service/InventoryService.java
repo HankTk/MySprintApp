@@ -3,6 +3,7 @@ package com.edge.service;
 /**
  * @author Hidenori Takaku
  */
+import com.edge.config.DataChangeNotification;
 import com.edge.entity.Inventory;
 import com.edge.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,10 @@ public class InventoryService {
     @Autowired
     private InventoryRepository inventoryRepository;
     
-    @Autowired(required = false)
-    private WebSocketService webSocketService;
+    @Autowired
+    private WebSocketNotificationService notificationService;
+    
+    private static final String DATA_TYPE_ID = "inventory";
     
     public List<Inventory> getAllInventory() {
         return inventoryRepository.getAllInventory();
@@ -42,40 +45,38 @@ public class InventoryService {
     
     public Inventory createOrUpdateInventory(String productId, String warehouseId, Integer quantity) {
         Inventory inventory = inventoryRepository.createOrUpdateInventory(productId, warehouseId, quantity);
-        if (webSocketService != null) {
-            webSocketService.broadcastInventoryUpdate(inventory);
-        }
+        // Determine if this is a create or update based on whether inventory existed
+        Optional<Inventory> existing = inventoryRepository.getInventoryByProductAndWarehouse(productId, warehouseId);
+        DataChangeNotification.ChangeType changeType = existing.isPresent() 
+            ? DataChangeNotification.ChangeType.UPDATE 
+            : DataChangeNotification.ChangeType.CREATE;
+        notificationService.notifyDataChange(changeType, DATA_TYPE_ID, inventory);
         return inventory;
     }
     
     public Inventory adjustInventory(String productId, String warehouseId, Integer quantityChange) {
         Inventory inventory = inventoryRepository.adjustInventory(productId, warehouseId, quantityChange);
-        if (webSocketService != null) {
-            webSocketService.broadcastInventoryUpdate(inventory);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, inventory);
         return inventory;
     }
     
     public Inventory createInventory(Inventory inventory) {
         Inventory created = inventoryRepository.createInventory(inventory);
-        if (webSocketService != null) {
-            webSocketService.broadcastInventoryUpdate(created);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
     public Inventory updateInventory(String id, Inventory inventoryDetails) {
         Inventory updated = inventoryRepository.updateInventory(id, inventoryDetails);
-        if (webSocketService != null) {
-            webSocketService.broadcastInventoryUpdate(updated);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         return updated;
     }
     
     public void deleteInventory(String id) {
+        Optional<Inventory> inventoryToDelete = inventoryRepository.getInventoryById(id);
         inventoryRepository.deleteInventory(id);
-        if (webSocketService != null) {
-            webSocketService.broadcastInventoryDelete(id);
+        if (inventoryToDelete.isPresent()) {
+            notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, inventoryToDelete.get());
         }
     }
 }

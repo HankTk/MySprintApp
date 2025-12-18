@@ -1,15 +1,18 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnInit, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { Inventory, CreateInventoryRequest } from '../../models/inventory.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
-import { 
-  AxButtonComponent, 
-  AxIconComponent,
-  AxInputComponent,
-  AxTextareaComponent
-} from '@ui/components';
+import { AxButtonComponent, AxIconComponent } from '@ui/components';
+import { ProductService } from '../../../products/services/product.service';
+import { WarehouseService } from '../../../warehouses/services/warehouse.service';
+import { Product } from '../../../products/models/product.model';
+import { Warehouse } from '../../../warehouses/models/warehouse.model';
+import { firstValueFrom } from 'rxjs';
 
 export interface InventoryDialogData {
   inventory?: Inventory;
@@ -23,11 +26,12 @@ export interface InventoryDialogData {
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
     TranslateModule,
     AxButtonComponent,
-    AxIconComponent,
-    AxInputComponent,
-    AxTextareaComponent
+    AxIconComponent
   ],
   templateUrl: './inventory-dialog.component.html',
   styleUrls: ['./inventory-dialog.component.scss']
@@ -36,11 +40,15 @@ export class InventoryDialogComponent implements OnInit {
   inventoryForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
+  products = signal<Product[]>([]);
+  warehouses = signal<Warehouse[]>([]);
 
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<InventoryDialogComponent>);
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
+  private productService = inject(ProductService);
+  private warehouseService = inject(WarehouseService);
   
   constructor(@Inject(MAT_DIALOG_DATA) public data: InventoryDialogData) {
     this.isEdit = data.isEdit;
@@ -54,10 +62,50 @@ export class InventoryDialogComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await Promise.all([
+      this.loadProducts(),
+      this.loadWarehouses()
+    ]);
     if (this.isEdit && this.data.inventory) {
       this.populateForm(this.data.inventory);
     }
+  }
+
+  private async loadProducts(): Promise<void> {
+    try {
+      const products = await firstValueFrom(this.productService.getProducts());
+      // Filter to show only active products
+      const activeProducts = products.filter(p => p.active !== false);
+      this.products.set(activeProducts);
+    } catch (error) {
+      console.error('Failed to load products:', error);
+    }
+  }
+
+  private async loadWarehouses(): Promise<void> {
+    try {
+      const warehouses = await firstValueFrom(this.warehouseService.getWarehouses());
+      // Filter to show only active warehouses
+      const activeWarehouses = warehouses.filter(w => w.active !== false);
+      this.warehouses.set(activeWarehouses);
+    } catch (error) {
+      console.error('Failed to load warehouses:', error);
+    }
+  }
+
+  getProductDisplay(product: Product): string {
+    if (product.productName && product.productCode) {
+      return `${product.productCode} - ${product.productName}`;
+    }
+    return product.productName || product.productCode || product.id || '';
+  }
+
+  getWarehouseDisplay(warehouse: Warehouse): string {
+    if (warehouse.warehouseName && warehouse.warehouseCode) {
+      return `${warehouse.warehouseCode} - ${warehouse.warehouseName}`;
+    }
+    return warehouse.warehouseName || warehouse.warehouseCode || warehouse.id || '';
   }
 
   private populateForm(inventory: Inventory): void {

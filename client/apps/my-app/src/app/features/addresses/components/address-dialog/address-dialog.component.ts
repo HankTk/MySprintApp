@@ -47,16 +47,13 @@ export class AddressDialogComponent implements OnInit {
     this.dialogTitle = this.isEdit ? this.translate.instant('editAddress') : this.translate.instant('addAddress');
     
     this.addressForm = this.fb.group({
-      customerId: [''],
-      addressType: [''],
+      addressType: ['', Validators.required],
       streetAddress1: [''],
       streetAddress2: [''],
       city: [''],
       state: [''],
       postalCode: [''],
       country: [''],
-      contactName: [''],
-      contactPhone: [''],
       defaultAddress: [false],
       jsonData: ['{}', [this.jsonValidator]]
     });
@@ -84,7 +81,6 @@ export class AddressDialogComponent implements OnInit {
     }
 
     this.addressForm.patchValue({
-      customerId: address.customerId || '',
       addressType: address.addressType || '',
       streetAddress1: address.streetAddress1 || '',
       streetAddress2: address.streetAddress2 || '',
@@ -92,8 +88,6 @@ export class AddressDialogComponent implements OnInit {
       state: address.state || '',
       postalCode: address.postalCode || '',
       country: address.country || '',
-      contactName: address.contactName || '',
-      contactPhone: address.contactPhone || '',
       defaultAddress: address.defaultAddress || false,
       jsonData: jsonDataString
     });
@@ -129,7 +123,6 @@ export class AddressDialogComponent implements OnInit {
       if (this.isEdit && this.data.address) {
         const addressToUpdate: Address = {
           id: this.data.address.id,
-          customerId: formValue.customerId,
           addressType: formValue.addressType,
           streetAddress1: formValue.streetAddress1,
           streetAddress2: formValue.streetAddress2,
@@ -137,15 +130,12 @@ export class AddressDialogComponent implements OnInit {
           state: formValue.state,
           postalCode: formValue.postalCode,
           country: formValue.country,
-          contactName: formValue.contactName,
-          contactPhone: formValue.contactPhone,
           defaultAddress: formValue.defaultAddress,
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', address: addressToUpdate });
       } else {
         const addressToCreate: CreateAddressRequest = {
-          customerId: formValue.customerId,
           addressType: formValue.addressType,
           streetAddress1: formValue.streetAddress1,
           streetAddress2: formValue.streetAddress2,
@@ -153,8 +143,6 @@ export class AddressDialogComponent implements OnInit {
           state: formValue.state,
           postalCode: formValue.postalCode,
           country: formValue.country,
-          contactName: formValue.contactName,
-          contactPhone: formValue.contactPhone,
           defaultAddress: formValue.defaultAddress,
           jsonData: jsonData
         };
@@ -175,6 +163,9 @@ export class AddressDialogComponent implements OnInit {
   getErrorMessage(fieldName: string): string {
     const field = this.addressForm.get(fieldName);
     if (field?.errors) {
+      if (field.errors['required']) {
+        return this.translate.instant('validation.required');
+      }
       if (field.errors['invalidJson']) {
         return this.translate.instant('validation.invalidJson');
       }

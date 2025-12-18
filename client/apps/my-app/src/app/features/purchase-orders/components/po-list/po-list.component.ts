@@ -16,8 +16,10 @@ import { PurchaseOrder } from '../../models/purchase-order.model';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { Subscription } from 'rxjs';
-import { JsonUtil } from '../../../../shared/utils/json.util';
 import { PurchaseOrderService } from '../../services/purchase-order.service';
+import { VendorService } from '../../../vendors/services/vendor.service';
+import { Vendor } from '../../../vendors/models/vendor.model';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-purchase-order-list',
@@ -40,20 +42,21 @@ import { PurchaseOrderService } from '../../services/purchase-order.service';
 })
 export class PurchaseOrderListComponent implements OnInit, OnDestroy {
   isLoading = signal<boolean>(false);
-  displayedColumns = signal<string[]>(['orderNumber', 'supplierId', 'orderDate', 'status', 'total', 'jsonData', 'actions']);
+  displayedColumns = signal<string[]>(['orderNumber', 'supplierName', 'orderDate', 'status', 'total', 'actions']);
+  vendors = signal<Vendor[]>([]);
 
   private store = inject(StoreService);
   private purchaseOrderService = inject(PurchaseOrderService);
+  private vendorService = inject(VendorService);
   private languageService = inject(LanguageService);
   private router = inject(Router);
 
   private subscriptions = new Subscription();
 
-  JsonUtilRef = JsonUtil;
-
   purchaseOrders = this.store.select('purchase-orders');
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.loadVendors();
     this.loadPurchaseOrders();
   }
 
@@ -79,6 +82,35 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy {
 
   goBack(): void {
     this.router.navigate(['/']);
+  }
+
+  private async loadVendors(): Promise<void> {
+    try {
+      const vendors = await firstValueFrom(this.vendorService.getVendors());
+      this.vendors.set(vendors);
+    } catch (err) {
+      console.error('Error loading vendors:', err);
+    }
+  }
+
+  getSupplierName(supplierId?: string): string {
+    if (!supplierId) return 'N/A';
+    const vendors = this.vendors() || [];
+    const vendor = vendors.find((v: Vendor) => v.id === supplierId);
+    if (vendor) {
+      return vendor.companyName || `${vendor.lastName} ${vendor.firstName}` || vendor.email || supplierId;
+    }
+    return supplierId;
+  }
+
+  formatDate(dateString?: string): string {
+    if (!dateString) return 'N/A';
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString();
+    } catch {
+      return dateString;
+    }
   }
 }
 

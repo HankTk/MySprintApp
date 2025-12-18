@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
+import { Component, Inject, OnInit, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +8,9 @@ import { Warehouse, CreateWarehouseRequest } from '../../models/warehouse.model'
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { AxButtonComponent, AxIconComponent } from '@ui/components';
+import { AddressService } from '../../../addresses/services/address.service';
+import { Address } from '../../../addresses/models/address.model';
+import { firstValueFrom } from 'rxjs';
 
 export interface WarehouseDialogData {
   warehouse?: Warehouse;
@@ -35,11 +38,13 @@ export class WarehouseDialogComponent implements OnInit {
   warehouseForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
+  addresses = signal<Address[]>([]);
 
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<WarehouseDialogComponent>);
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
+  private addressService = inject(AddressService);
   
   constructor(@Inject(MAT_DIALOG_DATA) public data: WarehouseDialogData) {
     this.isEdit = data.isEdit;
@@ -48,17 +53,39 @@ export class WarehouseDialogComponent implements OnInit {
     this.warehouseForm = this.fb.group({
       warehouseCode: [''],
       warehouseName: [''],
-      address: [''],
+      addressId: [''],
       description: [''],
       active: [true],
       jsonData: ['{}', [this.jsonValidator]]
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.loadAddresses();
     if (this.isEdit && this.data.warehouse) {
       this.populateForm(this.data.warehouse);
     }
+  }
+
+  private async loadAddresses(): Promise<void> {
+    try {
+      const addresses = await firstValueFrom(this.addressService.getAddresses());
+      this.addresses.set(addresses);
+    } catch (error) {
+      console.error('Failed to load addresses:', error);
+    }
+  }
+
+  getAddressDisplay(address: Address): string {
+    const parts: string[] = [];
+    if (address.streetAddress1) parts.push(address.streetAddress1);
+    if (address.city) parts.push(address.city);
+    if (address.state) parts.push(address.state);
+    if (address.postalCode) parts.push(address.postalCode);
+    if (address.country) parts.push(address.country);
+    const addressStr = parts.join(', ');
+    const type = address.addressType ? ` (${this.translate.instant(address.addressType.toLowerCase())})` : '';
+    return (addressStr || address.id || '') + type;
   }
 
   private populateForm(warehouse: Warehouse): void {
@@ -79,7 +106,7 @@ export class WarehouseDialogComponent implements OnInit {
     this.warehouseForm.patchValue({
       warehouseCode: warehouse.warehouseCode || '',
       warehouseName: warehouse.warehouseName || '',
-      address: warehouse.address || '',
+      addressId: warehouse.addressId || '',
       description: warehouse.description || '',
       active: warehouse.active !== undefined ? warehouse.active : true,
       jsonData: jsonDataString
@@ -114,7 +141,7 @@ export class WarehouseDialogComponent implements OnInit {
           id: this.data.warehouse.id,
           warehouseCode: formValue.warehouseCode,
           warehouseName: formValue.warehouseName,
-          address: formValue.address,
+          addressId: formValue.addressId || undefined,
           description: formValue.description,
           active: formValue.active,
           jsonData: jsonData
@@ -124,7 +151,7 @@ export class WarehouseDialogComponent implements OnInit {
         const warehouseToCreate: CreateWarehouseRequest = {
           warehouseCode: formValue.warehouseCode,
           warehouseName: formValue.warehouseName,
-          address: formValue.address,
+          addressId: formValue.addressId || undefined,
           description: formValue.description,
           active: formValue.active,
           jsonData: jsonData

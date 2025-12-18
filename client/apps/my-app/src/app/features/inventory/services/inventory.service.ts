@@ -94,7 +94,7 @@ export class InventoryService {
   openAddInventoryDialog(isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(InventoryDialogComponent, {
       data: { isEdit: false } as InventoryDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
@@ -109,7 +109,7 @@ export class InventoryService {
   openEditInventoryDialog(inventory: Inventory, isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(InventoryDialogComponent, {
       data: { inventory, isEdit: true } as InventoryDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });

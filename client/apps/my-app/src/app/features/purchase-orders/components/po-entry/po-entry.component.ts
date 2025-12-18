@@ -120,13 +120,17 @@ export class PurchaseOrderEntryComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const poId = this.route.snapshot.paramMap.get('id');
     
-    await this.loadVendors();
-    await this.loadProducts();
+    await Promise.all([
+      this.loadVendors(),
+      this.loadProducts(),
+      this.loadAddresses()
+    ]);
 
     if (poId) {
       await this.loadPurchaseOrder(poId);
     } else {
-      await this.createNewPurchaseOrder();
+      // Only create purchase order when user actually starts entering data (when supplier is selected)
+      // Don't create empty draft purchase orders automatically
     }
   }
 
@@ -158,9 +162,6 @@ export class PurchaseOrderEntryComponent implements OnInit {
       const po = await firstValueFrom(this.poService.getPurchaseOrder(id));
       if (po) {
         this.po.set(po);
-        if (po.supplierId) {
-          await this.loadAddresses(po.supplierId);
-        }
         // Load expected delivery date
         if (po.expectedDeliveryDate) {
           this.expectedDeliveryDate.set(new Date(po.expectedDeliveryDate));
@@ -261,12 +262,13 @@ export class PurchaseOrderEntryComponent implements OnInit {
     }
   }
 
-  private async loadAddresses(vendorId: string): Promise<void> {
+  private async loadAddresses(): Promise<void> {
     try {
-      const addresses = await firstValueFrom(this.addressService.getAddressesByVendorId(vendorId));
+      const addresses = await firstValueFrom(this.addressService.getAddresses());
       this.addresses.set(addresses);
     } catch (err) {
       console.error('Error loading addresses:', err);
+      this.addresses.set([]);
     }
   }
 
@@ -274,7 +276,8 @@ export class PurchaseOrderEntryComponent implements OnInit {
     const normalizedSupplierId = supplierId && supplierId.trim() !== '' ? supplierId : undefined;
     
     if (!normalizedSupplierId) {
-      this.addresses.set([]);
+      // Keep all addresses loaded (from address master), don't clear them
+      // Clear supplierId from PO if supplier is deselected
       const po = this.po();
       if (po && po.id) {
         try {
@@ -294,18 +297,14 @@ export class PurchaseOrderEntryComponent implements OnInit {
       return;
     }
     
+    // Create purchase order if it doesn't exist yet (only when user starts entering data)
     let po = this.po();
     if (!po || !po.id) {
-      let retries = 0;
-      while ((!po || !po.id) && retries < 10) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        po = this.po();
-        retries++;
-      }
-      
+      await this.createNewPurchaseOrder();
+      po = this.po();
       if (!po || !po.id) {
-        console.error('Purchase order not available. Cannot update supplier.');
-        alert('Purchase order is not ready yet. Please wait a moment and try again.');
+        console.error('Failed to create purchase order.');
+        alert('Failed to create purchase order. Please try again.');
         return;
       }
     }
@@ -318,7 +317,6 @@ export class PurchaseOrderEntryComponent implements OnInit {
       );
       if (updated) {
         this.po.set(updated);
-        await this.loadAddresses(normalizedSupplierId);
       }
     } catch (err) {
       console.error('Error updating supplier:', err);
@@ -331,10 +329,21 @@ export class PurchaseOrderEntryComponent implements OnInit {
   async onAddProduct(): Promise<void> {
     const productId = this.selectedProduct();
     const qty = this.quantity();
-    const po = this.po();
+    let po = this.po();
 
-    if (!productId || !po || !po.id) {
+    if (!productId) {
       return;
+    }
+
+    // Create purchase order if it doesn't exist yet (only when user starts entering data)
+    if (!po || !po.id) {
+      await this.createNewPurchaseOrder();
+      po = this.po();
+      if (!po || !po.id) {
+        console.error('Failed to create purchase order.');
+        alert('Failed to create purchase order. Please try again.');
+        return;
+      }
     }
 
     try {
@@ -551,9 +560,6 @@ export class PurchaseOrderEntryComponent implements OnInit {
           const latestPO = await firstValueFrom(this.poService.getPurchaseOrder(currentPO.id));
           if (latestPO) {
             this.po.set(latestPO);
-            if (latestPO.supplierId) {
-              await this.loadAddresses(latestPO.supplierId);
-            }
             
             if (latestPO.jsonData) {
               switch (stepKey) {
@@ -648,6 +654,18 @@ export class PurchaseOrderEntryComponent implements OnInit {
     const address = this.addresses().find(a => a.id === addressId);
     if (!address) return '';
     return `${address.streetAddress1 || ''}, ${address.city || ''}, ${address.state || ''} ${address.postalCode || ''}`.trim();
+  }
+
+  getAddressDisplay(address: Address): string {
+    const parts: string[] = [];
+    if (address.streetAddress1) parts.push(address.streetAddress1);
+    if (address.city) parts.push(address.city);
+    if (address.state) parts.push(address.state);
+    if (address.postalCode) parts.push(address.postalCode);
+    if (address.country) parts.push(address.country);
+    const addressStr = parts.join(', ');
+    const type = address.addressType ? ` (${this.translate.instant(address.addressType.toLowerCase())})` : '';
+    return (addressStr || address.id || '') + type;
   }
 
   getCurrentStepLabel(): string {

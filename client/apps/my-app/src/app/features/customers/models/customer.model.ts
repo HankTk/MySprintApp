@@ -6,6 +6,7 @@ export interface Customer {
   lastName?: string;
   email?: string;
   phone?: string;
+  addressId?: string;
   jsonData?: any;
 }
 
@@ -16,6 +17,7 @@ export interface CreateCustomerRequest {
   lastName?: string;
   email?: string;
   phone?: string;
+  addressId?: string;
   jsonData?: any;
 }
 

@@ -3,6 +3,7 @@ package com.edge.service;
 /**
  * @author Hidenori Takaku
  */
+import com.edge.config.DataChangeNotification;
 import com.edge.entity.Address;
 import com.edge.entity.Customer;
 import com.edge.entity.Vendor;
@@ -28,8 +29,10 @@ public class AddressService {
     @Autowired
     private VendorRepository vendorRepository;
     
-    @Autowired(required = false)
-    private WebSocketService webSocketService;
+    @Autowired
+    private WebSocketNotificationService notificationService;
+    
+    private static final String DATA_TYPE_ID = "addresses";
     
     public List<Address> getAllAddresses() {
         return addressRepository.getAllAddresses();
@@ -131,17 +134,13 @@ public class AddressService {
     
     public Address createAddress(Address address) {
         Address created = addressRepository.createAddress(address);
-        if (webSocketService != null) {
-            webSocketService.broadcastAddressUpdate(created);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
     public Address updateAddress(String id, Address addressDetails) {
         Address updated = addressRepository.updateAddress(id, addressDetails);
-        if (webSocketService != null) {
-            webSocketService.broadcastAddressUpdate(updated);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         return updated;
     }
     
@@ -171,9 +170,10 @@ public class AddressService {
         }
         
         // Delete the address
+        Optional<Address> addressToDelete = addressRepository.getAddressById(id);
         addressRepository.deleteAddress(id);
-        if (webSocketService != null) {
-            webSocketService.broadcastAddressDelete(id);
+        if (addressToDelete.isPresent()) {
+            notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, addressToDelete.get());
         }
     }
 }

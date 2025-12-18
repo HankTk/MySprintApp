@@ -1,11 +1,15 @@
 @use '../../../../../_design-tokens' as *;
 
 .inventory-dialog {
+  padding: 2rem;
+
   .dialog-title {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 0 0 20px 0;
+    margin: 0 0 24px 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
 
     .title-icon {
       font-size: 24px;
@@ -15,18 +19,21 @@
   }
 
   .dialog-content {
-    min-width: 500px;
+    min-width: 600px;
     max-width: 90vw;
+    padding: 0;
 
     .form-row {
       display: flex;
       gap: 16px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
 
       .form-field {
         flex: 1;
+        min-width: 0;
 
         &.full-width {
+          flex: 1 1 100%;
           width: 100%;
         }
       }
@@ -34,10 +41,12 @@
   }
 
   .dialog-actions {
-    margin-top: 20px;
+    margin-top: 24px;
     padding: 16px 0 0 0;
     border-top: 1px solid #e0e0e0;
     gap: 12px;
+    display: flex;
+    justify-content: flex-end;
   }
 }
 

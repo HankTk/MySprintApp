@@ -46,7 +46,7 @@ import { AxTooltipDirective } from '@ui/components';
 })
 export class OrderListComponent implements OnInit, OnDestroy {
   isLoading = signal<boolean>(false);
-  displayedColumns = signal<string[]>(['orderNumber', 'customerName', 'orderDate', 'status', 'total', 'jsonData', 'actions']);
+  displayedColumns = signal<string[]>(['orderNumber', 'customerName', 'orderDate', 'status', 'total', 'actions']);
   statusFilter = signal<string | null>(null);
   
   statusOptions: AxSelectOption[] = [
@@ -153,8 +153,14 @@ export class OrderListComponent implements OnInit, OnDestroy {
 
   getStatusLabel(status?: string): string {
     if (!status) return 'N/A';
-    const key = `order.status.${status.toLowerCase()}`;
-    return this.languageService.instant(key) || status;
+    // Convert status like "PENDING_APPROVAL" to "pendingApproval" to match translation keys
+    const camelCaseStatus = status.toLowerCase().split('_').map((word, index) => 
+      index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)
+    ).join('');
+    const key = `order.status.${camelCaseStatus}`;
+    const translated = this.languageService.instant(key);
+    // If translation returns the key itself, it means the key wasn't found, return original status
+    return translated && translated !== key ? translated : status;
   }
 
   deleteOrder(order: Order): void {

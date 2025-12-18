@@ -1,4 +1,4 @@
-import { Injectable, signal, inject, OnDestroy } from '@angular/core';
+import { Injectable, signal, inject, OnDestroy, computed } from '@angular/core';
 import { WebSocketService, DataChangeNotification } from './websocket.service';
 import { Subscription } from 'rxjs';
 
@@ -33,7 +33,7 @@ export class StoreService implements OnDestroy {
   }
 
   select(resource: string) {
-    return () => this.state()[resource];
+    return computed(() => this.state()[resource] || []);
   }
 
   private handleDataChange(notification: DataChangeNotification): void {
@@ -42,12 +42,26 @@ export class StoreService implements OnDestroy {
 
     switch (changeType) {
       case 'CREATE':
-        // Add data
-        this.state.update(s => ({
-          ...s,
-          [dataTypeId]: [...currentData, data]
-        }));
-        console.log(`Data added to ${dataTypeId}:`, data);
+        // Add data if it doesn't already exist
+        if (Array.isArray(currentData)) {
+          const exists = currentData.some((item: any) => item.id === (data as any).id);
+          if (!exists) {
+            this.state.update(s => ({
+              ...s,
+              [dataTypeId]: [...currentData, data]
+            }));
+            console.log(`Data added to ${dataTypeId}:`, data);
+          } else {
+            console.log(`Data already exists in ${dataTypeId}, skipping:`, data);
+          }
+        } else {
+          // If currentData is not an array, initialize it
+          this.state.update(s => ({
+            ...s,
+            [dataTypeId]: [data]
+          }));
+          console.log(`Data added to ${dataTypeId}:`, data);
+        }
         break;
 
       case 'UPDATE':

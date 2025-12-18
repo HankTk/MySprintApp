@@ -3,6 +3,7 @@ package com.edge.service;
 /**
  * @author Hidenori Takaku
  */
+import com.edge.config.DataChangeNotification;
 import com.edge.entity.Warehouse;
 import com.edge.repository.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,10 @@ public class WarehouseService {
     @Autowired
     private WarehouseRepository warehouseRepository;
     
-    @Autowired(required = false)
-    private WebSocketService webSocketService;
+    @Autowired
+    private WebSocketNotificationService notificationService;
+    
+    private static final String DATA_TYPE_ID = "warehouses";
     
     public List<Warehouse> getAllWarehouses() {
         return warehouseRepository.getAllWarehouses();
@@ -38,24 +41,21 @@ public class WarehouseService {
     
     public Warehouse createWarehouse(Warehouse warehouse) {
         Warehouse created = warehouseRepository.createWarehouse(warehouse);
-        if (webSocketService != null) {
-            webSocketService.broadcastWarehouseUpdate(created);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
     public Warehouse updateWarehouse(String id, Warehouse warehouseDetails) {
         Warehouse updated = warehouseRepository.updateWarehouse(id, warehouseDetails);
-        if (webSocketService != null) {
-            webSocketService.broadcastWarehouseUpdate(updated);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         return updated;
     }
     
     public void deleteWarehouse(String id) {
+        Optional<Warehouse> warehouseToDelete = warehouseRepository.getWarehouseById(id);
         warehouseRepository.deleteWarehouse(id);
-        if (webSocketService != null) {
-            webSocketService.broadcastWarehouseDelete(id);
+        if (warehouseToDelete.isPresent()) {
+            notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, warehouseToDelete.get());
         }
     }
 }

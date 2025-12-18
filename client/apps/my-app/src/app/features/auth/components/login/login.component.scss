@@ -38,6 +38,13 @@ mat-card-title {
   margin-bottom: 16px;
 }
 
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  width: 100%;
+}
+
 .login-button {
   margin-top: 8px;
   height: 48px;

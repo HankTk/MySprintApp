@@ -177,11 +177,11 @@
                   <div class="form-row">
                     <mat-form-field appearance="outline" class="form-field">
                       <mat-label>{{ 'shippingAddress' | translate }}</mat-label>
-                      <mat-select [value]="order()?.shippingAddressId || ''" (selectionChange)="onShippingInfoChange($event.value, order()?.billingAddressId || '')">
-                        <mat-option [value]="''">{{ 'selectAddress' | translate }}</mat-option>
+                      <mat-select [value]="order()?.shippingAddressId || null" (selectionChange)="onShippingInfoChange($event.value || '', order()?.billingAddressId || '')">
+                        <mat-option [value]="null">{{ 'selectAddress' | translate }}</mat-option>
                         @for (address of addresses(); track address.id) {
                           <mat-option [value]="address.id">
-                            {{ address.streetAddress1 }}, {{ address.city }}, {{ address.state }} {{ address.postalCode }}
+                            {{ getAddressDisplay(address) }}
                           </mat-option>
                         }
                       </mat-select>
@@ -189,11 +189,11 @@
 
                     <mat-form-field appearance="outline" class="form-field">
                       <mat-label>{{ 'billingAddress' | translate }}</mat-label>
-                      <mat-select [value]="order()?.billingAddressId || ''" (selectionChange)="onShippingInfoChange(order()?.shippingAddressId || '', $event.value)">
-                        <mat-option [value]="''">{{ 'selectAddress' | translate }}</mat-option>
+                      <mat-select [value]="order()?.billingAddressId || null" (selectionChange)="onShippingInfoChange(order()?.shippingAddressId || '', $event.value || '')">
+                        <mat-option [value]="null">{{ 'selectAddress' | translate }}</mat-option>
                         @for (address of addresses(); track address.id) {
                           <mat-option [value]="address.id">
-                            {{ address.streetAddress1 }}, {{ address.city }}, {{ address.state }} {{ address.postalCode }}
+                            {{ getAddressDisplay(address) }}
                           </mat-option>
                         }
                       </mat-select>

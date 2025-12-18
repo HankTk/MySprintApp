@@ -104,6 +104,7 @@ public class CustomerRepository extends AbstractJsonRepository<Customer> {
         existingCustomer.setLastName(customerDetails.getLastName());
         existingCustomer.setEmail(customerDetails.getEmail());
         existingCustomer.setPhone(customerDetails.getPhone());
+        existingCustomer.setAddressId(customerDetails.getAddressId());
         
         // Update jsonData, preserving addressIds if not provided
         if (customerDetails.getJsonData() != null) {

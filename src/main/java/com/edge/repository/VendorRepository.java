@@ -104,6 +104,7 @@ public class VendorRepository extends AbstractJsonRepository<Vendor> {
         existingVendor.setLastName(vendorDetails.getLastName());
         existingVendor.setEmail(vendorDetails.getEmail());
         existingVendor.setPhone(vendorDetails.getPhone());
+        existingVendor.setAddressId(vendorDetails.getAddressId());
         
         // Update jsonData, preserving addressIds if not provided
         if (vendorDetails.getJsonData() != null) {

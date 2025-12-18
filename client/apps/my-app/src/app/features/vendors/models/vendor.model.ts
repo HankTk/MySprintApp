@@ -6,6 +6,7 @@ export interface Vendor {
   lastName?: string;
   email?: string;
   phone?: string;
+  addressId?: string;
   jsonData?: any;
 }
 
@@ -16,6 +17,7 @@ export interface CreateVendorRequest {
   lastName?: string;
   email?: string;
   phone?: string;
+  addressId?: string;
   jsonData?: any;
 }
 

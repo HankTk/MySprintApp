@@ -66,6 +66,20 @@
 
       <div class="form-row">
         <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>{{ 'address' | translate }}</mat-label>
+          <mat-select formControlName="addressId">
+            <mat-option value="">{{ 'selectAddress' | translate }}</mat-option>
+            @for (address of addresses(); track address.id) {
+              <mat-option [value]="address.id">
+                {{ getAddressDisplay(address) }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field full-width">
           <mat-label>{{ 'jsonData' | translate }}</mat-label>
           <textarea
             matInput

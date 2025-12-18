@@ -3,6 +3,7 @@ package com.edge.service;
 /**
  * @author Hidenori Takaku
  */
+import com.edge.config.DataChangeNotification;
 import com.edge.entity.Product;
 import com.edge.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,10 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
     
-    @Autowired(required = false)
-    private WebSocketService webSocketService;
+    @Autowired
+    private WebSocketNotificationService notificationService;
+    
+    private static final String DATA_TYPE_ID = "products";
     
     public List<Product> getAllProducts() {
         return productRepository.getAllProducts();
@@ -38,24 +41,21 @@ public class ProductService {
     
     public Product createProduct(Product product) {
         Product created = productRepository.createProduct(product);
-        if (webSocketService != null) {
-            webSocketService.broadcastProductUpdate(created);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
     public Product updateProduct(String id, Product productDetails) {
         Product updated = productRepository.updateProduct(id, productDetails);
-        if (webSocketService != null) {
-            webSocketService.broadcastProductUpdate(updated);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         return updated;
     }
     
     public void deleteProduct(String id) {
+        Optional<Product> productToDelete = productRepository.getProductById(id);
         productRepository.deleteProduct(id);
-        if (webSocketService != null) {
-            webSocketService.broadcastProductDelete(id);
+        if (productToDelete.isPresent()) {
+            notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, productToDelete.get());
         }
     }
 }

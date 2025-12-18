@@ -1,1 +1,1 @@
-[]
+[{"id":"169aece9-7a80-495f-aa4f-9bee6d427b0f","productCode":"PROD1","productName":"Prod A","description":"","unitPrice":100,"cost":10,"unitOfMeasure":"","active":true,"jsonData":{}},{"id":"7e455f26-4ba4-4727-b766-df5b8b4183b8","productCode":"PROD2","productName":"Prod B","description":"","unitPrice":200,"cost":20,"unitOfMeasure":"","active":true,"jsonData":{}}]

@@ -97,7 +97,7 @@ public class WarehouseRepository extends AbstractJsonRepository<Warehouse> {
         // Update fields
         existingWarehouse.setWarehouseCode(warehouseDetails.getWarehouseCode());
         existingWarehouse.setWarehouseName(warehouseDetails.getWarehouseName());
-        existingWarehouse.setAddress(warehouseDetails.getAddress());
+        existingWarehouse.setAddressId(warehouseDetails.getAddressId());
         existingWarehouse.setDescription(warehouseDetails.getDescription());
         existingWarehouse.setActive(warehouseDetails.isActive());
         existingWarehouse.setJsonData(warehouseDetails.getJsonData());

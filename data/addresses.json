@@ -1,1 +1,1 @@
-[]
+[{"id":"6a8b8bba-d752-48f4-a52f-8ba3555aa5fa","customerId":null,"addressType":"SHIPPING","streetAddress1":"1000 Abc Street","streetAddress2":"","city":"San Jose","state":"CA","postalCode":"95100","country":"US","contactName":null,"contactPhone":null,"defaultAddress":true,"jsonData":{}},{"id":"7f580e0f-ee93-4e10-935c-f156604d6a3e","customerId":null,"addressType":"BILLING","streetAddress1":"2000 Abc Street","streetAddress2":"","city":"San Jose","state":"CA","postalCode":"95100","country":"US","contactName":null,"contactPhone":null,"defaultAddress":false,"jsonData":{}}]

@@ -12,7 +12,7 @@ import {
 import { AxTooltipDirective } from '@ui/components';
 import { StoreService } from '../../../../core/store.service';
 import { Address } from '../../models/address.model';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { Subscription } from 'rxjs';
 import { JsonUtil } from '../../../../shared/utils/json.util';
@@ -37,12 +37,13 @@ import { AddressService } from '../../services/address.service';
 })
 export class AddressListComponent implements OnInit, OnDestroy {
   isLoading = signal<boolean>(false);
-  displayedColumns = signal<string[]>(['customerId', 'addressType', 'streetAddress1', 'city', 'state', 'postalCode', 'country', 'jsonData', 'actions']);
+  displayedColumns = signal<string[]>(['addressType', 'streetAddress1', 'city', 'state', 'postalCode', 'country', 'jsonData', 'actions']);
 
   private store = inject(StoreService);
   private addressService = inject(AddressService);
   private languageService = inject(LanguageService);
   private router = inject(Router);
+  private translate = inject(TranslateService);
 
   private subscriptions = new Subscription();
 
@@ -86,6 +87,12 @@ export class AddressListComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate(['/']);
     }
+  }
+
+  getAddressTypeLabel(addressType?: string): string {
+    if (!addressType) return '-';
+    const key = addressType.toLowerCase();
+    return this.translate.instant(key) || addressType;
   }
 }
 

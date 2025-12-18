@@ -3,6 +3,7 @@ package com.edge.service;
 /**
  * @author Hidenori Takaku
  */
+import com.edge.config.DataChangeNotification;
 import com.edge.entity.RMA;
 import com.edge.entity.RMAItem;
 import com.edge.entity.Product;
@@ -40,8 +41,10 @@ public class RMAService {
     @Autowired
     private InventoryService inventoryService;
     
-    @Autowired(required = false)
-    private WebSocketService webSocketService;
+    @Autowired
+    private WebSocketNotificationService notificationService;
+    
+    private static final String DATA_TYPE_ID = "rmas";
     
     public List<RMA> getAllRMAs() {
         return rmaRepository.getAllRMAs();
@@ -73,9 +76,7 @@ public class RMAService {
         enrichRMAItems(rma);
         
         RMA created = rmaRepository.createRMA(rma);
-        if (webSocketService != null) {
-            webSocketService.broadcastRMAUpdate(created);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
@@ -121,9 +122,7 @@ public class RMAService {
         }
         
         // Broadcast update via WebSocket
-        if (webSocketService != null) {
-            webSocketService.broadcastRMAUpdate(updated);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         
         return updated;
     }
@@ -216,9 +215,7 @@ public class RMAService {
         RMA updated = rmaRepository.updateRMA(rmaId, rma);
         
         // Broadcast update via WebSocket
-        if (webSocketService != null) {
-            webSocketService.broadcastRMAUpdate(updated);
-        }
+        notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         
         return updated;
     }
@@ -237,11 +234,12 @@ public class RMAService {
     }
     
     public void deleteRMA(String id) {
+        Optional<RMA> rmaToDelete = rmaRepository.getRMAById(id);
         rmaRepository.deleteRMA(id);
         
         // Broadcast deletion via WebSocket
-        if (webSocketService != null) {
-            webSocketService.broadcastRMADelete(id);
+        if (rmaToDelete.isPresent()) {
+            notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, rmaToDelete.get());
         }
     }
     

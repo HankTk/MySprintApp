@@ -181,7 +181,7 @@
                         <mat-option [value]="null">{{ 'selectAddress' | translate }}</mat-option>
                         @for (address of addresses(); track address.id) {
                           <mat-option [value]="address.id">
-                            {{ address.streetAddress1 }}, {{ address.city }}, {{ address.state }} {{ address.postalCode }}
+                            {{ getAddressDisplay(address) }}
                           </mat-option>
                         }
                       </mat-select>
@@ -193,7 +193,7 @@
                         <mat-option [value]="null">{{ 'selectAddress' | translate }}</mat-option>
                         @for (address of addresses(); track address.id) {
                           <mat-option [value]="address.id">
-                            {{ address.streetAddress1 }}, {{ address.city }}, {{ address.state }} {{ address.postalCode }}
+                            {{ getAddressDisplay(address) }}
                           </mat-option>
                         }
                       </mat-select>

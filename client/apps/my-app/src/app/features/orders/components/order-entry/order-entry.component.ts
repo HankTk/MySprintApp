@@ -128,13 +128,17 @@ export class OrderEntryComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const orderId = this.route.snapshot.paramMap.get('id');
     
-    await this.loadCustomers();
-    await this.loadProducts();
+    await Promise.all([
+      this.loadCustomers(),
+      this.loadProducts(),
+      this.loadAddresses()
+    ]);
 
     if (orderId) {
       await this.loadOrder(orderId);
     } else {
-      await this.createNewOrder();
+      // Only create order when user actually starts entering data (when customer is selected)
+      // Don't create empty draft orders automatically
     }
   }
 
@@ -166,9 +170,7 @@ export class OrderEntryComponent implements OnInit {
       const order = await firstValueFrom(this.orderService.getOrder(id));
       if (order) {
         this.order.set(order);
-        if (order.customerId) {
-          await this.loadAddresses(order.customerId);
-        }
+        // Addresses are already loaded in ngOnInit
         // Set step based on order status
         this.setStepFromStatus(order.status);
       }
@@ -268,13 +270,27 @@ export class OrderEntryComponent implements OnInit {
     }
   }
 
-  private async loadAddresses(customerId: string): Promise<void> {
+  private async loadAddresses(customerId?: string): Promise<void> {
     try {
-      const addresses = await firstValueFrom(this.addressService.getAddressesByCustomerId(customerId));
-      this.addresses.set(addresses);
+      // Load all addresses from address master
+      const allAddresses = await firstValueFrom(this.addressService.getAddresses());
+      this.addresses.set(allAddresses);
     } catch (err) {
       console.error('Error loading addresses:', err);
+      this.addresses.set([]);
     }
+  }
+
+  getAddressDisplay(address: Address): string {
+    const parts: string[] = [];
+    if (address.streetAddress1) parts.push(address.streetAddress1);
+    if (address.city) parts.push(address.city);
+    if (address.state) parts.push(address.state);
+    if (address.postalCode) parts.push(address.postalCode);
+    if (address.country) parts.push(address.country);
+    const addressStr = parts.join(', ');
+    const type = address.addressType ? ` (${this.translate.instant(address.addressType.toLowerCase())})` : '';
+    return (addressStr || address.id || '') + type;
   }
 
   async onCustomerChange(customerId: string | null): Promise<void> {
@@ -282,7 +298,7 @@ export class OrderEntryComponent implements OnInit {
     const normalizedCustomerId = customerId && customerId.trim() !== '' ? customerId : undefined;
     
     if (!normalizedCustomerId) {
-      this.addresses.set([]);
+      // Keep all addresses loaded (from address master), don't clear them
       // Clear customerId from order if customer is deselected
       const order = this.order();
       if (order && order.id) {
@@ -303,20 +319,14 @@ export class OrderEntryComponent implements OnInit {
       return;
     }
     
-    // Wait for order to be created if it doesn't exist yet
+    // Create order if it doesn't exist yet (only when user starts entering data)
     let order = this.order();
     if (!order || !order.id) {
-      // Wait a bit for order creation to complete
-      let retries = 0;
-      while ((!order || !order.id) && retries < 10) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        order = this.order();
-        retries++;
-      }
-      
+      await this.createNewOrder();
+      order = this.order();
       if (!order || !order.id) {
-        console.error('Order not available. Cannot update customer.');
-        alert('Order is not ready yet. Please wait a moment and try again.');
+        console.error('Failed to create order.');
+        alert('Failed to create order. Please try again.');
         return;
       }
     }
@@ -331,7 +341,7 @@ export class OrderEntryComponent implements OnInit {
       if (updated) {
         console.log('Customer updated successfully. Updated order:', updated);
         this.order.set(updated);
-        await this.loadAddresses(normalizedCustomerId);
+        // Addresses are already loaded from address master in ngOnInit
       } else {
         console.error('Order update returned null or undefined');
         alert('Failed to update customer. Please try again.');
@@ -348,10 +358,21 @@ export class OrderEntryComponent implements OnInit {
   async onAddProduct(): Promise<void> {
     const productId = this.selectedProduct();
     const qty = this.quantity();
-    const order = this.order();
+    let order = this.order();
 
-    if (!productId || !order || !order.id) {
+    if (!productId) {
       return;
+    }
+
+    // Create order if it doesn't exist yet (only when user starts entering data)
+    if (!order || !order.id) {
+      await this.createNewOrder();
+      order = this.order();
+      if (!order || !order.id) {
+        console.error('Failed to create order.');
+        alert('Failed to create order. Please try again.');
+        return;
+      }
     }
 
     try {
@@ -549,11 +570,7 @@ export class OrderEntryComponent implements OnInit {
           const latestOrder = await firstValueFrom(this.orderService.getOrder(currentOrder.id));
           if (latestOrder) {
             this.order.set(latestOrder);
-            // Load addresses if customer is set
-            if (latestOrder.customerId) {
-              await this.loadAddresses(latestOrder.customerId);
-            }
-            
+            // Addresses are already loaded from address master in ngOnInit
             // Load step-specific data from jsonData
             if (latestOrder.jsonData) {
               switch (stepKey) {

@@ -26,12 +26,12 @@
         <table mat-table [dataSource]="inventory() || []" class="inventory-table">
           <ng-container matColumnDef="productId">
             <th mat-header-cell *matHeaderCellDef>{{ 'productId' | translate }}</th>
-            <td mat-cell *matCellDef="let inv">{{ inv.productId || '-' }}</td>
+            <td mat-cell *matCellDef="let inv">{{ getProductDisplay(inv.productId) }}</td>
           </ng-container>
 
           <ng-container matColumnDef="warehouseId">
             <th mat-header-cell *matHeaderCellDef>{{ 'warehouseId' | translate }}</th>
-            <td mat-cell *matCellDef="let inv">{{ inv.warehouseId || '-' }}</td>
+            <td mat-cell *matCellDef="let inv">{{ getWarehouseDisplay(inv.warehouseId) }}</td>
           </ng-container>
 
           <ng-container matColumnDef="quantity">
