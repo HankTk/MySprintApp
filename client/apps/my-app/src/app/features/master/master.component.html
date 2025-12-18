@@ -1,33 +1,39 @@
 <div class="master-container">
-  <ax-button variant="icon" (click)="goBack()" class="back-button">
-    <ax-icon name="arrow_back"></ax-icon>
-  </ax-button>
-  
-  <div class="master-content">
-    <h1 class="master-title">
-      <ax-icon name="storage" class="title-icon"></ax-icon>
-      {{ 'master.title' | translate }}
-    </h1>
-    <p class="master-subtitle">{{ 'master.subtitle' | translate }}</p>
-    
-    <div class="master-cards-grid">
-      @for (item of masterItems; track item.id) {
-        <mat-card 
-          class="master-card"
-          (click)="navigateTo(item.route)"
-          [attr.role]="'button'"
-          [attr.tabindex]="0"
-          (keydown.enter)="navigateTo(item.route)"
-          (keydown.space)="navigateTo(item.route)">
-          <mat-card-content>
-            <div class="master-card-content">
-              <ax-icon [name]="item.icon" class="master-card-icon"></ax-icon>
-              <h3 class="master-card-title">{{ item.labelKey | translate }}</h3>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      }
-    </div>
-  </div>
+  <ax-card class="main-card">
+    <mat-card-header ax-card-header>
+      <div class="header-content">
+        <ax-button variant="icon" (click)="goBack()" class="back-button">
+          <ax-icon name="arrow_back"></ax-icon>
+        </ax-button>
+        <mat-card-title class="card-title">
+          <ax-icon name="storage" class="title-icon"></ax-icon>
+          {{ 'master.title' | translate }}
+        </mat-card-title>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p class="master-subtitle">{{ 'master.subtitle' | translate }}</p>
+      
+      <div class="master-cards-grid">
+        @for (item of masterItems; track item.id) {
+          <mat-card 
+            class="master-card"
+            (click)="navigateTo(item.route)"
+            [attr.role]="'button'"
+            [attr.tabindex]="0"
+            (keydown.enter)="navigateTo(item.route)"
+            (keydown.space)="navigateTo(item.route)">
+            <mat-card-content>
+              <div class="master-card-content">
+                <ax-icon [name]="item.icon" class="master-card-icon"></ax-icon>
+                <h3 class="master-card-title">{{ item.labelKey | translate }}</h3>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    </mat-card-content>
+  </ax-card>
 </div>
 

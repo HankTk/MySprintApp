@@ -90,7 +90,7 @@ export class WarehouseService {
   openAddWarehouseDialog(isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(WarehouseDialogComponent, {
       data: { isEdit: false } as WarehouseDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
@@ -105,7 +105,7 @@ export class WarehouseService {
   openEditWarehouseDialog(warehouse: Warehouse, isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(WarehouseDialogComponent, {
       data: { warehouse, isEdit: true } as WarehouseDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });

@@ -22,35 +22,7 @@
           <ax-icon name="badge" matPrefix></ax-icon>
           @if (isFieldInvalid('userid')) {
             <mat-error>
-              {{ getErrorMessage('userid') | translate }}
-            </mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ 'firstName' | translate }}</mat-label>
-          <input
-            matInput
-            formControlName="firstName"
-            [placeholder]="'firstNamePlaceholder' | translate"
-            [class.is-invalid]="isFieldInvalid('firstName')">
-          @if (isFieldInvalid('firstName')) {
-            <mat-error>
-              {{ getErrorMessage('firstName') | translate }}
-            </mat-error>
-          }
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>{{ 'lastName' | translate }}</mat-label>
-          <input
-            matInput
-            formControlName="lastName"
-            [placeholder]="'lastNamePlaceholder' | translate"
-            [class.is-invalid]="isFieldInvalid('lastName')">
-          @if (isFieldInvalid('lastName')) {
-            <mat-error>
-              {{ getErrorMessage('lastName') | translate }}
+              {{ getErrorMessage('userid') }}
             </mat-error>
           }
         </mat-form-field>
@@ -66,7 +38,7 @@
           <ax-icon name="lock" matPrefix></ax-icon>
           @if (isFieldInvalid('password')) {
             <mat-error>
-              {{ getErrorMessage('password') | translate }}
+              {{ getErrorMessage('password') }}
             </mat-error>
           }
         </mat-form-field>
@@ -82,7 +54,7 @@
           <ax-icon name="lock" matPrefix></ax-icon>
           @if (isFieldInvalid('confirmPassword')) {
             <mat-error>
-              {{ getErrorMessage('confirmPassword') | translate }}
+              {{ getErrorMessage('confirmPassword') }}
             </mat-error>
           }
         </mat-form-field>
@@ -93,14 +65,16 @@
           </div>
         }
 
-        <ax-button
-          variant="raised"
-          color="primary"
-          type="submit"
-          [label]="'initialUser.submit' | translate"
-          [disabled]="userForm.invalid || isLoading"
-          [loading]="isLoading">
-        </ax-button>
+        <div class="button-container">
+          <ax-button
+            variant="raised"
+            color="primary"
+            type="submit"
+            [label]="'initialUser.submit' | translate"
+            [disabled]="userForm.invalid || isLoading"
+            [loading]="isLoading">
+          </ax-button>
+        </div>
       </form>
     </mat-card-content>
   </mat-card>

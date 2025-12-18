@@ -163,22 +163,50 @@
       .items-table {
         width: 100%;
         margin-bottom: var(--spacing-md);
+        background: var(--bg-table);
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
         .text-right {
           text-align: right;
         }
 
-        ::ng-deep .mat-mdc-row {
-          min-height: 40px;
-          height: auto;
+        ::ng-deep .mat-mdc-header-cell {
+          background-color: var(--bg-table-header);
+          color: var(--text-primary);
+          font-weight: 500;
+          padding: 16px 8px;
+          border-bottom: 1px solid var(--border-primary);
+          vertical-align: middle;
         }
 
         ::ng-deep .mat-mdc-cell {
-          padding: 8px 16px;
+          padding: 12px 8px;
+          border-bottom: 1px solid var(--border-secondary);
+          vertical-align: middle;
+          display: table-cell;
         }
 
-        ::ng-deep .mat-mdc-header-cell {
-          padding: 8px 16px;
+        ::ng-deep td.mat-mdc-cell {
+          vertical-align: middle !important;
+        }
+
+        ::ng-deep th.mat-mdc-header-cell {
+          vertical-align: middle !important;
+        }
+
+        ::ng-deep .mat-mdc-row {
+          height: auto;
+          min-height: 48px;
+        }
+
+        ::ng-deep .mat-mdc-row:hover {
+          background-color: var(--bg-hover);
+        }
+
+        ::ng-deep td.mat-mdc-cell > * {
+          vertical-align: middle;
         }
       }
 
@@ -293,18 +321,46 @@
       .history-table {
         width: 100%;
         margin-bottom: var(--spacing-md);
+        background: var(--bg-table);
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-        ::ng-deep .mat-mdc-row {
-          min-height: 40px;
-          height: auto;
+        ::ng-deep .mat-mdc-header-cell {
+          background-color: var(--bg-table-header);
+          color: var(--text-primary);
+          font-weight: 500;
+          padding: 16px 8px;
+          border-bottom: 1px solid var(--border-primary);
+          vertical-align: middle;
         }
 
         ::ng-deep .mat-mdc-cell {
-          padding: 8px 16px;
+          padding: 12px 8px;
+          border-bottom: 1px solid var(--border-secondary);
+          vertical-align: middle;
+          display: table-cell;
         }
 
-        ::ng-deep .mat-mdc-header-cell {
-          padding: 8px 16px;
+        ::ng-deep td.mat-mdc-cell {
+          vertical-align: middle !important;
+        }
+
+        ::ng-deep th.mat-mdc-header-cell {
+          vertical-align: middle !important;
+        }
+
+        ::ng-deep .mat-mdc-row {
+          height: auto;
+          min-height: 48px;
+        }
+
+        ::ng-deep .mat-mdc-row:hover {
+          background-color: var(--bg-hover);
+        }
+
+        ::ng-deep td.mat-mdc-cell > * {
+          vertical-align: middle;
         }
 
         .data-container {

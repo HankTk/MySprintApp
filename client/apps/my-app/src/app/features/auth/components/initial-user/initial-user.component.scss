@@ -44,6 +44,21 @@ mat-card-subtitle {
 .full-width {
   width: 100%;
   margin-bottom: 16px;
+
+  ::ng-deep {
+    .mat-mdc-text-field-wrapper {
+      padding-left: 8px;
+    }
+
+    [matPrefix] {
+      margin-right: 12px;
+      margin-left: 4px;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      margin-top: 4px;
+    }
+  }
 }
 
 .form-row {
@@ -60,6 +75,12 @@ mat-card-subtitle {
   margin-top: 8px;
   height: 48px;
   font-size: 16px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
 }
 
 .spinner {

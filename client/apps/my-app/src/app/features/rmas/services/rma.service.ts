@@ -92,7 +92,7 @@ export class RMAService {
   openAddRMADialog(isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(RMADialogComponent, {
       data: { isEdit: false } as RMADialogData,
-      width: '800px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
@@ -107,7 +107,7 @@ export class RMAService {
   openEditRMADialog(rma: RMA, isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(RMADialogComponent, {
       data: { rma, isEdit: true } as RMADialogData,
-      width: '800px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });

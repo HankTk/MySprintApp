@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HttpService } from '../../../../core/http.service';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { CreateUserRequest, LoginRequest } from '../../../users/models/user';
@@ -40,6 +40,7 @@ export class InitialUserComponent implements OnInit {
   private httpService = inject(HttpService);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private translate = inject(TranslateService);
 
   ngOnInit(): void {
     this.authService.checkUsers().subscribe(hasUsers => {
@@ -49,8 +50,6 @@ export class InitialUserComponent implements OnInit {
     });
     this.userForm = this.fb.group({
       userid: ['', [Validators.required]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]
     }, { validators: this.passwordMatchValidator });
@@ -74,8 +73,8 @@ export class InitialUserComponent implements OnInit {
 
       const userData: CreateUserRequest = {
         userid: this.userForm.value.userid,
-        firstName: this.userForm.value.firstName,
-        lastName: this.userForm.value.lastName,
+        firstName: '',
+        lastName: '',
         email: '',
         password: this.userForm.value.password,
         role: 'Admin',
@@ -123,15 +122,16 @@ export class InitialUserComponent implements OnInit {
 
   getErrorMessage(fieldName: string): string {
     const field = this.userForm.get(fieldName);
-    if (field?.hasError('required')) {
-      return 'validation.required';
-    }
-    if (field?.hasError('minlength')) {
-      const minLength = field.errors?.['minlength']?.requiredLength || 6;
-      return `validation.minlength`.replace('{{min}}', String(minLength));
-    }
-    if (field?.hasError('passwordMismatch')) {
-      return 'initialUser.passwordMismatch';
+    if (field?.errors) {
+      if (field.errors['required']) {
+        return this.translate.instant('validation.required');
+      }
+      if (field.errors['minlength']) {
+        return this.translate.instant('validation.minlength', { min: field.errors['minlength'].requiredLength });
+      }
+      if (field.errors['passwordMismatch']) {
+        return this.translate.instant('initialUser.passwordMismatch');
+      }
     }
     return '';
   }

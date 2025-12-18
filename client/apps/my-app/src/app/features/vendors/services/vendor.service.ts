@@ -90,7 +90,7 @@ export class VendorService {
   openAddVendorDialog(isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(VendorDialogComponent, {
       data: { isEdit: false } as VendorDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
@@ -105,7 +105,7 @@ export class VendorService {
   openEditVendorDialog(vendor: Vendor, isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(VendorDialogComponent, {
       data: { vendor, isEdit: true } as VendorDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });

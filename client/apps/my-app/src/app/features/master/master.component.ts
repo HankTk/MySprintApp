@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { 
   AxButtonComponent, 
   AxIconComponent,
+  AxCardComponent,
   MatCardModule 
 } from '@ui/components';
 
@@ -23,6 +24,7 @@ interface MasterItem {
     TranslateModule,
     AxButtonComponent,
     AxIconComponent,
+    AxCardComponent,
     MatCardModule
   ],
   templateUrl: './master.component.html',

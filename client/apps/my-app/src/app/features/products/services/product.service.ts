@@ -90,7 +90,7 @@ export class ProductService {
   openAddProductDialog(isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(ProductDialogComponent, {
       data: { isEdit: false } as ProductDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
@@ -105,7 +105,7 @@ export class ProductService {
   openEditProductDialog(product: Product, isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(ProductDialogComponent, {
       data: { product, isEdit: true } as ProductDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });

@@ -1,6 +1,8 @@
 @use '../../../../../_design-tokens' as *;
 
 .purchase-order-dialog {
+  padding: 2rem;
+
   .dialog-title {
     display: flex;
     align-items: center;
@@ -17,6 +19,7 @@
   .dialog-content {
     min-width: 600px;
     max-width: 90vw;
+    padding: 0;
 
     .form-row {
       display: flex;

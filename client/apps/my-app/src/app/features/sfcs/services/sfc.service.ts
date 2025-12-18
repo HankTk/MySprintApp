@@ -92,7 +92,7 @@ export class SFCService {
   openAddSFCDialog(isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(SFCDialogComponent, {
       data: { isEdit: false } as SFCDialogData,
-      width: '800px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
@@ -107,7 +107,7 @@ export class SFCService {
   openEditSFCDialog(sfc: SFC, isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(SFCDialogComponent, {
       data: { sfc, isEdit: true } as SFCDialogData,
-      width: '800px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });

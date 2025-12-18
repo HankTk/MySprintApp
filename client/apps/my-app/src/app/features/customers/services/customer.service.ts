@@ -90,7 +90,7 @@ export class CustomerService {
   openAddCustomerDialog(isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(CustomerDialogComponent, {
       data: { isEdit: false } as CustomerDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
@@ -105,7 +105,7 @@ export class CustomerService {
   openEditCustomerDialog(customer: Customer, isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(CustomerDialogComponent, {
       data: { customer, isEdit: true } as CustomerDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });

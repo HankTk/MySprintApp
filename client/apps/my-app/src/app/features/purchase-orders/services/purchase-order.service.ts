@@ -92,7 +92,7 @@ export class PurchaseOrderService {
   openAddPurchaseOrderDialog(isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(PurchaseOrderDialogComponent, {
       data: { isEdit: false } as PurchaseOrderDialogData,
-      width: '800px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
@@ -107,7 +107,7 @@ export class PurchaseOrderService {
   openEditPurchaseOrderDialog(po: PurchaseOrder, isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(PurchaseOrderDialogComponent, {
       data: { purchaseOrder: po, isEdit: true } as PurchaseOrderDialogData,
-      width: '800px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });

@@ -105,7 +105,7 @@ export class UserManagementService
   {
     const dialogRef = this.dialog.open(UserDialogComponent, {
       data: { isEdit: false } as UserDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
@@ -123,7 +123,7 @@ export class UserManagementService
   {
     const dialogRef = this.dialog.open(UserDialogComponent, {
       data: { user, isEdit: true } as UserDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });

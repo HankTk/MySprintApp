@@ -98,7 +98,7 @@ export class AddressService {
   openAddAddressDialog(isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(AddressDialogComponent, {
       data: { isEdit: false } as AddressDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
@@ -113,7 +113,7 @@ export class AddressService {
   openEditAddressDialog(address: Address, isLoading: WritableSignal<boolean>): void {
     const dialogRef = this.dialog.open(AddressDialogComponent, {
       data: { address, isEdit: true } as AddressDialogData,
-      width: '600px',
+      width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
