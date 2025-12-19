@@ -1,6 +1,6 @@
 .ax-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
+  padding: var(--spacing-lg, 24px);
 }
 

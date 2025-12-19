@@ -1,0 +1,146 @@
+.server-unavailable-dialog {
+  text-align: center;
+  padding: var(--spacing-xxl, 48px) var(--spacing-xl, 32px);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+  gap: var(--spacing-lg, 24px);
+  justify-content: flex-start;
+  padding-top: 10vh;
+}
+
+.dialog-icon {
+  flex-shrink: 0;
+  width: 200px;
+  height: 200px;
+  
+  ::ng-deep {
+    ax-icon {
+      color: var(--color-error, #f44336);
+      display: block !important;
+      width: 200px !important;
+      height: 200px !important;
+      
+      .ax-icon-large,
+      .ax-icon-medium,
+      .ax-icon-small {
+        font-size: 200px !important;
+        width: 200px !important;
+        height: 200px !important;
+        line-height: 200px !important;
+      }
+      
+      mat-icon {
+        font-size: 200px !important;
+        width: 200px !important;
+        height: 200px !important;
+        line-height: 200px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+    }
+  }
+}
+
+.dialog-title {
+  font-size: var(--font-size-xxxl, 2.5rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, rgba(0, 0, 0, 0.87));
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.dialog-content {
+  text-align: left;
+  max-width: 600px;
+  width: 100%;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  
+  .message {
+    font-size: var(--font-size-lg, 1.25rem);
+    color: var(--text-primary, rgba(0, 0, 0, 0.87));
+    margin-bottom: var(--spacing-md, 16px);
+    font-weight: var(--font-weight-medium, 500);
+    text-align: center;
+  }
+  
+  .instructions {
+    font-size: var(--font-size-base, 1rem);
+    color: var(--text-secondary, rgba(0, 0, 0, 0.6));
+    margin-bottom: var(--spacing-md, 16px);
+    text-align: center;
+  }
+  
+  .checklist {
+    margin: var(--spacing-md, 16px) 0;
+    padding-left: var(--spacing-xl, 32px);
+    text-align: left;
+    
+    li {
+      font-size: var(--font-size-base, 1rem);
+      color: var(--text-secondary, rgba(0, 0, 0, 0.6));
+      margin-bottom: var(--spacing-sm, 12px);
+      line-height: var(--line-height-relaxed, 1.6);
+    }
+  }
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-xl, 32px) 0 0 0;
+  margin: 0;
+  width: 100%;
+  max-width: 600px;
+  flex-shrink: 0;
+  margin-top: var(--spacing-lg, 24px);
+  
+  ::ng-deep {
+    ax-button {
+      button {
+        font-size: 1.25rem !important;
+        padding: 16px 48px !important;
+        min-width: 200px !important;
+        height: auto !important;
+        line-height: 1.5 !important;
+        
+        .mdc-button__label {
+          font-size: 1.25rem !important;
+          font-weight: 500 !important;
+          padding: 0 !important;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .server-unavailable-fullscreen-dialog {
+    .mat-mdc-dialog-container {
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: 100vw !important;
+      max-height: 100vh !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      
+      .mdc-dialog__surface {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 0 !important;
+      }
+    }
+  }
+  
+  .server-unavailable-backdrop {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+  }
+}

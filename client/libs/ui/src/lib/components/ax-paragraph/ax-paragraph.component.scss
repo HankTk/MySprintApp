@@ -1,7 +1,7 @@
 .ax-paragraph {
-  font-size: 16px;
-  line-height: 1.5;
-  color: rgba(0, 0, 0, 0.87);
-  margin: 0 0 16px 0;
+  font-size: var(--font-size-base, 1rem);
+  line-height: var(--line-height-normal, 1.5);
+  color: var(--text-primary, rgba(0, 0, 0, 0.87));
+  margin: 0 0 var(--spacing-md, 16px) 0;
 }
 

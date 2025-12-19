@@ -3,36 +3,36 @@
   
   &.vertical {
     flex-direction: column;
-    gap: 16px;
+    gap: var(--spacing-md, 16px);
   }
   
   &.horizontal {
     flex-direction: row;
-    gap: 16px;
+    gap: var(--spacing-md, 16px);
   }
   
   &.size-xs {
-    gap: 4px;
+    gap: var(--spacing-xxs, 4px);
   }
   
   &.size-sm {
-    gap: 8px;
+    gap: var(--spacing-xs, 8px);
   }
   
   &.size-md {
-    gap: 16px;
+    gap: var(--spacing-md, 16px);
   }
   
   &.size-lg {
-    gap: 24px;
+    gap: var(--spacing-lg, 24px);
   }
   
   &.size-xl {
-    gap: 32px;
+    gap: var(--spacing-xl, 32px);
   }
   
   &.size-2xl {
-    gap: 48px;
+    gap: var(--spacing-xxl, 48px);
   }
 }
 

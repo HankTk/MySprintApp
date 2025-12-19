@@ -33,7 +33,7 @@
     .filter-header {
       overflow: visible !important;
       position: relative;
-      padding: 4px 8px 2px 8px !important;
+      padding: var(--spacing-xxs, 4px) var(--spacing-xs, 8px) 2px var(--spacing-xs, 8px) !important;
       vertical-align: middle;
       z-index: 1 !important;
     
@@ -95,10 +95,10 @@
     .date-range-popup {
       position: fixed !important;
       z-index: 999999 !important;
-      background: white;
-      border: 1px solid rgba(0, 0, 0, 0.12);
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      background: var(--bg-secondary, #ffffff);
+      border: 1px solid var(--border-primary, rgba(0, 0, 0, 0.12));
+      border-radius: var(--radius-sm, 4px);
+      box-shadow: var(--shadow-md, 0 2px 10px rgba(0, 0, 0, 0.1));
       min-width: 400px;
       max-width: 500px;
       pointer-events: auto !important;
@@ -110,7 +110,7 @@
       // Position will be set by JavaScript
       
       .date-range-popup-content {
-        padding: 16px;
+        padding: var(--spacing-md, 16px);
         overflow: visible !important;
         position: relative;
         z-index: 999999 !important;
@@ -118,8 +118,8 @@
         .date-range-fields {
           display: flex;
           align-items: flex-start;
-          gap: 8px;
-          margin-bottom: 16px;
+          gap: var(--spacing-xs, 8px);
+          margin-bottom: var(--spacing-md, 16px);
           
           .date-range-start,
           .date-range-end {
@@ -129,10 +129,10 @@
           
           .date-range-separator {
             flex-shrink: 0;
-            padding: 0 4px;
-            margin-top: 24px;
-            color: rgba(0, 0, 0, 0.6);
-            font-weight: 500;
+            padding: 0 var(--spacing-xxs, 4px);
+            margin-top: var(--spacing-lg, 24px);
+            color: var(--text-secondary, rgba(0, 0, 0, 0.6));
+            font-weight: var(--font-weight-medium, 500);
           }
         }
         
@@ -140,7 +140,7 @@
           display: flex;
           justify-content: flex-end;
           align-items: center;
-          gap: 8px;
+          gap: var(--spacing-xs, 8px);
           width: 100%;
           margin-top: 0;
         }
@@ -217,18 +217,21 @@
 
 .selectable-row {
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color var(--transition-fast, 0.15s);
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: var(--bg-hover, rgba(0, 0, 0, 0.04));
   }
 }
 
 .selected-row {
-  background-color: rgba(63, 81, 181, 0.1) !important;
+  // Selected row background - using primary color with opacity
+  // Note: rgba() with CSS variables requires separate RGB values
+  // For now, using Material Design standard blue with opacity
+  background-color: rgba(25, 118, 210, 0.1) !important; // --color-primary equivalent with 10% opacity
 
   &:hover {
-    background-color: rgba(63, 81, 181, 0.15) !important;
+    background-color: rgba(25, 118, 210, 0.15) !important; // --color-primary equivalent with 15% opacity
   }
 }
 
@@ -242,50 +245,50 @@
       pointer-events: auto !important;
     }
     
-    .date-range-popup {
-      position: relative !important;
-      z-index: 999999 !important;
-      background: white !important;
-      border: 1px solid rgba(0, 0, 0, 0.12) !important;
-      border-radius: 4px !important;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-      min-width: 400px !important;
-      max-width: 500px !important;
-      pointer-events: auto !important;
-      overflow: visible !important;
-      display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      
-      .date-range-popup-content {
-        padding: 16px !important;
+      .date-range-popup {
+        position: relative !important;
+        z-index: 999999 !important;
+        background: var(--bg-secondary, #ffffff) !important;
+        border: 1px solid var(--border-primary, rgba(0, 0, 0, 0.12)) !important;
+        border-radius: var(--radius-sm, 4px) !important;
+        box-shadow: var(--shadow-md, 0 2px 10px rgba(0, 0, 0, 0.1)) !important;
+        min-width: 400px !important;
+        max-width: 500px !important;
+        pointer-events: auto !important;
+        overflow: visible !important;
         display: block !important;
         visibility: visible !important;
+        opacity: 1 !important;
         
-        .date-range-fields {
-          display: flex !important;
-          gap: 8px !important;
-          margin-bottom: 16px !important;
+        .date-range-popup-content {
+          padding: var(--spacing-md, 16px) !important;
+          display: block !important;
           visibility: visible !important;
           
-          mat-form-field {
-            flex: 1 !important;
-            display: block !important;
+          .date-range-fields {
+            display: flex !important;
+            gap: var(--spacing-xs, 8px) !important;
+            margin-bottom: var(--spacing-md, 16px) !important;
             visibility: visible !important;
-            opacity: 1 !important;
+            
+            mat-form-field {
+              flex: 1 !important;
+              display: block !important;
+              visibility: visible !important;
+              opacity: 1 !important;
+            }
+          }
+          
+          .date-range-actions {
+            display: flex !important;
+            justify-content: flex-end !important;
+            align-items: center !important;
+            gap: var(--spacing-xs, 8px) !important;
+            width: 100% !important;
+            margin-top: 0 !important;
           }
         }
-        
-        .date-range-actions {
-          display: flex !important;
-          justify-content: flex-end !important;
-          align-items: center !important;
-          gap: 8px !important;
-          width: 100% !important;
-          margin-top: 0 !important;
-        }
       }
-    }
   }
   
   .cdk-overlay-container {

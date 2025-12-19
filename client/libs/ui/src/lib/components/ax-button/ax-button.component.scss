@@ -6,10 +6,10 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--spacing-xs, 8px);
   
   mat-spinner {
-    margin-right: 8px;
+    margin-right: var(--spacing-xs, 8px);
   }
   
   // Material button wraps content in .mdc-button__label
@@ -18,7 +18,7 @@ button {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: var(--spacing-xs, 8px);
     width: 100%;
   }
 }

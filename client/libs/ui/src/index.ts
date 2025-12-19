@@ -19,6 +19,7 @@ export * from './lib/components/ax-subtitle/ax-subtitle.component';
 export * from './lib/components/ax-section-title/ax-section-title.component';
 export * from './lib/components/ax-paragraph/ax-paragraph.component';
 export * from './lib/components/ax-heading3/ax-heading3.component';
+export * from './lib/components/ax-heading/ax-heading.component';
 export * from './lib/components/ax-grid/ax-grid.component';
 export * from './lib/components/ax-spacing/ax-spacing.component';
 

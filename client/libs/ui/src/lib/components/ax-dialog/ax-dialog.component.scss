@@ -8,14 +8,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  padding: var(--spacing-md, 16px) var(--spacing-lg, 24px);
+  border-bottom: 1px solid var(--border-divider, rgba(0, 0, 0, 0.12));
 }
 
 .ax-dialog-title {
   margin: 0;
-  font-size: 20px;
-  font-weight: 500;
+  font-size: var(--font-size-lg, 1.25rem);
+  font-weight: var(--font-weight-medium, 500);
 }
 
 .ax-dialog-close {
@@ -23,7 +23,7 @@
 }
 
 .ax-dialog-content {
-  padding: 24px;
+  padding: var(--spacing-lg, 24px);
   overflow-y: auto;
   flex: 1;
 }
@@ -31,8 +31,8 @@
 .ax-dialog-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  padding: 16px 24px;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  gap: var(--spacing-xs, 8px);
+  padding: var(--spacing-md, 16px) var(--spacing-lg, 24px);
+  border-top: 1px solid var(--border-divider, rgba(0, 0, 0, 0.12));
 }
 

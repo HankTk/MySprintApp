@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { LoginRequest } from '../../../users/models/user';
+import { closeServerUnavailableDialog } from '../../../../core/http-interceptor';
 import { 
   AxButtonComponent, 
   AxIconComponent
@@ -41,6 +43,7 @@ export class LoginComponent implements OnInit {
   private router = inject(Router);
   private translate = inject(TranslateService);
   private languageService = inject(LanguageService);
+  private dialog = inject(MatDialog);
 
   ngOnInit(): void {
     const currentLang = this.languageService.getCurrentLanguage();
@@ -106,7 +109,21 @@ export class LoginComponent implements OnInit {
   }
 
   shutdown(): void {
-    console.log('Shutdown button clicked');
+    console.log('=== Shutdown button clicked - LoginComponent ===');
+    console.log('Step 1: Closing all dialogs...');
+    
+    // Close all open dialogs (including server unavailable dialog)
+    try {
+      this.dialog.closeAll();
+      console.log('All dialogs closed');
+    } catch (error) {
+      console.error('Error closing dialogs:', error);
+    }
+    
+    // Also try the specific function
+    closeServerUnavailableDialog();
+    
+    console.log('Step 2: Proceeding with shutdown...');
     
     if (window.electronAPI && typeof window.electronAPI.shutdown === 'function') {
       try {

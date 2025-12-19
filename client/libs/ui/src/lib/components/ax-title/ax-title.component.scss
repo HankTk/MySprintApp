@@ -1,7 +1,7 @@
 .ax-title {
-  font-size: 32px;
-  font-weight: 500;
-  margin: 0 0 8px 0;
-  color: rgba(0, 0, 0, 0.87);
+  font-size: var(--font-size-xxl, 2rem);
+  font-weight: var(--font-weight-medium, 500);
+  margin: 0 0 var(--spacing-xs, 8px) 0;
+  color: var(--text-primary, rgba(0, 0, 0, 0.87));
 }
 

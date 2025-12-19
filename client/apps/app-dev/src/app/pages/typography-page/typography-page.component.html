@@ -1,0 +1,364 @@
+<div class="page-container">
+  <h1>Typography Components</h1>
+  <p class="description">A collection of typography components for consistent text styling across the application.</p>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Title</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-title>Main Title</ax-title>
+      <p class="code-snippet">&lt;ax-title&gt;Main Title&lt;/ax-title&gt;</p>
+      <p class="description-text">Used for main page titles. Large, bold text that stands out.</p>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Subtitle</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-subtitle>Subtitle Text</ax-subtitle>
+      <p class="code-snippet">&lt;ax-subtitle&gt;Subtitle Text&lt;/ax-subtitle&gt;</p>
+      <p class="description-text">Used for subtitles below main titles. Medium-sized, secondary text.</p>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Section Title</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-section-title>Section Title</ax-section-title>
+      <p class="code-snippet">&lt;ax-section-title&gt;Section Title&lt;/ax-section-title&gt;</p>
+      <p class="description-text">Used for section headings within a page. Medium-large, bold text.</p>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Heading Component (Unified) - All Levels Comparison</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="heading-comparison">
+        <div class="heading-item heading-level-1">
+          <ax-heading [level]="1">Heading Level 1</ax-heading>
+          <div class="heading-details">
+            <span class="heading-label">Level 1 (h1)</span>
+            <span class="heading-specs">Font Size: 2.5rem (40px) | Weight: 700 (Bold) | Largest</span>
+          </div>
+        </div>
+        <div class="heading-item heading-level-2">
+          <ax-heading [level]="2">Heading Level 2</ax-heading>
+          <div class="heading-details">
+            <span class="heading-label">Level 2 (h2)</span>
+            <span class="heading-specs">Font Size: 2rem (32px) | Weight: 600 (Semibold)</span>
+          </div>
+        </div>
+        <div class="heading-item heading-level-3">
+          <ax-heading [level]="3">Heading Level 3</ax-heading>
+          <div class="heading-details">
+            <span class="heading-label">Level 3 (h3)</span>
+            <span class="heading-specs">Font Size: 1.5rem (24px) | Weight: 500 (Medium)</span>
+          </div>
+        </div>
+        <div class="heading-item heading-level-4">
+          <ax-heading [level]="4">Heading Level 4</ax-heading>
+          <div class="heading-details">
+            <span class="heading-label">Level 4 (h4)</span>
+            <span class="heading-specs">Font Size: 1.25rem (20px) | Weight: 500 (Medium)</span>
+          </div>
+        </div>
+        <div class="heading-item heading-level-5">
+          <ax-heading [level]="5">Heading Level 5</ax-heading>
+          <div class="heading-details">
+            <span class="heading-label">Level 5 (h5)</span>
+            <span class="heading-specs">Font Size: 1rem (16px) | Weight: 500 (Medium)</span>
+          </div>
+        </div>
+        <div class="heading-item heading-level-6">
+          <ax-heading [level]="6">Heading Level 6</ax-heading>
+          <div class="heading-details">
+            <span class="heading-label">Level 6 (h6)</span>
+            <span class="heading-specs">Font Size: 0.875rem (14px) | Weight: 500 (Medium) | Smallest</span>
+          </div>
+        </div>
+      </div>
+      <p class="code-snippet">
+        &lt;ax-heading [level]="1"&gt;Heading Level 1&lt;/ax-heading&gt;<br>
+        &lt;ax-heading [level]="2"&gt;Heading Level 2&lt;/ax-heading&gt;<br>
+        &lt;ax-heading [level]="3"&gt;Heading Level 3&lt;/ax-heading&gt;<br>
+        &lt;ax-heading [level]="4"&gt;Heading Level 4&lt;/ax-heading&gt;<br>
+        &lt;ax-heading [level]="5"&gt;Heading Level 5&lt;/ax-heading&gt;<br>
+        &lt;ax-heading [level]="6"&gt;Heading Level 6&lt;/ax-heading&gt;
+      </p>
+      <p class="description-text">Unified heading component that supports all heading levels (1-6) through a level input property. Each level has distinct font size and weight to create clear visual hierarchy.</p>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Side-by-Side Comparison</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="heading-side-by-side">
+        <div class="side-by-side-item">
+          <div class="side-by-side-label">Level 1</div>
+          <ax-heading [level]="1">Sample Text</ax-heading>
+        </div>
+        <div class="side-by-side-item">
+          <div class="side-by-side-label">Level 2</div>
+          <ax-heading [level]="2">Sample Text</ax-heading>
+        </div>
+        <div class="side-by-side-item">
+          <div class="side-by-side-label">Level 3</div>
+          <ax-heading [level]="3">Sample Text</ax-heading>
+        </div>
+        <div class="side-by-side-item">
+          <div class="side-by-side-label">Level 4</div>
+          <ax-heading [level]="4">Sample Text</ax-heading>
+        </div>
+        <div class="side-by-side-item">
+          <div class="side-by-side-label">Level 5</div>
+          <ax-heading [level]="5">Sample Text</ax-heading>
+        </div>
+        <div class="side-by-side-item">
+          <div class="side-by-side-label">Level 6</div>
+          <ax-heading [level]="6">Sample Text</ax-heading>
+        </div>
+      </div>
+      <p class="description-text">Same text displayed at different heading levels for direct visual comparison.</p>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Heading Levels - Individual Examples</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="heading-individual">
+        <div class="heading-example">
+          <ax-heading [level]="1">Main Page Title (Level 1)</ax-heading>
+          <p class="example-description">Used for the primary page title. Largest heading size for maximum visual impact.</p>
+          <p class="code-snippet">&lt;ax-heading [level]="1"&gt;Main Page Title&lt;/ax-heading&gt;</p>
+        </div>
+        
+        <div class="heading-example">
+          <ax-heading [level]="2">Section Heading (Level 2)</ax-heading>
+          <p class="example-description">Used for major section headings within a page. Second largest size for clear hierarchy.</p>
+          <p class="code-snippet">&lt;ax-heading [level]="2"&gt;Section Heading&lt;/ax-heading&gt;</p>
+        </div>
+        
+        <div class="heading-example">
+          <ax-heading [level]="3">Subsection Heading (Level 3)</ax-heading>
+          <p class="example-description">Used for subsections within a section. Medium size for balanced hierarchy.</p>
+          <p class="code-snippet">&lt;ax-heading [level]="3"&gt;Subsection Heading&lt;/ax-heading&gt;</p>
+        </div>
+        
+        <div class="heading-example">
+          <ax-heading [level]="4">Minor Heading (Level 4)</ax-heading>
+          <p class="example-description">Used for minor headings and sub-subsections. Slightly larger than body text.</p>
+          <p class="code-snippet">&lt;ax-heading [level]="4"&gt;Minor Heading&lt;/ax-heading&gt;</p>
+        </div>
+        
+        <div class="heading-example">
+          <ax-heading [level]="5">Small Heading (Level 5)</ax-heading>
+          <p class="example-description">Used for small headings within content blocks. Same size as body text but with bold weight.</p>
+          <p class="code-snippet">&lt;ax-heading [level]="5"&gt;Small Heading&lt;/ax-heading&gt;</p>
+        </div>
+        
+        <div class="heading-example">
+          <ax-heading [level]="6">Smallest Heading (Level 6)</ax-heading>
+          <p class="example-description">Used for the smallest headings. Smaller than body text but maintains emphasis.</p>
+          <p class="code-snippet">&lt;ax-heading [level]="6"&gt;Smallest Heading&lt;/ax-heading&gt;</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Heading 3 (Legacy)</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-heading3>Heading 3</ax-heading3>
+      <p class="code-snippet">&lt;ax-heading3&gt;Heading 3&lt;/ax-heading3&gt;</p>
+      <p class="description-text">Legacy component for h3 headings. Consider using &lt;ax-heading [level]="3"&gt; instead.</p>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Heading 3 - Multiple Examples</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-heading3>User Profile Settings</ax-heading3>
+      <ax-paragraph>Configure your account preferences and personal information.</ax-paragraph>
+      
+      <ax-heading3>Notification Preferences</ax-heading3>
+      <ax-paragraph>Manage how and when you receive notifications from the system.</ax-paragraph>
+      
+      <ax-heading3>Security Settings</ax-heading3>
+      <ax-paragraph>Update your password and manage two-factor authentication.</ax-paragraph>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Heading 3 - Nested Structure</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-section-title>Product Catalog</ax-section-title>
+      <ax-paragraph>Browse through our extensive collection of products.</ax-paragraph>
+      
+      <ax-heading3>Electronics</ax-heading3>
+      <ax-paragraph>Find the latest electronic devices and accessories.</ax-paragraph>
+      
+      <ax-heading3>Clothing</ax-heading3>
+      <ax-paragraph>Explore our fashion collection for all seasons.</ax-paragraph>
+      
+      <ax-heading3>Home & Garden</ax-heading3>
+      <ax-paragraph>Everything you need to make your house a home.</ax-paragraph>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Heading 3 - Form Sections</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-heading3>Personal Information</ax-heading3>
+      <ax-paragraph>Enter your name, email, and contact details.</ax-paragraph>
+      
+      <ax-heading3>Shipping Address</ax-heading3>
+      <ax-paragraph>Provide the address where you want to receive your orders.</ax-paragraph>
+      
+      <ax-heading3>Payment Method</ax-heading3>
+      <ax-paragraph>Select your preferred payment option for checkout.</ax-paragraph>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Heading 3 - Documentation Style</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-heading3>Getting Started</ax-heading3>
+      <ax-paragraph>Learn the basics of using our platform and navigate through the main features.</ax-paragraph>
+      
+      <ax-heading3>Advanced Features</ax-heading3>
+      <ax-paragraph>Explore advanced functionality to maximize your productivity and efficiency.</ax-paragraph>
+      
+      <ax-heading3>Troubleshooting</ax-heading3>
+      <ax-paragraph>Common issues and their solutions to help you resolve problems quickly.</ax-paragraph>
+      
+      <ax-heading3>API Reference</ax-heading3>
+      <ax-paragraph>Complete documentation for developers integrating with our API endpoints.</ax-paragraph>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Paragraph</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-paragraph>
+        This is a paragraph component. It provides consistent styling for body text throughout the application.
+        The paragraph component ensures proper spacing and readability.
+      </ax-paragraph>
+      <p class="code-snippet">&lt;ax-paragraph&gt;...&lt;/ax-paragraph&gt;</p>
+      <p class="description-text">Used for body text and descriptions. Regular-sized, readable text with proper line height.</p>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Combined Example - Product Management</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-title>Product Management</ax-title>
+      <ax-subtitle>Manage your products and inventory</ax-subtitle>
+      
+      <ax-section-title>Product Details</ax-section-title>
+      <ax-paragraph>
+        This section contains detailed information about the product. You can view and edit product specifications,
+        pricing, and inventory levels here.
+      </ax-paragraph>
+      
+      <ax-heading3>Pricing Information</ax-heading3>
+      <ax-paragraph>
+        The pricing section allows you to set the base price, discounts, and promotional pricing for your products.
+      </ax-paragraph>
+      
+      <ax-heading3>Inventory Management</ax-heading3>
+      <ax-paragraph>
+        Track stock levels, set reorder points, and manage warehouse locations for each product.
+      </ax-paragraph>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Combined Example - Dashboard</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-title>Analytics Dashboard</ax-title>
+      <ax-subtitle>Real-time insights and performance metrics</ax-subtitle>
+      
+      <ax-section-title>Overview</ax-section-title>
+      <ax-paragraph>
+        Get a comprehensive view of your business performance with key metrics and trends.
+      </ax-paragraph>
+      
+      <ax-heading3>Sales Performance</ax-heading3>
+      <ax-paragraph>
+        Monitor your sales trends, revenue growth, and top-performing products.
+      </ax-paragraph>
+      
+      <ax-heading3>Customer Analytics</ax-heading3>
+      <ax-paragraph>
+        Understand your customer base, retention rates, and engagement metrics.
+      </ax-paragraph>
+      
+      <ax-heading3>Inventory Status</ax-heading3>
+      <ax-paragraph>
+        Track stock levels, low inventory alerts, and warehouse utilization.
+      </ax-paragraph>
+    </mat-card-content>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Combined Example - User Guide</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ax-title>User Guide</ax-title>
+      <ax-subtitle>Complete guide to using the application</ax-subtitle>
+      
+      <ax-section-title>Introduction</ax-section-title>
+      <ax-paragraph>
+        Welcome to our comprehensive user guide. This document will help you navigate and utilize all features effectively.
+      </ax-paragraph>
+      
+      <ax-heading3>Account Setup</ax-heading3>
+      <ax-paragraph>
+        Learn how to create your account, configure settings, and personalize your experience.
+      </ax-paragraph>
+      
+      <ax-heading3>Core Features</ax-heading3>
+      <ax-paragraph>
+        Explore the main functionality including data management, reporting, and collaboration tools.
+      </ax-paragraph>
+      
+      <ax-heading3>Best Practices</ax-heading3>
+      <ax-paragraph>
+        Discover tips and tricks to maximize efficiency and get the most out of the platform.
+      </ax-paragraph>
+      
+      <ax-heading3>Support & Resources</ax-heading3>
+      <ax-paragraph>
+        Access help documentation, contact support, and find additional learning resources.
+      </ax-paragraph>
+    </mat-card-content>
+  </ax-card>
+</div>

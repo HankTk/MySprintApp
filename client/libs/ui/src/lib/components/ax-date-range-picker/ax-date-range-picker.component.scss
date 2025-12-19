@@ -1,6 +1,6 @@
 .ax-date-range-picker-container {
   display: flex;
-  gap: 16px;
+  gap: var(--spacing-md, 16px);
   align-items: flex-start;
 }
 

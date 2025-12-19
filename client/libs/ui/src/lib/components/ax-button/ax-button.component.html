@@ -10,27 +10,27 @@
 
 @switch (variant) {
   @case ('raised') {
-    <button mat-raised-button [type]="type" [color]="color" [disabled]="disabled || loading">
+    <button mat-raised-button [type]="type" [color]="color" [disabled]="disabled || loading" (click)="onButtonClick($event)">
       <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
     </button>
   }
   @case ('flat') {
-    <button mat-flat-button [type]="type" [color]="color" [disabled]="disabled || loading">
+    <button mat-flat-button [type]="type" [color]="color" [disabled]="disabled || loading" (click)="onButtonClick($event)">
       <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
     </button>
   }
   @case ('stroked') {
-    <button mat-stroked-button [type]="type" [color]="color" [disabled]="disabled || loading">
+    <button mat-stroked-button [type]="type" [color]="color" [disabled]="disabled || loading" (click)="onButtonClick($event)">
       <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
     </button>
   }
   @case ('icon') {
-    <button mat-icon-button [type]="type" [color]="color" [disabled]="disabled || loading">
+    <button mat-icon-button [type]="type" [color]="color" [disabled]="disabled || loading" (click)="onButtonClick($event)">
       <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
     </button>
   }
   @default {
-    <button mat-raised-button [type]="type" [color]="color" [disabled]="disabled || loading">
+    <button mat-raised-button [type]="type" [color]="color" [disabled]="disabled || loading" (click)="onButtonClick($event)">
       <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
     </button>
   }

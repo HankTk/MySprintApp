@@ -37,7 +37,8 @@ export class SidebarComponent {
     { id: 'chip', label: 'Chip', icon: 'label' },
     { id: 'icon', label: 'Icon', icon: 'insert_emoticon' },
     { id: 'tooltip', label: 'Tooltip', icon: 'info' },
-    { id: 'progress', label: 'Progress', icon: 'linear_scale' }
+    { id: 'progress', label: 'Progress', icon: 'linear_scale' },
+    { id: 'typography', label: 'Typography', icon: 'text_fields' }
   ];
 
   onItemClick(itemId: string): void {

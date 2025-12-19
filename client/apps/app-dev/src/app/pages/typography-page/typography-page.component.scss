@@ -1,0 +1,162 @@
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg, 24px);
+}
+
+h1 {
+  font-size: var(--font-size-xxl, 2rem);
+  margin-bottom: var(--spacing-xs, 8px);
+  color: var(--text-primary, rgba(0, 0, 0, 0.87));
+}
+
+.description {
+  color: var(--text-secondary, #666);
+  margin-bottom: var(--spacing-xl, 32px);
+  font-size: var(--font-size-base, 1rem);
+}
+
+.example-card {
+  margin-bottom: var(--spacing-lg, 24px);
+}
+
+.code-snippet {
+  background-color: var(--bg-secondary, #f5f5f5);
+  padding: var(--spacing-xs, 8px) var(--spacing-sm, 12px);
+  border-radius: var(--radius-sm, 4px);
+  font-family: 'Courier New', monospace;
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-primary, rgba(0, 0, 0, 0.87));
+  margin: var(--spacing-md, 16px) 0;
+  overflow-x: auto;
+}
+
+.description-text {
+  color: var(--text-secondary, rgba(0, 0, 0, 0.6));
+  font-size: var(--font-size-sm, 0.875rem);
+  margin-top: var(--spacing-xs, 8px);
+}
+
+mat-card-content {
+  padding: var(--spacing-md, 16px) !important;
+}
+
+.heading-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg, 24px);
+  margin-bottom: var(--spacing-lg, 24px);
+  
+  .heading-item {
+    padding: var(--spacing-lg, 24px);
+    background-color: var(--bg-secondary, #fafafa);
+    border-left: 6px solid;
+    border-radius: var(--radius-sm, 4px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+    &:hover {
+      transform: translateX(4px);
+      box-shadow: var(--shadow-md, 0 2px 10px rgba(0, 0, 0, 0.1));
+    }
+    
+    &.heading-level-1 {
+      border-left-color: #d32f2f; // Red for h1
+      background-color: #ffebee;
+    }
+    
+    &.heading-level-2 {
+      border-left-color: #f57c00; // Orange for h2
+      background-color: #fff3e0;
+    }
+    
+    &.heading-level-3 {
+      border-left-color: #1976d2; // Blue for h3
+      background-color: #e3f2fd;
+    }
+    
+    &.heading-level-4 {
+      border-left-color: #388e3c; // Green for h4
+      background-color: #e8f5e9;
+    }
+    
+    &.heading-level-5 {
+      border-left-color: #7b1fa2; // Purple for h5
+      background-color: #f3e5f5;
+    }
+    
+    &.heading-level-6 {
+      border-left-color: #616161; // Grey for h6
+      background-color: #f5f5f5;
+    }
+    
+    .heading-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--spacing-md, 16px);
+      padding-top: var(--spacing-sm, 12px);
+      border-top: 2px solid var(--border-divider, rgba(0, 0, 0, 0.12));
+      
+      .heading-label {
+        font-weight: var(--font-weight-semibold, 600);
+        color: var(--text-primary, rgba(0, 0, 0, 0.87));
+        font-size: var(--font-size-base, 1rem);
+      }
+      
+      .heading-specs {
+        font-size: var(--font-size-sm, 0.875rem);
+        color: var(--text-secondary, rgba(0, 0, 0, 0.6));
+        font-family: 'Courier New', monospace;
+        font-weight: var(--font-weight-medium, 500);
+      }
+    }
+  }
+}
+
+.heading-side-by-side {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg, 24px);
+  margin-bottom: var(--spacing-lg, 24px);
+  
+  .side-by-side-item {
+    padding: var(--spacing-md, 16px);
+    background-color: var(--bg-secondary, #fafafa);
+    border-radius: var(--radius-sm, 4px);
+    border: 2px solid var(--border-divider, rgba(0, 0, 0, 0.12));
+    text-align: center;
+    
+    .side-by-side-label {
+      font-size: var(--font-size-xs, 0.75rem);
+      color: var(--text-secondary, rgba(0, 0, 0, 0.6));
+      font-weight: var(--font-weight-medium, 500);
+      margin-bottom: var(--spacing-sm, 12px);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+.heading-individual {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg, 24px);
+  
+  .heading-example {
+    padding: var(--spacing-md, 16px);
+    background-color: var(--bg-secondary, #fafafa);
+    border-radius: var(--radius-sm, 4px);
+    border: 1px solid var(--border-divider, rgba(0, 0, 0, 0.12));
+    
+    .example-description {
+      color: var(--text-secondary, rgba(0, 0, 0, 0.6));
+      font-size: var(--font-size-sm, 0.875rem);
+      margin: var(--spacing-xs, 8px) 0 var(--spacing-sm, 12px) 0;
+      line-height: var(--line-height-normal, 1.5);
+    }
+    
+    .code-snippet {
+      margin-bottom: 0;
+    }
+  }
+}

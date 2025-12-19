@@ -73,6 +73,10 @@ export const routes: Routes = [
   {
     path: 'tooltip',
     loadComponent: () => import('./pages/tooltip-page/tooltip-page.component').then(m => m.TooltipPageComponent)
+  },
+  {
+    path: 'typography',
+    loadComponent: () => import('./pages/typography-page/typography-page.component').then(m => m.TypographyPageComponent)
   }
 ];
 

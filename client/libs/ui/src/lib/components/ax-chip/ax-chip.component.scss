@@ -4,7 +4,7 @@
 
 .ax-chip-wrapper {
   display: inline-flex;
-  border-radius: 16px;
+  border-radius: var(--radius-xl, 16px);
   
   &.has-custom-colors {
     // When custom colors are applied, style the wrapper and make mat-chip transparent
@@ -42,5 +42,5 @@
 }
 
 mat-chip.mat-mdc-chip {
-  border-radius: 16px !important;
+  border-radius: var(--radius-xl, 16px) !important;
 }

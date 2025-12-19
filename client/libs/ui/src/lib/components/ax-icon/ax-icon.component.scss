@@ -5,19 +5,19 @@
 }
 
 .ax-icon-small {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
+  font-size: var(--font-size-md, 1.125rem);
+  width: var(--font-size-md, 1.125rem);
+  height: var(--font-size-md, 1.125rem);
 }
 
 .ax-icon-medium {
-  font-size: 24px;
-  width: 24px;
-  height: 24px;
+  font-size: var(--font-size-xl, 1.5rem);
+  width: var(--font-size-xl, 1.5rem);
+  height: var(--font-size-xl, 1.5rem);
 }
 
 .ax-icon-large {
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
+  font-size: var(--font-size-xxl, 2rem);
+  width: var(--font-size-xxl, 2rem);
+  height: var(--font-size-xxl, 2rem);
 }

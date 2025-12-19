@@ -1,6 +1,6 @@
 .ax-subtitle {
-  font-size: 16px;
-  color: rgba(0, 0, 0, 0.6);
-  margin: 0 0 24px 0;
+  font-size: var(--font-size-base, 1rem);
+  color: var(--text-secondary, rgba(0, 0, 0, 0.6));
+  margin: 0 0 var(--spacing-lg, 24px) 0;
 }
 
