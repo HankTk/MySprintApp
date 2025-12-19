@@ -34,7 +34,7 @@
       }
       
 
-      <!-- Filter columns (if filtering is enabled and showFilter is true) -->
+      <!-- Filter columns (always render if filtering is enabled, visibility controlled by CSS) -->
       @if (filterable && showFilter) {
         @for (column of computedColumns; track column.key) {
           <ng-container [matColumnDef]="column.key + '_filter'">

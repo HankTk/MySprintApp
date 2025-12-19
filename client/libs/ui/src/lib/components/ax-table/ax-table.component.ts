@@ -150,7 +150,33 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy {
   @Input() filterable = false;
   
   /** Whether to show the filter row (controlled by show/hide button) */
-  @Input() showFilter = false;
+  private _showFilter: boolean | undefined = undefined;
+  
+  @Input() 
+  set showFilter(value: boolean) {
+    const oldValue = this._showFilter;
+    // Only log and process if value actually changed
+    if (oldValue !== value) {
+      console.log('[AxTable] showFilter setter called:', oldValue, '->', value);
+      this._showFilter = value;
+      console.log('[AxTable] showFilter changed in setter, triggering change detection');
+      // Reinitialize columns to ensure filter column definitions are updated
+      if (this.filterable) {
+        this.initializeColumns();
+      }
+      this.cdr.markForCheck();
+      requestAnimationFrame(() => {
+        this.cdr.detectChanges();
+      });
+    } else {
+      // Value didn't change, just update internal value silently
+      this._showFilter = value;
+    }
+  }
+  
+  get showFilter(): boolean {
+    return this._showFilter ?? false;
+  }
   
   /** Selection mode: 'none', 'single', or 'multiple' */
   @Input() selectionMode: SelectionMode = 'none';
@@ -192,6 +218,7 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy {
     this.initializeColumns();
     this.updateData();
     console.log('[AxTable] ngOnInit - filterable:', this.filterable, 'showFilter:', this.showFilter, 'should show:', this.filterable && this.showFilter);
+    console.log('[AxTable] ngOnInit - showFilter type:', typeof this.showFilter, 'value:', this.showFilter);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -208,6 +235,7 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy {
       const prevValue = changes['showFilter'].previousValue;
       const currValue = changes['showFilter'].currentValue;
       console.log('[AxTable] showFilter changed:', prevValue, '->', currValue);
+      console.log('[AxTable] showFilter changed - prevValue type:', typeof prevValue, 'currValue type:', typeof currValue);
       console.log('[AxTable] filterable:', this.filterable, 'showFilter:', this.showFilter);
       console.log('[AxTable] Should show filter row:', this.filterable && this.showFilter);
       console.log('[AxTable] getFilterRowColumns().length:', this.getFilterRowColumns().length);
@@ -222,7 +250,12 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy {
       // Use requestAnimationFrame to ensure DOM update happens after change detection
       requestAnimationFrame(() => {
         this.cdr.detectChanges();
+        console.log('[AxTable] After change detection - showFilter:', this.showFilter);
       });
+    } else {
+      // Log when showFilter is checked but not changed
+      console.log('[AxTable] ngOnChanges called but showFilter not in changes. Current showFilter:', this.showFilter);
+      console.log('[AxTable] All changes:', Object.keys(changes));
     }
     
     if (changes['dataSource'] || changes['pageSize'] || changes['selectionMode']) {
@@ -276,8 +309,8 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy {
   }
 
   getFilterRowColumns(): string[] {
-    // Return empty array if filtering is not enabled or filter row should not be shown
-    if (!this.filterable || !this.showFilter) {
+    // Always return filter columns if filtering is enabled (visibility controlled by CSS)
+    if (!this.filterable) {
       return [];
     }
     const filterColumns: string[] = [];

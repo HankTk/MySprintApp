@@ -35,7 +35,7 @@
             variant="flat" 
             color="primary" 
             [label]="showFilters() ? ('hideFilters' | translate) : ('showFilters' | translate)"
-            (click)="toggleFilters()">
+            (click)="toggleFilters(); $event.stopPropagation()">
             <ax-icon [name]="showFilters() ? 'visibility_off' : 'visibility'"></ax-icon>
           </ax-button>
         </div>
@@ -81,7 +81,7 @@
         [dataSource]="filteredOrders() || []"
         [columns]="columns()"
         [filterable]="tableFilterable"
-        [showFilter]="showFiltersValue"
+        [showFilter]="showFilterValue"
         [showSort]="true"
         [showPaginator]="true"
         [pageSize]="10"

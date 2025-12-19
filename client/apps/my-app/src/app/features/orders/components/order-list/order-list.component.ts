@@ -48,7 +48,7 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['orderNumber', 'customerName', 'orderDate', 'status', 'total', 'actions']);
   showFilters = signal<boolean>(true);
-  showFiltersValue = true; // Non-signal version for input binding
+  showFilterValue = true; // Regular property for @Input binding
   
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
@@ -103,13 +103,6 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.statusCellTemplate) {
         this.initializeColumns();
       }
-    });
-    
-    // Sync showFilters signal to showFiltersValue property for input binding
-    effect(() => {
-      this.showFiltersValue = this.showFilters();
-      console.log('[OrderList] effect: showFiltersValue updated to', this.showFiltersValue);
-      this.cdr.detectChanges();
     });
   }
 
@@ -298,12 +291,34 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   toggleFilters(): void {
-    const newValue = !this.showFilters();
-    console.log('[OrderList] Toggling filters:', this.showFilters(), '->', newValue);
+    console.log('[OrderList] toggleFilters() CALLED!');
+    const currentValue = this.showFilters();
+    const newValue = !currentValue;
+    console.log('[OrderList] Toggling filters - before:', {
+      currentValue: currentValue,
+      newValue: newValue,
+      showFilterValue: this.showFilterValue
+    });
+    
+    // Update both signal and property
     this.showFilters.set(newValue);
-    this.showFiltersValue = newValue; // Update non-signal version
-    console.log('[OrderList] showFilters signal value:', this.showFilters());
-    console.log('[OrderList] showFiltersValue:', this.showFiltersValue);
+    this.showFilterValue = newValue;
+    
+    console.log('[OrderList] Toggling filters - after:', {
+      showFilters: this.showFilters(),
+      showFilterValue: this.showFilterValue
+    });
+    
+    // Force change detection to ensure the binding is updated
+    this.cdr.markForCheck();
     this.cdr.detectChanges();
+    
+    // Additional check after a short delay
+    setTimeout(() => {
+      console.log('[OrderList] After change detection:', {
+        showFilters: this.showFilters(),
+        showFilterValue: this.showFilterValue
+      });
+    }, 100);
   }
 }
