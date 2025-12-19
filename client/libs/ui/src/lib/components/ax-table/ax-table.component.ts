@@ -146,7 +146,10 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy {
   /** Enable sorting */
   @Input() showSort = true;
   
-  /** Enable filtering */
+  /** Whether the table supports filtering (table-level flag) */
+  @Input() filterable = false;
+  
+  /** Whether to show the filter row (controlled by show/hide button) */
   @Input() showFilter = false;
   
   /** Selection mode: 'none', 'single', or 'multiple' */
@@ -188,11 +191,38 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy {
     this.currentPageSize = this.pageSize;
     this.initializeColumns();
     this.updateData();
+    console.log('[AxTable] ngOnInit - filterable:', this.filterable, 'showFilter:', this.showFilter, 'should show:', this.filterable && this.showFilter);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['columns'] || changes['displayedColumns']) {
       this.initializeColumns();
+    }
+    
+    if (changes['filterable']) {
+      console.log('[AxTable] filterable changed:', changes['filterable'].currentValue);
+      this.cdr.markForCheck();
+    }
+    
+    if (changes['showFilter']) {
+      const prevValue = changes['showFilter'].previousValue;
+      const currValue = changes['showFilter'].currentValue;
+      console.log('[AxTable] showFilter changed:', prevValue, '->', currValue);
+      console.log('[AxTable] filterable:', this.filterable, 'showFilter:', this.showFilter);
+      console.log('[AxTable] Should show filter row:', this.filterable && this.showFilter);
+      console.log('[AxTable] getFilterRowColumns().length:', this.getFilterRowColumns().length);
+      
+      // Reinitialize columns to ensure filter column definitions are updated
+      if (this.filterable) {
+        this.initializeColumns();
+      }
+      
+      // Force change detection when showFilter changes
+      this.cdr.markForCheck();
+      // Use requestAnimationFrame to ensure DOM update happens after change detection
+      requestAnimationFrame(() => {
+        this.cdr.detectChanges();
+      });
     }
     
     if (changes['dataSource'] || changes['pageSize'] || changes['selectionMode']) {
@@ -246,6 +276,10 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy {
   }
 
   getFilterRowColumns(): string[] {
+    // Return empty array if filtering is not enabled or filter row should not be shown
+    if (!this.filterable || !this.showFilter) {
+      return [];
+    }
     const filterColumns: string[] = [];
     if (this.selectionMode !== 'none') {
       filterColumns.push('_select');

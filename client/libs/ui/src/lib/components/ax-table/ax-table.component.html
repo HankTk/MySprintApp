@@ -34,8 +34,8 @@
       }
       
 
-      <!-- Filter columns (if filtering is enabled) -->
-      @if (showFilter) {
+      <!-- Filter columns (if filtering is enabled and showFilter is true) -->
+      @if (filterable && showFilter) {
         @for (column of computedColumns; track column.key) {
           <ng-container [matColumnDef]="column.key + '_filter'">
             <th mat-header-cell *matHeaderCellDef class="filter-header" [style.width]="column.width" [attr.data-column-key]="column.key">
@@ -133,11 +133,16 @@
         </ng-container>
       }
 
-      <!-- Filter row (if filtering is enabled) -->
-      @if (showFilter) {
-        <tr mat-header-row *matHeaderRowDef="getFilterRowColumns()" class="filter-row"></tr>
-      }
+      <!-- Filter row (if filtering is enabled and showFilter is true) -->
       <tr mat-header-row *matHeaderRowDef="allColumnKeys"></tr>
+      @if (filterable) {
+        <tr 
+          mat-header-row 
+          *matHeaderRowDef="getFilterRowColumns()" 
+          class="filter-row"
+          [class.filter-row-hidden]="!showFilter">
+        </tr>
+      }
       <tr 
         mat-row 
         *matRowDef="let row; columns: allColumnKeys"

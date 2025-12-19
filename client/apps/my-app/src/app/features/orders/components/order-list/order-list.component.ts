@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, OnDestroy, signal, computed, ViewChild, TemplateRef, AfterViewInit, effect } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, signal, computed, ViewChild, TemplateRef, AfterViewInit, effect, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { CommonModule, CurrencyPipe } from '@angular/common';
@@ -47,6 +47,11 @@ import { AxTooltipDirective } from '@ui/components';
 export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['orderNumber', 'customerName', 'orderDate', 'status', 'total', 'actions']);
+  showFilters = signal<boolean>(true);
+  showFiltersValue = true; // Non-signal version for input binding
+  
+  // Table-level flag: whether the table supports filtering
+  tableFilterable = true;
   
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<Order>[]>([]);
@@ -76,6 +81,7 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
   private customerService = inject(CustomerService);
   private languageService = inject(LanguageService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   private subscriptions = new Subscription();
 
@@ -97,6 +103,13 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
       if (this.statusCellTemplate) {
         this.initializeColumns();
       }
+    });
+    
+    // Sync showFilters signal to showFiltersValue property for input binding
+    effect(() => {
+      this.showFiltersValue = this.showFilters();
+      console.log('[OrderList] effect: showFiltersValue updated to', this.showFiltersValue);
+      this.cdr.detectChanges();
     });
   }
 
@@ -282,5 +295,15 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
+  }
+
+  toggleFilters(): void {
+    const newValue = !this.showFilters();
+    console.log('[OrderList] Toggling filters:', this.showFilters(), '->', newValue);
+    this.showFilters.set(newValue);
+    this.showFiltersValue = newValue; // Update non-signal version
+    console.log('[OrderList] showFilters signal value:', this.showFilters());
+    console.log('[OrderList] showFiltersValue:', this.showFiltersValue);
+    this.cdr.detectChanges();
   }
 }

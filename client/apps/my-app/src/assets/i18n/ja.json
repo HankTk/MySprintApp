@@ -235,6 +235,8 @@
   "addOrder": "注文追加",
   "filterByStatus": "ステータスでフィルター",
   "clearFilters": "フィルターをクリア",
+  "showFilters": "フィルターを表示",
+  "hideFilters": "フィルターを非表示",
   "allStatuses": "すべてのステータス",
   "order": {
     "status": {

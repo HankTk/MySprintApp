@@ -231,6 +231,8 @@
   "addOrder": "Add Order",
   "filterByStatus": "Filter by Status",
   "clearFilters": "Clear Filters",
+  "showFilters": "Show Filters",
+  "hideFilters": "Hide Filters",
   "allStatuses": "All Statuses",
   "order": {
     "status": {
