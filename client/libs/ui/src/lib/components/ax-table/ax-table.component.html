@@ -38,10 +38,10 @@
       @if (showFilter) {
         @for (column of computedColumns; track column.key) {
           <ng-container [matColumnDef]="column.key + '_filter'">
-            <th mat-header-cell *matHeaderCellDef class="filter-header" [style.width]="column.width">
+            <th mat-header-cell *matHeaderCellDef class="filter-header" [style.width]="column.width" [attr.data-column-key]="column.key">
               @if (column.filterable) {
                 @if (column.filterType === 'date-range') {
-                  <div class="date-range-single-wrapper" (click)="$event.stopPropagation()">
+                  <div class="date-range-single-wrapper" [attr.data-column-key]="column.key" (click)="$event.stopPropagation()">
                     <mat-form-field appearance="outline" class="filter-field-inline date-range-single">
                       <input
                         matInput
@@ -59,22 +59,6 @@
                       </button>
                     </mat-form-field>
                     
-                    @if (openDateRangePicker[column.key]) {
-                      <div class="date-range-popup">
-                        <div class="date-range-popup-content">
-                          <ax-date-range-picker
-                            [startDate]="dateRangeFilters[column.key]?.start"
-                            [endDate]="dateRangeFilters[column.key]?.end"
-                            (startDateChange)="onDateRangeStartDateChange(column.key, $event)"
-                            (endDateChange)="onDateRangeEndDateChange(column.key, $event)">
-                          </ax-date-range-picker>
-                          <div class="date-range-actions">
-                            <button mat-button (click)="clearDateRange(column.key); $event.stopPropagation()">Clear</button>
-                            <button mat-button color="primary" (click)="closeDateRangePicker(column.key); $event.stopPropagation()">Apply</button>
-                          </div>
-                        </div>
-                      </div>
-                    }
                   </div>
                 } @else if (column.filterType === 'select') {
                   <ax-select
@@ -174,3 +158,43 @@
     }
   </div>
 }
+
+<!-- Template for date range picker overlay -->
+<ng-template #dateRangePopupTemplate let-columnKey="columnKey">
+  <div class="date-range-popup">
+    <div class="date-range-popup-content">
+      <p style="margin: 0 0 12px 0; font-weight: 500; color: #333;">Select Date Range</p>
+      <div class="date-range-fields" style="display: flex !important; gap: 8px; margin-bottom: 16px; visibility: visible !important;">
+        <mat-form-field appearance="outline" style="flex: 1; display: block !important; visibility: visible !important;">
+          <mat-label>From</mat-label>
+          <input
+            matInput
+            [matDatepicker]="startPicker"
+            [value]="getTempStartDate(columnKey)"
+            (dateChange)="onDateRangeStartChange(columnKey, $event, getTempEndDate(columnKey))"
+            placeholder="Start date"
+            style="visibility: visible !important; display: block !important;">
+          <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+        <span style="padding: 0 4px; margin-top: 24px; color: rgba(0, 0, 0, 0.6); display: inline-block;">-</span>
+        <mat-form-field appearance="outline" style="flex: 1; display: block !important; visibility: visible !important;">
+          <mat-label>To</mat-label>
+          <input
+            matInput
+            [matDatepicker]="endPicker"
+            [value]="getTempEndDate(columnKey)"
+            (dateChange)="onDateRangeEndChange(columnKey, getTempStartDate(columnKey), $event)"
+            placeholder="End date"
+            style="visibility: visible !important; display: block !important;">
+          <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="date-range-actions">
+        <button mat-button (click)="clearDateRange(columnKey); $event.stopPropagation()">Clear</button>
+        <button mat-button color="primary" (click)="closeDateRangePicker(columnKey); $event.stopPropagation()">Apply</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

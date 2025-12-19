@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, TemplateRef, ContentChild, OnChanges, SimpleChanges, OnInit, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, TemplateRef, ContentChild, OnChanges, SimpleChanges, OnInit, HostListener, ChangeDetectorRef, inject, ViewChild, ElementRef, OnDestroy, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -14,8 +14,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { SelectionModel } from '@angular/cdk/collections';
+import { Overlay, OverlayRef, OverlayModule } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
+import { PortalModule } from '@angular/cdk/portal';
 import { AxSelectComponent, AxSelectOption } from '../ax-select/ax-select.component';
-import { AxDateRangePickerComponent } from '../ax-date-range-picker/ax-date-range-picker.component';
 
 /**
  * Filter type for column filtering
@@ -98,14 +100,31 @@ export type SelectionMode = 'none' | 'single' | 'multiple';
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    AxSelectComponent,
-    AxDateRangePickerComponent
+    OverlayModule,
+    PortalModule,
+    AxSelectComponent
   ],
   templateUrl: './ax-table.component.html',
   styleUrls: ['./ax-table.component.scss'],
   exportAs: 'axTable'
 })
-export class AxTableComponent<T = any> implements OnInit, OnChanges {
+export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy {
+  private cdr = inject(ChangeDetectorRef);
+  private overlay = inject(Overlay);
+  private viewContainerRef = inject(ViewContainerRef);
+  private overlayRefs: { [key: string]: OverlayRef } = {};
+  currentOverlayColumnKey: string | null = null;
+  
+  @ViewChild('dateRangePopupTemplate', { read: TemplateRef }) dateRangePopupTemplate?: TemplateRef<any>;
+  
+  getTempStartDate(columnKey: string): Date | null {
+    return this.tempDateRangeFilters[columnKey]?.start ?? this.dateRangeFilters[columnKey]?.start ?? null;
+  }
+  
+  getTempEndDate(columnKey: string): Date | null {
+    return this.tempDateRangeFilters[columnKey]?.end ?? this.dateRangeFilters[columnKey]?.end ?? null;
+  }
+  
   /** Table data source */
   @Input() dataSource: T[] = [];
   
@@ -155,6 +174,7 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges {
   activeSort?: Sort;
   columnFilters: { [key: string]: string | { start: Date | null; end: Date | null } | null } = {};
   dateRangeFilters: { [key: string]: { start: Date | null; end: Date | null } } = {};
+  tempDateRangeFilters: { [key: string]: { start: Date | null; end: Date | null } } = {};
   openDateRangePicker: { [key: string]: boolean } = {};
   selection = new SelectionModel<T>(true, []); // true = multiple selection
 
@@ -241,44 +261,132 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges {
   }
 
   private applyFilters(): void {
+    // Debug: log all active filters
+    console.log('[Date Filter] applyFilters called, active filters:', JSON.stringify(this.columnFilters, (key, value) => {
+      if (value instanceof Date) {
+        return value.toISOString();
+      }
+      return value;
+    }));
+    
     this.filteredData = this.sortedData.filter(row => {
       return this.computedColumns.every(col => {
-        if (!col.filterable || !this.columnFilters[col.key]) {
+        if (!col.filterable) {
           return true;
         }
         
         const filterValue = this.columnFilters[col.key];
-        const cellValue = this.getCellValue(row, col);
         const filterType = col.filterType || 'text';
+        
+        // For date-range, check if filter exists and has at least one date
+        if (filterType === 'date-range') {
+          if (!filterValue || (typeof filterValue === 'object' && !(filterValue as any).start && !(filterValue as any).end)) {
+            return true; // No filter applied
+          }
+        } else if (!filterValue) {
+          return true; // No filter applied
+        }
+        
+        const cellValue = this.getCellValue(row, col);
         
         // Handle date range filter
         if (filterType === 'date-range' && typeof filterValue === 'object' && filterValue !== null) {
           const dateRange = filterValue as { start: Date | null; end: Date | null };
           if (!dateRange.start && !dateRange.end) {
-            return true;
+            return true; // No filter applied
           }
           
-          // Handle string dates (ISO format or date-only format)
-          let cellDate: Date | null = null;
-          if (cellValue) {
-            if (typeof cellValue === 'string') {
-              // If it's a date-only string (YYYY-MM-DD), parse it properly
-              const dateStr = cellValue.split('T')[0]; // Get date part if ISO string
-              cellDate = new Date(dateStr);
-            } else if (cellValue instanceof Date) {
-              cellDate = cellValue;
+          // Ensure dates are Date objects (they might have been serialized)
+          let startDate: Date | null = null;
+          let endDate: Date | null = null;
+          
+          if (dateRange.start) {
+            if (dateRange.start instanceof Date) {
+              startDate = new Date(dateRange.start.getTime());
+            } else {
+              startDate = new Date(dateRange.start);
             }
           }
           
+          if (dateRange.end) {
+            if (dateRange.end instanceof Date) {
+              endDate = new Date(dateRange.end.getTime());
+            } else {
+              endDate = new Date(dateRange.end);
+            }
+          }
+          
+          // Debug: log filter values (only once per column to avoid spam)
+          if (row === this.sortedData[0]) {
+            console.log(`[Date Filter] Filter active for column ${col.key}:`, {
+              filterValue,
+              startDate: startDate?.toLocaleDateString(),
+              endDate: endDate?.toLocaleDateString(),
+              startDateObj: startDate,
+              endDateObj: endDate
+            });
+          }
+          
+          // Handle different date formats from cell value
+          let cellDate: Date | null = null;
+          if (cellValue) {
+            if (Array.isArray(cellValue)) {
+              // Handle array format [year, month, day, hour, minute, second, nanoseconds]
+              // Note: month is 0-indexed in JavaScript Date, but 1-indexed in the array
+              if (cellValue.length >= 3) {
+                const year = cellValue[0];
+                const month = cellValue[1] - 1; // Convert to 0-indexed
+                const day = cellValue[2];
+                cellDate = new Date(year, month, day);
+              }
+            } else if (typeof cellValue === 'string') {
+              // Parse ISO date string properly to avoid timezone issues
+              // If it's an ISO string like "2025-12-18T11:56:47.154625", extract date parts
+              if (cellValue.includes('T')) {
+                const datePart = cellValue.split('T')[0]; // "2025-12-18"
+                const [year, month, day] = datePart.split('-').map(Number);
+                // Create date in local timezone to avoid UTC conversion issues
+                cellDate = new Date(year, month - 1, day);
+              } else {
+                // Simple date string like "2025-12-18"
+                const [year, month, day] = cellValue.split('-').map(Number);
+                cellDate = new Date(year, month - 1, day);
+              }
+            } else if (cellValue instanceof Date) {
+              cellDate = new Date(cellValue.getTime());
+            } else if (typeof cellValue === 'number') {
+              // Handle timestamp
+              cellDate = new Date(cellValue);
+            }
+          }
+          
+          // If we can't parse the cell date, exclude this row
           if (!cellDate || isNaN(cellDate.getTime())) {
+            // Debug: log when cell date can't be parsed
+            console.debug(`[Date Filter] Cannot parse cell date for column ${col.key}:`, cellValue);
             return false;
           }
           
           // Compare dates (ignore time for date-only comparisons)
+          // Normalize all dates to midnight (00:00:00) for accurate date-only comparison
           const cellDateOnly = new Date(cellDate.getFullYear(), cellDate.getMonth(), cellDate.getDate());
-          const startMatch = !dateRange.start || cellDateOnly >= new Date(dateRange.start.getFullYear(), dateRange.start.getMonth(), dateRange.start.getDate());
-          const endMatch = !dateRange.end || cellDateOnly <= new Date(dateRange.end.getFullYear(), dateRange.end.getMonth(), dateRange.end.getDate());
-          return startMatch && endMatch;
+          const startDateOnly = startDate ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()) : null;
+          const endDateOnly = endDate ? new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()) : null;
+          
+          // Check if cell date is within range (inclusive on both ends)
+          // startMatch: cell date must be >= start date (or no start date specified)
+          // endMatch: cell date must be <= end date (or no end date specified)
+          const startMatch = !startDateOnly || cellDateOnly.getTime() >= startDateOnly.getTime();
+          const endMatch = !endDateOnly || cellDateOnly.getTime() <= endDateOnly.getTime();
+          const matches = startMatch && endMatch;
+          
+          // Debug logging for all rows
+          const cellTime = cellDateOnly.getTime();
+          const startTime = startDateOnly ? startDateOnly.getTime() : null;
+          const endTime = endDateOnly ? endDateOnly.getTime() : null;
+          console.log(`[Date Filter] Row check - Column: ${col.key}, CellValue: ${JSON.stringify(cellValue)}, CellDate: ${cellDateOnly.toLocaleDateString()} (${cellTime}), Start: ${startDateOnly?.toLocaleDateString() || 'none'} (${startTime || 'none'}), End: ${endDateOnly?.toLocaleDateString() || 'none'} (${endTime || 'none'}), StartMatch: ${startMatch}, EndMatch: ${endMatch}, Matches: ${matches}, Result: ${matches ? 'INCLUDED' : 'EXCLUDED'}`);
+          
+          return matches;
         }
         
         // Handle text, select, and autocomplete filters
@@ -360,34 +468,84 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges {
   }
 
   onDateRangeChange(columnKey: string, dateRange: { start: Date | null; end: Date | null }): void {
-    this.columnFilters[columnKey] = dateRange;
-    this.dateRangeFilters[columnKey] = dateRange;
+    // Always update dateRangeFilters to preserve the selected dates for display
+    this.dateRangeFilters[columnKey] = {
+      start: dateRange.start ? new Date(dateRange.start) : null,
+      end: dateRange.end ? new Date(dateRange.end) : null
+    };
+    
+    // Only apply filter if at least one date is set
+    if (dateRange.start || dateRange.end) {
+      // Store a copy of the date range to ensure it's a proper object with Date instances
+      const filterDateRange = {
+        start: dateRange.start ? (dateRange.start instanceof Date ? new Date(dateRange.start.getTime()) : new Date(dateRange.start)) : null,
+        end: dateRange.end ? (dateRange.end instanceof Date ? new Date(dateRange.end.getTime()) : new Date(dateRange.end)) : null
+      };
+      this.columnFilters[columnKey] = filterDateRange;
+      console.log(`[Date Filter] Applied filter for ${columnKey}:`, {
+        start: filterDateRange.start?.toISOString(),
+        end: filterDateRange.end?.toISOString(),
+        startType: typeof filterDateRange.start,
+        endType: typeof filterDateRange.end
+      });
+    } else {
+      // Clear filter if both dates are null
+      delete this.columnFilters[columnKey];
+      this.dateRangeFilters[columnKey] = { start: null, end: null };
+      console.log(`[Date Filter] Cleared filter for ${columnKey}`);
+    }
     this.currentPage = 0;
     this.applyFilters();
     this.applySorting();
+    
+    // Force change detection to update display
+    this.cdr.detectChanges();
   }
 
   onDateRangeStartChange(columnKey: string, event: MatDatepickerInputEvent<Date>, endDate: Date | null): void {
-    this.onDateRangeChange(columnKey, { start: event.value, end: endDate });
+    // Only update temp filters, don't apply yet
+    if (!this.tempDateRangeFilters[columnKey]) {
+      this.tempDateRangeFilters[columnKey] = { start: null, end: null };
+    }
+    this.tempDateRangeFilters[columnKey] = {
+      start: event.value,
+      end: endDate ?? this.tempDateRangeFilters[columnKey].end
+    };
   }
 
   onDateRangeEndChange(columnKey: string, startDate: Date | null, event: MatDatepickerInputEvent<Date>): void {
-    this.onDateRangeChange(columnKey, { start: startDate, end: event.value });
+    // Only update temp filters, don't apply yet
+    if (!this.tempDateRangeFilters[columnKey]) {
+      this.tempDateRangeFilters[columnKey] = { start: null, end: null };
+    }
+    this.tempDateRangeFilters[columnKey] = {
+      start: startDate ?? this.tempDateRangeFilters[columnKey].start,
+      end: event.value
+    };
   }
 
   onDateRangeStartDateChange(columnKey: string, date: Date | null): void {
-    const endDate = this.dateRangeFilters[columnKey]?.end || null;
-    this.onDateRangeChange(columnKey, { start: date, end: endDate });
+    // Store temporarily, don't apply filter yet
+    const endDate = this.tempDateRangeFilters[columnKey]?.end || this.dateRangeFilters[columnKey]?.end || null;
+    if (!this.tempDateRangeFilters[columnKey]) {
+      this.tempDateRangeFilters[columnKey] = { start: null, end: null };
+    }
+    this.tempDateRangeFilters[columnKey] = { start: date, end: endDate };
   }
 
   onDateRangeEndDateChange(columnKey: string, date: Date | null): void {
-    const startDate = this.dateRangeFilters[columnKey]?.start || null;
-    this.onDateRangeChange(columnKey, { start: startDate, end: date });
+    // Store temporarily, don't apply filter yet
+    const startDate = this.tempDateRangeFilters[columnKey]?.start || this.dateRangeFilters[columnKey]?.start || null;
+    if (!this.tempDateRangeFilters[columnKey]) {
+      this.tempDateRangeFilters[columnKey] = { start: null, end: null };
+    }
+    this.tempDateRangeFilters[columnKey] = { start: startDate, end: date };
   }
 
   clearFilters(): void {
     this.columnFilters = {};
     this.dateRangeFilters = {};
+    this.tempDateRangeFilters = {};
     this.currentPage = 0;
     this.applyFilters();
     this.applySorting();
@@ -443,25 +601,173 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges {
     return '';
   }
 
-  toggleDateRangePicker(columnKey: string): void {
+  toggleDateRangePicker(columnKey: string, event?: Event): void {
+    // Close any other open pickers
+    Object.keys(this.overlayRefs).forEach(key => {
+      if (key !== columnKey && this.overlayRefs[key]?.hasAttached()) {
+        this.closeDateRangePicker(key);
+      }
+    });
+
+    // If already open, close it
+    if (this.overlayRefs[columnKey]?.hasAttached()) {
+      this.closeDateRangePicker(columnKey);
+      return;
+    }
+
     // Initialize date range if it doesn't exist
     if (!this.dateRangeFilters[columnKey]) {
       this.dateRangeFilters[columnKey] = { start: null, end: null };
     }
-    this.openDateRangePicker[columnKey] = !this.openDateRangePicker[columnKey];
+    // Initialize temp date range with current values
+    if (!this.tempDateRangeFilters[columnKey]) {
+      this.tempDateRangeFilters[columnKey] = { 
+        start: this.dateRangeFilters[columnKey]?.start || null, 
+        end: this.dateRangeFilters[columnKey]?.end || null 
+      };
+    }
+
+    // Get the trigger element
+    const triggerElement = event?.target ? (event.target as HTMLElement).closest('[data-column-key]')?.querySelector('.date-range-single-wrapper') as HTMLElement
+      : document.querySelector(`[data-column-key="${columnKey}"] .date-range-single-wrapper`) as HTMLElement;
+
+    if (!triggerElement) {
+      console.error('Trigger element not found for column:', columnKey);
+      return;
+    }
+
+    if (!this.dateRangePopupTemplate) {
+      console.error('Date range popup template not found. Waiting for view initialization...');
+      // Wait for next tick in case template isn't ready yet
+      setTimeout(() => {
+        if (this.dateRangePopupTemplate) {
+          this.toggleDateRangePicker(columnKey, event);
+        } else {
+          console.error('Date range popup template still not found after delay');
+        }
+      }, 100);
+      return;
+    }
+
+    // Create overlay position strategy
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo(triggerElement)
+      .withPositions([
+        {
+          originX: 'start',
+          originY: 'bottom',
+          overlayX: 'start',
+          overlayY: 'top',
+          offsetY: 4
+        }
+      ]);
+
+    // Create overlay
+    const overlayRef = this.overlay.create({
+      positionStrategy,
+      hasBackdrop: false,
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+      panelClass: 'date-range-overlay-panel',
+      disposeOnNavigation: true
+    });
+
+    // Set current column key for template context
+    this.currentOverlayColumnKey = columnKey;
+
+    // Attach template portal
+    if (!this.dateRangePopupTemplate) {
+      console.error('Date range popup template not found');
+      return;
+    }
+
+    const portal = new TemplatePortal(this.dateRangePopupTemplate, this.viewContainerRef, {
+      columnKey: columnKey
+    });
+
+    overlayRef.attach(portal);
+    this.overlayRefs[columnKey] = overlayRef;
+    this.openDateRangePicker[columnKey] = true;
+
+    // Force change detection
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    }, 0);
   }
 
   closeDateRangePicker(columnKey: string): void {
+    // Apply the temporary date range when closing
+    const tempRange = this.tempDateRangeFilters[columnKey];
+    if (tempRange && (tempRange.start || tempRange.end)) {
+      // Ensure we have the latest temp values - apply the filter
+      this.onDateRangeChange(columnKey, {
+        start: tempRange.start,
+        end: tempRange.end
+      });
+    } else if (tempRange && !tempRange.start && !tempRange.end) {
+      // Both dates are null - clear the filter
+      this.onDateRangeChange(columnKey, { start: null, end: null });
+    } else {
+      // If no temp values, use current values (in case user didn't change anything)
+      const currentRange = this.dateRangeFilters[columnKey];
+      if (currentRange && (currentRange.start || currentRange.end)) {
+        this.onDateRangeChange(columnKey, currentRange);
+      }
+    }
+    
+    // Close overlay
+    if (this.overlayRefs[columnKey]) {
+      this.overlayRefs[columnKey].dispose();
+      delete this.overlayRefs[columnKey];
+    }
+    
     this.openDateRangePicker[columnKey] = false;
+    
+    // Force change detection to update the display
+    this.cdr.detectChanges();
   }
 
   clearDateRange(columnKey: string): void {
     this.dateRangeFilters[columnKey] = { start: null, end: null };
+    this.tempDateRangeFilters[columnKey] = { start: null, end: null };
     this.columnFilters[columnKey] = { start: null, end: null };
     this.openDateRangePicker[columnKey] = false;
+    
+    // Close overlay if open
+    if (this.overlayRefs[columnKey]) {
+      this.overlayRefs[columnKey].dispose();
+      delete this.overlayRefs[columnKey];
+    }
+    
     this.currentPage = 0;
     this.applyFilters();
     this.applySorting();
+  }
+
+  ngOnDestroy(): void {
+    // Clean up all overlays
+    Object.keys(this.overlayRefs).forEach(key => {
+      if (this.overlayRefs[key]?.hasAttached()) {
+        this.overlayRefs[key].dispose();
+      }
+    });
+    this.overlayRefs = {};
+  }
+
+  private datePickerToggleClicked = false;
+
+  @HostListener('document:mousedown', ['$event'])
+  onDocumentMouseDown(event: MouseEvent): void {
+    // Check if mousedown is on datepicker toggle
+    const target = event.target as HTMLElement;
+    const isDatePickerToggle = target.closest('.mat-datepicker-toggle');
+    if (isDatePickerToggle) {
+      this.datePickerToggleClicked = true;
+      // Clear the flag after a short delay
+      setTimeout(() => {
+        this.datePickerToggleClicked = false;
+      }, 300);
+    }
   }
 
   @HostListener('document:click', ['$event'])
@@ -474,18 +780,23 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges {
     const isDatePicker = target.closest('.mat-datepicker-popup') || 
                         target.closest('.mat-calendar') || 
                         target.closest('.cdk-overlay-container') ||
-                        target.closest('.cdk-overlay-pane');
+                        target.closest('.cdk-overlay-pane') ||
+                        target.closest('.mat-calendar-body') ||
+                        target.closest('.mat-calendar-header');
     const isDatePickerToggle = target.closest('.mat-datepicker-toggle');
     const isDatePickerInput = target.closest('input[matDatepicker]');
     const isDatePickerContainer = target.closest('.ax-date-range-picker-container');
+    const isDatePickerButton = target.closest('button[mat-icon-button]') && target.closest('.mat-datepicker-toggle');
     
-    // Don't close if clicking on datepicker elements or inside popup - allow datepicker to open
+    // Don't close if clicking on datepicker elements, inside popup, or if toggle was just clicked
     if (isDatePickerToggle || 
         isDatePickerInput || 
         isDateRangePopup || 
         isDateRangePicker || 
         isDatePicker || 
-        isDatePickerContainer) {
+        isDatePickerContainer ||
+        isDatePickerButton ||
+        this.datePickerToggleClicked) {
       return;
     }
     
