@@ -19,73 +19,64 @@
         [label]="'addNewVendor' | translate"
         (click)="openAddVendorDialog()">
       </ax-button>
+
+      @if (tableFilterable) {
+        <div class="filter-controls">
+          @if (showFilters()) {
+            <ax-button 
+              variant="flat" 
+              color="primary" 
+              [label]="getClearFiltersLabel()"
+              (click)="clearTableFilters()">
+              <ax-icon name="clear"></ax-icon>
+            </ax-button>
+          }
+          <ax-button 
+            variant="flat" 
+            color="primary" 
+            [label]="showFilters() ? ('hideFilters' | translate) : ('showFilters' | translate)"
+            (click)="toggleFilters(); $event.stopPropagation()">
+            <ax-icon [name]="showFilters() ? 'visibility_off' : 'visibility'"></ax-icon>
+          </ax-button>
+        </div>
+      }
     </div>
 
     <div class="table-container">
-      <ax-table [passThrough]="true">
-        <table mat-table [dataSource]="vendors() || []" class="vendor-table">
-          <ng-container matColumnDef="vendorNumber">
-            <th mat-header-cell *matHeaderCellDef>{{ 'vendorNumber' | translate }}</th>
-            <td mat-cell *matCellDef="let vendor">{{ vendor.vendorNumber || '-' }}</td>
-          </ng-container>
+      <!-- Custom cell templates defined outside ax-table for ViewChild access -->
+      <ng-template #jsonDataCell let-row let-column="column">
+        <pre class="json-data">{{ JsonUtilRef.formatJsonData(row.jsonData) }}</pre>
+      </ng-template>
 
-          <ng-container matColumnDef="companyName">
-            <th mat-header-cell *matHeaderCellDef>{{ 'companyName' | translate }}</th>
-            <td mat-cell *matCellDef="let vendor">{{ vendor.companyName || '-' }}</td>
-          </ng-container>
+      <ng-template #actionsCell let-row let-column="column">
+        <div class="action-buttons">
+          <ax-button 
+            variant="icon" 
+            color="primary" 
+            (click)="openEditVendorDialog(row); $event.stopPropagation()"
+            [axTooltip]="'edit' | translate">
+            <ax-icon name="edit"></ax-icon>
+          </ax-button>
+          <ax-button 
+            variant="icon" 
+            color="warn" 
+            (click)="deleteVendor(row); $event.stopPropagation()" 
+            [axTooltip]="'delete' | translate">
+            <ax-icon name="delete"></ax-icon>
+          </ax-button>
+        </div>
+      </ng-template>
 
-          <ng-container matColumnDef="lastName">
-            <th mat-header-cell *matHeaderCellDef>{{ 'lastName' | translate }}</th>
-            <td mat-cell *matCellDef="let vendor">{{ vendor.lastName || '-' }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef>{{ 'firstName' | translate }}</th>
-            <td mat-cell *matCellDef="let vendor">{{ vendor.firstName || '-' }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef>{{ 'emailAddress' | translate }}</th>
-            <td mat-cell *matCellDef="let vendor">{{ vendor.email || '-' }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="phone">
-            <th mat-header-cell *matHeaderCellDef>{{ 'phone' | translate }}</th>
-            <td mat-cell *matCellDef="let vendor">{{ vendor.phone || '-' }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="jsonData">
-            <th mat-header-cell *matHeaderCellDef>{{ 'jsonData' | translate }}</th>
-            <td mat-cell *matCellDef="let vendor">
-              <pre class="json-data">{{ JsonUtilRef.formatJsonData(vendor.jsonData) }}</pre>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
-            <td mat-cell *matCellDef="let vendor">
-              <div class="action-buttons">
-                <ax-button 
-                  variant="icon" 
-                  color="primary" 
-                  (click)="openEditVendorDialog(vendor)"
-                  [axTooltip]="'edit' | translate">
-                  <ax-icon name="edit"></ax-icon>
-                </ax-button>
-                <ax-button 
-                  variant="icon" 
-                  color="warn" 
-                  (click)="deleteVendor(vendor)" 
-                  [axTooltip]="'delete' | translate">
-                  <ax-icon name="delete"></ax-icon>
-                </ax-button>
-              </div>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
-        </table>
+      <ax-table
+        #axTable
+        [dataSource]="vendors() || []"
+        [columns]="columns()"
+        [filterable]="tableFilterable"
+        [showFilter]="showFilterValue"
+        [showSort]="true"
+        [showPaginator]="true"
+        [pageSize]="10"
+        [selectionMode]="'none'">
       </ax-table>
 
       @if (vendors() && vendors().length === 0 && !isLoading()) {

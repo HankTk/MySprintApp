@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { 
@@ -7,6 +7,8 @@ import {
   AxCardComponent,
   AxIconComponent,
   AxTableComponent,
+  AxTableColumnDef,
+  FilterOption,
   AxChipComponent,
   MatTableModule,
   MatCardModule
@@ -15,6 +17,7 @@ import { AxTooltipDirective } from '@ui/components';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslateModule } from '@ngx-translate/core';
+import { LanguageService } from '../../../../shared/services/language.service';
 import { StoreService } from '../../../../core/store.service';
 import { PurchaseOrder } from '../../../purchase-orders/models/purchase-order.model';
 import { PurchaseOrderService } from '../../../purchase-orders/services/purchase-order.service';
@@ -43,15 +46,36 @@ import { Vendor } from '../../../vendors/models/vendor.model';
   templateUrl: './account-payable-list.component.html',
   styleUrls: ['./account-payable-list.component.scss']
 })
-export class AccountPayableListComponent implements OnInit {
+export class AccountPayableListComponent implements OnInit, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['invoiceNumber', 'poNumber', 'supplier', 'invoiceDate', 'invoiceAmount', 'paidAmount', 'outstanding', 'status', 'actions']);
-  statusFilter = signal<string | null>(null);
+  showFilters = signal<boolean>(true);
+  showFilterValue = true; // Regular property for @Input binding
+  
+  // Table-level flag: whether the table supports filtering
+  tableFilterable = true;
+  
+  // Column definitions for the new ax-table
+  columns = signal<AxTableColumnDef<PurchaseOrder>[]>([]);
+  
+  // Template references for custom cells
+  @ViewChild('supplierCell') supplierCellTemplate?: TemplateRef<any>;
+  @ViewChild('invoiceDateCell') invoiceDateCellTemplate?: TemplateRef<any>;
+  @ViewChild('invoiceAmountCell') invoiceAmountCellTemplate?: TemplateRef<any>;
+  @ViewChild('paidAmountCell') paidAmountCellTemplate?: TemplateRef<any>;
+  @ViewChild('outstandingCell') outstandingCellTemplate?: TemplateRef<any>;
+  @ViewChild('statusCell') statusCellTemplate?: TemplateRef<any>;
+  @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
+  
+  // Reference to the table component
+  @ViewChild('axTable') axTable?: AxTableComponent<PurchaseOrder>;
   
   private store = inject(StoreService);
   private purchaseOrderService = inject(PurchaseOrderService);
   private vendorService = inject(VendorService);
+  private languageService = inject(LanguageService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   purchaseOrders = this.store.select('purchase-orders');
   vendors = this.store.select('vendors');
@@ -64,18 +88,163 @@ export class AccountPayableListComponent implements OnInit {
     );
   });
 
-  filteredPOs = computed(() => {
-    const pos = this.invoicedPOs();
-    const filter = this.statusFilter();
-    if (filter) {
-      return pos.filter((po: PurchaseOrder) => po.status === filter);
-    }
-    return pos;
-  });
+  // No need for separate filteredPOs computed - ax-table handles filtering internally
+  filteredPOs = this.invoicedPOs;
+  
+  constructor() {
+    // Reinitialize columns when purchase orders or vendors change (using effect)
+    effect(() => {
+      // Access signals to create dependency
+      this.invoicedPOs();
+      this.vendors();
+      // Reinitialize columns if templates are available
+      if (this.statusCellTemplate) {
+        this.initializeColumns();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadPurchaseOrders();
     this.loadVendors();
+  }
+
+  ngAfterViewInit(): void {
+    // Initialize columns after view init so templates are available
+    this.initializeColumns();
+  }
+
+  private initializeColumns(): void {
+    this.columns.set([
+      {
+        key: 'invoiceNumber',
+        header: this.languageService.instant('accountsPayable.table.invoiceNumber'),
+        field: 'invoiceNumber',
+        sortable: true,
+        filterable: true,
+        filterType: 'text',
+        formatter: (value) => value || '-'
+      },
+      {
+        key: 'poNumber',
+        header: this.languageService.instant('accountsPayable.table.poNumber'),
+        field: 'orderNumber',
+        sortable: true,
+        filterable: true,
+        filterType: 'text',
+        formatter: (value, row) => value || row.id?.substring(0, 8) || '-'
+      },
+      {
+        key: 'supplier',
+        header: this.languageService.instant('accountsPayable.supplier'),
+        field: 'supplierId',
+        sortable: true,
+        filterable: true,
+        filterType: 'select',
+        filterOptions: (data: PurchaseOrder[]): FilterOption[] => {
+          const vendors = this.vendors() || [];
+          const vendorMap = new Map<string, string>();
+          data.forEach(po => {
+            if (po.supplierId && !vendorMap.has(po.supplierId)) {
+              const vendor = vendors.find((v: Vendor) => v.id === po.supplierId);
+              const name = vendor ? (vendor.companyName || `${vendor.firstName || ''} ${vendor.lastName || ''}`.trim() || vendor.email || po.supplierId) : (po.supplierId || '');
+              vendorMap.set(po.supplierId, name);
+            }
+          });
+          const vendorNames = Array.from(vendorMap.entries())
+            .map(([id, name]) => ({ value: id || '', label: name || '' }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+          return [
+            { value: '', label: 'All' },
+            ...vendorNames
+          ];
+        },
+        cellTemplate: this.supplierCellTemplate
+      },
+      {
+        key: 'invoiceDate',
+        header: this.languageService.instant('accountsPayable.table.invoiceDate'),
+        field: 'invoiceDate',
+        sortable: true,
+        filterable: true,
+        filterType: 'date-range',
+        cellTemplate: this.invoiceDateCellTemplate
+      },
+      {
+        key: 'invoiceAmount',
+        header: this.languageService.instant('accountsPayable.table.invoiceAmount'),
+        field: 'total',
+        sortable: true,
+        filterable: false,
+        align: 'right',
+        cellTemplate: this.invoiceAmountCellTemplate
+      },
+      {
+        key: 'paidAmount',
+        header: this.languageService.instant('accountsPayable.table.paidAmount'),
+        field: 'jsonData.paymentAmount',
+        sortable: true,
+        filterable: false,
+        align: 'right',
+        cellTemplate: this.paidAmountCellTemplate
+      },
+      {
+        key: 'outstanding',
+        header: this.languageService.instant('accountsPayable.outstanding'),
+        field: 'total',
+        sortable: true,
+        filterable: false,
+        align: 'right',
+        cellTemplate: this.outstandingCellTemplate
+      },
+      {
+        key: 'status',
+        header: this.languageService.instant('accountsPayable.table.status'),
+        field: 'status',
+        sortable: true,
+        filterable: true,
+        filterType: 'select',
+        filterOptions: [
+          { value: '', label: 'All' },
+          { value: 'INVOICED', label: 'Invoiced' },
+          { value: 'PAID', label: 'Paid' }
+        ],
+        cellTemplate: this.statusCellTemplate
+      },
+      {
+        key: 'actions',
+        header: this.languageService.instant('actions'),
+        field: 'id',
+        sortable: false,
+        filterable: false,
+        cellTemplate: this.actionsCellTemplate
+      }
+    ]);
+  }
+
+  clearTableFilters(): void {
+    if (this.axTable) {
+      this.axTable.clearFilters();
+    }
+  }
+
+  getClearFiltersLabel(): string {
+    const translated = this.languageService.instant('clearFilters');
+    // If translation returns the key itself, it means the key wasn't found
+    return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
+  }
+
+  toggleFilters(): void {
+    const currentValue = this.showFilters();
+    const newValue = !currentValue;
+    
+    // Update both signal and property
+    this.showFilters.set(newValue);
+    this.showFilterValue = newValue;
+    
+    // Force change detection to ensure the binding is updated
+    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   private loadPurchaseOrders(): void {

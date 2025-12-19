@@ -19,78 +19,76 @@
         [label]="'addNewProduct' | translate"
         (click)="openAddProductDialog()">
       </ax-button>
+
+      @if (tableFilterable) {
+        <div class="filter-controls">
+          @if (showFilters()) {
+            <ax-button 
+              variant="flat" 
+              color="primary" 
+              [label]="getClearFiltersLabel()"
+              (click)="clearTableFilters()">
+              <ax-icon name="clear"></ax-icon>
+            </ax-button>
+          }
+          <ax-button 
+            variant="flat" 
+            color="primary" 
+            [label]="showFilters() ? ('hideFilters' | translate) : ('showFilters' | translate)"
+            (click)="toggleFilters(); $event.stopPropagation()">
+            <ax-icon [name]="showFilters() ? 'visibility_off' : 'visibility'"></ax-icon>
+          </ax-button>
+        </div>
+      }
     </div>
 
     <div class="table-container">
-      <ax-table [passThrough]="true">
-        <table mat-table [dataSource]="products() || []" class="product-table">
-          <ng-container matColumnDef="productCode">
-            <th mat-header-cell *matHeaderCellDef>{{ 'productCode' | translate }}</th>
-            <td mat-cell *matCellDef="let product">{{ product.productCode || '-' }}</td>
-          </ng-container>
+      <!-- Custom cell templates defined outside ax-table for ViewChild access -->
+      <ng-template #unitPriceCell let-row let-column="column">
+        {{ row.unitPrice || 0 | currency }}
+      </ng-template>
 
-          <ng-container matColumnDef="productName">
-            <th mat-header-cell *matHeaderCellDef>{{ 'productName' | translate }}</th>
-            <td mat-cell *matCellDef="let product">{{ product.productName || '-' }}</td>
-          </ng-container>
+      <ng-template #costCell let-row let-column="column">
+        {{ row.cost || 0 | currency }}
+      </ng-template>
 
-          <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>{{ 'description' | translate }}</th>
-            <td mat-cell *matCellDef="let product">{{ product.description || '-' }}</td>
-          </ng-container>
+      <ng-template #activeCell let-row let-column="column">
+        {{ row.active ? 'Yes' : 'No' }}
+      </ng-template>
 
-          <ng-container matColumnDef="unitPrice">
-            <th mat-header-cell *matHeaderCellDef>{{ 'unitPrice' | translate }}</th>
-            <td mat-cell *matCellDef="let product">{{ product.unitPrice || 0 | currency }}</td>
-          </ng-container>
+      <ng-template #jsonDataCell let-row let-column="column">
+        <pre class="json-data">{{ JsonUtilRef.formatJsonData(row.jsonData) }}</pre>
+      </ng-template>
 
-          <ng-container matColumnDef="cost">
-            <th mat-header-cell *matHeaderCellDef>{{ 'cost' | translate }}</th>
-            <td mat-cell *matCellDef="let product">{{ product.cost || 0 | currency }}</td>
-          </ng-container>
+      <ng-template #actionsCell let-row let-column="column">
+        <div class="action-buttons">
+          <ax-button 
+            variant="icon" 
+            color="primary" 
+            (click)="openEditProductDialog(row); $event.stopPropagation()"
+            [axTooltip]="'edit' | translate">
+            <ax-icon name="edit"></ax-icon>
+          </ax-button>
+          <ax-button 
+            variant="icon" 
+            color="warn" 
+            (click)="deleteProduct(row); $event.stopPropagation()" 
+            [axTooltip]="'delete' | translate">
+            <ax-icon name="delete"></ax-icon>
+          </ax-button>
+        </div>
+      </ng-template>
 
-          <ng-container matColumnDef="unitOfMeasure">
-            <th mat-header-cell *matHeaderCellDef>{{ 'unitOfMeasure' | translate }}</th>
-            <td mat-cell *matCellDef="let product">{{ product.unitOfMeasure || '-' }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="active">
-            <th mat-header-cell *matHeaderCellDef>{{ 'active' | translate }}</th>
-            <td mat-cell *matCellDef="let product">{{ product.active ? 'Yes' : 'No' }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="jsonData">
-            <th mat-header-cell *matHeaderCellDef>{{ 'jsonData' | translate }}</th>
-            <td mat-cell *matCellDef="let product">
-              <pre class="json-data">{{ JsonUtilRef.formatJsonData(product.jsonData) }}</pre>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
-            <td mat-cell *matCellDef="let product">
-              <div class="action-buttons">
-                <ax-button 
-                  variant="icon" 
-                  color="primary" 
-                  (click)="openEditProductDialog(product)"
-                  [axTooltip]="'edit' | translate">
-                  <ax-icon name="edit"></ax-icon>
-                </ax-button>
-                <ax-button 
-                  variant="icon" 
-                  color="warn" 
-                  (click)="deleteProduct(product)" 
-                  [axTooltip]="'delete' | translate">
-                  <ax-icon name="delete"></ax-icon>
-                </ax-button>
-              </div>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
-        </table>
+      <ax-table
+        #axTable
+        [dataSource]="products() || []"
+        [columns]="columns()"
+        [filterable]="tableFilterable"
+        [showFilter]="showFilterValue"
+        [showSort]="true"
+        [showPaginator]="true"
+        [pageSize]="10"
+        [selectionMode]="'none'">
       </ax-table>
 
       @if (products() && products().length === 0 && !isLoading()) {

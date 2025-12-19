@@ -19,58 +19,72 @@
         [label]="'addNewInventory' | translate"
         (click)="openAddInventoryDialog()">
       </ax-button>
+
+      @if (tableFilterable) {
+        <div class="filter-controls">
+          @if (showFilters()) {
+            <ax-button 
+              variant="flat" 
+              color="primary" 
+              [label]="getClearFiltersLabel()"
+              (click)="clearTableFilters()">
+              <ax-icon name="clear"></ax-icon>
+            </ax-button>
+          }
+          <ax-button 
+            variant="flat" 
+            color="primary" 
+            [label]="showFilters() ? ('hideFilters' | translate) : ('showFilters' | translate)"
+            (click)="toggleFilters(); $event.stopPropagation()">
+            <ax-icon [name]="showFilters() ? 'visibility_off' : 'visibility'"></ax-icon>
+          </ax-button>
+        </div>
+      }
     </div>
 
     <div class="table-container">
-      <ax-table [passThrough]="true">
-        <table mat-table [dataSource]="inventory() || []" class="inventory-table">
-          <ng-container matColumnDef="productId">
-            <th mat-header-cell *matHeaderCellDef>{{ 'productId' | translate }}</th>
-            <td mat-cell *matCellDef="let inv">{{ getProductDisplay(inv.productId) }}</td>
-          </ng-container>
+      <!-- Custom cell templates defined outside ax-table for ViewChild access -->
+      <ng-template #productIdCell let-row let-column="column">
+        {{ getProductDisplay(row.productId) }}
+      </ng-template>
 
-          <ng-container matColumnDef="warehouseId">
-            <th mat-header-cell *matHeaderCellDef>{{ 'warehouseId' | translate }}</th>
-            <td mat-cell *matCellDef="let inv">{{ getWarehouseDisplay(inv.warehouseId) }}</td>
-          </ng-container>
+      <ng-template #warehouseIdCell let-row let-column="column">
+        {{ getWarehouseDisplay(row.warehouseId) }}
+      </ng-template>
 
-          <ng-container matColumnDef="quantity">
-            <th mat-header-cell *matHeaderCellDef>{{ 'quantity' | translate }}</th>
-            <td mat-cell *matCellDef="let inv">{{ inv.quantity || 0 }}</td>
-          </ng-container>
+      <ng-template #jsonDataCell let-row let-column="column">
+        <pre class="json-data">{{ JsonUtilRef.formatJsonData(row.jsonData) }}</pre>
+      </ng-template>
 
-          <ng-container matColumnDef="jsonData">
-            <th mat-header-cell *matHeaderCellDef>{{ 'jsonData' | translate }}</th>
-            <td mat-cell *matCellDef="let inv">
-              <pre class="json-data">{{ JsonUtilRef.formatJsonData(inv.jsonData) }}</pre>
-            </td>
-          </ng-container>
+      <ng-template #actionsCell let-row let-column="column">
+        <div class="action-buttons">
+          <ax-button 
+            variant="icon" 
+            color="primary" 
+            (click)="openEditInventoryDialog(row); $event.stopPropagation()"
+            [axTooltip]="'edit' | translate">
+            <ax-icon name="edit"></ax-icon>
+          </ax-button>
+          <ax-button 
+            variant="icon" 
+            color="warn" 
+            (click)="deleteInventory(row); $event.stopPropagation()" 
+            [axTooltip]="'delete' | translate">
+            <ax-icon name="delete"></ax-icon>
+          </ax-button>
+        </div>
+      </ng-template>
 
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
-            <td mat-cell *matCellDef="let inv">
-              <div class="action-buttons">
-                <ax-button 
-                  variant="icon" 
-                  color="primary" 
-                  (click)="openEditInventoryDialog(inv)"
-                  [axTooltip]="'edit' | translate">
-                  <ax-icon name="edit"></ax-icon>
-                </ax-button>
-                <ax-button 
-                  variant="icon" 
-                  color="warn" 
-                  (click)="deleteInventory(inv)" 
-                  [axTooltip]="'delete' | translate">
-                  <ax-icon name="delete"></ax-icon>
-                </ax-button>
-              </div>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
-        </table>
+      <ax-table
+        #axTable
+        [dataSource]="inventory() || []"
+        [columns]="columns()"
+        [filterable]="tableFilterable"
+        [showFilter]="showFilterValue"
+        [showSort]="true"
+        [showPaginator]="true"
+        [pageSize]="10"
+        [selectionMode]="'none'">
       </ax-table>
 
       @if (inventory() && inventory().length === 0 && !isLoading()) {

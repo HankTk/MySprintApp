@@ -83,6 +83,13 @@
         align-items: center;
         gap: 8px;
       }
+      
+      .filter-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+      }
     }
 
     .table-container {

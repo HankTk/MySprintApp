@@ -13,84 +13,77 @@
     </mat-card-header>
 
     <div class="controls-section">
-      <div class="filter-section">
-        <mat-form-field appearance="outline" class="status-filter">
-          <mat-label>{{ 'accountsReceivable.filter.status' | translate }}</mat-label>
-          <mat-select [value]="statusFilter()" (selectionChange)="statusFilter.set($event.value)">
-            <mat-option [value]="null">{{ 'accountsReceivable.filter.all' | translate }}</mat-option>
-            <mat-option value="INVOICED">{{ 'accountsReceivable.status.invoiced' | translate }}</mat-option>
-            <mat-option value="PAID">{{ 'accountsReceivable.status.paid' | translate }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      @if (tableFilterable) {
+        <div class="filter-controls">
+          @if (showFilters()) {
+            <ax-button 
+              variant="flat" 
+              color="primary" 
+              [label]="getClearFiltersLabel()"
+              (click)="clearTableFilters()">
+              <ax-icon name="clear"></ax-icon>
+            </ax-button>
+          }
+          <ax-button 
+            variant="flat" 
+            color="primary" 
+            [label]="showFilters() ? ('hideFilters' | translate) : ('showFilters' | translate)"
+            (click)="toggleFilters(); $event.stopPropagation()">
+            <ax-icon [name]="showFilters() ? 'visibility_off' : 'visibility'"></ax-icon>
+          </ax-button>
+        </div>
+      }
     </div>
 
     <div class="table-container">
-      <ax-table [passThrough]="true">
-        <table mat-table [dataSource]="filteredOrders() || []" class="invoice-table">
-          <ng-container matColumnDef="invoiceNumber">
-            <th mat-header-cell *matHeaderCellDef>{{ 'accountsReceivable.table.invoiceNumber' | translate }}</th>
-            <td mat-cell *matCellDef="let order">{{ order.invoiceNumber || '-' }}</td>
-          </ng-container>
+      <!-- Custom cell templates defined outside ax-table for ViewChild access -->
+      <ng-template #customerCell let-row let-column="column">
+        {{ getCustomerName(row.customerId) }}
+      </ng-template>
 
-          <ng-container matColumnDef="orderNumber">
-            <th mat-header-cell *matHeaderCellDef>{{ 'accountsReceivable.table.orderNumber' | translate }}</th>
-            <td mat-cell *matCellDef="let order">{{ order.orderNumber || order.id?.substring(0, 8) || '-' }}</td>
-          </ng-container>
+      <ng-template #invoiceDateCell let-row let-column="column">
+        {{ formatDate(row.invoiceDate) }}
+      </ng-template>
 
-          <ng-container matColumnDef="customer">
-            <th mat-header-cell *matHeaderCellDef>{{ 'accountsReceivable.customer' | translate }}</th>
-            <td mat-cell *matCellDef="let order">{{ getCustomerName(order.customerId) }}</td>
-          </ng-container>
+      <ng-template #invoiceAmountCell let-row let-column="column">
+        {{ row.total || 0 | currency }}
+      </ng-template>
 
-          <ng-container matColumnDef="invoiceDate">
-            <th mat-header-cell *matHeaderCellDef>{{ 'accountsReceivable.table.invoiceDate' | translate }}</th>
-            <td mat-cell *matCellDef="let order">{{ formatDate(order.invoiceDate) }}</td>
-          </ng-container>
+      <ng-template #paidAmountCell let-row let-column="column">
+        {{ (row.jsonData?.paymentAmount || 0) | currency }}
+      </ng-template>
 
-          <ng-container matColumnDef="invoiceAmount">
-            <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsReceivable.table.invoiceAmount' | translate }}</th>
-            <td mat-cell *matCellDef="let order" class="text-right">{{ order.total || 0 | currency }}</td>
-          </ng-container>
+      <ng-template #outstandingCell let-row let-column="column">
+        <span [class.outstanding-positive]="calculateOutstandingAmount(row) > 0">
+          {{ calculateOutstandingAmount(row) | currency }}
+        </span>
+      </ng-template>
 
-          <ng-container matColumnDef="paidAmount">
-            <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsReceivable.table.paidAmount' | translate }}</th>
-            <td mat-cell *matCellDef="let order" class="text-right">{{ (order.jsonData?.paymentAmount || 0) | currency }}</td>
-          </ng-container>
+      <ng-template #statusCell let-row let-column="column">
+        <ax-chip [label]="getStatusLabel(row.status)" [customColor]="getStatusColor(row.status)" [customBackgroundColor]="getStatusBackgroundColor(row.status)">
+        </ax-chip>
+      </ng-template>
 
-          <ng-container matColumnDef="outstanding">
-            <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'accountsReceivable.outstanding' | translate }}</th>
-            <td mat-cell *matCellDef="let order" class="text-right">
-              <span [class.outstanding-positive]="calculateOutstandingAmount(order) > 0">
-                {{ calculateOutstandingAmount(order) | currency }}
-              </span>
-            </td>
-          </ng-container>
+      <ng-template #actionsCell let-row let-column="column">
+        <ax-button 
+          variant="icon" 
+          color="primary" 
+          (click)="viewInvoice(row); $event.stopPropagation()" 
+          [axTooltip]="'view' | translate">
+          <ax-icon name="visibility"></ax-icon>
+        </ax-button>
+      </ng-template>
 
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>{{ 'accountsReceivable.table.status' | translate }}</th>
-            <td mat-cell *matCellDef="let order">
-              <ax-chip [label]="getStatusLabel(order.status)" [customColor]="getStatusColor(order.status)" [customBackgroundColor]="getStatusBackgroundColor(order.status)">
-              </ax-chip>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>{{ 'actions' | translate }}</th>
-            <td mat-cell *matCellDef="let order">
-              <ax-button 
-                variant="icon" 
-                color="primary" 
-                (click)="viewInvoice(order)" 
-                [axTooltip]="'view' | translate">
-                <ax-icon name="visibility"></ax-icon>
-              </ax-button>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
-        </table>
+      <ax-table
+        #axTable
+        [dataSource]="filteredOrders() || []"
+        [columns]="columns()"
+        [filterable]="tableFilterable"
+        [showFilter]="showFilterValue"
+        [showSort]="true"
+        [showPaginator]="true"
+        [pageSize]="10"
+        [selectionMode]="'none'">
       </ax-table>
 
       @if (filteredOrders() && filteredOrders().length === 0 && !isLoading()) {

@@ -76,6 +76,29 @@
 
     }
 
+  .controls-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-md);
+    flex-shrink: 0;
+    padding: var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg);
+
+    .add-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .filter-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+  }
+
   .add-user-section {
     padding: var(--spacing-lg) var(--spacing-lg) 0 var(--spacing-lg);
     margin-bottom: var(--spacing-lg);

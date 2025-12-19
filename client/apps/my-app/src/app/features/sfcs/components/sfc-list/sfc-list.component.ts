@@ -1,11 +1,14 @@
-import { Component, OnInit, inject, OnDestroy, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, signal, computed, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { 
   AxButtonComponent, 
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
   AxTableComponent,
+  AxTableColumnDef,
+  FilterOption,
   MatTableModule,
   MatCardModule
 } from '@ui/components';
@@ -38,15 +41,31 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './sfc-list.component.html',
   styleUrls: ['./sfc-list.component.scss']
 })
-export class SFCListComponent implements OnInit, OnDestroy {
+export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['sfcNumber', 'rmaNumber', 'orderNumber', 'customerName', 'status', 'assignedTo', 'jsonData', 'actions']);
+  showFilters = signal<boolean>(true);
+  showFilterValue = true; // Regular property for @Input binding
+  
+  // Table-level flag: whether the table supports filtering
+  tableFilterable = true;
+  
+  // Column definitions for the new ax-table
+  columns = signal<AxTableColumnDef<SFC>[]>([]);
+  
+  // Template references for custom cells
+  @ViewChild('jsonDataCell') jsonDataCellTemplate?: TemplateRef<any>;
+  @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
+  
+  // Reference to the table component
+  @ViewChild('axTable') axTable?: AxTableComponent<SFC>;
 
   private store = inject(StoreService);
   private sfcService = inject(SFCService);
   private rmaService = inject(RMAService);
   private languageService = inject(LanguageService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   private subscriptions = new Subscription();
 
@@ -55,6 +74,18 @@ export class SFCListComponent implements OnInit, OnDestroy {
   sfcs = this.store.select('sfcs');
   rmas = this.store.select('rmas');
   processingRMA = signal<string | null>(null);
+  
+  constructor() {
+    // Reinitialize columns when sfcs change (using effect)
+    effect(() => {
+      // Access signal to create dependency
+      this.sfcs();
+      // Reinitialize columns if templates are available
+      if (this.jsonDataCellTemplate) {
+        this.initializeColumns();
+      }
+    });
+  }
 
   // Find RMAs that need SFC creation (APPROVED or RECEIVED status, and no SFC exists)
   rmasNeedingSFC = computed(() => {
@@ -74,8 +105,88 @@ export class SFCListComponent implements OnInit, OnDestroy {
     this.loadRMAs();
   }
 
+  ngAfterViewInit(): void {
+    // Initialize columns after view init so templates are available
+    this.initializeColumns();
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  private initializeColumns(): void {
+    this.columns.set([
+      {
+        key: 'sfcNumber',
+        header: this.languageService.instant('sfcNumber'),
+        field: 'sfcNumber',
+        sortable: true,
+        filterable: true,
+        filterType: 'text',
+        formatter: (value) => value || '-'
+      },
+      {
+        key: 'rmaNumber',
+        header: this.languageService.instant('rmaNumber'),
+        field: 'rmaNumber',
+        sortable: true,
+        filterable: true,
+        filterType: 'text',
+        formatter: (value) => value || '-'
+      },
+      {
+        key: 'orderNumber',
+        header: this.languageService.instant('orderNumber'),
+        field: 'orderNumber',
+        sortable: true,
+        filterable: true,
+        filterType: 'text',
+        formatter: (value) => value || '-'
+      },
+      {
+        key: 'customerName',
+        header: this.languageService.instant('customerName'),
+        field: 'customerName',
+        sortable: true,
+        filterable: true,
+        filterType: 'text',
+        formatter: (value) => value || '-'
+      },
+      {
+        key: 'status',
+        header: this.languageService.instant('status'),
+        field: 'status',
+        sortable: true,
+        filterable: true,
+        filterType: 'text',
+        formatter: (value) => value || '-'
+      },
+      {
+        key: 'assignedTo',
+        header: this.languageService.instant('assignedTo'),
+        field: 'assignedTo',
+        sortable: true,
+        filterable: true,
+        filterType: 'text',
+        formatter: (value) => value || '-'
+      },
+      {
+        key: 'jsonData',
+        header: this.languageService.instant('jsonData'),
+        field: 'jsonData',
+        sortable: false,
+        filterable: false,
+        cellTemplate: this.jsonDataCellTemplate
+      },
+      {
+        key: 'actions',
+        header: this.languageService.instant('actions'),
+        field: 'id',
+        sortable: false,
+        filterable: false,
+        cellTemplate: this.actionsCellTemplate
+      }
+    ]);
   }
 
   loadSFCs(): void {
@@ -120,6 +231,31 @@ export class SFCListComponent implements OnInit, OnDestroy {
 
   goBack(): void {
     this.router.navigate(['/']);
+  }
+
+  clearTableFilters(): void {
+    if (this.axTable) {
+      this.axTable.clearFilters();
+    }
+  }
+
+  getClearFiltersLabel(): string {
+    const translated = this.languageService.instant('clearFilters');
+    // If translation returns the key itself, it means the key wasn't found
+    return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
+  }
+
+  toggleFilters(): void {
+    const currentValue = this.showFilters();
+    const newValue = !currentValue;
+    
+    // Update both signal and property
+    this.showFilters.set(newValue);
+    this.showFilterValue = newValue;
+    
+    // Force change detection to ensure the binding is updated
+    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 }
 

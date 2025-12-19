@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, OnDestroy, signal } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { 
@@ -7,6 +7,8 @@ import {
   AxCardComponent,
   AxIconComponent,
   AxTableComponent,
+  AxTableColumnDef,
+  FilterOption,
   MatTableModule,
   MatCardModule
 } from '@ui/components';
@@ -40,9 +42,27 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './po-list.component.html',
   styleUrls: ['./po-list.component.scss']
 })
-export class PurchaseOrderListComponent implements OnInit, OnDestroy {
+export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['orderNumber', 'supplierName', 'orderDate', 'status', 'total', 'actions']);
+  showFilters = signal<boolean>(true);
+  showFilterValue = true; // Regular property for @Input binding
+  
+  // Table-level flag: whether the table supports filtering
+  tableFilterable = true;
+  
+  // Column definitions for the new ax-table
+  columns = signal<AxTableColumnDef<PurchaseOrder>[]>([]);
+  
+  // Template references for custom cells
+  @ViewChild('supplierNameCell') supplierNameCellTemplate?: TemplateRef<any>;
+  @ViewChild('orderDateCell') orderDateCellTemplate?: TemplateRef<any>;
+  @ViewChild('totalCell') totalCellTemplate?: TemplateRef<any>;
+  @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
+  
+  // Reference to the table component
+  @ViewChild('axTable') axTable?: AxTableComponent<PurchaseOrder>;
+  
   vendors = signal<Vendor[]>([]);
 
   private store = inject(StoreService);
@@ -50,18 +70,113 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy {
   private vendorService = inject(VendorService);
   private languageService = inject(LanguageService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   private subscriptions = new Subscription();
 
   purchaseOrders = this.store.select('purchase-orders');
+  
+  constructor() {
+    // Reinitialize columns when purchase orders or vendors change (using effect)
+    effect(() => {
+      // Access signals to create dependency
+      this.purchaseOrders();
+      this.vendors();
+      // Reinitialize columns if templates are available
+      if (this.supplierNameCellTemplate) {
+        this.initializeColumns();
+      }
+    });
+  }
 
   async ngOnInit(): Promise<void> {
     await this.loadVendors();
     this.loadPurchaseOrders();
   }
 
+  ngAfterViewInit(): void {
+    // Initialize columns after view init so templates are available
+    this.initializeColumns();
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  private initializeColumns(): void {
+    this.columns.set([
+      {
+        key: 'orderNumber',
+        header: this.languageService.instant('orderNumber'),
+        field: 'orderNumber',
+        sortable: true,
+        filterable: true,
+        filterType: 'text',
+        formatter: (value) => value || '-'
+      },
+      {
+        key: 'supplierName',
+        header: this.languageService.instant('supplier'),
+        field: 'supplierId',
+        sortable: true,
+        filterable: true,
+        filterType: 'select',
+        filterOptions: (data: PurchaseOrder[]): FilterOption[] => {
+          const vendors = this.vendors() || [];
+          const vendorMap = new Map<string, string>();
+          data.forEach(po => {
+            if (po.supplierId && !vendorMap.has(po.supplierId)) {
+              const vendor = vendors.find((v: Vendor) => v.id === po.supplierId);
+              const name = vendor ? (vendor.companyName || `${vendor.lastName} ${vendor.firstName}` || vendor.email || po.supplierId) : (po.supplierId || '');
+              vendorMap.set(po.supplierId, name);
+            }
+          });
+          const vendorNames = Array.from(vendorMap.entries())
+            .map(([id, name]) => ({ value: id || '', label: name || '' }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+          return [
+            { value: '', label: 'All' },
+            ...vendorNames
+          ];
+        },
+        cellTemplate: this.supplierNameCellTemplate
+      },
+      {
+        key: 'orderDate',
+        header: this.languageService.instant('orderDate'),
+        field: 'orderDate',
+        sortable: true,
+        filterable: true,
+        filterType: 'date-range',
+        cellTemplate: this.orderDateCellTemplate
+      },
+      {
+        key: 'status',
+        header: this.languageService.instant('status'),
+        field: 'status',
+        sortable: true,
+        filterable: true,
+        filterType: 'text',
+        formatter: (value) => value || '-'
+      },
+      {
+        key: 'total',
+        header: this.languageService.instant('total'),
+        field: 'total',
+        sortable: true,
+        filterable: false,
+        align: 'right',
+        cellTemplate: this.totalCellTemplate
+      },
+      {
+        key: 'actions',
+        header: this.languageService.instant('actions'),
+        field: 'id',
+        sortable: false,
+        filterable: false,
+        cellTemplate: this.actionsCellTemplate
+      }
+    ]);
   }
 
   loadPurchaseOrders(): void {
@@ -111,6 +226,31 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy {
     } catch {
       return dateString;
     }
+  }
+
+  clearTableFilters(): void {
+    if (this.axTable) {
+      this.axTable.clearFilters();
+    }
+  }
+
+  getClearFiltersLabel(): string {
+    const translated = this.languageService.instant('clearFilters');
+    // If translation returns the key itself, it means the key wasn't found
+    return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
+  }
+
+  toggleFilters(): void {
+    const currentValue = this.showFilters();
+    const newValue = !currentValue;
+    
+    // Update both signal and property
+    this.showFilters.set(newValue);
+    this.showFilterValue = newValue;
+    
+    // Force change detection to ensure the binding is updated
+    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 }
 

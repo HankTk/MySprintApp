@@ -13,118 +13,90 @@
     </mat-card-header>
 
     <div class="controls-section">
-      <div class="filter-section">
-        <mat-form-field appearance="outline" class="date-filter">
-          <mat-label>{{ 'generalLedger.filter.fromDate' | translate }}</mat-label>
-          <input matInput [matDatepicker]="dateFromPicker" [value]="dateFrom()" (dateChange)="onDateFromChange($event.value)">
-          <mat-datepicker-toggle matIconSuffix [for]="dateFromPicker"></mat-datepicker-toggle>
-          <mat-datepicker #dateFromPicker></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="date-filter">
-          <mat-label>{{ 'generalLedger.filter.toDate' | translate }}</mat-label>
-          <input matInput [matDatepicker]="dateToPicker" [value]="dateTo()" (dateChange)="onDateToChange($event.value)">
-          <mat-datepicker-toggle matIconSuffix [for]="dateToPicker"></mat-datepicker-toggle>
-          <mat-datepicker #dateToPicker></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="type-filter">
-          <mat-label>{{ 'generalLedger.filter.byType' | translate }}</mat-label>
-          <mat-select [value]="typeFilter()" (selectionChange)="onTypeFilterChange($event.value)">
-            <mat-option [value]="null">{{ 'generalLedger.filter.allTypes' | translate }}</mat-option>
-            <mat-option value="REVENUE">{{ 'generalLedger.type.revenue' | translate }}</mat-option>
-            <mat-option value="COST">{{ 'generalLedger.type.cost' | translate }}</mat-option>
-            <mat-option value="EXPENSE">{{ 'generalLedger.type.expense' | translate }}</mat-option>
-            <mat-option value="ACCOUNTS_PAYABLE">{{ 'generalLedger.type.accountsPayable' | translate }}</mat-option>
-            <mat-option value="PAYMENT">{{ 'generalLedger.type.payment' | translate }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      @if (tableFilterable) {
+        <div class="filter-controls">
+          @if (showFilters()) {
+            <ax-button 
+              variant="flat" 
+              color="primary" 
+              [label]="getClearFiltersLabel()"
+              (click)="clearTableFilters()">
+              <ax-icon name="clear"></ax-icon>
+            </ax-button>
+          }
+          <ax-button 
+            variant="flat" 
+            color="primary" 
+            [label]="showFilters() ? ('hideFilters' | translate) : ('showFilters' | translate)"
+            (click)="toggleFilters(); $event.stopPropagation()">
+            <ax-icon [name]="showFilters() ? 'visibility_off' : 'visibility'"></ax-icon>
+          </ax-button>
+        </div>
+      }
     </div>
 
     <div class="table-container">
-      <ax-table [passThrough]="true">
-        <table mat-table [dataSource]="filteredEntries() || []" class="gl-table">
-          <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef>{{ 'generalLedger.table.date' | translate }}</th>
-            <td mat-cell *matCellDef="let entry">{{ formatDate(entry.date) }}</td>
-          </ng-container>
+      <!-- Custom cell templates defined outside ax-table for ViewChild access -->
+      <ng-template #dateCell let-row let-column="column">
+        {{ formatDate(row.date) }}
+      </ng-template>
 
-          <ng-container matColumnDef="type">
-            <th mat-header-cell *matHeaderCellDef>{{ 'generalLedger.table.type' | translate }}</th>
-            <td mat-cell *matCellDef="let entry">
-              <span 
-                class="type-badge" 
-                [style.color]="getTypeColor(entry.type)"
-                [style.background-color]="getTypeBackgroundColor(entry.type)">
-                {{ getTypeLabel(entry.type) }}
-              </span>
-            </td>
-          </ng-container>
+      <ng-template #typeCell let-row let-column="column">
+        <span 
+          class="type-badge" 
+          [style.color]="getTypeColor(row.type)"
+          [style.background-color]="getTypeBackgroundColor(row.type)">
+          {{ getTypeLabel(row.type) }}
+        </span>
+      </ng-template>
 
-          <ng-container matColumnDef="orderPoInvoice">
-            <th mat-header-cell *matHeaderCellDef>{{ 'generalLedger.table.orderPoInvoice' | translate }}</th>
-            <td mat-cell *matCellDef="let entry">
-              <span *ngIf="entry.poNumber">{{ 'generalLedger.poPrefix' | translate }} {{ entry.poNumber }}</span>
-              <span *ngIf="entry.orderNumber">{{ 'generalLedger.orderPrefix' | translate }} {{ entry.orderNumber }}</span>
-              <span *ngIf="!entry.poNumber && !entry.orderNumber">-</span>
-              <span *ngIf="entry.invoiceNumber"> / {{ entry.invoiceNumber }}</span>
-            </td>
-          </ng-container>
+      <ng-template #orderPoInvoiceCell let-row let-column="column">
+        <span *ngIf="row.poNumber">{{ 'generalLedger.poPrefix' | translate }} {{ row.poNumber }}</span>
+        <span *ngIf="row.orderNumber">{{ 'generalLedger.orderPrefix' | translate }} {{ row.orderNumber }}</span>
+        <span *ngIf="!row.poNumber && !row.orderNumber">-</span>
+        <span *ngIf="row.invoiceNumber"> / {{ row.invoiceNumber }}</span>
+      </ng-template>
 
-          <ng-container matColumnDef="customerSupplier">
-            <th mat-header-cell *matHeaderCellDef>{{ 'generalLedger.table.customerSupplier' | translate }}</th>
-            <td mat-cell *matCellDef="let entry">{{ entry.customerName || entry.supplierName || '-' }}</td>
-          </ng-container>
+      <ng-template #quantityCell let-row let-column="column">
+        {{ row.quantity }}
+      </ng-template>
 
-          <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>{{ 'generalLedger.table.description' | translate }}</th>
-            <td mat-cell *matCellDef="let entry">{{ entry.description }}</td>
-          </ng-container>
+      <ng-template #debitCell let-row let-column="column">
+        <span [class.debit-amount]="getDebitAmount(row) > 0">
+          {{ getDebitAmount(row) > 0 ? (getDebitAmount(row) | currency) : '-' }}
+        </span>
+      </ng-template>
 
-          <ng-container matColumnDef="quantity">
-            <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'generalLedger.table.quantity' | translate }}</th>
-            <td mat-cell *matCellDef="let entry" class="text-right">{{ entry.quantity }}</td>
-          </ng-container>
+      <ng-template #creditCell let-row let-column="column">
+        <span [class.credit-amount]="getCreditAmount(row) > 0">
+          {{ getCreditAmount(row) > 0 ? (getCreditAmount(row) | currency) : '-' }}
+        </span>
+      </ng-template>
 
-          <ng-container matColumnDef="debit">
-            <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'generalLedger.table.debit' | translate }}</th>
-            <td mat-cell *matCellDef="let entry" class="text-right">
-              <span [class.debit-amount]="getDebitAmount(entry) > 0">
-                {{ getDebitAmount(entry) > 0 ? (getDebitAmount(entry) | currency) : '-' }}
-              </span>
-            </td>
-          </ng-container>
+      <ng-template #actionsCell let-row let-column="column">
+        <ax-button 
+          *ngIf="row.orderId || row.poId"
+          variant="icon" 
+          color="primary" 
+          (click)="viewEntry(row); $event.stopPropagation()" 
+          [axTooltip]="'generalLedger.table.view' | translate">
+          <ax-icon name="visibility"></ax-icon>
+        </ax-button>
+      </ng-template>
 
-          <ng-container matColumnDef="credit">
-            <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'generalLedger.table.credit' | translate }}</th>
-            <td mat-cell *matCellDef="let entry" class="text-right">
-              <span [class.credit-amount]="getCreditAmount(entry) > 0">
-                {{ getCreditAmount(entry) > 0 ? (getCreditAmount(entry) | currency) : '-' }}
-              </span>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'generalLedger.table.actions' | translate }}</th>
-            <td mat-cell *matCellDef="let entry" class="text-center">
-              <ax-button 
-                *ngIf="entry.orderId || entry.poId"
-                variant="icon" 
-                color="primary" 
-                (click)="viewEntry(entry)" 
-                [axTooltip]="'generalLedger.table.view' | translate">
-                <ax-icon name="visibility"></ax-icon>
-              </ax-button>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
-        </table>
+      <ax-table
+        #axTable
+        [dataSource]="glEntries() || []"
+        [columns]="columns()"
+        [filterable]="tableFilterable"
+        [showFilter]="showFilterValue"
+        [showSort]="true"
+        [showPaginator]="true"
+        [pageSize]="10"
+        [selectionMode]="'none'">
       </ax-table>
 
-      @if (filteredEntries() && filteredEntries().length === 0 && !isLoading()) {
+      @if (glEntries() && glEntries().length === 0 && !isLoading()) {
         <div class="no-data">
           <ax-icon name="info" class="no-data-icon"></ax-icon>
           <p>{{ 'generalLedger.noEntries' | translate }}</p>
@@ -139,7 +111,7 @@
       }
     </div>
 
-    @if (filteredEntries() && filteredEntries().length > 0) {
+    @if (glEntries() && glEntries().length > 0) {
       <div class="summary-section">
         <div class="summary-item">
           <span class="summary-label">{{ 'generalLedger.summary.totalDebit' | translate }}</span>

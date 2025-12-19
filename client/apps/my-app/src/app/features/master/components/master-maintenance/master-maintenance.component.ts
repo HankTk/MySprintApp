@@ -131,11 +131,7 @@ export class MasterMaintenanceComponent {
   }
 
   goBack(): void {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      this.router.navigate(['/master']);
-    }
+    this.router.navigate(['/master']);
   }
 
   exportData(): void {
