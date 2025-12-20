@@ -36,6 +36,13 @@ mat-card-title {
 .full-width {
   width: 100%;
   margin-bottom: 16px;
+
+  // Add space to the left of prefix icons
+  ::ng-deep ax-icon[matPrefix] {
+    margin-left: 16px;
+    margin-right: 8px;
+    display: inline-block;
+  }
 }
 
 .button-container {
