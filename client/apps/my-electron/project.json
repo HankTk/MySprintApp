@@ -16,7 +16,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "electron ../../dist/apps/my-electron/main.js",
+        "command": "electron dist/apps/my-electron/main.js",
         "dependsOn": ["build"]
       }
     },

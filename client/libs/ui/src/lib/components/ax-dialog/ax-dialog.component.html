@@ -9,11 +9,12 @@
       }
     </div>
   }
-  
+
   <div class="ax-dialog-content">
     @if (contentTemplate) {
       <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-    } @else {
+    }
+    @else {
       <ng-content></ng-content>
     }
   </div>

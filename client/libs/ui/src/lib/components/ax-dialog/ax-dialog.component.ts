@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./ax-dialog.component.scss']
 })
 export class AxDialogComponent {
+
   @Input() title?: string;
   @Input() width?: string = '500px';
   @Input() showCloseButton = true;
@@ -32,5 +33,6 @@ export class AxDialogComponent {
     }
     this.close.emit();
   }
+
 }
 

@@ -44,3 +44,7 @@ out/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+.nx/installation
+.nx/cache
+.nx/workspace-data
