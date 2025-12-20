@@ -50,8 +50,8 @@ import { GLEntry, GLEntryType } from '../../models/general-ledger-entry.model';
 export class GeneralLedgerListComponent implements OnInit, AfterViewInit {
   isLoading = signal<boolean>(false);
   glEntries = signal<GLEntry[]>([]);
-  showFilters = signal<boolean>(true);
-  showFilterValue = true; // Regular property for @Input binding
+  showFilters = signal<boolean>(false);
+  showFilterValue = false; // Regular property for @Input binding
   
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;

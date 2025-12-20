@@ -45,8 +45,8 @@ import { firstValueFrom } from 'rxjs';
 export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['orderNumber', 'supplierName', 'orderDate', 'status', 'total', 'actions']);
-  showFilters = signal<boolean>(true);
-  showFilterValue = true; // Regular property for @Input binding
+  showFilters = signal<boolean>(false);
+  showFilterValue = false; // Regular property for @Input binding
   
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;

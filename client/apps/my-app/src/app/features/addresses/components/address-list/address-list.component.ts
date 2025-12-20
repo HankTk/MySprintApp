@@ -42,8 +42,8 @@ import { AddressService } from '../../services/address.service';
 export class AddressListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['addressType', 'streetAddress1', 'city', 'state', 'postalCode', 'country', 'jsonData', 'actions']);
-  showFilters = signal<boolean>(true);
-  showFilterValue = true; // Regular property for @Input binding
+  showFilters = signal<boolean>(false);
+  showFilterValue = false; // Regular property for @Input binding
   
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;

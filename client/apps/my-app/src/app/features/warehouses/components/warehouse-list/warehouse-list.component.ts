@@ -41,8 +41,8 @@ import { WarehouseService } from '../../services/warehouse.service';
 export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['warehouseCode', 'warehouseName', 'address', 'description', 'active', 'jsonData', 'actions']);
-  showFilters = signal<boolean>(true);
-  showFilterValue = true; // Regular property for @Input binding
+  showFilters = signal<boolean>(false);
+  showFilterValue = false; // Regular property for @Input binding
   
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;

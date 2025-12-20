@@ -41,8 +41,8 @@ import { AxTooltipDirective } from '@ui/components';
 export class VendorListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['vendorNumber', 'companyName', 'lastName', 'firstName', 'email', 'phone', 'jsonData', 'actions']);
-  showFilters = signal<boolean>(true);
-  showFilterValue = true; // Regular property for @Input binding
+  showFilters = signal<boolean>(false);
+  showFilterValue = false; // Regular property for @Input binding
   
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;

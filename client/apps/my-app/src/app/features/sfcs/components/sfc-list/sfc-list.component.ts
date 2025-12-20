@@ -44,8 +44,8 @@ import { firstValueFrom } from 'rxjs';
 export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['sfcNumber', 'rmaNumber', 'orderNumber', 'customerName', 'status', 'assignedTo', 'jsonData', 'actions']);
-  showFilters = signal<boolean>(true);
-  showFilterValue = true; // Regular property for @Input binding
+  showFilters = signal<boolean>(false);
+  showFilterValue = false; // Regular property for @Input binding
   
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;

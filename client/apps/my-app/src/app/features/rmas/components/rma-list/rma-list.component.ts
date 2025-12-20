@@ -43,8 +43,8 @@ import { RMAService } from '../../services/rma.service';
 export class RMAListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['rmaNumber', 'orderNumber', 'customerName', 'rmaDate', 'status', 'total', 'jsonData', 'actions']);
-  showFilters = signal<boolean>(true);
-  showFilterValue = true; // Regular property for @Input binding
+  showFilters = signal<boolean>(false);
+  showFilterValue = false; // Regular property for @Input binding
   
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;

@@ -49,8 +49,8 @@ import { Customer } from '../../../customers/models/customer.model';
 export class AccountReceivableListComponent implements OnInit, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['invoiceNumber', 'orderNumber', 'customer', 'invoiceDate', 'invoiceAmount', 'paidAmount', 'outstanding', 'status', 'actions']);
-  showFilters = signal<boolean>(true);
-  showFilterValue = true; // Regular property for @Input binding
+  showFilters = signal<boolean>(false);
+  showFilterValue = false; // Regular property for @Input binding
   
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;

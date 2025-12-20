@@ -46,8 +46,8 @@ import { AxTooltipDirective } from '@ui/components';
 export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['productId', 'warehouseId', 'quantity', 'jsonData', 'actions']);
-  showFilters = signal<boolean>(true);
-  showFilterValue = true; // Regular property for @Input binding
+  showFilters = signal<boolean>(false);
+  showFilterValue = false; // Regular property for @Input binding
   
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
@@ -172,7 +172,7 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   goBack(): void {
-    this.router.navigate(['/master']);
+    this.router.navigate(['/']);
   }
 
   private initializeColumns(): void {

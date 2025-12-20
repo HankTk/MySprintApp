@@ -43,8 +43,8 @@ import { AxTooltipDirective } from '@ui/components';
 export class ProductListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['productCode', 'productName', 'description', 'unitPrice', 'cost', 'unitOfMeasure', 'active', 'jsonData', 'actions']);
-  showFilters = signal<boolean>(true);
-  showFilterValue = true; // Regular property for @Input binding
+  showFilters = signal<boolean>(false);
+  showFilterValue = false; // Regular property for @Input binding
   
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
