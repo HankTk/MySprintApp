@@ -1,9 +1,9 @@
 {
-  "name": "app-dev",
+  "name": "my-dev",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/app-dev/src",
-  "root": "apps/app-dev",
+  "sourceRoot": "apps/my-dev/src",
+  "root": "apps/my-dev",
   "prefix": "app",
   "tags": [],
   "targets": {
@@ -11,21 +11,21 @@
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "browser": "apps/app-dev/src/main.ts",
+        "browser": "apps/my-dev/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "apps/app-dev/tsconfig.app.json",
+        "tsConfig": "apps/my-dev/tsconfig.app.json",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/app-dev/public"
+            "input": "apps/my-dev/public"
           },
           {
             "glob": "**/*",
-            "input": "apps/app-dev/src/assets",
+            "input": "apps/my-dev/src/assets",
             "output": "assets"
           }
         ],
-        "styles": ["apps/app-dev/src/styles.scss"]
+        "styles": ["apps/my-dev/src/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -55,10 +55,10 @@
       "executor": "@angular/build:dev-server",
       "configurations": {
         "production": {
-          "buildTarget": "app-dev:build:production"
+          "buildTarget": "my-dev:build:production"
         },
         "development": {
-          "buildTarget": "app-dev:build:development"
+          "buildTarget": "my-dev:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -70,19 +70,19 @@
       "executor": "@angular/build:karma",
       "options": {
         "polyfills": ["zone.js", "zone.js/testing"],
-        "tsConfig": "apps/app-dev/tsconfig.spec.json",
+        "tsConfig": "apps/my-dev/tsconfig.spec.json",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/app-dev/public"
+            "input": "apps/my-dev/public"
           },
           {
             "glob": "**/*",
-            "input": "apps/app-dev/src/assets",
+            "input": "apps/my-dev/src/assets",
             "output": "assets"
           }
         ],
-        "styles": ["apps/app-dev/src/styles.scss"]
+        "styles": ["apps/my-dev/src/styles.scss"]
       }
     }
   }

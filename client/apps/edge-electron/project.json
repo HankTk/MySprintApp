@@ -9,21 +9,21 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "tsc -p apps/my-electron/tsconfig.json && cp apps/my-electron/package.json dist/apps/my-electron/package.json",
-        "outputs": ["{workspaceRoot}/dist/apps/my-electron"]
+        "command": "tsc -p apps/edge-electron/tsconfig.json && cp apps/edge-electron/package.json dist/apps/edge-electron/package.json",
+        "outputs": ["{workspaceRoot}/dist/apps/edge-electron"]
       }
     },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "electron dist/apps/my-electron/main.js",
+        "command": "electron dist/apps/edge-electron/main.js",
         "dependsOn": ["build"]
       }
     },
     "package": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "electron-builder --config apps/my-electron/electron-builder.json",
+        "command": "electron-builder --config apps/edge-electron/electron-builder.json",
         "dependsOn": ["build", "my-app:build"]
       }
     }

@@ -7,7 +7,7 @@ import { angular } from '@analogjs/vite-plugin-angular';
 export default defineConfig({
   root: __dirname,
   build: {
-    outDir: '../../dist/apps/app-dev',
+    outDir: '../../dist/apps/my-dev',
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true
@@ -25,7 +25,7 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../coverage/apps/app-dev',
+      reportsDirectory: '../../coverage/apps/my-dev',
       provider: 'vite-v8'
     }
   }
