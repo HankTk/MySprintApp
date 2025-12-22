@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
-import { AxButtonComponent, AxIconComponent } from '@ui/components';
+import { AxIconComponent } from '@ui/components';
 
 @Component({
   selector: 'app-logout-confirm-dialog',
@@ -10,8 +11,8 @@ import { AxButtonComponent, AxIconComponent } from '@ui/components';
   imports: [
     CommonModule,
     MatDialogModule,
+    MatButtonModule,
     TranslateModule,
-    AxButtonComponent,
     AxIconComponent
   ],
   templateUrl: './logout-confirm-dialog.component.html',
@@ -21,10 +22,12 @@ export class LogoutConfirmDialogComponent {
   private dialogRef = inject(MatDialogRef<LogoutConfirmDialogComponent>);
 
   onConfirm(): void {
+    // Close dialog immediately
     this.dialogRef.close(true);
   }
 
   onCancel(): void {
+    // Close dialog immediately
     this.dialogRef.close(false);
   }
 }

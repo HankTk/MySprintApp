@@ -60,11 +60,14 @@ export class MainLayoutComponent {
     const dialogRef = this.dialog.open(LogoutConfirmDialogComponent, {
       width: '450px',
       maxWidth: '90vw',
-      disableClose: true
+      disableClose: true,
+      autoFocus: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
+        // Close all open dialogs before logging out
+        this.dialog.closeAll();
         this.authService.logout();
       }
     });

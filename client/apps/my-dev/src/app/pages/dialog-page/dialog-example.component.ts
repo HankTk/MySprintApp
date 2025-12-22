@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AxButtonComponent } from '@ui/components';
+import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-dialog-example',
   standalone: true,
-  imports: [CommonModule, AxButtonComponent, MatDialogModule],
+  imports: [CommonModule, MatDialogModule, MatButtonModule],
   template: `
     <div class="dialog-content">
       <h2>Example Dialog</h2>
       <p>This is an example dialog using Angular Material's MatDialog.</p>
       <p>You can add any content here.</p>
       <div class="dialog-actions">
-        <ax-button variant="raised" label="Close" (click)="onClose()"></ax-button>
-        <ax-button variant="raised" color="primary" label="Save" (click)="onSave()"></ax-button>
+        <button mat-button type="button" (click)="onClose()">Close</button>
+        <button mat-raised-button color="primary" type="button" (click)="onSave()">Save</button>
       </div>
     </div>
   `,
@@ -42,7 +42,7 @@ export class DialogExampleComponent {
 
   onSave(): void {
     console.log('Save clicked');
-    this.dialogRef.close();
+    this.dialogRef.close(true);
   }
 }
 

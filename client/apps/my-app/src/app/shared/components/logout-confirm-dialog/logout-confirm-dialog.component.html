@@ -11,18 +11,11 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end" class="dialog-actions">
-    <ax-button
-      variant="stroked"
-      type="button"
-      [label]="'cancel' | translate"
-      (click)="onCancel()">
-    </ax-button>
-    <ax-button
-      variant="raised"
-      color="primary"
-      type="button"
-      [label]="'logout.confirm' | translate"
-      (click)="onConfirm()">
-    </ax-button>
+    <button mat-stroked-button type="button" (click)="onCancel()">
+      {{ 'cancel' | translate }}
+    </button>
+    <button mat-raised-button color="primary" type="button" (click)="onConfirm()">
+      {{ 'logout.confirm' | translate }}
+    </button>
   </mat-dialog-actions>
 </div>

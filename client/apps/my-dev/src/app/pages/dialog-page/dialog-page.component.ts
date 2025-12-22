@@ -12,17 +12,43 @@ import { DialogExampleComponent } from './dialog-example.component';
   styleUrls: ['./dialog-page.component.scss']
 })
 export class DialogPageComponent {
+  private dialogRef: any = null;
+
   constructor(private dialog: MatDialog) {}
 
   openDialog(): void {
-    this.dialog.open(DialogExampleComponent, {
-      width: '500px'
+    // Close existing dialog if open
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
+    this.dialogRef = this.dialog.open(DialogExampleComponent, {
+      width: '500px',
+      disableClose: false,
+      hasBackdrop: true,
+      panelClass: 'dialog-example-panel'
+    });
+    
+    // Clear reference when dialog closes
+    this.dialogRef.afterClosed().subscribe(() => {
+      this.dialogRef = null;
     });
   }
 
   openLargeDialog(): void {
-    this.dialog.open(DialogExampleComponent, {
-      width: '800px'
+    // Close existing dialog if open
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
+    this.dialogRef = this.dialog.open(DialogExampleComponent, {
+      width: '800px',
+      disableClose: false,
+      hasBackdrop: true,
+      panelClass: 'dialog-example-panel'
+    });
+    
+    // Clear reference when dialog closes
+    this.dialogRef.afterClosed().subscribe(() => {
+      this.dialogRef = null;
     });
   }
 }
