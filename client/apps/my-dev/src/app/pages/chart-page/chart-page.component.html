@@ -1,0 +1,44 @@
+<div class="page-container">
+  <h1>Chart Component</h1>
+  <p class="description">A reusable chart component using Highcharts for data visualization.</p>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Line Chart</mat-card-title>
+      <mat-card-subtitle>Monthly sales data visualization</mat-card-subtitle>
+    </mat-card-header>
+    <ax-chart [config]="lineChartConfig" [height]="400"></ax-chart>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Bar Chart</mat-card-title>
+      <mat-card-subtitle>Product sales by category</mat-card-subtitle>
+    </mat-card-header>
+    <ax-chart [config]="barChartConfig" [height]="400"></ax-chart>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Pie Chart</mat-card-title>
+      <mat-card-subtitle>Market share by region</mat-card-subtitle>
+    </mat-card-header>
+    <ax-chart [config]="pieChartConfig" [height]="400"></ax-chart>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Area Chart</mat-card-title>
+      <mat-card-subtitle>Revenue over time</mat-card-subtitle>
+    </mat-card-header>
+    <ax-chart [config]="areaChartConfig" [height]="400"></ax-chart>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Multiple Series Line Chart</mat-card-title>
+      <mat-card-subtitle>Yearly comparison</mat-card-subtitle>
+    </mat-card-header>
+    <ax-chart [config]="multiLineChartConfig" [height]="400"></ax-chart>
+  </ax-card>
+</div>

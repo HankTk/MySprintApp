@@ -13,6 +13,8 @@ import { AxSelectComponent, AxSelectOption, AxCardComponent, MatCardModule } fro
 export class SelectPageComponent {
   selectedValue: string = '';
   selectedCountry: string = '';
+  selectedMultiple: string[] = [];
+  selectedMultipleCountries: string[] = [];
 
   options: AxSelectOption[] = [
     { value: 'option1', label: 'Option 1' },
@@ -26,7 +28,9 @@ export class SelectPageComponent {
     { value: 'uk', label: 'United Kingdom' },
     { value: 'jp', label: 'Japan' },
     { value: 'de', label: 'Germany' },
-    { value: 'fr', label: 'France' }
+    { value: 'fr', label: 'France' },
+    { value: 'ca', label: 'Canada' },
+    { value: 'au', label: 'Australia' }
   ];
 
   disabledOptions: AxSelectOption[] = [

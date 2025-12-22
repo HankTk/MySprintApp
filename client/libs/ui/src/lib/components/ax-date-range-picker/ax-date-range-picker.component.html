@@ -1,36 +1,450 @@
-<div class="ax-date-range-picker-container">
-  <mat-form-field appearance="outline" class="ax-date-field">
-    @if (label) {
-      <mat-label>{{ label }} (Start)</mat-label>
-    }
-    <input
-      matInput
-      [matDatepicker]="startPicker"
-      [value]="startDate"
-      [placeholder]="placeholder || 'Start date'"
-      [disabled]="disabled"
-      (dateChange)="onStartDateChange($event.value)"
-      (blur)="onTouched()"
-    />
-    <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
-    <mat-datepicker #startPicker></mat-datepicker>
-  </mat-form-field>
+<!-- Calendar template for popover -->
+<ng-template #calendarTemplate>
+  <div class="ax-date-range-picker-inline">
+    <div class="date-range-picker-layout">
+      <!-- Left sidebar: Predefined ranges -->
+      @if (showPredefinedRanges) {
+        <div class="predefined-ranges-sidebar">
+          <div class="predefined-ranges-list">
+            @for (range of predefinedRanges; track range.label) {
+              <button
+                class="predefined-range-item"
+                (click)="selectPredefinedRange(range)"
+                type="button">
+                {{ range.label }}
+              </button>
+            }
+            <button
+              class="predefined-range-item custom-range"
+              [class.active]="isCustomRange()"
+              type="button">
+              Custom Range
+            </button>
+          </div>
+        </div>
+      }
 
-  <mat-form-field appearance="outline" class="ax-date-field">
-    @if (label) {
-      <mat-label>{{ label }} (End)</mat-label>
-    }
-    <input
-      matInput
-      [matDatepicker]="endPicker"
-      [value]="endDate"
-      [placeholder]="placeholder || 'End date'"
-      [disabled]="disabled"
-      (dateChange)="onEndDateChange($event.value)"
-      (blur)="onTouched()"
-    />
-    <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
-    <mat-datepicker #endPicker></mat-datepicker>
-  </mat-form-field>
-</div>
+      <!-- Right section: Two-month calendar or unified selection view -->
+      <div class="calendar-section">
+        @if (viewMode === 'calendar') {
+          <div class="calendar-container">
+            <!-- First Month -->
+            <div class="calendar-month">
+              <div class="calendar-header">
+                <button mat-icon-button (click)="previousMonth()" type="button" class="nav-button">
+                  <mat-icon>chevron_left</mat-icon>
+                </button>
+                <button class="month-year-button" (click)="openMonthSelection(0)" type="button">
+                  {{ getMonthName(calendarStartDate) }}
+                </button>
+                <div class="spacer"></div>
+              </div>
+              <div class="calendar-grid">
+                <div class="calendar-weekdays">
+                  <div class="weekday">S</div>
+                  <div class="weekday">M</div>
+                  <div class="weekday">T</div>
+                  <div class="weekday">W</div>
+                  <div class="weekday">T</div>
+                  <div class="weekday">F</div>
+                  <div class="weekday">S</div>
+                </div>
+                <div class="calendar-days">
+                  @for (date of getDaysInMonth(calendarStartDate); track date.getTime()) {
+                    <button
+                      class="calendar-day"
+                      [class.other-month]="!isCurrentMonth(date, calendarStartDate)"
+                      [class.today]="isToday(date)"
+                      [class.in-range]="isDateInRange(date)"
+                      [class.start-date]="isDateStart(date)"
+                      [class.end-date]="isDateEnd(date)"
+                      [disabled]="disabled"
+                      (click)="onCalendarDateSelect(date)"
+                      type="button">
+                      {{ date.getDate() }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
 
+            <!-- Second Month -->
+            <div class="calendar-month">
+              <div class="calendar-header">
+                <div class="spacer"></div>
+                <button class="month-year-button" (click)="openMonthSelection(1)" type="button">
+                  {{ getMonthName(calendarEndDate) }}
+                </button>
+                <button mat-icon-button (click)="nextMonth()" type="button" class="nav-button">
+                  <mat-icon>chevron_right</mat-icon>
+                </button>
+              </div>
+              <div class="calendar-grid">
+                <div class="calendar-weekdays">
+                  <div class="weekday">S</div>
+                  <div class="weekday">M</div>
+                  <div class="weekday">T</div>
+                  <div class="weekday">W</div>
+                  <div class="weekday">T</div>
+                  <div class="weekday">F</div>
+                  <div class="weekday">S</div>
+                </div>
+                <div class="calendar-days">
+                  @for (date of getDaysInMonth(calendarEndDate); track date.getTime()) {
+                    <button
+                      class="calendar-day"
+                      [class.other-month]="!isCurrentMonth(date, calendarEndDate)"
+                      [class.today]="isToday(date)"
+                      [class.in-range]="isDateInRange(date)"
+                      [class.start-date]="isDateStart(date)"
+                      [class.end-date]="isDateEnd(date)"
+                      [disabled]="disabled"
+                      (click)="onCalendarDateSelect(date)"
+                      type="button">
+                      {{ date.getDate() }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <!-- Unified Month/Year Selection View (spans both calendars) - Material UI style -->
+          <div class="unified-selection-view">
+            <div class="selection-header">
+              @if (viewMode === 'month') {
+                <button mat-icon-button (click)="backToCalendar()" type="button" class="back-button">
+                  <mat-icon>arrow_back</mat-icon>
+                </button>
+              } @else if (viewMode === 'multi-year') {
+                <button mat-icon-button (click)="backFromYearToMonth()" type="button" class="back-button">
+                  <mat-icon>arrow_back</mat-icon>
+                </button>
+              }
+              <div class="selection-title-container">
+                @if (viewMode === 'month') {
+                  <button class="month-year-button" (click)="openYearSelection(activeCalendarIndex)" type="button">
+                    {{ selectedYear || (activeCalendarIndex === 0 ? getCurrentYear(0) : getCurrentYear(1)) }}
+                  </button>
+                } @else if (viewMode === 'multi-year') {
+                  <button mat-icon-button (click)="navigateYearRange('prev')" type="button" class="nav-year-range">
+                    <mat-icon>chevron_left</mat-icon>
+                  </button>
+                  <span class="year-range-label">{{ getYearRangeLabel() }}</span>
+                  <button mat-icon-button (click)="navigateYearRange('next')" type="button" class="nav-year-range">
+                    <mat-icon>chevron_right</mat-icon>
+                  </button>
+                }
+              </div>
+              <div class="spacer"></div>
+            </div>
+            
+            @if (viewMode === 'month') {
+              <!-- Month Selection -->
+              <div class="selection-grid month-grid">
+                @for (month of getMonthNames(); track month; let i = $index) {
+                  <button
+                    class="selection-item month-item"
+                    [class.selected]="selectedMonthIndex === i"
+                    (click)="selectMonth(i)"
+                    type="button">
+                    {{ month }}
+                  </button>
+                }
+              </div>
+            } @else if (viewMode === 'multi-year') {
+              <!-- Multi-Year Selection (Material UI style) -->
+              <div class="selection-grid year-grid multi-year-grid">
+                @for (year of yearRange; track year) {
+                  <button
+                    class="selection-item year-item"
+                    [class.selected]="isSelectedYearInRange(year)"
+                    (click)="selectYear(year)"
+                    type="button">
+                    {{ year }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Footer with date range display and buttons -->
+        <div class="calendar-footer">
+          <div class="date-range-display">
+            @if (getFormattedDateRange()) {
+              <span>{{ getFormattedDateRange() }}</span>
+            } @else {
+              <span class="placeholder">Select date range</span>
+            }
+          </div>
+          <div class="calendar-actions">
+            <button mat-button (click)="clearSelection()" type="button">Clear</button>
+            <button mat-button (click)="cancelSelection()" type="button">Cancel</button>
+            <button mat-raised-button color="primary" (click)="applySelection()" type="button">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+@if (popoverMode) {
+  <!-- Popover mode: Single input field that opens calendar in popover -->
+  <div class="ax-date-range-input-wrapper" #inputTrigger>
+    <mat-form-field appearance="outline" class="ax-date-field">
+      @if (label) {
+        <mat-label>{{ label }}</mat-label>
+      }
+      <input
+        matInput
+        [value]="getDateRangeDisplay()"
+        [placeholder]="placeholder || 'Select date range'"
+        [disabled]="disabled"
+        readonly
+        (click)="openPopover($event)"
+        (focus)="openPopover($event)">
+      <button
+        matIconSuffix
+        mat-icon-button
+        type="button"
+        (click)="openPopover($event); $event.stopPropagation()"
+        [disabled]="disabled"
+        aria-label="Open date range picker">
+        <mat-icon>calendar_today</mat-icon>
+      </button>
+    </mat-form-field>
+    @if (hint && !error) {
+      <mat-hint>{{ hint }}</mat-hint>
+    }
+    @if (error) {
+      <mat-error>Please select a valid date range</mat-error>
+    }
+  </div>
+} @else if (inline) {
+  <!-- Inline calendar view with predefined ranges -->
+  <div class="ax-date-range-picker-inline">
+    <div class="date-range-picker-layout">
+      <!-- Left sidebar: Predefined ranges -->
+      @if (showPredefinedRanges) {
+        <div class="predefined-ranges-sidebar">
+          <div class="predefined-ranges-list">
+            @for (range of predefinedRanges; track range.label) {
+              <button
+                class="predefined-range-item"
+                (click)="selectPredefinedRange(range)"
+                type="button">
+                {{ range.label }}
+              </button>
+            }
+            <button
+              class="predefined-range-item custom-range"
+              [class.active]="isCustomRange()"
+              type="button">
+              Custom Range
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Right section: Two-month calendar or unified selection view -->
+      <div class="calendar-section">
+        @if (viewMode === 'calendar') {
+          <div class="calendar-container">
+            <!-- First Month -->
+            <div class="calendar-month">
+              <div class="calendar-header">
+                <button mat-icon-button (click)="previousMonth()" type="button" class="nav-button">
+                  <mat-icon>chevron_left</mat-icon>
+                </button>
+                <button class="month-year-button" (click)="openMonthSelection(0)" type="button">
+                  {{ getMonthName(calendarStartDate) }}
+                </button>
+                <div class="spacer"></div>
+              </div>
+              <div class="calendar-grid">
+                <div class="calendar-weekdays">
+                  <div class="weekday">S</div>
+                  <div class="weekday">M</div>
+                  <div class="weekday">T</div>
+                  <div class="weekday">W</div>
+                  <div class="weekday">T</div>
+                  <div class="weekday">F</div>
+                  <div class="weekday">S</div>
+                </div>
+                <div class="calendar-days">
+                  @for (date of getDaysInMonth(calendarStartDate); track date.getTime()) {
+                    <button
+                      class="calendar-day"
+                      [class.other-month]="!isCurrentMonth(date, calendarStartDate)"
+                      [class.today]="isToday(date)"
+                      [class.in-range]="isDateInRange(date)"
+                      [class.start-date]="isDateStart(date)"
+                      [class.end-date]="isDateEnd(date)"
+                      [disabled]="disabled"
+                      (click)="onCalendarDateSelect(date)"
+                      type="button">
+                      {{ date.getDate() }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Second Month -->
+            <div class="calendar-month">
+              <div class="calendar-header">
+                <div class="spacer"></div>
+                <button class="month-year-button" (click)="openMonthSelection(1)" type="button">
+                  {{ getMonthName(calendarEndDate) }}
+                </button>
+                <button mat-icon-button (click)="nextMonth()" type="button" class="nav-button">
+                  <mat-icon>chevron_right</mat-icon>
+                </button>
+              </div>
+              <div class="calendar-grid">
+                <div class="calendar-weekdays">
+                  <div class="weekday">S</div>
+                  <div class="weekday">M</div>
+                  <div class="weekday">T</div>
+                  <div class="weekday">W</div>
+                  <div class="weekday">T</div>
+                  <div class="weekday">F</div>
+                  <div class="weekday">S</div>
+                </div>
+                <div class="calendar-days">
+                  @for (date of getDaysInMonth(calendarEndDate); track date.getTime()) {
+                    <button
+                      class="calendar-day"
+                      [class.other-month]="!isCurrentMonth(date, calendarEndDate)"
+                      [class.today]="isToday(date)"
+                      [class.in-range]="isDateInRange(date)"
+                      [class.start-date]="isDateStart(date)"
+                      [class.end-date]="isDateEnd(date)"
+                      [disabled]="disabled"
+                      (click)="onCalendarDateSelect(date)"
+                      type="button">
+                      {{ date.getDate() }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        } @else {
+          <!-- Unified Month/Year Selection View (spans both calendars) - Material UI style -->
+          <div class="unified-selection-view">
+            <div class="selection-header">
+              @if (viewMode === 'month') {
+                <button mat-icon-button (click)="backToCalendar()" type="button" class="back-button">
+                  <mat-icon>arrow_back</mat-icon>
+                </button>
+              } @else if (viewMode === 'multi-year') {
+                <button mat-icon-button (click)="backFromYearToMonth()" type="button" class="back-button">
+                  <mat-icon>arrow_back</mat-icon>
+                </button>
+              }
+              <div class="selection-title-container">
+                @if (viewMode === 'month') {
+                  <button class="month-year-button" (click)="openYearSelection(activeCalendarIndex)" type="button">
+                    {{ selectedYear || (activeCalendarIndex === 0 ? getCurrentYear(0) : getCurrentYear(1)) }}
+                  </button>
+                } @else if (viewMode === 'multi-year') {
+                  <button mat-icon-button (click)="navigateYearRange('prev')" type="button" class="nav-year-range">
+                    <mat-icon>chevron_left</mat-icon>
+                  </button>
+                  <span class="year-range-label">{{ getYearRangeLabel() }}</span>
+                  <button mat-icon-button (click)="navigateYearRange('next')" type="button" class="nav-year-range">
+                    <mat-icon>chevron_right</mat-icon>
+                  </button>
+                }
+              </div>
+              <div class="spacer"></div>
+            </div>
+            
+            @if (viewMode === 'month') {
+              <!-- Month Selection -->
+              <div class="selection-grid month-grid">
+                @for (month of getMonthNames(); track month; let i = $index) {
+                  <button
+                    class="selection-item month-item"
+                    [class.selected]="selectedMonthIndex === i"
+                    (click)="selectMonth(i)"
+                    type="button">
+                    {{ month }}
+                  </button>
+                }
+              </div>
+            } @else if (viewMode === 'multi-year') {
+              <!-- Multi-Year Selection (Material UI style) -->
+              <div class="selection-grid year-grid multi-year-grid">
+                @for (year of yearRange; track year) {
+                  <button
+                    class="selection-item year-item"
+                    [class.selected]="isSelectedYearInRange(year)"
+                    (click)="selectYear(year)"
+                    type="button">
+                    {{ year }}
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Footer with date range display and buttons -->
+        <div class="calendar-footer">
+          <div class="date-range-display">
+            @if (getFormattedDateRange()) {
+              <span>{{ getFormattedDateRange() }}</span>
+            } @else {
+              <span class="placeholder">Select date range</span>
+            }
+          </div>
+          <div class="calendar-actions">
+            <button mat-button (click)="clearSelection()" type="button">Clear</button>
+            <button mat-button (click)="cancelSelection()" type="button">Cancel</button>
+            <button mat-raised-button color="primary" (click)="applySelection()" type="button">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <!-- Traditional two-input field approach -->
+  <div class="ax-date-range-picker-container">
+    <mat-form-field appearance="outline" class="ax-date-field">
+      @if (label) {
+        <mat-label>{{ label }} (Start)</mat-label>
+      }
+      <input
+        matInput
+        [matDatepicker]="startPicker"
+        [value]="startDate"
+        [placeholder]="placeholder || 'Start date'"
+        [disabled]="disabled"
+        (dateChange)="onStartDateChange($event.value)"
+        (blur)="onTouched()"
+      />
+      <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="ax-date-field">
+      @if (label) {
+        <mat-label>{{ label }} (End)</mat-label>
+      }
+      <input
+        matInput
+        [matDatepicker]="endPicker"
+        [value]="endDate"
+        [placeholder]="placeholder || 'End date'"
+        [disabled]="disabled"
+        (dateChange)="onEndDateChange($event.value)"
+        (blur)="onTouched()"
+      />
+      <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+}

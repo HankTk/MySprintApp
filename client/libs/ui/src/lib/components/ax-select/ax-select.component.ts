@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, forwardRef, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,7 +29,7 @@ export interface AxSelectOption {
     }
   ]
 })
-export class AxSelectComponent implements ControlValueAccessor {
+export class AxSelectComponent implements ControlValueAccessor, OnInit {
   @Input() label?: string;
   @Input() placeholder?: string;
   @Input() options: AxSelectOption[] = [];
@@ -45,8 +45,20 @@ export class AxSelectComponent implements ControlValueAccessor {
   private onChange = (value: any) => {};
   private onTouched = () => {};
 
+  ngOnInit(): void {
+    // Initialize value as empty array if multiple is true and no value is set
+    if (this.multiple && this.value === undefined) {
+      this.value = [];
+    }
+  }
+
   writeValue(value: any): void {
-    this.value = value;
+    if (this.multiple) {
+      // Ensure value is an array for multiple selection
+      this.value = Array.isArray(value) ? value : (value !== null && value !== undefined ? [value] : []);
+    } else {
+      this.value = value;
+    }
   }
 
   registerOnChange(fn: (value: any) => void): void {

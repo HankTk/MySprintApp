@@ -42,6 +42,50 @@
 
   <ax-card class="example-card">
     <mat-card-header ax-card-header>
+      <mat-card-title>Date Range Picker with Popover (Two-Month Calendar)</mat-card-title>
+      <mat-card-subtitle>Single input field that opens calendar in popover</mat-card-subtitle>
+    </mat-card-header>
+    <p class="description">Click on the input field to open a popover with two-month calendar view and predefined date ranges.</p>
+    
+    <ax-date-range-picker
+      [popoverMode]="true"
+      [showPredefinedRanges]="true"
+      label="Date Range"
+      placeholder="Select date range"
+      [startDate]="inlineStartDate"
+      [endDate]="inlineEndDate"
+      (rangeChange)="onInlineRangeChange($event)">
+    </ax-date-range-picker>
+    
+    <div style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
+      <p><strong>Start Date:</strong> {{ inlineStartDate ? (inlineStartDate | date: 'short') : 'Not selected' }}</p>
+      <p><strong>End Date:</strong> {{ inlineEndDate ? (inlineEndDate | date: 'short') : 'Not selected' }}</p>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Enhanced Date Range Picker with Two-Month Calendar (Inline)</mat-card-title>
+      <mat-card-subtitle>Inline calendar view with predefined date ranges</mat-card-subtitle>
+    </mat-card-header>
+    <p class="description">This enhanced picker shows two months side-by-side with predefined range options on the left.</p>
+    
+    <ax-date-range-picker
+      [inline]="true"
+      [showPredefinedRanges]="true"
+      [startDate]="inlineStartDate"
+      [endDate]="inlineEndDate"
+      (rangeChange)="onInlineRangeChange($event)">
+    </ax-date-range-picker>
+    
+    <div style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
+      <p><strong>Start Date:</strong> {{ inlineStartDate ? (inlineStartDate | date: 'short') : 'Not selected' }}</p>
+      <p><strong>End Date:</strong> {{ inlineEndDate ? (inlineEndDate | date: 'short') : 'Not selected' }}</p>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>Single Field Date Range Picker (Table Filter Style)</mat-card-title>
     </mat-card-header>
     <p class="description">This demonstrates the single input field with popup approach used in table filters.</p>

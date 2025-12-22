@@ -38,7 +38,8 @@ export class SidebarComponent {
     { id: 'icon', label: 'Icon', icon: 'insert_emoticon' },
     { id: 'tooltip', label: 'Tooltip', icon: 'info' },
     { id: 'progress', label: 'Progress', icon: 'linear_scale' },
-    { id: 'typography', label: 'Typography', icon: 'text_fields' }
+    { id: 'typography', label: 'Typography', icon: 'text_fields' },
+    { id: 'chart', label: 'Chart', icon: 'bar_chart' }
   ];
 
   onItemClick(itemId: string): void {

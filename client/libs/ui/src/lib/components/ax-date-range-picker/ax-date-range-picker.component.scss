@@ -1,3 +1,61 @@
+// Global fix for Material icon button centering
+::ng-deep {
+  .ax-date-range-picker-inline,
+  .ax-date-range-picker-container {
+    button[mat-icon-button] {
+      position: relative !important;
+      
+      .mat-mdc-button-base {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      
+      .mdc-icon-button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        
+        .mdc-icon-button__icon {
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          margin: 0 !important;
+          width: 24px !important;
+          height: 24px !important;
+          position: absolute !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+        }
+        
+        .mat-icon {
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          margin: 0 !important;
+          width: 24px !important;
+          height: 24px !important;
+          font-size: 24px !important;
+          line-height: 1 !important;
+          position: absolute !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+        }
+      }
+    }
+  }
+}
+
 .ax-date-range-picker-container {
   display: flex;
   gap: var(--spacing-md, 16px);
@@ -8,3 +66,734 @@
   flex: 1;
 }
 
+.ax-date-range-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+// Inline calendar view styles
+.ax-date-range-picker-inline {
+  width: 100%;
+}
+
+.date-range-picker-layout {
+  display: flex;
+  background: #ffffff;
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 700px;
+  // Material Design elevation removed here since overlay panel handles it
+}
+
+.predefined-ranges-sidebar {
+  width: 200px;
+  background: #fafafa; // Material Design surface variant
+  border-right: 1px solid rgba(0, 0, 0, 0.12); // Material Design divider color
+  padding: 16px 0;
+}
+
+.predefined-ranges-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.predefined-range-item {
+  background: transparent;
+  border: none;
+  padding: 12px 24px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif; // Material Design typography
+  color: rgba(0, 0, 0, 0.87); // Material Design text primary
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1); // Material Design transition
+  width: 100%;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04); // Material Design hover state
+  }
+
+  &:focus {
+    outline: none;
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  &.active,
+  &.custom-range.active {
+    background: rgba(25, 118, 210, 0.12); // Material Design primary color with 12% opacity
+    color: #1976d2; // Material Design primary color
+    font-weight: 500;
+  }
+}
+
+.calendar-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.calendar-container {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.calendar-month {
+  flex: 1;
+  min-width: 280px;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 0 8px;
+  
+  // Ensure all icon buttons in header are centered
+  button[mat-icon-button] {
+    position: relative !important;
+    
+    ::ng-deep {
+      .mat-mdc-button-base {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      
+      .mdc-icon-button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        position: relative !important;
+        
+        .mdc-icon-button__icon {
+          margin: 0 !important;
+          width: 24px !important;
+          height: 24px !important;
+          position: absolute !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+        }
+        
+        .mat-icon {
+          margin: 0 !important;
+          width: 24px !important;
+          height: 24px !important;
+          font-size: 24px !important;
+          line-height: 1 !important;
+          position: absolute !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+        }
+      }
+    }
+  }
+}
+
+.month-year {
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif; // Material Design typography
+  color: rgba(0, 0, 0, 0.87); // Material Design text primary
+  flex: 1;
+  text-align: center;
+  letter-spacing: 0.15px;
+}
+
+.nav-button {
+  width: 40px;
+  height: 40px;
+  color: rgba(0, 0, 0, 0.54); // Material Design icon color
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.04); // Material Design hover state
+  }
+  
+  ::ng-deep {
+    .mat-mdc-button-base {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 40px !important;
+      height: 40px !important;
+      padding: 0 !important;
+      min-width: 40px !important;
+    }
+    
+    .mdc-icon-button {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 40px !important;
+      height: 40px !important;
+      padding: 0 !important;
+      min-width: 40px !important;
+      
+      .mdc-icon-button__icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        width: 24px !important;
+        height: 24px !important;
+      }
+      
+      .mat-icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 24px !important;
+        line-height: 1 !important;
+      }
+    }
+  }
+  
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    line-height: 1;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+.spacer {
+  width: 40px;
+}
+
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif; // Material Design typography
+  color: rgba(0, 0, 0, 0.6); // Material Design text secondary
+  padding: 8px 0;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif; // Material Design typography
+  color: rgba(0, 0, 0, 0.87); // Material Design text primary
+  border-radius: 50%; // Material Design circular buttons
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); // Material Design transition
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px; // Material Design minimum touch target
+  min-height: 40px;
+
+  &:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.04); // Material Design hover state
+  }
+
+  &:focus:not(:disabled) {
+    outline: none;
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  &.other-month {
+    color: rgba(0, 0, 0, 0.38); // Material Design text disabled
+  }
+
+  &.today {
+    font-weight: 500;
+    color: #1976d2; // Material Design primary color
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 36px;
+      height: 36px;
+      border: 1px solid #1976d2;
+      border-radius: 50%;
+      z-index: -1;
+    }
+  }
+
+  &.in-range {
+    background: rgba(25, 118, 210, 0.12); // Material Design primary with 12% opacity
+    border-radius: 0;
+    
+    &:first-child {
+      border-top-left-radius: 50%;
+      border-bottom-left-radius: 50%;
+    }
+    
+    &:last-child {
+      border-top-right-radius: 50%;
+      border-bottom-right-radius: 50%;
+    }
+  }
+
+  &.start-date,
+  &.end-date {
+    background: #1976d2; // Material Design primary color
+    color: #ffffff;
+    font-weight: 500;
+    border-radius: 50%;
+    z-index: 1;
+    
+    &:hover {
+      background: #1565c0; // Darker shade on hover
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.38; // Material Design disabled opacity
+    color: rgba(0, 0, 0, 0.38);
+  }
+}
+
+.calendar-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12); // Material Design divider color
+  margin-top: 16px;
+}
+
+.date-range-display {
+  font-size: 14px;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif; // Material Design typography
+  color: rgba(0, 0, 0, 0.87); // Material Design text primary
+  font-weight: 500;
+  letter-spacing: 0.1px;
+
+  .placeholder {
+    color: rgba(0, 0, 0, 0.38); // Material Design text disabled
+    font-weight: 400;
+  }
+}
+
+.calendar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+// Month/Year selection styles
+.month-year-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  color: rgba(0, 0, 0, 0.87);
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: 0.15px;
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+  
+  &:focus {
+    outline: none;
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.unified-selection-view {
+  width: 100%;
+  padding: 16px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.month-year-selection {
+  padding: 8px;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.selection-title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.year-range-label {
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  color: rgba(0, 0, 0, 0.87);
+  letter-spacing: 0.15px;
+  min-width: 120px;
+  text-align: center;
+}
+
+.nav-year-range {
+  width: 40px;
+  height: 40px;
+  color: rgba(0, 0, 0, 0.54);
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+  
+  ::ng-deep {
+    .mat-mdc-button-base {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 40px !important;
+      height: 40px !important;
+      padding: 0 !important;
+      min-width: 40px !important;
+    }
+    
+    .mdc-icon-button {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 40px !important;
+      height: 40px !important;
+      padding: 0 !important;
+      min-width: 40px !important;
+      
+      .mdc-icon-button__icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        width: 24px !important;
+        height: 24px !important;
+      }
+      
+      .mat-icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 24px !important;
+        line-height: 1 !important;
+      }
+    }
+  }
+  
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    line-height: 1;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+.multi-year-grid {
+  grid-template-columns: repeat(4, 1fr);
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.selection-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  margin-bottom: 8px;
+  
+  // Ensure all icon buttons in header are centered
+  button[mat-icon-button] {
+    position: relative !important;
+    
+    ::ng-deep {
+      .mat-mdc-button-base {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      
+      .mdc-icon-button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 40px !important;
+        height: 40px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        position: relative !important;
+        
+        .mdc-icon-button__icon {
+          margin: 0 !important;
+          width: 24px !important;
+          height: 24px !important;
+          position: absolute !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+        }
+        
+        .mat-icon {
+          margin: 0 !important;
+          width: 24px !important;
+          height: 24px !important;
+          font-size: 24px !important;
+          line-height: 1 !important;
+          position: absolute !important;
+          top: 50% !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+        }
+      }
+    }
+  }
+}
+
+.selection-title {
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  color: rgba(0, 0, 0, 0.87);
+  letter-spacing: 0.1px;
+}
+
+.back-button {
+  width: 40px;
+  height: 40px;
+  color: rgba(0, 0, 0, 0.54);
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+  
+  ::ng-deep {
+    .mat-mdc-button-base {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 40px !important;
+      height: 40px !important;
+      padding: 0 !important;
+      min-width: 40px !important;
+    }
+    
+    .mdc-icon-button {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 40px !important;
+      height: 40px !important;
+      padding: 0 !important;
+      min-width: 40px !important;
+      
+      .mdc-icon-button__icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        width: 24px !important;
+        height: 24px !important;
+      }
+      
+      .mat-icon {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 !important;
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 24px !important;
+        line-height: 1 !important;
+      }
+    }
+  }
+  
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    line-height: 1;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+.selection-grid {
+  display: grid;
+  gap: 4px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.month-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.year-grid {
+  grid-template-columns: repeat(4, 1fr);
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.selection-item {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  color: rgba(0, 0, 0, 0.87);
+  padding: 12px 8px;
+  border-radius: 4px;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+  
+  &:focus {
+    outline: none;
+    background: rgba(0, 0, 0, 0.04);
+  }
+  
+  &.selected {
+    background: rgba(25, 118, 210, 0.12);
+    color: #1976d2;
+    font-weight: 500;
+  }
+}
+
+.month-item {
+  font-size: 13px;
+  letter-spacing: 0.1px;
+}
+
+.year-item {
+  font-size: 14px;
+  letter-spacing: 0.1px;
+}
+
+// Overlay panel styles - Material Design compliant
+::ng-deep {
+  .date-range-picker-overlay-panel {
+    // Material Design elevation 8 (for dropdowns/popovers)
+    box-shadow: 
+      0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+      0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+      0px 3px 14px 2px rgba(0, 0, 0, 0.12) !important;
+    border-radius: 4px !important;
+    overflow: hidden;
+    z-index: 10000;
+    background: #ffffff;
+    border: none;
+    
+    .cdk-overlay-pane {
+      pointer-events: auto !important;
+    }
+  }
+
+  .date-range-picker-backdrop {
+    background: rgba(0, 0, 0, 0.32) !important; // Material Design backdrop opacity
+  }
+  
+  // Ensure Material icon buttons center their icons
+  .ax-date-range-picker-inline {
+    button[mat-icon-button] {
+      .mat-mdc-button-base {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+      }
+      
+      .mdc-icon-button {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        width: 40px !important;
+        height: 40px !important;
+        
+        .mdc-icon-button__icon {
+          margin: 0 !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+        
+        .mat-icon {
+          margin: 0 !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          width: 24px !important;
+          height: 24px !important;
+          font-size: 24px !important;
+          line-height: 24px !important;
+        }
+      }
+    }
+  }
+}

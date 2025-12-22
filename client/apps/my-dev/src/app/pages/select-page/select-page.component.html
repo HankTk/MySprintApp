@@ -34,6 +34,42 @@
 
   <ax-card class="example-card">
     <mat-card-header ax-card-header>
+      <mat-card-title>Multiple Selection</mat-card-title>
+      <mat-card-subtitle>Select multiple options at once</mat-card-subtitle>
+    </mat-card-header>
+    <div class="select-group">
+      <ax-select
+        label="Select multiple options"
+        [options]="options"
+        [(ngModel)]="selectedMultiple"
+        [multiple]="true"
+        placeholder="Select one or more options">
+      </ax-select>
+      <p class="selected-value">Selected: {{ selectedMultiple.length > 0 ? selectedMultiple.join(', ') : 'None' }}</p>
+      <p class="selected-value">Count: {{ selectedMultiple.length }}</p>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Multiple Country Selection</mat-card-title>
+      <mat-card-subtitle>Select multiple countries</mat-card-subtitle>
+    </mat-card-header>
+    <div class="select-group">
+      <ax-select
+        label="Select countries"
+        [options]="countries"
+        [(ngModel)]="selectedMultipleCountries"
+        [multiple]="true"
+        placeholder="Choose countries">
+      </ax-select>
+      <p class="selected-value">Selected: {{ selectedMultipleCountries.length > 0 ? selectedMultipleCountries.join(', ') : 'None' }}</p>
+      <p class="selected-value">Count: {{ selectedMultipleCountries.length }}</p>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
       <mat-card-title>States</mat-card-title>
     </mat-card-header>
     <div class="select-states">

@@ -18,22 +18,353 @@
 
   .tab-content {
     padding: 24px 16px;
+    min-height: 300px;
 
     h3 {
       margin-top: 0;
       margin-bottom: 16px;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    h4 {
+      margin-top: 20px;
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: 500;
     }
 
     p {
       margin-bottom: 12px;
       line-height: 1.6;
+      color: rgba(0, 0, 0, 0.87);
     }
 
     ul {
       padding-left: 20px;
+      margin-bottom: 16px;
 
       li {
         margin-bottom: 8px;
+        line-height: 1.6;
+      }
+    }
+
+    // Info Section Styles
+    .info-section {
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .info-item {
+        display: flex;
+        flex-direction: column;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.02);
+        border-radius: 4px;
+
+        strong {
+          font-size: 12px;
+          text-transform: uppercase;
+          color: rgba(0, 0, 0, 0.6);
+          margin-bottom: 4px;
+        }
+
+        span {
+          font-size: 14px;
+          color: rgba(0, 0, 0, 0.87);
+        }
+      }
+    }
+
+    // Experience Section Styles
+    .experience-section {
+      .experience-item {
+        margin-bottom: 24px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+        &:last-child {
+          border-bottom: none;
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
+
+        h4 {
+          margin-top: 0;
+          margin-bottom: 4px;
+          color: rgba(0, 0, 0, 0.87);
+        }
+
+        .company {
+          color: rgba(0, 0, 0, 0.6);
+          font-size: 14px;
+          margin-bottom: 8px;
+        }
+
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    // Skills Section Styles
+    .skills-section {
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+        margin-top: 16px;
+      }
+
+      .skill-category {
+        h4 {
+          margin-top: 0;
+          margin-bottom: 12px;
+          color: rgba(0, 0, 0, 0.87);
+        }
+
+        ul {
+          list-style: none;
+          padding-left: 0;
+          margin: 0;
+
+          li {
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+            &:last-child {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+
+    // Projects Section Styles
+    .projects-section {
+      .project-item {
+        margin-bottom: 24px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+        &:last-child {
+          border-bottom: none;
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
+
+        h4 {
+          margin-top: 0;
+          margin-bottom: 4px;
+          color: rgba(0, 0, 0, 0.87);
+        }
+
+        .project-meta {
+          color: rgba(0, 0, 0, 0.6);
+          font-size: 14px;
+          margin-bottom: 8px;
+        }
+      }
+    }
+
+    // Specs Table Styles
+    .specs-table {
+      .spec-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        strong {
+          color: rgba(0, 0, 0, 0.87);
+        }
+
+        span {
+          color: rgba(0, 0, 0, 0.6);
+        }
+      }
+    }
+
+    // Review Section Styles
+    .review-item {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+      &:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 4px;
+
+        strong {
+          color: rgba(0, 0, 0, 0.87);
+        }
+
+        .rating {
+          color: #ffa726;
+          font-size: 14px;
+        }
+      }
+
+      .review-date {
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+
+      p {
+        margin-bottom: 0;
+      }
+    }
+
+    // Shipping Info Styles
+    .shipping-info {
+      h4 {
+        margin-top: 24px;
+        margin-bottom: 12px;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+
+    // Stats Grid Styles
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .stat-card {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.02);
+      border-radius: 8px;
+      border-left: 4px solid #2196f3;
+
+      h4 {
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.6);
+        text-transform: uppercase;
+      }
+
+      .stat-value {
+        font-size: 28px;
+        font-weight: 600;
+        color: rgba(0, 0, 0, 0.87);
+        margin-bottom: 4px;
+      }
+
+      .stat-change {
+        font-size: 12px;
+        margin: 0;
+
+        &.positive {
+          color: #4caf50;
+        }
+
+        &.negative {
+          color: #f44336;
+        }
+      }
+    }
+
+    // Revenue List Styles
+    .revenue-list {
+      margin-top: 16px;
+
+      .revenue-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 16px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+        &.total {
+          background: rgba(0, 0, 0, 0.02);
+          font-weight: 600;
+          border-top: 2px solid rgba(0, 0, 0, 0.12);
+        }
+
+        .revenue-label {
+          color: rgba(0, 0, 0, 0.87);
+        }
+
+        .revenue-value {
+          color: rgba(0, 0, 0, 0.87);
+          font-weight: 500;
+        }
+      }
+    }
+
+    // Activity List Styles
+    .activity-list {
+      margin-top: 16px;
+
+      .activity-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        strong {
+          color: rgba(0, 0, 0, 0.87);
+        }
+
+        span {
+          color: rgba(0, 0, 0, 0.6);
+        }
+      }
+    }
+
+    // Settings List Styles
+    .settings-list {
+      margin-top: 16px;
+
+      .setting-item {
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        label {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+
+          input[type="checkbox"] {
+            margin-right: 12px;
+            cursor: pointer;
+          }
+
+          span {
+            color: rgba(0, 0, 0, 0.87);
+          }
+        }
       }
     }
   }

@@ -77,6 +77,10 @@ export const routes: Routes = [
   {
     path: 'typography',
     loadComponent: () => import('./pages/typography-page/typography-page.component').then(m => m.TypographyPageComponent)
+  },
+  {
+    path: 'chart',
+    loadComponent: () => import('./pages/chart-page/chart-page.component').then(m => m.ChartPageComponent)
   }
 ];
 

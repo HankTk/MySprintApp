@@ -33,6 +33,11 @@ export class DateRangePickerPageComponent {
   singleFieldStartDate: Date | null = null;
   singleFieldEndDate: Date | null = null;
 
+  // Inline calendar date range picker
+  inlineStartDate: Date | null = null;
+  inlineEndDate: Date | null = null;
+  inlineDateRange: { start: Date | null; end: Date | null } = { start: null, end: null };
+
   toggleDateRangePicker(): void {
     this.isDateRangePickerOpen = !this.isDateRangePickerOpen;
   }
@@ -73,6 +78,12 @@ export class DateRangePickerPageComponent {
       return `Until ${end}`;
     }
     return '';
+  }
+
+  onInlineRangeChange(range: { start: Date | null; end: Date | null }): void {
+    this.inlineDateRange = range;
+    this.inlineStartDate = range.start;
+    this.inlineEndDate = range.end;
   }
 
   @HostListener('document:click', ['$event'])
