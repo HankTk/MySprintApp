@@ -25,14 +25,19 @@ function createWindow(): void {
   // Determine the URL to load
   const isDev = process.env['NODE_ENV'] === 'development' || !app.isPackaged;
   
+  // Get the app to load from environment variable (defaults to 'my-app')
+  const appToLoad = process.env['ELECTRON_APP'] || 'my-app';
+  const port = appToLoad === 'my-dev' ? '4300' : '4200';
+  
   if (isDev) {
     // In development, load from the dev server
-    mainWindow.loadURL('http://localhost:4200');
+    mainWindow.loadURL(`http://localhost:${port}`);
     // Open DevTools in development
     mainWindow.webContents.openDevTools();
   } else {
     // In production, load from the built files
-    const indexPath = path.join(__dirname, '../../my-app/index.html');
+    const appPath = appToLoad === 'my-dev' ? 'my-dev' : 'my-app';
+    const indexPath = path.join(__dirname, `../../${appPath}/index.html`);
     mainWindow.loadFile(indexPath);
   }
 

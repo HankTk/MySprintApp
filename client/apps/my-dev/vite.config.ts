@@ -13,6 +13,10 @@ export default defineConfig({
       transformMixedEsModules: true
     }
   },
+  server: {
+    port: 4300,
+    host: 'localhost'
+  },
   plugins: [
     nxViteTsPaths(),
     nxCopyAssetsPlugin(['*.md', 'favicon.ico']),
