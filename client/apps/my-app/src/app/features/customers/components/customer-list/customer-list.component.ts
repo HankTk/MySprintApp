@@ -8,8 +8,8 @@ import { LanguageService } from '../../../../shared/services/language.service';
 import { Subscription } from 'rxjs';
 import { JsonUtil } from '../../../../shared/utils/json.util';
 import { CustomerService } from '../../services/customer.service';
-import { 
-  AxButtonComponent, 
+import {
+  AxButtonComponent,
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
@@ -41,20 +41,20 @@ import { AxTooltipDirective } from '@ui/components';
 })
 export class CustomerListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
-  displayedColumns = signal<string[]>(['customerNumber', 'companyName', 'lastName', 'firstName', 'email', 'phone', 'jsonData', 'actions']);
+  displayedColumns = signal<string[]>(['customerNumber', 'companyName', 'lastName', 'firstName', 'email', 'phone', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<Customer>[]>([]);
-  
+
   // Template references for custom cells
-  @ViewChild('jsonDataCell') jsonDataCellTemplate?: TemplateRef<any>;
+
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<Customer>;
 
@@ -69,16 +69,14 @@ export class CustomerListComponent implements OnInit, OnDestroy, AfterViewInit {
   JsonUtilRef = JsonUtil;
 
   customers = this.store.select('customers');
-  
+
   constructor() {
     // Reinitialize columns when customers change (using effect)
     effect(() => {
       // Access signal to create dependency
       this.customers();
       // Reinitialize columns if templates are available
-      if (this.jsonDataCellTemplate) {
-        this.initializeColumns();
-      }
+
     });
   }
 
@@ -152,14 +150,7 @@ export class CustomerListComponent implements OnInit, OnDestroy, AfterViewInit {
         filterType: 'text',
         formatter: (value) => value || '-'
       },
-      {
-        key: 'jsonData',
-        header: this.languageService.instant('jsonData'),
-        field: 'jsonData',
-        sortable: false,
-        filterable: false,
-        cellTemplate: this.jsonDataCellTemplate
-      },
+
       {
         key: 'actions',
         header: this.languageService.instant('actions'),
@@ -206,11 +197,11 @@ export class CustomerListComponent implements OnInit, OnDestroy, AfterViewInit {
   toggleFilters(): void {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();

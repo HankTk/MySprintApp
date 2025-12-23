@@ -35,7 +35,7 @@
       
 
       <!-- Filter columns (always render if filtering is enabled, visibility controlled by CSS) -->
-      @if (filterable && showFilter) {
+      @if (filterable) {
         @for (column of computedColumns; track column.key) {
           <ng-container [matColumnDef]="column.key + '_filter'">
             <th mat-header-cell *matHeaderCellDef class="filter-header" [style.width]="column.width" [attr.data-column-key]="column.key">

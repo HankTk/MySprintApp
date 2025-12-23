@@ -11,8 +11,8 @@ import { JsonUtil } from '../../../../shared/utils/json.util';
 import { OrderService } from '../../services/order.service';
 import { CustomerService } from '../../../customers/services/customer.service';
 import { Customer } from '../../../customers/models/customer.model';
-import { 
-  AxButtonComponent, 
+import {
+  AxButtonComponent,
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
@@ -49,21 +49,21 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
   displayedColumns = signal<string[]>(['orderNumber', 'customerName', 'orderDate', 'status', 'total', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<Order>[]>([]);
-  
+
   // Template references for custom cells
   @ViewChild('statusCell') statusCellTemplate?: TemplateRef<any>;
   @ViewChild('totalCell') totalCellTemplate?: TemplateRef<any>;
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<Order>;
-  
+
   statusOptions: AxSelectOption[] = [
     { value: null, label: 'All' },
     { value: 'DRAFT', label: 'Draft' },
@@ -89,10 +89,10 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   orders = this.store.select('orders');
   customers = this.store.select('customers');
-  
+
   // No need for separate filteredOrders computed - ax-table handles filtering internally
   filteredOrders = this.orders;
-  
+
   constructor() {
     // Reinitialize columns when orders or customers change (using effect)
     effect(() => {
@@ -109,7 +109,7 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.loadOrders();
     this.loadCustomers();
-    
+
     this.subscriptions.add(
       this.router.events
         .pipe(filter(event => event instanceof NavigationEnd))
@@ -194,9 +194,11 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
         header: this.languageService.instant('total'),
         field: 'total',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.totalCellTemplate
+        cellTemplate: this.totalCellTemplate,
+        formatter: (value) => (value || 0).toString()
       },
       {
         key: 'actions',
@@ -261,7 +263,7 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
   getStatusLabel(status?: string): string {
     if (!status) return 'N/A';
     // Convert status like "PENDING_APPROVAL" to "pendingApproval" to match translation keys
-    const camelCaseStatus = status.toLowerCase().split('_').map((word, index) => 
+    const camelCaseStatus = status.toLowerCase().split('_').map((word, index) =>
       index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)
     ).join('');
     const key = `order.status.${camelCaseStatus}`;
@@ -299,20 +301,20 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
       newValue: newValue,
       showFilterValue: this.showFilterValue
     });
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     console.log('[OrderList] Toggling filters - after:', {
       showFilters: this.showFilters(),
       showFilterValue: this.showFilterValue
     });
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();
-    
+
     // Additional check after a short delay
     setTimeout(() => {
       console.log('[OrderList] After change detection:', {

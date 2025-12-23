@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { 
-  AxButtonComponent, 
+import {
+  AxButtonComponent,
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
@@ -40,21 +40,21 @@ import { WarehouseService } from '../../services/warehouse.service';
 })
 export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
-  displayedColumns = signal<string[]>(['warehouseCode', 'warehouseName', 'address', 'description', 'active', 'jsonData', 'actions']);
+  displayedColumns = signal<string[]>(['warehouseCode', 'warehouseName', 'address', 'description', 'active', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<Warehouse>[]>([]);
-  
+
   // Template references for custom cells
   @ViewChild('activeCell') activeCellTemplate?: TemplateRef<any>;
-  @ViewChild('jsonDataCell') jsonDataCellTemplate?: TemplateRef<any>;
+
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<Warehouse>;
 
@@ -69,16 +69,14 @@ export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit 
   JsonUtilRef = JsonUtil;
 
   warehouses = this.store.select('warehouses');
-  
+
   constructor() {
     // Reinitialize columns when warehouses change (using effect)
     effect(() => {
       // Access signal to create dependency
       this.warehouses();
       // Reinitialize columns if templates are available
-      if (this.jsonDataCellTemplate) {
-        this.initializeColumns();
-      }
+
     });
   }
 
@@ -147,14 +145,7 @@ export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit 
         ],
         cellTemplate: this.activeCellTemplate
       },
-      {
-        key: 'jsonData',
-        header: this.languageService.instant('jsonData'),
-        field: 'jsonData',
-        sortable: false,
-        filterable: false,
-        cellTemplate: this.jsonDataCellTemplate
-      },
+
       {
         key: 'actions',
         header: this.languageService.instant('actions'),
@@ -201,11 +192,11 @@ export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit 
   toggleFilters(): void {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();

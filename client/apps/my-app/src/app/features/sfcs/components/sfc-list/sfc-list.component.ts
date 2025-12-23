@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, OnDestroy, signal, computed, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { 
-  AxButtonComponent, 
+import {
+  AxButtonComponent,
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
@@ -43,20 +43,20 @@ import { firstValueFrom } from 'rxjs';
 })
 export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
-  displayedColumns = signal<string[]>(['sfcNumber', 'rmaNumber', 'orderNumber', 'customerName', 'status', 'assignedTo', 'jsonData', 'actions']);
+  displayedColumns = signal<string[]>(['sfcNumber', 'rmaNumber', 'orderNumber', 'customerName', 'status', 'assignedTo', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<SFC>[]>([]);
-  
+
   // Template references for custom cells
-  @ViewChild('jsonDataCell') jsonDataCellTemplate?: TemplateRef<any>;
+
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<SFC>;
 
@@ -74,16 +74,14 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
   sfcs = this.store.select('sfcs');
   rmas = this.store.select('rmas');
   processingRMA = signal<string | null>(null);
-  
+
   constructor() {
     // Reinitialize columns when sfcs change (using effect)
     effect(() => {
       // Access signal to create dependency
       this.sfcs();
       // Reinitialize columns if templates are available
-      if (this.jsonDataCellTemplate) {
-        this.initializeColumns();
-      }
+
     });
   }
 
@@ -91,7 +89,7 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
   rmasNeedingSFC = computed(() => {
     const rmasList = this.rmas() || [];
     const sfcsList = this.sfcs() || [];
-    
+
     return rmasList.filter((rma: RMA) => {
       if (rma.status !== 'APPROVED' && rma.status !== 'RECEIVED') return false;
       if (!rma.id) return false;
@@ -170,14 +168,7 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
         filterType: 'text',
         formatter: (value) => value || '-'
       },
-      {
-        key: 'jsonData',
-        header: this.languageService.instant('jsonData'),
-        field: 'jsonData',
-        sortable: false,
-        filterable: false,
-        cellTemplate: this.jsonDataCellTemplate
-      },
+
       {
         key: 'actions',
         header: this.languageService.instant('actions'),
@@ -199,7 +190,7 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async createSFCFromRMA(rma: RMA): Promise<void> {
     if (!rma.id) return;
-    
+
     try {
       this.processingRMA.set(rma.id);
       const sfc = await firstValueFrom(this.sfcService.createSFCFromRMA(rma.id));
@@ -248,11 +239,11 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
   toggleFilters(): void {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();

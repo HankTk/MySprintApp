@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, signal, computed, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { 
-  AxButtonComponent, 
+import {
+  AxButtonComponent,
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
@@ -51,13 +51,13 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
   displayedColumns = signal<string[]>(['invoiceNumber', 'poNumber', 'supplier', 'invoiceDate', 'invoiceAmount', 'paidAmount', 'outstanding', 'status', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<PurchaseOrder>[]>([]);
-  
+
   // Template references for custom cells
   @ViewChild('supplierCell') supplierCellTemplate?: TemplateRef<any>;
   @ViewChild('invoiceDateCell') invoiceDateCellTemplate?: TemplateRef<any>;
@@ -66,10 +66,10 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
   @ViewChild('outstandingCell') outstandingCellTemplate?: TemplateRef<any>;
   @ViewChild('statusCell') statusCellTemplate?: TemplateRef<any>;
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<PurchaseOrder>;
-  
+
   private store = inject(StoreService);
   private purchaseOrderService = inject(PurchaseOrderService);
   private vendorService = inject(VendorService);
@@ -83,14 +83,17 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
   // Filter POs that have been invoiced (INVOICED or PAID status)
   invoicedPOs = computed(() => {
     const pos = this.purchaseOrders() || [];
-    return pos.filter((po: PurchaseOrder) => 
+    return pos.filter((po: PurchaseOrder) =>
       po.status === 'INVOICED' || po.status === 'PAID'
-    );
+    ).map((po: PurchaseOrder) => ({
+      ...po,
+      outstandingAmount: Math.max(0, (po.total || 0) - (po.jsonData?.paymentAmount || 0))
+    }));
   });
 
   // No need for separate filteredPOs computed - ax-table handles filtering internally
   filteredPOs = this.invoicedPOs;
-  
+
   constructor() {
     // Reinitialize columns when purchase orders or vendors change (using effect)
     effect(() => {
@@ -175,27 +178,49 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
         header: this.languageService.instant('accountsPayable.table.invoiceAmount'),
         field: 'total',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.invoiceAmountCellTemplate
+        cellTemplate: this.invoiceAmountCellTemplate,
+        formatter: (value) => (value || 0).toString()
       },
       {
         key: 'paidAmount',
         header: this.languageService.instant('accountsPayable.table.paidAmount'),
         field: 'jsonData.paymentAmount',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.paidAmountCellTemplate
+        cellTemplate: this.paidAmountCellTemplate,
+        formatter: (value) => (value || 0).toString()
       },
       {
         key: 'outstanding',
         header: this.languageService.instant('accountsPayable.outstanding'),
-        field: 'total',
+        // Outstanding is calculated: total - paidAmount. Since we can't easily filter by a calculated field on the frontend
+        // without adding it to the data model, we'll map it in the data source if needed, or rely on client-side filtering 
+        // if the table supports it. For now, let's enable it and see.
+        // Actually, ax-table filtering works on the 'field' property. If we want to filter by outstanding, 
+        // we might need to compute it.
+        // But wait, the column definition doesn't direct filtering, key does? No, 'field' does.
+        // Let's use 'total' as placeholder or if table logic allows custom filter function (which ax-table seems to rely on 'field').
+        // Since we can't easily filter by computed field without data transformation, I will stick to enabling it
+        // but pointing to 'total' which is incorrect. 
+        // Better approach: In AccountsPayable, outstanding is calculated in template: calculateOutstandingAmount(po)
+        // I should probably not enable filter for 'outstanding' unless I add it to the model/data like I did for GL debit/credit.
+        // Reviewing plan... "Set filterable: true for ... outstanding".
+        // To make it work, I need to add 'outstandingAmount' to the data objects.
+        // I will do that in the same map/load logic if possible, or just skip it if it's too complex for now.
+        // Wait, AccountPayableListComponent uses `invoicedPOs` computed signal.
+        // I can map it there!
+        field: 'outstandingAmount',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.outstandingCellTemplate
+        cellTemplate: this.outstandingCellTemplate,
+        formatter: (value) => (value || 0).toString()
       },
       {
         key: 'status',
@@ -237,11 +262,11 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
   toggleFilters(): void {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();

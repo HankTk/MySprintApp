@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { 
-  AxButtonComponent, 
+import {
+  AxButtonComponent,
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
@@ -42,22 +42,22 @@ import { RMAService } from '../../services/rma.service';
 })
 export class RMAListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
-  displayedColumns = signal<string[]>(['rmaNumber', 'orderNumber', 'customerName', 'rmaDate', 'status', 'total', 'jsonData', 'actions']);
+  displayedColumns = signal<string[]>(['rmaNumber', 'orderNumber', 'customerName', 'rmaDate', 'status', 'total', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<RMA>[]>([]);
-  
+
   // Template references for custom cells
   @ViewChild('rmaDateCell') rmaDateCellTemplate?: TemplateRef<any>;
   @ViewChild('totalCell') totalCellTemplate?: TemplateRef<any>;
-  @ViewChild('jsonDataCell') jsonDataCellTemplate?: TemplateRef<any>;
+
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<RMA>;
 
@@ -72,16 +72,14 @@ export class RMAListComponent implements OnInit, OnDestroy, AfterViewInit {
   JsonUtilRef = JsonUtil;
 
   rmas = this.store.select('rmas');
-  
+
   constructor() {
     // Reinitialize columns when rmas change (using effect)
     effect(() => {
       // Access signal to create dependency
       this.rmas();
       // Reinitialize columns if templates are available
-      if (this.jsonDataCellTemplate) {
-        this.initializeColumns();
-      }
+
     });
   }
 
@@ -150,18 +148,13 @@ export class RMAListComponent implements OnInit, OnDestroy, AfterViewInit {
         header: this.languageService.instant('total'),
         field: 'total',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.totalCellTemplate
+        cellTemplate: this.totalCellTemplate,
+        formatter: (value) => (value || 0).toString()
       },
-      {
-        key: 'jsonData',
-        header: this.languageService.instant('jsonData'),
-        field: 'jsonData',
-        sortable: false,
-        filterable: false,
-        cellTemplate: this.jsonDataCellTemplate
-      },
+
       {
         key: 'actions',
         header: this.languageService.instant('actions'),
@@ -208,11 +201,11 @@ export class RMAListComponent implements OnInit, OnDestroy, AfterViewInit {
   toggleFilters(): void {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();

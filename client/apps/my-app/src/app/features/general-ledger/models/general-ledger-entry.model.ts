@@ -18,5 +18,7 @@ export interface GLEntry {
   amount: number;
   cost?: number;
   status: string;
+  debitAmount?: number;
+  creditAmount?: number;
 }
 

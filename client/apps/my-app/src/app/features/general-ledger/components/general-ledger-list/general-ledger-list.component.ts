@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, signal, effect, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { 
-  AxButtonComponent, 
+import {
+  AxButtonComponent,
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
@@ -52,13 +52,13 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit {
   glEntries = signal<GLEntry[]>([]);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<GLEntry>[]>([]);
-  
+
   // Template references for custom cells
   @ViewChild('dateCell') dateCellTemplate?: TemplateRef<any>;
   @ViewChild('typeCell') typeCellTemplate?: TemplateRef<any>;
@@ -67,7 +67,7 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit {
   @ViewChild('debitCell') debitCellTemplate?: TemplateRef<any>;
   @ViewChild('creditCell') creditCellTemplate?: TemplateRef<any>;
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<GLEntry>;
 
@@ -102,7 +102,11 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit {
     this.isLoading.set(true);
     this.glService.getGLEntries().subscribe({
       next: (entries) => {
-        this.glEntries.set(entries);
+        this.glEntries.set(entries.map(entry => ({
+          ...entry,
+          debitAmount: (entry.type === 'COST' || entry.type === 'EXPENSE' || entry.type === 'ACCOUNTS_PAYABLE') ? entry.amount : undefined,
+          creditAmount: (entry.type === 'REVENUE' || entry.type === 'PAYMENT') ? entry.amount : undefined
+        })));
         this.isLoading.set(false);
       },
       error: (error) => {
@@ -172,27 +176,33 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit {
         header: this.languageService.instant('generalLedger.table.quantity'),
         field: 'quantity',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.quantityCellTemplate
+        cellTemplate: this.quantityCellTemplate,
+        formatter: (value) => (value || 0).toString()
       },
       {
         key: 'debit',
         header: this.languageService.instant('generalLedger.table.debit'),
-        field: 'amount',
+        field: 'debitAmount',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.debitCellTemplate
+        cellTemplate: this.debitCellTemplate,
+        formatter: (value) => value ? value.toString() : ''
       },
       {
         key: 'credit',
         header: this.languageService.instant('generalLedger.table.credit'),
-        field: 'amount',
+        field: 'creditAmount',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.creditCellTemplate
+        cellTemplate: this.creditCellTemplate,
+        formatter: (value) => value ? value.toString() : ''
       },
       {
         key: 'actions',
@@ -220,11 +230,11 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit {
   toggleFilters(): void {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();

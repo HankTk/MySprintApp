@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { 
-  AxButtonComponent, 
+import {
+  AxButtonComponent,
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
@@ -41,21 +41,21 @@ import { AddressService } from '../../services/address.service';
 })
 export class AddressListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
-  displayedColumns = signal<string[]>(['addressType', 'streetAddress1', 'city', 'state', 'postalCode', 'country', 'jsonData', 'actions']);
+  displayedColumns = signal<string[]>(['addressType', 'streetAddress1', 'city', 'state', 'postalCode', 'country', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<Address>[]>([]);
-  
+
   // Template references for custom cells
   @ViewChild('addressTypeCell') addressTypeCellTemplate?: TemplateRef<any>;
-  @ViewChild('jsonDataCell') jsonDataCellTemplate?: TemplateRef<any>;
+
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<Address>;
 
@@ -71,16 +71,14 @@ export class AddressListComponent implements OnInit, OnDestroy, AfterViewInit {
   JsonUtilRef = JsonUtil;
 
   addresses = this.store.select('addresses');
-  
+
   constructor() {
     // Reinitialize columns when addresses change (using effect)
     effect(() => {
       // Access signal to create dependency
       this.addresses();
       // Reinitialize columns if templates are available
-      if (this.jsonDataCellTemplate) {
-        this.initializeColumns();
-      }
+
     });
   }
 
@@ -153,14 +151,7 @@ export class AddressListComponent implements OnInit, OnDestroy, AfterViewInit {
         filterType: 'text',
         formatter: (value) => value || '-'
       },
-      {
-        key: 'jsonData',
-        header: this.languageService.instant('jsonData'),
-        field: 'jsonData',
-        sortable: false,
-        filterable: false,
-        cellTemplate: this.jsonDataCellTemplate
-      },
+
       {
         key: 'actions',
         header: this.languageService.instant('actions'),
@@ -187,11 +178,11 @@ export class AddressListComponent implements OnInit, OnDestroy, AfterViewInit {
   toggleFilters(): void {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();

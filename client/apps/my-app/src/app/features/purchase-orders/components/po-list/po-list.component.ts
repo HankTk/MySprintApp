@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { 
-  AxButtonComponent, 
+import {
+  AxButtonComponent,
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
@@ -47,22 +47,22 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
   displayedColumns = signal<string[]>(['orderNumber', 'supplierName', 'orderDate', 'status', 'total', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<PurchaseOrder>[]>([]);
-  
+
   // Template references for custom cells
   @ViewChild('supplierNameCell') supplierNameCellTemplate?: TemplateRef<any>;
   @ViewChild('orderDateCell') orderDateCellTemplate?: TemplateRef<any>;
   @ViewChild('totalCell') totalCellTemplate?: TemplateRef<any>;
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<PurchaseOrder>;
-  
+
   vendors = signal<Vendor[]>([]);
 
   private store = inject(StoreService);
@@ -75,7 +75,7 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
   private subscriptions = new Subscription();
 
   purchaseOrders = this.store.select('purchase-orders');
-  
+
   constructor() {
     // Reinitialize columns when purchase orders or vendors change (using effect)
     effect(() => {
@@ -164,9 +164,11 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
         header: this.languageService.instant('total'),
         field: 'total',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.totalCellTemplate
+        cellTemplate: this.totalCellTemplate,
+        formatter: (value) => (value || 0).toString()
       },
       {
         key: 'actions',
@@ -243,11 +245,11 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
   toggleFilters(): void {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();

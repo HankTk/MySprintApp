@@ -1,8 +1,8 @@
 import { Component, OnInit, inject, signal, computed, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { 
-  AxButtonComponent, 
+import {
+  AxButtonComponent,
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
@@ -51,13 +51,13 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
   displayedColumns = signal<string[]>(['invoiceNumber', 'orderNumber', 'customer', 'invoiceDate', 'invoiceAmount', 'paidAmount', 'outstanding', 'status', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<Order>[]>([]);
-  
+
   // Template references for custom cells
   @ViewChild('customerCell') customerCellTemplate?: TemplateRef<any>;
   @ViewChild('invoiceDateCell') invoiceDateCellTemplate?: TemplateRef<any>;
@@ -66,10 +66,10 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
   @ViewChild('outstandingCell') outstandingCellTemplate?: TemplateRef<any>;
   @ViewChild('statusCell') statusCellTemplate?: TemplateRef<any>;
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<Order>;
-  
+
   private store = inject(StoreService);
   private orderService = inject(OrderService);
   private customerService = inject(CustomerService);
@@ -83,14 +83,17 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
   // Filter orders that have been invoiced (INVOICED or PAID status)
   invoicedOrders = computed(() => {
     const orders = this.orders() || [];
-    return orders.filter((order: Order) => 
+    return orders.filter((order: Order) =>
       order.status === 'INVOICED' || order.status === 'PAID'
-    );
+    ).map((order: Order) => ({
+      ...order,
+      outstandingAmount: Math.max(0, (order.total || 0) - (order.jsonData?.paymentAmount || 0))
+    }));
   });
 
   // No need for separate filteredOrders computed - ax-table handles filtering internally
   filteredOrders = this.invoicedOrders;
-  
+
   constructor() {
     // Reinitialize columns when orders or customers change (using effect)
     effect(() => {
@@ -175,27 +178,33 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
         header: this.languageService.instant('accountsReceivable.table.invoiceAmount'),
         field: 'total',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.invoiceAmountCellTemplate
+        cellTemplate: this.invoiceAmountCellTemplate,
+        formatter: (value) => (value || 0).toString()
       },
       {
         key: 'paidAmount',
         header: this.languageService.instant('accountsReceivable.table.paidAmount'),
         field: 'jsonData.paymentAmount',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.paidAmountCellTemplate
+        cellTemplate: this.paidAmountCellTemplate,
+        formatter: (value) => (value || 0).toString()
       },
       {
         key: 'outstanding',
         header: this.languageService.instant('accountsReceivable.outstanding'),
-        field: 'total',
+        field: 'outstandingAmount',
         sortable: true,
-        filterable: false,
+        filterable: true,
+        filterType: 'text',
         align: 'right',
-        cellTemplate: this.outstandingCellTemplate
+        cellTemplate: this.outstandingCellTemplate,
+        formatter: (value) => (value || 0).toString()
       },
       {
         key: 'status',
@@ -237,11 +246,11 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
   toggleFilters(): void {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();

@@ -41,7 +41,7 @@ import { AxTooltipDirective } from '@ui/components';
 })
 export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
-  displayedColumns = signal<string[]>(['userid', 'lastName', 'firstName', 'email', 'role', 'jsonData', 'actions']);
+  displayedColumns = signal<string[]>(['userid', 'lastName', 'firstName', 'email', 'role', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
   
@@ -52,7 +52,7 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
   columns = signal<AxTableColumnDef<User>[]>([]);
   
   // Template references for custom cells
-  @ViewChild('jsonDataCell') jsonDataCellTemplate?: TemplateRef<any>;
+
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
   
   // Reference to the table component
@@ -76,9 +76,7 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
       // Access signal to create dependency
       this.users();
       // Reinitialize columns if templates are available
-      if (this.jsonDataCellTemplate) {
-        this.initializeColumns();
-      }
+
     });
   }
 
@@ -143,14 +141,7 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
         filterType: 'text',
         formatter: (value) => value || '-'
       },
-      {
-        key: 'jsonData',
-        header: this.languageService.instant('jsonData'),
-        field: 'jsonData',
-        sortable: false,
-        filterable: false,
-        cellTemplate: this.jsonDataCellTemplate
-      },
+
       {
         key: 'actions',
         header: this.languageService.instant('actions'),

@@ -13,8 +13,8 @@ import { WarehouseService } from '../../../warehouses/services/warehouse.service
 import { Product } from '../../../products/models/product.model';
 import { Warehouse } from '../../../warehouses/models/warehouse.model';
 import { firstValueFrom } from 'rxjs';
-import { 
-  AxButtonComponent, 
+import {
+  AxButtonComponent,
   AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
@@ -45,25 +45,25 @@ import { AxTooltipDirective } from '@ui/components';
 })
 export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoading = signal<boolean>(false);
-  displayedColumns = signal<string[]>(['productId', 'warehouseId', 'quantity', 'jsonData', 'actions']);
+  displayedColumns = signal<string[]>(['productId', 'warehouseId', 'quantity', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<Inventory>[]>([]);
-  
+
   // Template references for custom cells
   @ViewChild('productIdCell') productIdCellTemplate?: TemplateRef<any>;
   @ViewChild('warehouseIdCell') warehouseIdCellTemplate?: TemplateRef<any>;
-  @ViewChild('jsonDataCell') jsonDataCellTemplate?: TemplateRef<any>;
+
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<Inventory>;
-  
+
   products = signal<Product[]>([]);
   warehouses = signal<Warehouse[]>([]);
 
@@ -81,7 +81,7 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit 
   JsonUtilRef = JsonUtil;
 
   inventory = this.store.select('inventory');
-  
+
   constructor() {
     // Reinitialize columns when inventory, products, or warehouses change (using effect)
     effect(() => {
@@ -90,9 +90,7 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit 
       this.products();
       this.warehouses();
       // Reinitialize columns if templates are available
-      if (this.jsonDataCellTemplate) {
-        this.initializeColumns();
-      }
+
     });
   }
 
@@ -240,14 +238,7 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit 
         filterType: 'text',
         formatter: (value) => (value || 0).toString()
       },
-      {
-        key: 'jsonData',
-        header: this.languageService.instant('jsonData'),
-        field: 'jsonData',
-        sortable: false,
-        filterable: false,
-        cellTemplate: this.jsonDataCellTemplate
-      },
+
       {
         key: 'actions',
         header: this.languageService.instant('actions'),
@@ -274,11 +265,11 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit 
   toggleFilters(): void {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();
