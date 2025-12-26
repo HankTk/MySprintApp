@@ -27,7 +27,8 @@ public class InventoryRepository extends AbstractJsonRepository<Inventory>
     }
 
     @Override
-    protected void loadItemsFromFile() throws IOException {
+    protected void loadItemsFromFile() throws IOException
+    {
         String content = new String(java.nio.file.Files.readAllBytes(dataFilePath));
         if (content.trim().isEmpty())
         {
@@ -49,13 +50,13 @@ public class InventoryRepository extends AbstractJsonRepository<Inventory>
 
     @Override
     protected String getId(Inventory entity)
- {
+    {
         return entity.getId();
     }
 
     @Override
     protected void setId(Inventory entity, String id)
- {
+    {
         entity.setId(id);
     }
 
@@ -108,8 +109,9 @@ public class InventoryRepository extends AbstractJsonRepository<Inventory>
             saveItems();
             logger.info("Updated inventory for product {} in warehouse {} to quantity {}", productId, warehouseId, quantity);
             return inv;
-        } else
- {
+        }
+        else
+        {
             Inventory newInventory = new Inventory();
             newInventory.setProductId(productId);
             newInventory.setWarehouseId(warehouseId);

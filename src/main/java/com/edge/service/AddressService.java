@@ -150,21 +150,21 @@ public class AddressService
     }
     
     public Address createAddress(Address address)
- {
+    {
         Address created = addressRepository.createAddress(address);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
     public Address updateAddress(String id, Address addressDetails)
- {
+    {
         Address updated = addressRepository.updateAddress(id, addressDetails);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         return updated;
     }
     
     public void deleteAddress(String id)
- {
+    {
         // Remove this address ID from all customers that reference it
         List<Customer> allCustomers = customerRepository.getAllCustomers();
         for (Customer customer : allCustomers)

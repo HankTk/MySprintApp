@@ -35,7 +35,7 @@ public class WarehouseController
     
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<Warehouse> getWarehouseById(@PathVariable String id)
-{
+    {
         return warehouseService.getWarehouseById(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
@@ -45,12 +45,12 @@ public class WarehouseController
     public ResponseEntity<Warehouse> createWarehouse(@RequestBody Warehouse warehouse)
     {
         try
-{
+        {
             Warehouse created = warehouseService.createWarehouse(warehouse);
             return ResponseEntity.status(HttpStatus.CREATED).body(created);
         }
         catch (Exception e)
- {
+        {
             return ResponseEntity.badRequest().build();
         }
     }
@@ -59,12 +59,12 @@ public class WarehouseController
     public ResponseEntity<Warehouse> updateWarehouse(@PathVariable String id, @RequestBody Warehouse warehouse)
     {
         try
-{
+        {
             Warehouse updated = warehouseService.updateWarehouse(id, warehouse);
             return ResponseEntity.ok(updated);
         }
         catch (Exception e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -73,12 +73,12 @@ public class WarehouseController
     public ResponseEntity<Void> deleteWarehouse(@PathVariable String id)
     {
         try
-{
+        {
             warehouseService.deleteWarehouse(id);
             return ResponseEntity.noContent().build();
         }
         catch (Exception e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }

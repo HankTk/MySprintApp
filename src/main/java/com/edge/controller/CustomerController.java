@@ -59,7 +59,7 @@ public class CustomerController
             return ResponseEntity.ok(updatedCustomer);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -67,12 +67,13 @@ public class CustomerController
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id)
     {
-            try {
+        try
+        {
             customerService.deleteCustomer(id);
             return ResponseEntity.ok().build();
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }

@@ -30,7 +30,7 @@ public class RMAController
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<RMA> getRMAById(@PathVariable String id)
-{
+    {
         return rmaService.getRMAById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -38,25 +38,25 @@ public class RMAController
 
     @GetMapping(value = "/order/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<List<RMA>> getRMAsByOrderId(@PathVariable String orderId)
-{
+    {
         return ResponseEntity.ok(rmaService.getRMAsByOrderId(orderId));
     }
 
     @GetMapping(value = "/customer/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<List<RMA>> getRMAsByCustomerId(@PathVariable String customerId)
-{
+    {
         return ResponseEntity.ok(rmaService.getRMAsByCustomerId(customerId));
     }
 
     @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<List<RMA>> getRMAsByStatus(@PathVariable String status)
-{
+    {
         return ResponseEntity.ok(rmaService.getRMAsByStatus(status));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<RMA> createRMA(@RequestBody RMA rma)
-{
+    {
         return ResponseEntity.ok(rmaService.createRMA(rma));
     }
 
@@ -64,7 +64,7 @@ public class RMAController
     public ResponseEntity<RMA> updateRMA(@PathVariable String id, @RequestBody RMA rmaDetails)
     {
         try
-{
+        {
             System.out.println("Received update request for RMA ID: " + id);
             System.out.println("RMA details status: " + rmaDetails.getStatus());
             RMA updatedRMA = rmaService.updateRMA(id, rmaDetails);
@@ -72,7 +72,7 @@ public class RMAController
             return ResponseEntity.ok(updatedRMA);
         }
         catch (RuntimeException e)
- {
+        {
             System.err.println("Error updating RMA: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.notFound().build();
@@ -83,14 +83,14 @@ public class RMAController
     public ResponseEntity<RMA> addRMAItem(
             @PathVariable String rmaId,
             @RequestBody AddRMAItemRequest request)
-            {
+    {
         try
         {
             RMA updatedRMA = rmaService.addRMAItem(rmaId, request.getProductId(), request.getQuantity(), request.getReason());
             return ResponseEntity.ok(updatedRMA);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -100,14 +100,14 @@ public class RMAController
             @PathVariable String rmaId,
             @PathVariable String itemId,
             @RequestBody UpdateQuantityRequest request)
-            {
+    {
         try
         {
             RMA updatedRMA = rmaService.updateRMAItemQuantity(rmaId, itemId, request.getQuantity());
             return ResponseEntity.ok(updatedRMA);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -117,14 +117,14 @@ public class RMAController
             @PathVariable String rmaId,
             @PathVariable String itemId,
             @RequestBody UpdateQuantityRequest request)
-            {
+    {
         try
         {
             RMA updatedRMA = rmaService.updateRMAItemReturnedQuantity(rmaId, itemId, request.getQuantity());
             return ResponseEntity.ok(updatedRMA);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -134,14 +134,14 @@ public class RMAController
             @PathVariable String rmaId,
             @PathVariable String itemId,
             @RequestBody UpdateConditionRequest request)
-            {
+    {
         try
         {
             RMA updatedRMA = rmaService.updateRMAItemCondition(rmaId, itemId, request.getCondition());
             return ResponseEntity.ok(updatedRMA);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }

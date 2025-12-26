@@ -50,7 +50,7 @@ public class InventoryService
     }
     
     public Inventory createOrUpdateInventory(String productId, String warehouseId, Integer quantity)
- {
+    {
         Inventory inventory = inventoryRepository.createOrUpdateInventory(productId, warehouseId, quantity);
         // Determine if this is a create or update based on whether inventory existed
         Optional<Inventory> existing = inventoryRepository.getInventoryByProductAndWarehouse(productId, warehouseId);
@@ -62,28 +62,28 @@ public class InventoryService
     }
     
     public Inventory adjustInventory(String productId, String warehouseId, Integer quantityChange)
- {
+    {
         Inventory inventory = inventoryRepository.adjustInventory(productId, warehouseId, quantityChange);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, inventory);
         return inventory;
     }
     
     public Inventory createInventory(Inventory inventory)
- {
+    {
         Inventory created = inventoryRepository.createInventory(inventory);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
     public Inventory updateInventory(String id, Inventory inventoryDetails)
- {
+    {
         Inventory updated = inventoryRepository.updateInventory(id, inventoryDetails);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         return updated;
     }
     
     public void deleteInventory(String id)
- {
+    {
         Optional<Inventory> inventoryToDelete = inventoryRepository.getInventoryById(id);
         inventoryRepository.deleteInventory(id);
         if (inventoryToDelete.isPresent())

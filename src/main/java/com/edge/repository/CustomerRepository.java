@@ -49,13 +49,13 @@ public class CustomerRepository extends AbstractJsonRepository<Customer>
 
     @Override
     protected String getId(Customer entity)
- {
+    {
         return entity.getId();
     }
 
     @Override
     protected void setId(Customer entity, String id)
- {
+    {
         entity.setId(id);
     }
 
@@ -88,7 +88,7 @@ public class CustomerRepository extends AbstractJsonRepository<Customer>
     }
 
     public Customer createCustomer(Customer customer)
- {
+    {
         if (customer == null)
         {
             throw new IllegalArgumentException("Customer cannot be null");

@@ -45,21 +45,21 @@ public class VendorService
     }
     
     public Vendor createVendor(Vendor vendor)
- {
+    {
         Vendor created = vendorRepository.createVendor(vendor);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
     public Vendor updateVendor(String id, Vendor vendorDetails)
- {
+    {
         Vendor updated = vendorRepository.updateVendor(id, vendorDetails);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         return updated;
     }
     
     public void deleteVendor(String id)
- {
+    {
         Optional<Vendor> vendorToDelete = vendorRepository.getVendorById(id);
         vendorRepository.deleteVendor(id);
         if (vendorToDelete.isPresent())

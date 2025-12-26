@@ -26,7 +26,7 @@ public class EdgeApplication
 	}
 
 	@Component
-@Configuration
+	@Configuration
 	public static class WebConfig implements WebMvcConfigurer
 	{
 

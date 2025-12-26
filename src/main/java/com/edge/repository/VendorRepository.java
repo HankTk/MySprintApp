@@ -26,7 +26,8 @@ public class VendorRepository extends AbstractJsonRepository<Vendor>
     }
 
     @Override
-    protected void loadItemsFromFile() throws IOException {
+    protected void loadItemsFromFile() throws IOException
+    {
         String content = new String(java.nio.file.Files.readAllBytes(dataFilePath));
         if (content.trim().isEmpty())
         {
@@ -48,13 +49,13 @@ public class VendorRepository extends AbstractJsonRepository<Vendor>
 
     @Override
     protected String getId(Vendor entity)
- {
+    {
         return entity.getId();
     }
 
     @Override
     protected void setId(Vendor entity, String id)
- {
+    {
         entity.setId(id);
     }
 
@@ -81,7 +82,7 @@ public class VendorRepository extends AbstractJsonRepository<Vendor>
     }
 
     public Vendor createVendor(Vendor vendor)
- {
+    {
         if (vendor == null) throw new IllegalArgumentException("Vendor cannot be null");
         if (vendor.getEmail() != null && !vendor.getEmail().trim().isEmpty() && 
             getVendorByEmail(vendor.getEmail()).isPresent())
@@ -97,7 +98,7 @@ public class VendorRepository extends AbstractJsonRepository<Vendor>
     }
 
     public Vendor updateVendor(String id, Vendor vendorDetails)
- {
+    {
         if (id == null || id.trim().isEmpty())
             throw new IllegalArgumentException("Vendor ID cannot be null or empty");
         if (vendorDetails == null)
@@ -135,14 +136,16 @@ public class VendorRepository extends AbstractJsonRepository<Vendor>
                 newJsonData.put("addressIds", existingVendor.getJsonData().get("addressIds"));
             }
             existingVendor.setJsonData(new java.util.HashMap<>(newJsonData));
-        } else if (existingVendor.getJsonData() != null && existingVendor.getJsonData().containsKey("addressIds"))
+        }
+        else if (existingVendor.getJsonData() != null && existingVendor.getJsonData().containsKey("addressIds"))
         {
             // Preserve existing addressIds if jsonData is null in update
             java.util.Map<String, Object> jsonData = new java.util.HashMap<>();
             jsonData.put("addressIds", existingVendor.getJsonData().get("addressIds"));
             existingVendor.setJsonData(jsonData);
-        } else
- {
+        }
+        else
+        {
             existingVendor.setJsonData(vendorDetails.getJsonData());
         }
         
@@ -152,7 +155,7 @@ public class VendorRepository extends AbstractJsonRepository<Vendor>
     }
 
     public void deleteVendor(String id)
- {
+    {
         deleteById(id);
     }
 

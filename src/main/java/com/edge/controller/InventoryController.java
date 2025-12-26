@@ -60,7 +60,7 @@ public class InventoryController
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<Inventory> createInventory(@RequestBody Inventory inventory)
     {
-            try
+        try
         {
             Inventory created = inventoryService.createInventory(inventory);
             return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -74,7 +74,7 @@ public class InventoryController
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<Inventory> updateInventory(@PathVariable String id, @RequestBody Inventory inventory)
     {
-            try
+        try
         {
             Inventory updated = inventoryService.updateInventory(id, inventory);
             return ResponseEntity.ok(updated);
@@ -88,7 +88,7 @@ public class InventoryController
     @PostMapping(value = "/adjust", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<Inventory> adjustInventory(@RequestBody AdjustInventoryRequest request)
     {
-            try
+        try
         {
             Inventory updated = inventoryService.adjustInventory(
                 request.getProductId(),
@@ -106,7 +106,7 @@ public class InventoryController
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteInventory(@PathVariable String id)
     {
-            try
+        try
         {
             inventoryService.deleteInventory(id);
             return ResponseEntity.noContent().build();

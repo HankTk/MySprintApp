@@ -26,7 +26,8 @@ public class ProductRepository extends AbstractJsonRepository<Product>
     }
 
     @Override
-    protected void loadItemsFromFile() throws IOException {
+    protected void loadItemsFromFile() throws IOException
+    {
         String content = new String(java.nio.file.Files.readAllBytes(dataFilePath));
         if (content.trim().isEmpty())
         {
@@ -48,13 +49,13 @@ public class ProductRepository extends AbstractJsonRepository<Product>
 
     @Override
     protected String getId(Product entity)
- {
+    {
         return entity.getId();
     }
 
     @Override
     protected void setId(Product entity, String id)
- {
+    {
         entity.setId(id);
     }
 
@@ -82,7 +83,7 @@ public class ProductRepository extends AbstractJsonRepository<Product>
     }
 
     public Product createProduct(Product product)
- {
+    {
         if (product == null) throw new IllegalArgumentException("Product cannot be null");
         if (product.getProductCode() != null && !product.getProductCode().trim().isEmpty() && 
             getProductByProductCode(product.getProductCode()).isPresent())

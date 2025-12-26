@@ -30,15 +30,17 @@ public class SFCRepository extends AbstractJsonRepository<SFC>
     public SFCRepository()
     {
         super(DATA_DIR_NAME, DATA_FILE_NAME, "sfcs");
-        try {
+        try
+        {
             java.nio.file.Path dataDir = java.nio.file.Paths.get(DATA_DIR_NAME);
             if (!java.nio.file.Files.exists(dataDir))
             {
                 java.nio.file.Files.createDirectories(dataDir);
             }
             counterFilePath = dataDir.resolve(COUNTER_FILE_NAME);
-        } catch (IOException e)
- {
+        }
+        catch (IOException e)
+        {
             logger.error("Error initializing counter file path", e);
             throw new RuntimeException("Failed to initialize SFC counter", e);
         }
@@ -46,7 +48,7 @@ public class SFCRepository extends AbstractJsonRepository<SFC>
 
     @Override
     protected ObjectMapper createObjectMapper()
- {
+    {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.registerModule(new JavaTimeModule());
@@ -54,7 +56,8 @@ public class SFCRepository extends AbstractJsonRepository<SFC>
     }
 
     @Override
-    protected void loadItemsFromFile() throws IOException {
+    protected void loadItemsFromFile() throws IOException
+    {
         String content = new String(java.nio.file.Files.readAllBytes(dataFilePath));
         if (content.trim().isEmpty())
         {
@@ -76,13 +79,13 @@ public class SFCRepository extends AbstractJsonRepository<SFC>
 
     @Override
     protected String getId(SFC entity)
- {
+    {
         return entity.getId();
     }
 
     @Override
     protected void setId(SFC entity, String id)
- {
+    {
         entity.setId(id);
     }
 
@@ -125,7 +128,7 @@ public class SFCRepository extends AbstractJsonRepository<SFC>
     }
 
     public SFC createSFC(SFC sfc)
- {
+    {
         if (sfc == null) throw new IllegalArgumentException("SFC cannot be null");
         
         // Generate SFC number if not provided
@@ -134,7 +137,8 @@ public class SFCRepository extends AbstractJsonRepository<SFC>
             String newSFCNumber = generateNextSFCNumber();
             sfc.setSfcNumber(newSFCNumber);
             logger.info("Generated SFC number: {}", newSFCNumber);
-        } else if (getSFCBySFCNumber(sfc.getSfcNumber()).isPresent())
+        }
+        else if (getSFCBySFCNumber(sfc.getSfcNumber()).isPresent())
         {
             throw new SFCAlreadyExistsException("SFC with number " + sfc.getSfcNumber() + " already exists");
         }
@@ -143,22 +147,25 @@ public class SFCRepository extends AbstractJsonRepository<SFC>
     }
     
     private synchronized String generateNextSFCNumber()
- {
-        try {
+    {
+        try
+        {
             long currentCounter = readCounter();
             long nextSFCNumber = currentCounter + 1;
             writeCounter(nextSFCNumber);
             logger.info("Generated SFC number: {} (counter updated from {} to {})", 
                 nextSFCNumber, currentCounter, nextSFCNumber);
             return String.valueOf(nextSFCNumber);
-        } catch (IOException e)
- {
+        }
+        catch (IOException e)
+        {
             logger.error("Error generating SFC number", e);
             throw new RuntimeException("Failed to generate SFC number", e);
         }
     }
     
-    private long readCounter() throws IOException {
+    private long readCounter() throws IOException
+    {
         if (!java.nio.file.Files.exists(counterFilePath))
         {
             long initialValue = INITIAL_SFC_NUMBER;
@@ -167,7 +174,8 @@ public class SFCRepository extends AbstractJsonRepository<SFC>
             return initialValue;
         }
         
-        try {
+        try
+        {
             String content = new String(java.nio.file.Files.readAllBytes(counterFilePath)).trim();
             if (content.isEmpty())
             {
@@ -185,8 +193,9 @@ public class SFCRepository extends AbstractJsonRepository<SFC>
                 logger.info("Counter value was below initial value, reset to: {}", counterValue);
             }
             return counterValue;
-        } catch (NumberFormatException e)
- {
+        }
+        catch (NumberFormatException e)
+        {
             logger.warn("Counter file contains invalid data, resetting to initial value: {}", INITIAL_SFC_NUMBER);
             long initialValue = INITIAL_SFC_NUMBER;
             writeCounter(initialValue);
@@ -194,12 +203,13 @@ public class SFCRepository extends AbstractJsonRepository<SFC>
         }
     }
     
-    private void writeCounter(long value) throws IOException {
+    private void writeCounter(long value) throws IOException
+    {
         java.nio.file.Files.write(counterFilePath, String.valueOf(value).getBytes());
     }
 
     public SFC updateSFC(String id, SFC sfcDetails)
- {
+    {
         if (id == null || id.trim().isEmpty())
             throw new IllegalArgumentException("SFC ID cannot be null or empty");
         if (sfcDetails == null)
@@ -278,7 +288,7 @@ public class SFCRepository extends AbstractJsonRepository<SFC>
     }
 
     public void deleteSFC(String id)
- {
+    {
         deleteById(id);
     }
 

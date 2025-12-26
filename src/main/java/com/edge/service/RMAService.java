@@ -109,7 +109,8 @@ public class RMAService
         {
             // Status changing to RECEIVED for the first time
             rmaDetails.setReceivedDate(LocalDateTime.now());
-        } else if (willBeProcessed && !wasReceived && rmaDetails.getReceivedDate() == null)
+        }
+        else if (willBeProcessed && !wasReceived && rmaDetails.getReceivedDate() == null)
         {
             // Status changing directly to PROCESSED (skipping RECEIVED)
             // Set receivedDate to indicate items were received
@@ -124,13 +125,15 @@ public class RMAService
         {
             // Status changed to RECEIVED - increase inventory
             increaseInventoryForRMA(updated);
-        } else if (willBeProcessed && !wasReceived)
- {
+        }
+        else if (willBeProcessed && !wasReceived)
+        {
             // Status changed directly to PROCESSED (skipping RECEIVED) - increase inventory
             // This handles the case where RMA is marked as PROCESSED without going through RECEIVED
             increaseInventoryForRMA(updated);
-        } else if (willBeCancelled && wasReceived)
- {
+        }
+        else if (willBeCancelled && wasReceived)
+        {
             // Status changed to CANCELLED after being received - rollback inventory
             decreaseInventoryForRMA(existingRMA);
         }
@@ -161,8 +164,9 @@ public class RMAService
             item.setQuantity(item.getQuantity() + quantity);
             item.setReturnedQuantity(item.getQuantity()); // Initially, returned quantity equals requested quantity
             item.calculateLineTotal();
-        } else
- {
+        }
+        else
+        {
             // Create new item
             RMAItem newItem = new RMAItem();
             newItem.setId(java.util.UUID.randomUUID().toString());
@@ -284,7 +288,8 @@ public class RMAService
                     });
                 }
             });
-        } else if (rma.getCustomerId() != null)
+        }
+        else if (rma.getCustomerId() != null)
         {
             customerRepository.getCustomerById(rma.getCustomerId()).ifPresent(customer ->
             {
@@ -362,12 +367,14 @@ public class RMAService
         {
             if (item.getProductId() != null && item.getReturnedQuantity() != null && item.getReturnedQuantity() > 0)
             {
-                try {
+                try
+                {
                     inventoryService.adjustInventory(item.getProductId(), warehouseId, item.getReturnedQuantity());
                     System.out.println("Increased inventory (restocked) for product " + item.getProductId() + 
                         " by " + item.getReturnedQuantity() + " in warehouse " + warehouseId + " for RMA " + rma.getRmaNumber());
-                } catch (Exception e)
- {
+                }
+                catch (Exception e)
+                {
                     System.err.println("Error increasing inventory for product " + item.getProductId() + 
                         " in RMA " + rma.getRmaNumber() + ": " + e.getMessage());
                     e.printStackTrace();
@@ -407,13 +414,15 @@ public class RMAService
         {
             if (item.getProductId() != null && item.getReturnedQuantity() != null && item.getReturnedQuantity() > 0)
             {
-                try {
+                try
+                {
                     // Use negative quantity to decrease inventory
                     inventoryService.adjustInventory(item.getProductId(), warehouseId, -item.getReturnedQuantity());
                     System.out.println("Decreased inventory (rollback) for product " + item.getProductId() + 
                         " by " + item.getReturnedQuantity() + " in warehouse " + warehouseId + " for cancelled RMA " + rma.getRmaNumber());
-                } catch (Exception e)
- {
+                }
+                catch (Exception e)
+                {
                     System.err.println("Error decreasing inventory for product " + item.getProductId() + 
                         " in RMA " + rma.getRmaNumber() + ": " + e.getMessage());
                     e.printStackTrace();

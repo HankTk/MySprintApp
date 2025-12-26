@@ -45,21 +45,21 @@ public class WarehouseService
     }
     
     public Warehouse createWarehouse(Warehouse warehouse)
- {
+    {
         Warehouse created = warehouseRepository.createWarehouse(warehouse);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
     public Warehouse updateWarehouse(String id, Warehouse warehouseDetails)
- {
+    {
         Warehouse updated = warehouseRepository.updateWarehouse(id, warehouseDetails);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         return updated;
     }
     
     public void deleteWarehouse(String id)
- {
+    {
         Optional<Warehouse> warehouseToDelete = warehouseRepository.getWarehouseById(id);
         warehouseRepository.deleteWarehouse(id);
         if (warehouseToDelete.isPresent())

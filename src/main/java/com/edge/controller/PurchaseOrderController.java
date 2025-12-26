@@ -66,7 +66,7 @@ public class PurchaseOrderController
             return ResponseEntity.ok(updatedPO);
         }
         catch (RuntimeException e)
- {
+        {
             System.err.println("Error updating purchase order: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.notFound().build();
@@ -79,12 +79,12 @@ public class PurchaseOrderController
             @RequestBody AddPurchaseOrderItemRequest request)
     {
         try
-            {
+        {
             PurchaseOrder updatedPO = purchaseOrderService.addPurchaseOrderItem(poId, request.getProductId(), request.getQuantity());
             return ResponseEntity.ok(updatedPO);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -101,7 +101,7 @@ public class PurchaseOrderController
             return ResponseEntity.ok(updatedPO);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -112,12 +112,12 @@ public class PurchaseOrderController
             @PathVariable String itemId)
     {
         try
-            {
+        {
             PurchaseOrder updatedPO = purchaseOrderService.removePurchaseOrderItem(poId, itemId);
             return ResponseEntity.ok(updatedPO);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -131,7 +131,7 @@ public class PurchaseOrderController
             return ResponseEntity.ok().build();
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -140,8 +140,8 @@ public class PurchaseOrderController
     public ResponseEntity<InvoiceNumberResponse> getNextInvoiceNumber()
     {
         try
-    {
-                    String invoiceNumber = purchaseOrderService.generateNextInvoiceNumber();
+        {
+            String invoiceNumber = purchaseOrderService.generateNextInvoiceNumber();
             return ResponseEntity.ok(new InvoiceNumberResponse(invoiceNumber));
         }
         catch (RuntimeException e)

@@ -33,7 +33,8 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
     public PurchaseOrderRepository()
     {
         super(DATA_DIR_NAME, DATA_FILE_NAME, "purchase orders");
-        try {
+        try
+        {
             java.nio.file.Path dataDir = java.nio.file.Paths.get(DATA_DIR_NAME);
             if (!java.nio.file.Files.exists(dataDir))
             {
@@ -41,7 +42,8 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
             }
             counterFilePath = dataDir.resolve(COUNTER_FILE_NAME);
             invoiceCounterFilePath = dataDir.resolve(INVOICE_COUNTER_FILE_NAME);
-        } catch (IOException e)
+        }
+        catch (IOException e)
  {
             logger.error("Error initializing counter file path", e);
             throw new RuntimeException("Failed to initialize purchase order counter", e);
@@ -50,7 +52,7 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
 
     @Override
     protected ObjectMapper createObjectMapper()
- {
+    {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.registerModule(new JavaTimeModule());
@@ -58,7 +60,8 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
     }
 
     @Override
-    protected void loadItemsFromFile() throws IOException {
+    protected void loadItemsFromFile() throws IOException
+    {
         String content = new String(java.nio.file.Files.readAllBytes(dataFilePath));
         if (content.trim().isEmpty())
         {
@@ -80,13 +83,13 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
 
     @Override
     protected String getId(PurchaseOrder entity)
- {
+    {
         return entity.getId();
     }
 
     @Override
     protected void setId(PurchaseOrder entity, String id)
- {
+    {
         entity.setId(id);
     }
 
@@ -138,7 +141,8 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
             String newOrderNumber = generateNextOrderNumber();
             po.setOrderNumber(newOrderNumber);
             logger.info("Generated order number: {}", newOrderNumber);
-        } else if (getPurchaseOrderByOrderNumber(po.getOrderNumber()).isPresent())
+        }
+        else if (getPurchaseOrderByOrderNumber(po.getOrderNumber()).isPresent())
         {
             throw new PurchaseOrderAlreadyExistsException("Purchase Order with number " + po.getOrderNumber() + " already exists");
         }
@@ -150,14 +154,16 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
     
     private synchronized String generateNextOrderNumber()
  {
-        try {
+        try
+        {
             long currentCounter = readCounter();
             long nextOrderNumber = currentCounter + 1;
             writeCounter(nextOrderNumber);
             logger.info("Generated order number: {} (counter updated from {} to {})", 
                 nextOrderNumber, currentCounter, nextOrderNumber);
             return String.valueOf(nextOrderNumber);
-        } catch (IOException e)
+        }
+        catch (IOException e)
  {
             logger.error("Error generating order number", e);
             throw new RuntimeException("Failed to generate order number", e);
@@ -173,7 +179,8 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
             return initialValue;
         }
         
-        try {
+        try
+        {
             String content = new String(java.nio.file.Files.readAllBytes(counterFilePath)).trim();
             if (content.isEmpty())
             {
@@ -191,7 +198,8 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
                 logger.info("Counter value was below initial value, reset to: {}", counterValue);
             }
             return counterValue;
-        } catch (NumberFormatException e)
+        }
+        catch (NumberFormatException e)
  {
             logger.warn("Counter file contains invalid data, resetting to initial value: {}", INITIAL_PO_NUMBER);
             long initialValue = INITIAL_PO_NUMBER;
@@ -206,14 +214,16 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
     
     public synchronized String generateNextInvoiceNumber()
  {
-        try {
+        try
+        {
             long currentCounter = readInvoiceCounter();
             long nextInvoiceNumber = currentCounter + 1;
             writeInvoiceCounter(nextInvoiceNumber);
             logger.info("Generated invoice number: {} (counter updated from {} to {})", 
                 nextInvoiceNumber, currentCounter, nextInvoiceNumber);
             return String.valueOf(nextInvoiceNumber);
-        } catch (IOException e)
+        }
+        catch (IOException e)
  {
             logger.error("Error generating invoice number", e);
             throw new RuntimeException("Failed to generate invoice number", e);
@@ -229,7 +239,8 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
             return initialValue;
         }
         
-        try {
+        try
+        {
             String content = new String(java.nio.file.Files.readAllBytes(invoiceCounterFilePath)).trim();
             if (content.isEmpty())
             {
@@ -247,7 +258,8 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
                 logger.info("Invoice counter value was below initial value, reset to: {}", counterValue);
             }
             return counterValue;
-        } catch (NumberFormatException e)
+        }
+        catch (NumberFormatException e)
  {
             logger.warn("Invoice counter file contains invalid data, resetting to initial value: {}", INITIAL_PO_INVOICE_NUMBER);
             long initialValue = INITIAL_PO_INVOICE_NUMBER;

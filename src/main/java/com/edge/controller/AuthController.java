@@ -34,7 +34,8 @@ public class AuthController
             return ResponseEntity.badRequest().body(Map.of("error", "User ID and password are required"));
         }
 
-        try {
+        try
+        {
             User user = authService.authenticate(userid, password);
             if (user != null)
             {
@@ -56,8 +57,9 @@ public class AuthController
                 response.put("token", token);
                 
                 return ResponseEntity.ok(response);
-            } else
- {
+            }
+            else
+            {
                 return ResponseEntity.status(401).body(Map.of("error", "Invalid user ID or password"));
             }
         }

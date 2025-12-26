@@ -71,7 +71,7 @@ public class AddressController
             return ResponseEntity.ok(updatedAddress);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -79,12 +79,13 @@ public class AddressController
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id)
     {
-            try {
+        try
+        {
             addressService.deleteAddress(id);
             return ResponseEntity.ok().build();
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }

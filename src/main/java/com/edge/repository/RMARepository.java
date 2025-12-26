@@ -30,14 +30,16 @@ public class RMARepository extends AbstractJsonRepository<RMA>
     public RMARepository()
     {
         super(DATA_DIR_NAME, DATA_FILE_NAME, "rmas");
-        try {
+        try
+        {
             java.nio.file.Path dataDir = java.nio.file.Paths.get(DATA_DIR_NAME);
             if (!java.nio.file.Files.exists(dataDir))
             {
                 java.nio.file.Files.createDirectories(dataDir);
             }
             counterFilePath = dataDir.resolve(COUNTER_FILE_NAME);
-        } catch (IOException e)
+        }
+        catch (IOException e)
  {
             logger.error("Error initializing counter file path", e);
             throw new RuntimeException("Failed to initialize RMA counter", e);
@@ -54,7 +56,8 @@ public class RMARepository extends AbstractJsonRepository<RMA>
     }
 
     @Override
-    protected void loadItemsFromFile() throws IOException {
+    protected void loadItemsFromFile() throws IOException
+    {
         String content = new String(java.nio.file.Files.readAllBytes(dataFilePath));
         if (content.trim().isEmpty())
         {
@@ -76,13 +79,13 @@ public class RMARepository extends AbstractJsonRepository<RMA>
 
     @Override
     protected String getId(RMA entity)
- {
+    {
         return entity.getId();
     }
 
     @Override
     protected void setId(RMA entity, String id)
- {
+    {
         entity.setId(id);
     }
 
@@ -145,7 +148,8 @@ public class RMARepository extends AbstractJsonRepository<RMA>
             String newRMANumber = generateNextRMANumber();
             rma.setRmaNumber(newRMANumber);
             logger.info("Generated RMA number: {}", newRMANumber);
-        } else if (getRMAByRMANumber(rma.getRmaNumber()).isPresent())
+        }
+        else if (getRMAByRMANumber(rma.getRmaNumber()).isPresent())
         {
             throw new RMAAlreadyExistsException("RMA with number " + rma.getRmaNumber() + " already exists");
         }
@@ -157,14 +161,16 @@ public class RMARepository extends AbstractJsonRepository<RMA>
     
     private synchronized String generateNextRMANumber()
  {
-        try {
+        try
+        {
             long currentCounter = readCounter();
             long nextRMANumber = currentCounter + 1;
             writeCounter(nextRMANumber);
             logger.info("Generated RMA number: {} (counter updated from {} to {})", 
                 nextRMANumber, currentCounter, nextRMANumber);
             return String.valueOf(nextRMANumber);
-        } catch (IOException e)
+        }
+        catch (IOException e)
  {
             logger.error("Error generating RMA number", e);
             throw new RuntimeException("Failed to generate RMA number", e);
@@ -180,7 +186,8 @@ public class RMARepository extends AbstractJsonRepository<RMA>
             return initialValue;
         }
         
-        try {
+        try
+        {
             String content = new String(java.nio.file.Files.readAllBytes(counterFilePath)).trim();
             if (content.isEmpty())
             {
@@ -198,7 +205,8 @@ public class RMARepository extends AbstractJsonRepository<RMA>
                 logger.info("Counter value was below initial value, reset to: {}", counterValue);
             }
             return counterValue;
-        } catch (NumberFormatException e)
+        }
+        catch (NumberFormatException e)
  {
             logger.warn("Counter file contains invalid data, resetting to initial value: {}", INITIAL_RMA_NUMBER);
             long initialValue = INITIAL_RMA_NUMBER;

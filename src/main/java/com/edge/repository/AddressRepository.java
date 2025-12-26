@@ -27,7 +27,8 @@ public class AddressRepository extends AbstractJsonRepository<Address>
     }
 
     @Override
-    protected void loadItemsFromFile() throws IOException {
+    protected void loadItemsFromFile() throws IOException
+    {
         String content = new String(java.nio.file.Files.readAllBytes(dataFilePath));
         if (content.trim().isEmpty())
         {
@@ -49,13 +50,13 @@ public class AddressRepository extends AbstractJsonRepository<Address>
 
     @Override
     protected String getId(Address entity)
- {
+    {
         return entity.getId();
     }
 
     @Override
     protected void setId(Address entity, String id)
- {
+    {
         entity.setId(id);
     }
 

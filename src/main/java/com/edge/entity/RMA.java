@@ -38,7 +38,7 @@ public class RMA
     }
 
     public void calculateTotals()
- {
+    {
         if (items == null)
         {
             items = new ArrayList<>();

@@ -35,12 +35,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
             return;
         }
         
-        try {
+        try
+        {
             String jwt = getJwtFromRequest(request);
 
             if (jwt != null)
             {
-                try {
+                try
+                {
                     // Try to extract username and validate token
                     String userid = tokenProvider.getUsernameFromToken(jwt);
                     if (tokenProvider.validateToken(jwt, userid))
@@ -56,22 +58,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
 
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
-                } catch (ExpiredJwtException ex)
- {
+                }
+                catch (ExpiredJwtException ex)
+                {
                     // Expired tokens are normal - just continue without authentication
                     // No need to log as this is expected behavior
-                } catch (JwtException ex)
- {
+                }
+                catch (JwtException ex)
+                {
                     // Other JWT exceptions (malformed, invalid signature, etc.) - log at debug level
                     logger.debug("Invalid JWT token", ex);
-                } catch (Exception ex)
- {
+                }
+                catch (Exception ex)
+                {
                     // Unexpected errors - log at warn level
                     logger.warn("Unexpected error processing JWT token", ex);
                 }
             }
-        } catch (Exception ex)
- {
+        }
+        catch (Exception ex)
+        {
             // Catch any other unexpected errors
             logger.warn("Error processing JWT authentication", ex);
         }

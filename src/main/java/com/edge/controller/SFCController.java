@@ -71,12 +71,13 @@ public class SFCController
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<SFC> updateSFC(@PathVariable String id, @RequestBody SFC sfcDetails)
     {
-            try {
+        try
+        {
             SFC updatedSFC = sfcService.updateSFC(id, sfcDetails);
             return ResponseEntity.ok(updatedSFC);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -84,12 +85,13 @@ public class SFCController
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id)
     {
-            try {
+        try
+        {
             sfcService.deleteSFC(id);
             return ResponseEntity.ok().build();
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }

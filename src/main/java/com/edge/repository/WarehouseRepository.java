@@ -26,7 +26,8 @@ public class WarehouseRepository extends AbstractJsonRepository<Warehouse>
     }
 
     @Override
-    protected void loadItemsFromFile() throws IOException {
+    protected void loadItemsFromFile() throws IOException
+    {
         String content = new String(java.nio.file.Files.readAllBytes(dataFilePath));
         if (content.trim().isEmpty())
         {
@@ -48,13 +49,13 @@ public class WarehouseRepository extends AbstractJsonRepository<Warehouse>
 
     @Override
     protected String getId(Warehouse entity)
- {
+    {
         return entity.getId();
     }
 
     @Override
     protected void setId(Warehouse entity, String id)
- {
+    {
         entity.setId(id);
     }
 

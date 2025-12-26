@@ -59,7 +59,7 @@ public class SFCService
      * This is typically called when an RMA is approved or when shop floor processing is initiated
      */
     public SFC createSFCFromRMA(String rmaId)
- {
+    {
         RMA rma = rmaRepository.getRMAById(rmaId)
             .orElseThrow(() -> new RuntimeException("RMA not found with id: " + rmaId));
         
@@ -97,7 +97,7 @@ public class SFCService
     }
     
     public SFC createSFC(SFC sfc)
- {
+    {
         // Enrich SFC with RMA information if rmaId is provided
         if (sfc.getRmaId() != null)
         {
@@ -110,7 +110,7 @@ public class SFCService
     }
     
     public SFC updateSFC(String id, SFC sfcDetails)
- {
+    {
         SFC existingSFC = sfcRepository.getSFCById(id)
             .orElseThrow(() -> new RuntimeException("SFC not found with id: " + id));
         
@@ -137,7 +137,7 @@ public class SFCService
     }
     
     public void deleteSFC(String id)
- {
+    {
         Optional<SFC> sfcToDelete = sfcRepository.getSFCById(id);
         sfcRepository.deleteSFC(id);
         
@@ -149,7 +149,7 @@ public class SFCService
     }
     
     private void enrichSFCWithRMAInfo(SFC sfc)
- {
+    {
         if (sfc.getRmaId() != null)
         {
             rmaRepository.getRMAById(sfc.getRmaId()).ifPresent(rma ->

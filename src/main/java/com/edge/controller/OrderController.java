@@ -66,7 +66,7 @@ public class OrderController
             return ResponseEntity.ok(updatedOrder);
         }
         catch (RuntimeException e)
- {
+        {
             System.err.println("Error updating order: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.notFound().build();
@@ -79,12 +79,12 @@ public class OrderController
             @RequestBody AddOrderItemRequest request)
     {
         try
-            {
+        {
             Order updatedOrder = orderService.addOrderItem(orderId, request.getProductId(), request.getQuantity());
             return ResponseEntity.ok(updatedOrder);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -101,7 +101,7 @@ public class OrderController
             return ResponseEntity.ok(updatedOrder);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -112,12 +112,12 @@ public class OrderController
             @PathVariable String itemId)
     {
         try
-            {
+        {
             Order updatedOrder = orderService.removeOrderItem(orderId, itemId);
             return ResponseEntity.ok(updatedOrder);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -131,7 +131,7 @@ public class OrderController
             return ResponseEntity.ok().build();
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -140,18 +140,18 @@ public class OrderController
     public ResponseEntity<InvoiceNumberResponse> getNextInvoiceNumber()
     {
         try
-    {
-                    String invoiceNumber = orderService.generateNextInvoiceNumber();
+        {
+            String invoiceNumber = orderService.generateNextInvoiceNumber();
             return ResponseEntity.ok(new InvoiceNumberResponse(invoiceNumber));
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.internalServerError().build();
         }
     }
     
- static class InvoiceNumberResponse
- {
+    static class InvoiceNumberResponse
+    {
         private String invoiceNumber;
         
         public InvoiceNumberResponse(String invoiceNumber)
@@ -160,54 +160,54 @@ public class OrderController
         }
         
         public String getInvoiceNumber()
- {
+        {
             return invoiceNumber;
         }
         
         public void setInvoiceNumber(String invoiceNumber)
- {
+        {
             this.invoiceNumber = invoiceNumber;
         }
     }
 
     // Request DTOs
- static class AddOrderItemRequest
- {
+    static class AddOrderItemRequest
+    {
         private String productId;
         private Integer quantity;
 
         public String getProductId()
- {
+        {
             return productId;
         }
 
         public void setProductId(String productId)
- {
+        {
             this.productId = productId;
         }
 
         public Integer getQuantity()
- {
+        {
             return quantity;
         }
 
         public void setQuantity(Integer quantity)
- {
+        {
             this.quantity = quantity;
         }
     }
 
- static class UpdateQuantityRequest
- {
+    static class UpdateQuantityRequest
+    {
         private Integer quantity;
 
         public Integer getQuantity()
- {
+        {
             return quantity;
         }
 
         public void setQuantity(Integer quantity)
- {
+        {
             this.quantity = quantity;
         }
     }

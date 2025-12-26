@@ -36,7 +36,7 @@ public class ProductController
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<Product> getProductById(@PathVariable String id)
-{
+    {
         return productService.getProductById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -44,7 +44,7 @@ public class ProductController
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<Product> createProduct(@RequestBody Product product)
-{
+    {
         return ResponseEntity.ok(productService.createProduct(product));
     }
 
@@ -52,12 +52,12 @@ public class ProductController
     public ResponseEntity<Product> updateProduct(@PathVariable String id, @RequestBody Product productDetails)
     {
         try
-{
+        {
             Product updatedProduct = productService.updateProduct(id, productDetails);
             return ResponseEntity.ok(updatedProduct);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -66,12 +66,12 @@ public class ProductController
     public ResponseEntity<Void> deleteProduct(@PathVariable String id)
     {
         try
-{
+        {
             productService.deleteProduct(id);
             return ResponseEntity.ok().build();
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }

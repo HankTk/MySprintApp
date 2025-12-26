@@ -53,12 +53,13 @@ public class VendorController
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<Vendor> updateVendor(@PathVariable String id, @RequestBody Vendor vendorDetails)
     {
-            try {
+        try
+        {
             Vendor updatedVendor = vendorService.updateVendor(id, vendorDetails);
             return ResponseEntity.ok(updatedVendor);
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -66,12 +67,13 @@ public class VendorController
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id)
     {
-            try {
+        try
+        {
             vendorService.deleteVendor(id);
             return ResponseEntity.ok().build();
         }
         catch (RuntimeException e)
- {
+        {
             return ResponseEntity.notFound().build();
         }
     }

@@ -39,7 +39,7 @@ public class Order
     }
 
     public void calculateTotals()
- {
+    {
         if (items == null)
         {
             items = new ArrayList<>();

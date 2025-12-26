@@ -117,8 +117,9 @@ public class OrderService
             OrderItem item = existingItem.get();
             item.setQuantity(item.getQuantity() + quantity);
             item.calculateLineTotal();
-        } else
- {
+        }
+        else
+        {
             // Create new item
             OrderItem newItem = new OrderItem();
             newItem.setId(java.util.UUID.randomUUID().toString());
@@ -235,12 +236,14 @@ public class OrderService
         {
             if (item.getProductId() != null && item.getQuantity() != null && item.getQuantity() > 0)
             {
-                try {
+                try
+                {
                     inventoryService.adjustInventory(item.getProductId(), warehouseId, -item.getQuantity());
                     System.out.println("Decreased inventory for product " + item.getProductId() + 
                         " by " + item.getQuantity() + " in warehouse " + warehouseId);
-                } catch (Exception e)
- {
+                }
+                catch (Exception e)
+                {
                     System.err.println("Error decreasing inventory for product " + item.getProductId() + ": " + e.getMessage());
                 }
             }
