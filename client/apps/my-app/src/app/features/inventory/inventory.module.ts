@@ -19,5 +19,6 @@ import { InventoryDialogComponent } from './components/inventory-dialog/inventor
     InventoryDialogComponent
   ]
 })
-export class InventoryModule { }
-
+export class InventoryModule
+{
+}

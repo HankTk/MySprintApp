@@ -15,7 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './ax-dialog.component.html',
   styleUrls: ['./ax-dialog.component.scss']
 })
-export class AxDialogComponent {
+export class AxDialogComponent
+{
 
   @Input() title?: string;
   @Input() width?: string = '500px';
@@ -25,10 +26,14 @@ export class AxDialogComponent {
   @ContentChild('dialogContent') contentTemplate?: TemplateRef<any>;
   @ContentChild('dialogActions') actionsTemplate?: TemplateRef<any>;
 
-  constructor(public dialogRef?: MatDialogRef<AxDialogComponent>) {}
+  constructor(public dialogRef?: MatDialogRef<AxDialogComponent>)
+  {
+  }
 
-  onClose(): void {
-    if (this.dialogRef) {
+  onClose(): void
+  {
+    if (this.dialogRef)
+    {
       this.dialogRef.close();
     }
     this.close.emit();

@@ -4,7 +4,8 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/f
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-export interface ListboxOption {
+export interface ListboxOption
+{
   value: string;
   label: string;
   disabled?: boolean;
@@ -28,7 +29,8 @@ export interface ListboxOption {
     }
   ]
 })
-export class AxListboxComponent implements ControlValueAccessor {
+export class AxListboxComponent implements ControlValueAccessor
+{
   @Input() options: ListboxOption[] = [];
   @Input() placeholder?: string;
   @Input() multiple = false;
@@ -39,27 +41,33 @@ export class AxListboxComponent implements ControlValueAccessor {
 
   value: string | string[] | null = null;
   private onChange = (value: string | string[]) => {};
-  onTouched = () => {};
+  public onTouched = () => {};
 
-  writeValue(value: string | string[]): void {
+  writeValue(value: string | string[]): void
+  {
     this.value = value || (this.multiple ? [] : null);
   }
 
-  registerOnChange(fn: (value: string | string[]) => void): void {
+  registerOnChange(fn: (value: string | string[]) => void): void
+  {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: () => void): void
+  {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  setDisabledState(isDisabled: boolean): void
+  {
     this.disabled = isDisabled;
   }
 
-  onSelectionChange(event: any): void {
+  onSelectionChange(event: any): void
+  {
     this.value = event.value;
-    if (this.value !== null) {
+    if (this.value !== null)
+    {
       this.onChange(this.value);
     }
     this.onTouched();

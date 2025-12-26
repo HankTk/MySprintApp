@@ -18,7 +18,8 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './ax-card.component.html',
   styleUrls: ['./ax-card.component.scss']
 })
-export class AxCardComponent {
+export class AxCardComponent
+{
   @Input() title?: string;
   @Input() subtitle?: string;
   @Input() elevation: number = 1;

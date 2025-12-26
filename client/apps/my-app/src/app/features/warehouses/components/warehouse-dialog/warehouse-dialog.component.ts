@@ -12,7 +12,8 @@ import { AddressService } from '../../../addresses/services/address.service';
 import { Address } from '../../../addresses/models/address.model';
 import { firstValueFrom } from 'rxjs';
 
-export interface WarehouseDialogData {
+export interface WarehouseDialogData
+{
   warehouse?: Warehouse;
   isEdit: boolean;
 }
@@ -34,7 +35,8 @@ export interface WarehouseDialogData {
   templateUrl: './warehouse-dialog.component.html',
   styleUrls: ['./warehouse-dialog.component.scss']
 })
-export class WarehouseDialogComponent implements OnInit {
+export class WarehouseDialogComponent implements OnInit
+{
   warehouseForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
@@ -46,7 +48,8 @@ export class WarehouseDialogComponent implements OnInit {
   private translate = inject(TranslateService);
   private addressService = inject(AddressService);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: WarehouseDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: WarehouseDialogData)
+  {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editWarehouse') : this.translate.instant('addWarehouse');
     
@@ -60,23 +63,30 @@ export class WarehouseDialogComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> 
+{
     await this.loadAddresses();
-    if (this.isEdit && this.data.warehouse) {
+    if (this.isEdit && this.data.warehouse)
+    {
       this.populateForm(this.data.warehouse);
     }
   }
 
-  private async loadAddresses(): Promise<void> {
-    try {
+  private async loadAddresses(): Promise<void> 
+{
+    try 
+{
       const addresses = await firstValueFrom(this.addressService.getAddresses());
       this.addresses.set(addresses);
-    } catch (error) {
+    }
+ catch (error)
+ {
       console.error('Failed to load addresses:', error);
     }
   }
 
-  getAddressDisplay(address: Address): string {
+  getAddressDisplay(address: Address): string
+  {
     const parts: string[] = [];
     if (address.streetAddress1) parts.push(address.streetAddress1);
     if (address.city) parts.push(address.city);
@@ -88,16 +98,24 @@ export class WarehouseDialogComponent implements OnInit {
     return (addressStr || address.id || '') + type;
   }
 
-  private populateForm(warehouse: Warehouse): void {
+  private populateForm(warehouse: Warehouse): void
+ {
     let jsonDataString = '{}';
-    if (warehouse.jsonData) {
-      if (typeof warehouse.jsonData === 'object') {
+    if (warehouse.jsonData)
+    {
+      if (typeof warehouse.jsonData === 'object')
+      {
         jsonDataString = JSON.stringify(warehouse.jsonData, null, 2);
-      } else if (typeof warehouse.jsonData === 'string') {
-        try {
+      }
+ else if (typeof warehouse.jsonData === 'string')
+ {
+        try 
+{
           JSON.parse(warehouse.jsonData);
           jsonDataString = warehouse.jsonData;
-        } catch {
+        }
+ catch
+ {
           jsonDataString = '{}';
         }
       }
@@ -113,31 +131,43 @@ export class WarehouseDialogComponent implements OnInit {
     });
   }
 
-  private jsonValidator(control: any) {
+  private jsonValidator(control: any)
+ {
     if (!control.value) return null;
-    try {
+    try 
+{
       JSON.parse(control.value);
       return null;
-    } catch (e) {
+    }
+ catch (e)
+ {
       return { invalidJson: true };
     }
   }
 
-  onSubmit(): void {
-    if (this.warehouseForm.valid) {
+  onSubmit(): void
+  {
+    if (this.warehouseForm.valid)
+    {
       const formValue = this.warehouseForm.value;
       
       let jsonData: any = {};
-      if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
-        try {
+      if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
+      {
+        try 
+{
           jsonData = JSON.parse(formValue.jsonData);
-        } catch (e) {
+        }
+ catch (e)
+ {
           return;
         }
       }
 
-      if (this.isEdit && this.data.warehouse) {
-        const warehouseToUpdate: Warehouse = {
+      if (this.isEdit && this.data.warehouse)
+      {
+        const warehouseToUpdate: Warehouse =
+        {
           id: this.data.warehouse.id,
           warehouseCode: formValue.warehouseCode,
           warehouseName: formValue.warehouseName,
@@ -147,8 +177,11 @@ export class WarehouseDialogComponent implements OnInit {
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', warehouse: warehouseToUpdate });
-      } else {
-        const warehouseToCreate: CreateWarehouseRequest = {
+      }
+ else
+ {
+        const warehouseToCreate: CreateWarehouseRequest =
+        {
           warehouseCode: formValue.warehouseCode,
           warehouseName: formValue.warehouseName,
           addressId: formValue.addressId || undefined,
@@ -161,19 +194,24 @@ export class WarehouseDialogComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close();
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.warehouseForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.warehouseForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['invalidJson']) {
+    if (field?.errors)
+    {
+      if (field.errors['invalidJson'])
+      {
         return this.translate.instant('validation.invalidJson');
       }
     }

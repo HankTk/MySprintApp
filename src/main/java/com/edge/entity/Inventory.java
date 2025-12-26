@@ -7,7 +7,8 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class Inventory {
+public class Inventory
+{
     private String id;
     private String productId;
     private String warehouseId;

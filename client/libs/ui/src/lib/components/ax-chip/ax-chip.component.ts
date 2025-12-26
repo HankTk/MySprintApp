@@ -14,7 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './ax-chip.component.html',
   styleUrls: ['./ax-chip.component.scss']
 })
-export class AxChipComponent {
+export class AxChipComponent
+{
   @Input() label?: string;
   @Input() color?: 'primary' | 'accent' | 'warn';
   @Input() removable = false;
@@ -28,14 +29,18 @@ export class AxChipComponent {
   @Output() removed = new EventEmitter<void>();
   @Output() selectedChange = new EventEmitter<boolean>();
 
-  onRemove(): void {
-    if (!this.disabled && this.removable) {
+  onRemove(): void
+  {
+    if (!this.disabled && this.removable)
+    {
       this.removed.emit();
     }
   }
 
-  onSelectionChange(): void {
-    if (!this.disabled) {
+  onSelectionChange(): void
+  {
+    if (!this.disabled)
+    {
       this.selected = !this.selected;
       this.selectedChange.emit(this.selected);
     }

@@ -31,7 +31,8 @@ import {
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.scss']
 })
-export class MainLayoutComponent {
+export class MainLayoutComponent
+{
   protected readonly title = 'Edge';
   
   @ViewChild('menuDrawer') menuDrawer!: MatSidenav;
@@ -40,32 +41,40 @@ export class MainLayoutComponent {
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
 
-  openMenuDrawer(): void {
+  openMenuDrawer(): void
+  {
     this.menuDrawer.open();
   }
 
-  closeMenuDrawer(): void {
+  closeMenuDrawer(): void
+  {
     this.menuDrawer.close();
   }
 
-  openSettingsDrawer(): void {
+  openSettingsDrawer(): void
+  {
     this.settingsDrawer.open();
   }
 
-  closeSettingsDrawer(): void {
+  closeSettingsDrawer(): void
+  {
     this.settingsDrawer.close();
   }
 
-  logout(): void {
-    const dialogRef = this.dialog.open(LogoutConfirmDialogComponent, {
+  logout(): void
+  {
+    const dialogRef = this.dialog.open(LogoutConfirmDialogComponent,
+    {
       width: '450px',
       maxWidth: '90vw',
       disableClose: true,
       autoFocus: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+    dialogRef.afterClosed().subscribe(result =>
+    {
+      if (result === true)
+      {
         // Close all open dialogs before logging out
         this.dialog.closeAll();
         this.authService.logout();

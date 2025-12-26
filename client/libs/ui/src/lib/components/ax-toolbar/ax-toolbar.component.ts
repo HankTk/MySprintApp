@@ -13,7 +13,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   templateUrl: './ax-toolbar.component.html',
   styleUrls: ['./ax-toolbar.component.scss']
 })
-export class AxToolbarComponent {
+export class AxToolbarComponent
+{
   @Input() color?: 'primary' | 'accent' | 'warn';
   @Input() multiple = false;
 }

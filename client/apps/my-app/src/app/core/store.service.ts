@@ -3,58 +3,73 @@ import { WebSocketService, DataChangeNotification } from './websocket.service';
 import { Subscription } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class StoreService implements OnDestroy {
+export class StoreService implements OnDestroy
+{
 
   private state = signal<Record<string, any>>({});
   private webSocketService = inject(WebSocketService);
   private notificationSubscription?: Subscription;
 
-  constructor() {
+  constructor()
+  {
     // Start WebSocket connection
     this.webSocketService.connect();
     
     // Subscribe to WebSocket notifications
     this.notificationSubscription = this.webSocketService.notifications$.subscribe(
-      (notification: DataChangeNotification) => {
+      (notification: DataChangeNotification) =>
+      {
         this.handleDataChange(notification);
       }
     );
   }
 
-  ngOnDestroy(): void {
-    if (this.notificationSubscription) {
+  ngOnDestroy(): void
+  {
+    if (this.notificationSubscription)
+    {
       this.notificationSubscription.unsubscribe();
     }
     this.webSocketService.disconnect();
   }
 
-  set(resource: string, data: any) {
+  set(resource: string, data: any)
+  {
     this.state.update(s => ({ ...s, [resource]: data }));
   }
 
-  select(resource: string) {
+  select(resource: string)
+  {
     return computed(() => this.state()[resource] || []);
   }
 
-  private handleDataChange(notification: DataChangeNotification): void {
+  private handleDataChange(notification: DataChangeNotification): void
+ {
     const { changeType, dataTypeId, data } = notification;
     const currentData = this.state()[dataTypeId] || [];
 
-    switch (changeType) {
+    switch (changeType)
+    {
       case 'CREATE':
         // Add data if it doesn't already exist
-        if (Array.isArray(currentData)) {
+        if (Array.isArray(currentData))
+        {
           const exists = currentData.some((item: any) => item.id === (data as any).id);
-          if (!exists) {
+          if (!exists)
+          {
             this.state.update(s => ({
               ...s,
               [dataTypeId]: [...currentData, data]
             }));
             console.log(`Data added to ${dataTypeId}:`, data);
-          } else {
+          }
+ else
+ {
             console.log(`Data already exists in ${dataTypeId}, skipping:`, data);
           }
-        } else {
+        }
+ else
+ {
           // If currentData is not an array, initialize it
           this.state.update(s => ({
             ...s,
@@ -66,7 +81,8 @@ export class StoreService implements OnDestroy {
 
       case 'UPDATE':
         // Update data
-        if (Array.isArray(currentData)) {
+        if (Array.isArray(currentData))
+        {
           const updatedData = currentData.map((item: any) => 
             item.id === data.id ? data : item
           );
@@ -80,7 +96,8 @@ export class StoreService implements OnDestroy {
 
       case 'DELETE':
         // Delete data
-        if (Array.isArray(currentData)) {
+        if (Array.isArray(currentData))
+        {
           const filteredData = currentData.filter((item: any) => item.id !== data.id);
           this.state.update(s => ({
             ...s,

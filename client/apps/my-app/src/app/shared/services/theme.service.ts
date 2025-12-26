@@ -20,7 +20,8 @@ export class ThemeService
     this.initializeTheme();
 
     // Apply theme when it changes
-    effect(() => {
+    effect(() =>
+    {
       const theme = this.themeSignal();
       this.applyTheme(theme);
     });

@@ -13,7 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './ax-icon.component.html',
   styleUrls: ['./ax-icon.component.scss'],
 })
-export class AxIconComponent {
+export class AxIconComponent
+{
   @Input() name!: string;
   @Input() color?: 'primary' | 'accent' | 'warn';
   @Input() size?: 'small' | 'medium' | 'large' = 'medium';

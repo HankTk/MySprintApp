@@ -20,4 +20,6 @@ import { ProductDetailComponent } from './components/product-detail/product-deta
     ProductDetailComponent
   ]
 })
-export class ProductsModule { }
+export class ProductsModule
+{
+}

@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './ax-heading3.component.html',
   styleUrls: ['./ax-heading3.component.scss']
 })
-export class AxHeading3Component {
+export class AxHeading3Component
+{
 }
 

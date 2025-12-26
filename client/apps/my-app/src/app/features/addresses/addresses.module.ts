@@ -19,5 +19,6 @@ import { AddressDialogComponent } from './components/address-dialog/address-dial
     AddressDialogComponent
   ]
 })
-export class AddressesModule { }
-
+export class AddressesModule
+{
+}

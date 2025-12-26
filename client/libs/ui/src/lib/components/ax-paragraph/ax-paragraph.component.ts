@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './ax-paragraph.component.html',
   styleUrls: ['./ax-paragraph.component.scss']
 })
-export class AxParagraphComponent {
+export class AxParagraphComponent
+{
 }
 

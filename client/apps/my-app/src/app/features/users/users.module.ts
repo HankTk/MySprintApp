@@ -20,4 +20,6 @@ import { UserDialogComponent } from './components/user-dialog/user-dialog.compon
     UserDialogComponent
   ]
 })
-export class UsersModule { }
+export class UsersModule
+{
+}

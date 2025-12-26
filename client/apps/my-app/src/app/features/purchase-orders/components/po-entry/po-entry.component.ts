@@ -46,7 +46,8 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './po-entry.component.html',
   styleUrls: ['./po-entry.component.scss']
 })
-export class PurchaseOrderEntryComponent implements OnInit {
+export class PurchaseOrderEntryComponent implements OnInit
+{
   currentStep = signal<PurchaseOrderStep>('entry');
   currentEntrySubStep = signal<EntrySubStep>('supplier');
   po = signal<PurchaseOrder | null>(null);
@@ -78,15 +79,20 @@ export class PurchaseOrderEntryComponent implements OnInit {
   historyNote = signal<string>('');
   
   // Computed signal for PO history
-  poHistory = computed(() => {
+  poHistory = computed(() =>
+  {
     const po = this.po();
     if (!po?.jsonData?.history) return [];
     let history = po.jsonData.history;
-    if (typeof history === 'string') {
-      try {
+    if (typeof history === 'string')
+    {
+      try 
+{
         const parsed = JSON.parse(history);
         history = parsed.history || parsed;
-      } catch {
+      }
+ catch
+ {
         return [];
       }
     }
@@ -117,7 +123,8 @@ export class PurchaseOrderEntryComponent implements OnInit {
     { key: 'review', label: 'purchaseOrderEntry.subStep.review' }
   ];
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> 
+{
     const poId = this.route.snapshot.paramMap.get('id');
     
     await Promise.all([
@@ -126,18 +133,24 @@ export class PurchaseOrderEntryComponent implements OnInit {
       this.loadAddresses()
     ]);
 
-    if (poId) {
+    if (poId)
+    {
       await this.loadPurchaseOrder(poId);
-    } else {
+    }
+ else
+ {
       // Only create purchase order when user actually starts entering data (when supplier is selected)
       // Don't create empty draft purchase orders automatically
     }
   }
 
-  private async createNewPurchaseOrder(): Promise<void> {
-    try {
+  private async createNewPurchaseOrder(): Promise<void> 
+{
+    try 
+{
       this.loading.set(true);
-      const newPO: Partial<PurchaseOrder> = {
+      const newPO: Partial<PurchaseOrder> =
+      {
         status: 'DRAFT',
         items: [],
         subtotal: 0,
@@ -146,80 +159,111 @@ export class PurchaseOrderEntryComponent implements OnInit {
         total: 0,
       };
       const created = await firstValueFrom(this.poService.createPurchaseOrder(newPO as CreatePurchaseOrderRequest));
-      if (created && created.id) {
+      if (created && created.id)
+      {
         this.po.set(created);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error creating purchase order:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  private async loadPurchaseOrder(id: string): Promise<void> {
-    try {
+  private async loadPurchaseOrder(id: string): Promise<void> 
+{
+    try 
+{
       this.loading.set(true);
       const po = await firstValueFrom(this.poService.getPurchaseOrder(id));
-      if (po) {
+      if (po)
+      {
         this.po.set(po);
         // Load expected delivery date
-        if (po.expectedDeliveryDate) {
+        if (po.expectedDeliveryDate)
+        {
           this.expectedDeliveryDate.set(new Date(po.expectedDeliveryDate));
         }
         // Set step based on PO status
         await this.setStepFromStatus(po.status);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading purchase order:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  private async setStepFromStatus(status?: string): Promise<void> {
+  private async setStepFromStatus(status?: string): Promise<void> 
+{
     const po = this.po();
     
-    switch (status) {
+    switch (status)
+    {
       case 'DRAFT':
         this.currentStep.set('entry');
-        if (po?.supplierId) {
-          if (po.items && po.items.length > 0) {
-            if (po.shippingAddressId && po.billingAddressId) {
+        if (po?.supplierId)
+        {
+          if (po.items && po.items.length > 0)
+          {
+            if (po.shippingAddressId && po.billingAddressId)
+            {
               this.currentEntrySubStep.set('review');
-            } else {
+            }
+ else
+ {
               this.currentEntrySubStep.set('shipping');
             }
-          } else {
+          }
+ else
+ {
             this.currentEntrySubStep.set('products');
           }
-        } else {
+        }
+ else
+ {
           this.currentEntrySubStep.set('supplier');
         }
         break;
       case 'PENDING_APPROVAL':
         this.currentStep.set('approval');
-        if (po?.jsonData) {
+        if (po?.jsonData)
+        {
           this.approvalNotes.set(po.jsonData.approvalNotes || '');
         }
         break;
       case 'APPROVED':
         this.currentStep.set('received');
-        if (po?.jsonData) {
+        if (po?.jsonData)
+        {
           const receivedDateStr = po.jsonData.receivedDate;
           this.receivedDate.set(receivedDateStr ? new Date(receivedDateStr) : null);
         }
         break;
       case 'RECEIVED':
         this.currentStep.set('invoicing');
-        if (po) {
+        if (po)
+        {
           this.invoiceNumber.set(po.invoiceNumber || po.jsonData?.invoiceNumber || '');
-          if (po.invoiceDate) {
+          if (po.invoiceDate)
+          {
             this.invoiceDate.set(new Date(po.invoiceDate));
-          } else if (po.jsonData?.invoiceDate) {
+          }
+ else if (po.jsonData?.invoiceDate)
+ {
             const invoiceDateStr = po.jsonData.invoiceDate;
             this.invoiceDate.set(invoiceDateStr ? new Date(invoiceDateStr) : null);
           }
-          if (!this.invoiceNumber()) {
+          if (!this.invoiceNumber())
+          {
             await this.loadInvoiceNumber();
           }
         }
@@ -227,11 +271,15 @@ export class PurchaseOrderEntryComponent implements OnInit {
       case 'INVOICED':
       case 'PAID':
         this.currentStep.set('history');
-        if (po) {
+        if (po)
+        {
           this.invoiceNumber.set(po.invoiceNumber || po.jsonData?.invoiceNumber || '');
-          if (po.invoiceDate) {
+          if (po.invoiceDate)
+          {
             this.invoiceDate.set(new Date(po.invoiceDate));
-          } else if (po.jsonData?.invoiceDate) {
+          }
+ else if (po.jsonData?.invoiceDate)
+ {
             const invoiceDateStr = po.jsonData.invoiceDate;
             this.invoiceDate.set(invoiceDateStr ? new Date(invoiceDateStr) : null);
           }
@@ -243,54 +291,75 @@ export class PurchaseOrderEntryComponent implements OnInit {
     }
   }
 
-  private async loadVendors(): Promise<void> {
-    try {
+  private async loadVendors(): Promise<void> 
+{
+    try 
+{
       const vendors = await firstValueFrom(this.vendorService.getVendors());
       this.vendors.set(vendors);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading vendors:', err);
     }
   }
 
-  private async loadProducts(): Promise<void> {
-    try {
+  private async loadProducts(): Promise<void> 
+{
+    try 
+{
       const products = await firstValueFrom(this.productService.getProducts());
       const activeProducts = products.filter(p => p.active !== false);
       this.products.set(activeProducts);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading products:', err);
     }
   }
 
-  private async loadAddresses(): Promise<void> {
-    try {
+  private async loadAddresses(): Promise<void> 
+{
+    try 
+{
       const addresses = await firstValueFrom(this.addressService.getAddresses());
       this.addresses.set(addresses);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading addresses:', err);
       this.addresses.set([]);
     }
   }
 
-  async onSupplierChange(supplierId: string | null): Promise<void> {
+  async onSupplierChange(supplierId: string | null): Promise<void> 
+{
     const normalizedSupplierId = supplierId && supplierId.trim() !== '' ? supplierId : undefined;
     
-    if (!normalizedSupplierId) {
+    if (!normalizedSupplierId)
+    {
       // Keep all addresses loaded (from address master), don't clear them
       // Clear supplierId from PO if supplier is deselected
       const po = this.po();
-      if (po && po.id) {
-        try {
+      if (po && po.id)
+      {
+        try 
+{
           this.loading.set(true);
           const updated = await firstValueFrom(
             this.poService.updatePurchaseOrder(po.id, { ...po, supplierId: undefined })
           );
-          if (updated) {
+          if (updated)
+          {
             this.po.set(updated);
           }
-        } catch (err) {
+        }
+ catch (err)
+        {
           console.error('Error clearing supplier:', err);
-        } finally {
+        }
+ finally
+        {
           this.loading.set(false);
         }
       }
@@ -299,121 +368,158 @@ export class PurchaseOrderEntryComponent implements OnInit {
     
     // Create purchase order if it doesn't exist yet (only when user starts entering data)
     let po = this.po();
-    if (!po || !po.id) {
+    if (!po || !po.id)
+    {
       await this.createNewPurchaseOrder();
       po = this.po();
-      if (!po || !po.id) {
+      if (!po || !po.id)
+      {
         console.error('Failed to create purchase order.');
         alert('Failed to create purchase order. Please try again.');
         return;
       }
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const poToUpdate = { ...po, supplierId: normalizedSupplierId };
       const updated = await firstValueFrom(
         this.poService.updatePurchaseOrder(po.id, poToUpdate)
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error updating supplier:', err);
       alert('Failed to update supplier. Please try again.');
-    } finally {
+    }
+ finally
+    {
       this.loading.set(false);
     }
   }
 
-  async onAddProduct(): Promise<void> {
+  async onAddProduct(): Promise<void>
+  {
     const productId = this.selectedProduct();
     const qty = this.quantity();
     let po = this.po();
 
-    if (!productId) {
+    if (!productId)
+    {
       return;
     }
 
     // Create purchase order if it doesn't exist yet (only when user starts entering data)
-    if (!po || !po.id) {
+    if (!po || !po.id)
+    {
       await this.createNewPurchaseOrder();
       po = this.po();
-      if (!po || !po.id) {
+      if (!po || !po.id)
+      {
         console.error('Failed to create purchase order.');
         alert('Failed to create purchase order. Please try again.');
         return;
       }
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.poService.addPurchaseOrderItem(po.id, productId, qty)
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
         this.selectedProduct.set(null);
         this.quantity.set(1);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error adding product:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onUpdateQuantity(itemId: string, quantity: number): Promise<void> {
+  async onUpdateQuantity(itemId: string, quantity: number): Promise<void> 
+{
     if (quantity < 1) return;
     
     const po = this.po();
-    if (!po || !po.id) {
+    if (!po || !po.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.poService.updatePurchaseOrderItemQuantity(po.id, itemId, quantity)
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating quantity:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onRemoveItem(itemId: string): Promise<void> {
+  async onRemoveItem(itemId: string): Promise<void> 
+{
     const po = this.po();
-    if (!po || !po.id) {
+    if (!po || !po.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.poService.removePurchaseOrderItem(po.id, itemId)
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error removing item:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onShippingInfoChange(shippingAddressId: string, billingAddressId: string): Promise<void> {
+  async onShippingInfoChange(shippingAddressId: string, billingAddressId: string): Promise<void> 
+{
     const po = this.po();
-    if (!po || !po.id) {
+    if (!po || !po.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.poService.updatePurchaseOrder(po.id, {
@@ -422,25 +528,33 @@ export class PurchaseOrderEntryComponent implements OnInit {
           billingAddressId
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
         this.shippingId.set(shippingAddressId);
         this.billingId.set(billingAddressId);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating shipping info:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onExpectedDeliveryDateChange(date: Date | null): Promise<void> {
+  async onExpectedDeliveryDateChange(date: Date | null): Promise<void> 
+{
     const po = this.po();
-    if (!po || !po.id) {
+    if (!po || !po.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const dateObj = date ? date.toISOString() : undefined;
       const updated = await firstValueFrom(
@@ -449,23 +563,31 @@ export class PurchaseOrderEntryComponent implements OnInit {
           expectedDeliveryDate: dateObj
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
         this.expectedDeliveryDate.set(date);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating expected delivery date:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  canProceedToNext(): boolean {
-    if (this.currentStep() === 'entry') {
+  canProceedToNext(): boolean
+  {
+    if (this.currentStep() === 'entry')
+    {
       const subStep = this.currentEntrySubStep();
       const po = this.po();
       
-      switch (subStep) {
+      switch (subStep)
+      {
         case 'supplier':
           return !!po?.supplierId;
         case 'products':
@@ -479,7 +601,8 @@ export class PurchaseOrderEntryComponent implements OnInit {
       }
     }
     
-    switch (this.currentStep()) {
+    switch (this.currentStep())
+    {
       case 'approval':
         return !!this.approvalNotes();
       case 'received':
@@ -493,76 +616,109 @@ export class PurchaseOrderEntryComponent implements OnInit {
     }
   }
 
-  handleNext(): void {
-    if (this.currentStep() === 'entry') {
+  handleNext(): void
+  {
+    if (this.currentStep() === 'entry')
+    {
       const currentSubIndex = this.entrySubSteps.findIndex(s => s.key === this.currentEntrySubStep());
-      if (currentSubIndex < this.entrySubSteps.length - 1) {
+      if (currentSubIndex < this.entrySubSteps.length - 1)
+      {
         this.currentEntrySubStep.set(this.entrySubSteps[currentSubIndex + 1].key);
-      } else {
+      }
+ else
+ {
         const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-        if (currentIndex < this.steps.length - 1) {
+        if (currentIndex < this.steps.length - 1)
+        {
           this.currentStep.set(this.steps[currentIndex + 1].key);
         }
       }
-    } else {
+    }
+ else
+ {
       const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-      if (currentIndex < this.steps.length - 1) {
+      if (currentIndex < this.steps.length - 1)
+      {
         const nextStep = this.steps[currentIndex + 1].key;
         this.currentStep.set(nextStep);
-        if (nextStep === 'invoicing') {
+        if (nextStep === 'invoicing')
+        {
           this.loadInvoiceNumber();
         }
       }
     }
   }
 
-  handlePrevious(): void {
-    if (this.currentStep() === 'entry') {
+  handlePrevious(): void
+  {
+    if (this.currentStep() === 'entry')
+    {
       const currentSubIndex = this.entrySubSteps.findIndex(s => s.key === this.currentEntrySubStep());
-      if (currentSubIndex > 0) {
+      if (currentSubIndex > 0)
+      {
         this.currentEntrySubStep.set(this.entrySubSteps[currentSubIndex - 1].key);
-      } else {
+      }
+ else
+ {
         const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-        if (currentIndex > 0) {
+        if (currentIndex > 0)
+        {
           this.currentStep.set(this.steps[currentIndex - 1].key);
         }
       }
-    } else {
+    }
+ else
+ {
       const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-      if (currentIndex > 0) {
-        if (this.steps[currentIndex - 1].key === 'entry') {
+      if (currentIndex > 0)
+      {
+        if (this.steps[currentIndex - 1].key === 'entry')
+        {
           this.currentStep.set('entry');
           this.currentEntrySubStep.set('review');
-        } else {
+        }
+ else
+ {
           this.currentStep.set(this.steps[currentIndex - 1].key);
         }
       }
     }
   }
 
-  goBack(): void {
-    if (window.history.length > 1) {
+  goBack(): void
+  {
+    if (window.history.length > 1)
+    {
       this.location.back();
-    } else {
+    }
+ else
+ {
       this.router.navigate(['/purchase-orders']);
     }
   }
 
-  async onStepClick(stepKey: PurchaseOrderStep): Promise<void> {
+  async onStepClick(stepKey: PurchaseOrderStep): Promise<void> 
+{
     const isCompleted = this.isStepCompleted(stepKey);
     const isActive = this.currentStep() === stepKey;
     
-    if (isCompleted || isActive) {
+    if (isCompleted || isActive)
+    {
       const currentPO = this.po();
-      if (currentPO?.id) {
-        try {
+      if (currentPO?.id)
+      {
+        try 
+{
           this.loading.set(true);
           const latestPO = await firstValueFrom(this.poService.getPurchaseOrder(currentPO.id));
-          if (latestPO) {
+          if (latestPO)
+          {
             this.po.set(latestPO);
             
-            if (latestPO.jsonData) {
-              switch (stepKey) {
+            if (latestPO.jsonData)
+            {
+              switch (stepKey)
+              {
                 case 'approval':
                   this.approvalNotes.set(latestPO.jsonData.approvalNotes || '');
                   break;
@@ -572,38 +728,49 @@ export class PurchaseOrderEntryComponent implements OnInit {
                   break;
                 case 'invoicing':
                   this.invoiceNumber.set(latestPO.invoiceNumber || latestPO.jsonData.invoiceNumber || '');
-                  if (latestPO.invoiceDate) {
+                  if (latestPO.invoiceDate)
+                  {
                     this.invoiceDate.set(new Date(latestPO.invoiceDate));
-                  } else if (latestPO.jsonData.invoiceDate) {
+                  }
+ else if (latestPO.jsonData.invoiceDate)
+ {
                     const invDateStr = latestPO.jsonData.invoiceDate;
                     this.invoiceDate.set(invDateStr ? new Date(invDateStr) : null);
                   }
-                  if (!this.invoiceNumber()) {
+                  if (!this.invoiceNumber())
+                  {
                     await this.loadInvoiceNumber();
                   }
                   break;
               }
             }
           }
-        } catch (err) {
+        }
+ catch (err)
+ {
           console.error('Error reloading purchase order:', err);
-        } finally {
+        }
+ finally
+ {
           this.loading.set(false);
         }
       }
       
       this.currentStep.set(stepKey);
-      if (stepKey === 'entry') {
+      if (stepKey === 'entry')
+      {
         this.currentEntrySubStep.set('review');
       }
     }
   }
 
-  isStepCompleted(step: PurchaseOrderStep): boolean {
+  isStepCompleted(step: PurchaseOrderStep): boolean
+  {
     const po = this.po();
     if (!po) return false;
 
-    switch (step) {
+    switch (step)
+    {
       case 'entry':
         return !!(po.supplierId && po.items && po.items.length > 0 && po.shippingAddressId && po.billingAddressId);
       case 'approval':
@@ -619,11 +786,13 @@ export class PurchaseOrderEntryComponent implements OnInit {
     }
   }
 
-  isSubStepCompleted(subStep: EntrySubStep): boolean {
+  isSubStepCompleted(subStep: EntrySubStep): boolean
+  {
     const po = this.po();
     if (!po) return false;
 
-    switch (subStep) {
+    switch (subStep)
+    {
       case 'supplier':
         return !!po.supplierId;
       case 'products':
@@ -637,26 +806,30 @@ export class PurchaseOrderEntryComponent implements OnInit {
     }
   }
 
-  getVendorName(vendorId?: string): string {
+  getVendorName(vendorId?: string): string
+  {
     if (!vendorId) return '';
     const vendor = this.vendors().find(v => v.id === vendorId);
     return vendor?.companyName || `${vendor?.firstName || ''} ${vendor?.lastName || ''}`.trim() || '';
   }
 
-  getProductName(productId?: string): string {
+  getProductName(productId?: string): string
+  {
     if (!productId) return '';
     const product = this.products().find(p => p.id === productId);
     return product?.productName || product?.productCode || '';
   }
 
-  getAddressLabel(addressId?: string): string {
+  getAddressLabel(addressId?: string): string
+  {
     if (!addressId) return '';
     const address = this.addresses().find(a => a.id === addressId);
     if (!address) return '';
     return `${address.streetAddress1 || ''}, ${address.city || ''}, ${address.state || ''} ${address.postalCode || ''}`.trim();
   }
 
-  getAddressDisplay(address: Address): string {
+  getAddressDisplay(address: Address): string
+  {
     const parts: string[] = [];
     if (address.streetAddress1) parts.push(address.streetAddress1);
     if (address.city) parts.push(address.city);
@@ -668,37 +841,45 @@ export class PurchaseOrderEntryComponent implements OnInit {
     return (addressStr || address.id || '') + type;
   }
 
-  getCurrentStepLabel(): string {
+  getCurrentStepLabel(): string
+  {
     const step = this.steps.find(s => s.key === this.currentStep());
     return step?.label || '';
   }
 
-  async handleCompleteEntry(): Promise<void> {
+  async handleCompleteEntry(): Promise<void> 
+{
     const po = this.po();
-    if (!po || !po.id) {
+    if (!po || !po.id)
+    {
       alert('Purchase order is not ready. Please wait a moment and try again.');
       return;
     }
 
-    if (!po.supplierId) {
+    if (!po.supplierId)
+    {
       alert('Please select a supplier before completing the entry.');
       this.currentEntrySubStep.set('supplier');
       return;
     }
-    if (!po.items || po.items.length === 0) {
+    if (!po.items || po.items.length === 0)
+    {
       alert('Please add at least one product before completing the entry.');
       this.currentEntrySubStep.set('products');
       return;
     }
-    if (!po.shippingAddressId || !po.billingAddressId) {
+    if (!po.shippingAddressId || !po.billingAddressId)
+    {
       alert('Please select shipping and billing addresses before completing the entry.');
       this.currentEntrySubStep.set('shipping');
       return;
     }
 
-    try {
+    try 
+{
       this.submitting.set(true);
-      const poToUpdate: PurchaseOrder = {
+      const poToUpdate: PurchaseOrder =
+      {
         ...po,
         supplierId: po.supplierId,
         shippingAddressId: po.shippingAddressId,
@@ -709,7 +890,8 @@ export class PurchaseOrderEntryComponent implements OnInit {
       const updated = await firstValueFrom(
         this.poService.updatePurchaseOrder(po.id, poToUpdate)
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
         await this.addHistoryRecord(
           'entry',
@@ -724,19 +906,25 @@ export class PurchaseOrderEntryComponent implements OnInit {
         );
         this.currentStep.set('approval');
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error completing entry:', err);
       alert('Failed to complete entry. Please try again.');
-    } finally {
+    }
+ finally
+ {
       this.submitting.set(false);
     }
   }
 
-  async handleApprovePO(): Promise<void> {
+  async handleApprovePO(): Promise<void> 
+{
     const po = this.po();
     if (!po || !po.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = po.jsonData || {};
       jsonData.approvalNotes = this.approvalNotes();
@@ -750,7 +938,8 @@ export class PurchaseOrderEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
         await this.addHistoryRecord(
           'approval',
@@ -761,18 +950,24 @@ export class PurchaseOrderEntryComponent implements OnInit {
         );
         this.currentStep.set('received');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error approving purchase order:', err);
-    } finally {
+    }
+ finally
+    {
       this.submitting.set(false);
     }
   }
 
-  async handleReceivePO(): Promise<void> {
+  async handleReceivePO(): Promise<void>
+  {
     const po = this.po();
     if (!po || !po.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = po.jsonData || {};
       jsonData.receivedDate = this.receivedDate() ? this.receivedDate()!.toISOString().split('T')[0] : null;
@@ -785,7 +980,8 @@ export class PurchaseOrderEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
         await this.addHistoryRecord(
           'received',
@@ -799,18 +995,24 @@ export class PurchaseOrderEntryComponent implements OnInit {
         await this.loadInvoiceNumber();
         this.currentStep.set('invoicing');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error receiving purchase order:', err);
-    } finally {
+    }
+ finally
+    {
       this.submitting.set(false);
     }
   }
 
-  async handleInvoicePO(): Promise<void> {
+  async handleInvoicePO(): Promise<void>
+  {
     const po = this.po();
     if (!po || !po.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = po.jsonData || {};
       jsonData.invoiceNumber = this.invoiceNumber();
@@ -826,7 +1028,8 @@ export class PurchaseOrderEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
         await this.addHistoryRecord(
           'invoicing',
@@ -841,35 +1044,47 @@ export class PurchaseOrderEntryComponent implements OnInit {
         );
         this.currentStep.set('history');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error invoicing purchase order:', err);
-    } finally {
+    }
+ finally
+    {
       this.submitting.set(false);
     }
   }
 
-  async loadInvoiceNumber(): Promise<void> {
-    try {
+  async loadInvoiceNumber(): Promise<void>
+  {
+    try 
+{
       const response = await firstValueFrom(this.poService.getNextInvoiceNumber());
-      if (response && response.invoiceNumber) {
+      if (response && response.invoiceNumber)
+      {
         this.invoiceNumber.set(response.invoiceNumber);
-        if (!this.invoiceDate()) {
+        if (!this.invoiceDate())
+        {
           this.invoiceDate.set(new Date());
         }
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error loading invoice number:', err);
     }
   }
 
-  async handleAddHistoryNote(): Promise<void> {
+  async handleAddHistoryNote(): Promise<void> 
+{
     const po = this.po();
     if (!po || !po.id) return;
 
     const note = this.historyNote();
     if (!note.trim()) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const updatedNotes = po.notes ? `${po.notes}\n\n${note}` : note;
       const updated = await firstValueFrom(
@@ -878,7 +1093,8 @@ export class PurchaseOrderEntryComponent implements OnInit {
           notes: updatedNotes
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
         await this.addHistoryRecord(
           'note',
@@ -888,9 +1104,13 @@ export class PurchaseOrderEntryComponent implements OnInit {
         );
         this.historyNote.set('');
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error adding note:', err);
-    } finally {
+    }
+ finally
+ {
       this.submitting.set(false);
     }
   }
@@ -901,14 +1121,17 @@ export class PurchaseOrderEntryComponent implements OnInit {
     notes?: string,
     status?: string,
     data?: Record<string, any>
-  ): Promise<void> {
+  ): Promise<void>
+  {
     const po = this.po();
     if (!po || !po.id) return;
 
-    try {
+    try 
+{
       const jsonData = po.jsonData || {};
       const history = jsonData.history || [];
-      const newRecord = {
+      const newRecord =
+      {
         step,
         stepLabel,
         timestamp: new Date().toISOString(),
@@ -924,27 +1147,34 @@ export class PurchaseOrderEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error adding history record:', err);
     }
   }
 
-  hasDataKeys(data?: Record<string, any>): boolean {
+  hasDataKeys(data?: Record<string, any>): boolean
+  {
     return !!(data && Object.keys(data).length > 0);
   }
 
-  toString(value: string | number | symbol): string {
+  toString(value: string | number | symbol): string
+  {
     return String(value);
   }
 
-  getDataKeyLabel(key: string): string {
+  getDataKeyLabel(key: string): string
+  {
     return `purchaseOrderEntry.history.data.${key}`;
   }
 
-  formatDataValue(key: string, value: any): string {
+  formatDataValue(key: string, value: any): string
+  {
     if (value === null || value === undefined) return '';
     if (typeof value === 'boolean') return value ? 'Yes' : 'No';
     if (typeof value === 'number') return value.toString();

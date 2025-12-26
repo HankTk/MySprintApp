@@ -11,7 +11,8 @@ import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../
 @Injectable({
   providedIn: 'root'
 })
-export class AddressService {
+export class AddressService
+{
   private apiUrl = 'http://localhost:8080/api/addresses';
 
   private http = inject(HttpClient);
@@ -19,35 +20,43 @@ export class AddressService {
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
 
-  getAddresses(): Observable<Address[]> {
+  getAddresses(): Observable<Address[]>
+  {
     return this.http.get<Address[]>(this.apiUrl);
   }
 
-  getAddress(id: string): Observable<Address> {
+  getAddress(id: string): Observable<Address>
+  {
     return this.http.get<Address>(`${this.apiUrl}/${id}`);
   }
 
-  getAddressesByCustomerId(customerId: string): Observable<Address[]> {
+  getAddressesByCustomerId(customerId: string): Observable<Address[]>
+  {
     return this.http.get<Address[]>(`${this.apiUrl}/customer/${customerId}`);
   }
 
-  getAddressesByVendorId(vendorId: string): Observable<Address[]> {
+  getAddressesByVendorId(vendorId: string): Observable<Address[]>
+  {
     return this.http.get<Address[]>(`${this.apiUrl}/vendor/${vendorId}`);
   }
 
-  createAddress(address: CreateAddressRequest): Observable<Address> {
+  createAddress(address: CreateAddressRequest): Observable<Address>
+  {
     return this.http.post<Address>(this.apiUrl, address);
   }
 
-  updateAddress(id: string, address: Address): Observable<Address> {
+  updateAddress(id: string, address: Address): Observable<Address>
+  {
     return this.http.put<Address>(`${this.apiUrl}/${id}`, address);
   }
 
-  deleteAddress(id: string): Observable<void> {
+  deleteAddress(id: string): Observable<void>
+  {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  loadAddresses(isLoading: WritableSignal<boolean>): void {
+  loadAddresses(isLoading: WritableSignal<boolean>): void
+  {
     this.resourceManager.loadResource(
       'addresses',
       isLoading,
@@ -58,7 +67,8 @@ export class AddressService {
   createAddressWithNotification(
     addressData: CreateAddressRequest,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.createResource(
       'addresses',
       addressData,
@@ -71,7 +81,8 @@ export class AddressService {
   updateAddressWithNotification(
     addressData: Address,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.updateResource(
       'addresses',
       addressData.id!,
@@ -85,7 +96,8 @@ export class AddressService {
   deleteAddressWithNotification(
     id: string,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.deleteResource(
       'addresses',
       id,
@@ -95,39 +107,49 @@ export class AddressService {
     );
   }
 
-  openAddAddressDialog(isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(AddressDialogComponent, {
+  openAddAddressDialog(isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(AddressDialogComponent,
+    {
       data: { isEdit: false } as AddressDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'create') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'create')
+      {
         this.createAddressWithNotification(result.address, isLoading);
       }
     });
   }
 
-  openEditAddressDialog(address: Address, isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(AddressDialogComponent, {
+  openEditAddressDialog(address: Address, isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(AddressDialogComponent,
+    {
       data: { address, isEdit: true } as AddressDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'update') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'update')
+      {
         this.updateAddressWithNotification(result.address, isLoading);
       }
     });
   }
 
-  openDeleteAddressDialog(address: Address, isLoading: WritableSignal<boolean>): void {
+  openDeleteAddressDialog(address: Address, isLoading: WritableSignal<boolean>): void
+  {
     const addressLabel = address.streetAddress1 || address.id || 'Address';
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
+    {
       data: {
         userName: addressLabel,
         userEmail: address.contactPhone
@@ -137,8 +159,10 @@ export class AddressService {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result === true)
+      {
         this.deleteAddressWithNotification(address.id!, isLoading);
       }
     });

@@ -1,4 +1,5 @@
-export interface SFC {
+export interface SFC
+{
   id?: string;
   sfcNumber?: string;
   rmaId?: string;
@@ -16,7 +17,8 @@ export interface SFC {
   jsonData?: any;
 }
 
-export interface CreateSFCRequest {
+export interface CreateSFCRequest
+{
   rmaId?: string;
   rmaNumber?: string;
   orderId?: string;

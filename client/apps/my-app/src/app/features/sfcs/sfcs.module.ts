@@ -19,5 +19,6 @@ import { SFCDialogComponent } from './components/sfc-dialog/sfc-dialog.component
     SFCDialogComponent
   ]
 })
-export class SFCsModule { }
-
+export class SFCsModule
+{
+}

@@ -40,7 +40,8 @@ import { AxTooltipDirective } from '@ui/components';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ProductListComponent implements OnInit, OnDestroy, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['productCode', 'productName', 'description', 'unitPrice', 'cost', 'unitOfMeasure', 'active', 'actions']);
   showFilters = signal<boolean>(false);
@@ -74,9 +75,11 @@ export class ProductListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   products = this.store.select('products');
 
-  constructor() {
+  constructor()
+  {
     // Reinitialize columns when products change (using effect)
-    effect(() => {
+    effect(() =>
+    {
       // Access signal to create dependency
       this.products();
       // Reinitialize columns if templates are available
@@ -84,20 +87,24 @@ export class ProductListComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadProducts();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.subscriptions.unsubscribe();
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     this.columns.set([
       {
         key: 'productCode',
@@ -183,39 +190,48 @@ export class ProductListComponent implements OnInit, OnDestroy, AfterViewInit {
     ]);
   }
 
-  loadProducts(): void {
+  loadProducts(): void
+  {
     this.productService.loadProducts(this.isLoading);
   }
 
-  openAddProductDialog(): void {
+  openAddProductDialog(): void
+  {
     this.productService.openAddProductDialog(this.isLoading);
   }
 
-  openEditProductDialog(product: Product): void {
+  openEditProductDialog(product: Product): void
+  {
     this.productService.openEditProductDialog(product, this.isLoading);
   }
 
-  deleteProduct(product: Product): void {
+  deleteProduct(product: Product): void
+  {
     this.productService.openDeleteProductDialog(product, this.isLoading);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/master']);
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
 

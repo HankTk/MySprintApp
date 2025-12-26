@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class PurchaseOrderService {
+public class PurchaseOrderService
+{
     
     @Autowired
     private PurchaseOrderRepository purchaseOrderRepository;
@@ -37,27 +38,33 @@ public class PurchaseOrderService {
     
     private static final String DATA_TYPE_ID = "purchase-orders";
     
-    public List<PurchaseOrder> getAllPurchaseOrders() {
+    public List<PurchaseOrder> getAllPurchaseOrders()
+    {
         return purchaseOrderRepository.getAllPurchaseOrders();
     }
     
-    public Optional<PurchaseOrder> getPurchaseOrderById(String id) {
+    public Optional<PurchaseOrder> getPurchaseOrderById(String id)
+    {
         return purchaseOrderRepository.getPurchaseOrderById(id);
     }
     
-    public Optional<PurchaseOrder> getPurchaseOrderByOrderNumber(String orderNumber) {
+    public Optional<PurchaseOrder> getPurchaseOrderByOrderNumber(String orderNumber)
+    {
         return purchaseOrderRepository.getPurchaseOrderByOrderNumber(orderNumber);
     }
     
-    public List<PurchaseOrder> getPurchaseOrdersBySupplierId(String supplierId) {
+    public List<PurchaseOrder> getPurchaseOrdersBySupplierId(String supplierId)
+    {
         return purchaseOrderRepository.getPurchaseOrdersBySupplierId(supplierId);
     }
     
-    public List<PurchaseOrder> getPurchaseOrdersByStatus(String status) {
+    public List<PurchaseOrder> getPurchaseOrdersByStatus(String status)
+    {
         return purchaseOrderRepository.getPurchaseOrdersByStatus(status);
     }
     
-    public PurchaseOrder createPurchaseOrder(PurchaseOrder po) {
+    public PurchaseOrder createPurchaseOrder(PurchaseOrder po)
+ {
         // Enrich PO items with product information
         enrichPurchaseOrderItems(po);
         PurchaseOrder created = purchaseOrderRepository.createPurchaseOrder(po);
@@ -65,7 +72,8 @@ public class PurchaseOrderService {
         return created;
     }
     
-    public PurchaseOrder updatePurchaseOrder(String id, PurchaseOrder poDetails) {
+    public PurchaseOrder updatePurchaseOrder(String id, PurchaseOrder poDetails)
+ {
         System.out.println("PurchaseOrderService.updatePurchaseOrder - ID: " + id + ", Status: " + poDetails.getStatus());
         
         // Get existing PO to check status change
@@ -79,7 +87,8 @@ public class PurchaseOrderService {
         System.out.println("PurchaseOrderService.updatePurchaseOrder - Updated status: " + updated.getStatus());
         
         // Handle inventory increase when PO is received
-        if ("RECEIVED".equals(updated.getStatus()) && !"RECEIVED".equals(oldStatus)) {
+        if ("RECEIVED".equals(updated.getStatus()) && !"RECEIVED".equals(oldStatus))
+        {
             increaseInventoryForPurchaseOrder(updated);
         }
         
@@ -89,7 +98,8 @@ public class PurchaseOrderService {
         return updated;
     }
     
-    public PurchaseOrder addPurchaseOrderItem(String poId, String productId, Integer quantity) {
+    public PurchaseOrder addPurchaseOrderItem(String poId, String productId, Integer quantity)
+ {
         PurchaseOrder po = purchaseOrderRepository.getPurchaseOrderById(poId)
             .orElseThrow(() -> new RuntimeException("Purchase Order not found with id: " + poId));
         
@@ -101,12 +111,14 @@ public class PurchaseOrderService {
             .filter(item -> productId.equals(item.getProductId()))
             .findFirst();
         
-        if (existingItem.isPresent()) {
+        if (existingItem.isPresent())
+        {
             // Update quantity
             PurchaseOrderItem item = existingItem.get();
             item.setQuantity(item.getQuantity() + quantity);
             item.calculateLineTotal();
-        } else {
+        } else
+ {
             // Create new item
             PurchaseOrderItem newItem = new PurchaseOrderItem();
             newItem.setId(java.util.UUID.randomUUID().toString());
@@ -123,7 +135,8 @@ public class PurchaseOrderService {
         return purchaseOrderRepository.updatePurchaseOrder(poId, po);
     }
     
-    public PurchaseOrder updatePurchaseOrderItemQuantity(String poId, String itemId, Integer quantity) {
+    public PurchaseOrder updatePurchaseOrderItemQuantity(String poId, String itemId, Integer quantity)
+ {
         PurchaseOrder po = purchaseOrderRepository.getPurchaseOrderById(poId)
             .orElseThrow(() -> new RuntimeException("Purchase Order not found with id: " + poId));
         
@@ -139,12 +152,14 @@ public class PurchaseOrderService {
         return purchaseOrderRepository.updatePurchaseOrder(poId, po);
     }
     
-    public PurchaseOrder removePurchaseOrderItem(String poId, String itemId) {
+    public PurchaseOrder removePurchaseOrderItem(String poId, String itemId)
+ {
         PurchaseOrder po = purchaseOrderRepository.getPurchaseOrderById(poId)
             .orElseThrow(() -> new RuntimeException("Purchase Order not found with id: " + poId));
         
         boolean removed = po.getItems().removeIf(item -> itemId.equals(item.getId()));
-        if (!removed) {
+        if (!removed)
+        {
             throw new RuntimeException("Purchase Order item not found with id: " + itemId);
         }
         
@@ -152,28 +167,37 @@ public class PurchaseOrderService {
         return purchaseOrderRepository.updatePurchaseOrder(poId, po);
     }
     
-    public void deletePurchaseOrder(String id) {
+    public void deletePurchaseOrder(String id)
+ {
         Optional<PurchaseOrder> poToDelete = purchaseOrderRepository.getPurchaseOrderById(id);
         purchaseOrderRepository.deletePurchaseOrder(id);
         
         // Broadcast deletion via WebSocket
-        if (poToDelete.isPresent()) {
+        if (poToDelete.isPresent())
+        {
             notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, poToDelete.get());
         }
     }
     
-    public String generateNextInvoiceNumber() {
+    public String generateNextInvoiceNumber()
+ {
         return purchaseOrderRepository.generateNextInvoiceNumber();
     }
     
-    private void enrichPurchaseOrderItems(PurchaseOrder po) {
-        if (po.getItems() != null) {
-            for (PurchaseOrderItem item : po.getItems()) {
-                if (item.getProductId() != null) {
-                    productRepository.getProductById(item.getProductId()).ifPresent(product -> {
+    private void enrichPurchaseOrderItems(PurchaseOrder po)
+ {
+        if (po.getItems() != null)
+        {
+            for (PurchaseOrderItem item : po.getItems())
+            {
+                if (item.getProductId() != null)
+                {
+                    productRepository.getProductById(item.getProductId()).ifPresent(product ->
+                    {
                         item.setProductCode(product.getProductCode());
                         item.setProductName(product.getProductName());
-                        if (item.getUnitPrice() == null) {
+                        if (item.getUnitPrice() == null)
+                        {
                             item.setUnitPrice(product.getUnitPrice());
                         }
                         item.calculateLineTotal();
@@ -183,18 +207,22 @@ public class PurchaseOrderService {
         }
     }
     
-    private void increaseInventoryForPurchaseOrder(PurchaseOrder po) {
-        if (po.getItems() == null || po.getItems().isEmpty()) {
+    private void increaseInventoryForPurchaseOrder(PurchaseOrder po)
+ {
+        if (po.getItems() == null || po.getItems().isEmpty())
+        {
             return;
         }
         
         // Get default warehouse (first active warehouse, or first warehouse if none active)
         List<Warehouse> warehouses = warehouseRepository.getActiveWarehouses();
-        if (warehouses.isEmpty()) {
+        if (warehouses.isEmpty())
+        {
             warehouses = warehouseRepository.getAllWarehouses();
         }
         
-        if (warehouses.isEmpty()) {
+        if (warehouses.isEmpty())
+        {
             System.out.println("Warning: No warehouses found. Cannot increase inventory for PO " + po.getId());
             return;
         }
@@ -203,13 +231,16 @@ public class PurchaseOrderService {
         String warehouseId = defaultWarehouse.getId();
         
         // Increase inventory for each PO item
-        for (PurchaseOrderItem item : po.getItems()) {
-            if (item.getProductId() != null && item.getQuantity() != null && item.getQuantity() > 0) {
+        for (PurchaseOrderItem item : po.getItems())
+        {
+            if (item.getProductId() != null && item.getQuantity() != null && item.getQuantity() > 0)
+            {
                 try {
                     inventoryService.adjustInventory(item.getProductId(), warehouseId, item.getQuantity());
                     System.out.println("Increased inventory for product " + item.getProductId() + 
                         " by " + item.getQuantity() + " in warehouse " + warehouseId);
-                } catch (Exception e) {
+                } catch (Exception e)
+ {
                     System.err.println("Error increasing inventory for product " + item.getProductId() + ": " + e.getMessage());
                 }
             }

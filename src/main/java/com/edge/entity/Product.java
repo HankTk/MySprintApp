@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 @Data
-public class Product {
+public class Product
+{
     private String id;
     private String productCode;
     private String productName;

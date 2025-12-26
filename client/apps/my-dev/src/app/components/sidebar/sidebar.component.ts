@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { AxIconComponent } from '@ui/components';
 
-interface MenuItem {
+interface MenuItem
+{
   id: string;
   label: string;
   icon: string;
@@ -16,8 +17,9 @@ interface MenuItem {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
-  @Input() currentPage: string = 'button';
+export class SidebarComponent
+{
+  @Input() currentPage = 'button';
   @Output() pageChange = new EventEmitter<string>();
 
   menuItems: MenuItem[] = [
@@ -42,7 +44,8 @@ export class SidebarComponent {
     { id: 'typography', label: 'Typography', icon: 'text_fields' }
   ];
 
-  onItemClick(itemId: string): void {
+  onItemClick(itemId: string): void
+  {
     this.pageChange.emit(itemId);
   }
 }

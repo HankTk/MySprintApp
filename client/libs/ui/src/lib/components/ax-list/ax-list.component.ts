@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 
-export interface AxListItem {
+export interface AxListItem
+{
   label: string;
   icon?: string;
   secondaryText?: string;
@@ -24,14 +25,17 @@ export interface AxListItem {
   templateUrl: './ax-list.component.html',
   styleUrls: ['./ax-list.component.scss']
 })
-export class AxListComponent {
+export class AxListComponent
+{
   @Input() items: AxListItem[] = [];
   @Input() dense = false;
   @Input() disableRipple = false;
   @Output() itemClick = new EventEmitter<AxListItem>();
 
-  onItemClick(item: AxListItem): void {
-    if (!item.disabled) {
+  onItemClick(item: AxListItem): void
+  {
+    if (!item.disabled)
+    {
       this.itemClick.emit(item);
     }
   }

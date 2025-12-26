@@ -50,7 +50,8 @@ public class EdgeApplication
 	@Bean
 	public ApplicationRunner initData(com.edge.repository.UserRepository userRepository)
 	{
-		return args -> {
+		return args ->
+		{
 			System.out.println("ApplicationRunner: Initializing UserRepository...");
 			// Force initialization of UserRepository
 			userRepository.getAllUsers();

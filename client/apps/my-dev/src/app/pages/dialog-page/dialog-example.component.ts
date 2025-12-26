@@ -33,14 +33,19 @@ import { MatButtonModule } from '@angular/material/button';
     }
   `]
 })
-export class DialogExampleComponent {
-  constructor(public dialogRef: MatDialogRef<DialogExampleComponent>) {}
+export class DialogExampleComponent
+{
+  constructor(public dialogRef: MatDialogRef<DialogExampleComponent>)
+  {
+  }
 
-  onClose(): void {
+  onClose(): void
+  {
     this.dialogRef.close();
   }
 
-  onSave(): void {
+  onSave(): void
+  {
     console.log('Save clicked');
     this.dialogRef.close(true);
   }

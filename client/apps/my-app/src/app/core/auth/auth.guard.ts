@@ -6,11 +6,13 @@ import { AuthService } from './auth.service';
  * Authentication guard
  * Protects routes that require authentication
  */
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (route, state) =>
+{
   const authService = inject(AuthService);
   const router = inject(Router);
   
-  if (!authService.isAuthenticated()) {
+  if (!authService.isAuthenticated())
+  {
     router.navigate(['/login']);
     return false;
   }

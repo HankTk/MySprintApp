@@ -12,7 +12,8 @@ import { AddressService } from '../../../addresses/services/address.service';
 import { Address } from '../../../addresses/models/address.model';
 import { firstValueFrom } from 'rxjs';
 
-export interface VendorDialogData {
+export interface VendorDialogData
+{
   vendor?: Vendor;
   isEdit: boolean;
 }
@@ -34,7 +35,8 @@ export interface VendorDialogData {
   templateUrl: './vendor-dialog.component.html',
   styleUrls: ['./vendor-dialog.component.scss']
 })
-export class VendorDialogComponent implements OnInit {
+export class VendorDialogComponent implements OnInit
+{
   vendorForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
@@ -46,7 +48,8 @@ export class VendorDialogComponent implements OnInit {
   private translate = inject(TranslateService);
   private addressService = inject(AddressService);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: VendorDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: VendorDialogData)
+  {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editVendor') : this.translate.instant('addVendor');
     
@@ -62,23 +65,30 @@ export class VendorDialogComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> 
+{
     await this.loadAddresses();
-    if (this.isEdit && this.data.vendor) {
+    if (this.isEdit && this.data.vendor)
+    {
       this.populateForm(this.data.vendor);
     }
   }
 
-  private async loadAddresses(): Promise<void> {
-    try {
+  private async loadAddresses(): Promise<void> 
+{
+    try 
+{
       const addresses = await firstValueFrom(this.addressService.getAddresses());
       this.addresses.set(addresses);
-    } catch (error) {
+    }
+ catch (error)
+ {
       console.error('Failed to load addresses:', error);
     }
   }
 
-  getAddressDisplay(address: Address): string {
+  getAddressDisplay(address: Address): string
+  {
     const parts: string[] = [];
     if (address.streetAddress1) parts.push(address.streetAddress1);
     if (address.city) parts.push(address.city);
@@ -90,16 +100,24 @@ export class VendorDialogComponent implements OnInit {
     return (addressStr || address.id || '') + type;
   }
 
-  private populateForm(vendor: Vendor): void {
+  private populateForm(vendor: Vendor): void
+ {
     let jsonDataString = '{}';
-    if (vendor.jsonData) {
-      if (typeof vendor.jsonData === 'object') {
+    if (vendor.jsonData)
+    {
+      if (typeof vendor.jsonData === 'object')
+      {
         jsonDataString = JSON.stringify(vendor.jsonData, null, 2);
-      } else if (typeof vendor.jsonData === 'string') {
-        try {
+      }
+ else if (typeof vendor.jsonData === 'string')
+ {
+        try 
+{
           JSON.parse(vendor.jsonData);
           jsonDataString = vendor.jsonData;
-        } catch {
+        }
+ catch
+ {
           jsonDataString = '{}';
         }
       }
@@ -117,35 +135,48 @@ export class VendorDialogComponent implements OnInit {
     });
   }
 
-  private jsonValidator(control: any) {
+  private jsonValidator(control: any)
+ {
     if (!control.value) return null;
-    try {
+    try 
+{
       JSON.parse(control.value);
       return null;
-    } catch (e) {
+    }
+ catch (e)
+ {
       return { invalidJson: true };
     }
   }
 
-  get isEnglish(): boolean {
+  get isEnglish(): boolean
+ {
     return this.languageService.isEnglish();
   }
 
-  onSubmit(): void {
-    if (this.vendorForm.valid) {
+  onSubmit(): void
+  {
+    if (this.vendorForm.valid)
+    {
       const formValue = this.vendorForm.value;
       
       let jsonData: any = {};
-      if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
-        try {
+      if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
+      {
+        try 
+{
           jsonData = JSON.parse(formValue.jsonData);
-        } catch (e) {
+        }
+ catch (e)
+ {
           return;
         }
       }
 
-      if (this.isEdit && this.data.vendor) {
-        const vendorToUpdate: Vendor = {
+      if (this.isEdit && this.data.vendor)
+      {
+        const vendorToUpdate: Vendor =
+        {
           id: this.data.vendor.id,
           vendorNumber: formValue.vendorNumber,
           companyName: formValue.companyName,
@@ -157,8 +188,11 @@ export class VendorDialogComponent implements OnInit {
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', vendor: vendorToUpdate });
-      } else {
-        const vendorToCreate: CreateVendorRequest = {
+      }
+ else
+ {
+        const vendorToCreate: CreateVendorRequest =
+        {
           vendorNumber: formValue.vendorNumber,
           companyName: formValue.companyName,
           firstName: formValue.firstName,
@@ -173,22 +207,28 @@ export class VendorDialogComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close();
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.vendorForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.vendorForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['email']) {
+    if (field?.errors)
+    {
+      if (field.errors['email'])
+      {
         return this.translate.instant('validation.email');
       }
-      if (field.errors['invalidJson']) {
+      if (field.errors['invalidJson'])
+      {
         return this.translate.instant('validation.invalidJson');
       }
     }

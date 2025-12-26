@@ -11,14 +11,19 @@ import { DialogExampleComponent } from './dialog-example.component';
   templateUrl: './dialog-page.component.html',
   styleUrls: ['./dialog-page.component.scss']
 })
-export class DialogPageComponent {
+export class DialogPageComponent
+{
   private dialogRef: any = null;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog)
+  {
+  }
 
-  openDialog(): void {
+  openDialog(): void
+  {
     // Close existing dialog if open
-    if (this.dialogRef) {
+    if (this.dialogRef)
+    {
       this.dialogRef.close();
     }
     this.dialogRef = this.dialog.open(DialogExampleComponent, {
@@ -29,14 +34,17 @@ export class DialogPageComponent {
     });
     
     // Clear reference when dialog closes
-    this.dialogRef.afterClosed().subscribe(() => {
+    this.dialogRef.afterClosed().subscribe(() =>
+    {
       this.dialogRef = null;
     });
   }
 
-  openLargeDialog(): void {
+  openLargeDialog(): void
+  {
     // Close existing dialog if open
-    if (this.dialogRef) {
+    if (this.dialogRef)
+    {
       this.dialogRef.close();
     }
     this.dialogRef = this.dialog.open(DialogExampleComponent, {
@@ -47,7 +55,8 @@ export class DialogPageComponent {
     });
     
     // Clear reference when dialog closes
-    this.dialogRef.afterClosed().subscribe(() => {
+    this.dialogRef.afterClosed().subscribe(() =>
+    {
       this.dialogRef = null;
     });
   }

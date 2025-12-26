@@ -21,7 +21,8 @@ import { MatRadioModule } from '@angular/material/radio';
     }
   ]
 })
-export class AxRadioComponent implements ControlValueAccessor {
+export class AxRadioComponent implements ControlValueAccessor
+{
   @Input() label?: string;
   @Input() name?: string;
   @Input() value?: string;
@@ -30,26 +31,32 @@ export class AxRadioComponent implements ControlValueAccessor {
   @Input() id?: string;
   @Input() checked = false;
   private onChange = (value: string) => {};
-  onTouched = () => {};
+  public onTouched = () => {};
 
-  writeValue(value: string): void {
+  writeValue(value: string): void
+  {
     this.checked = this.value === value;
   }
 
-  registerOnChange(fn: (value: string) => void): void {
+  registerOnChange(fn: (value: string) => void): void
+  {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: () => void): void
+  {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  setDisabledState(isDisabled: boolean): void
+  {
     this.disabled = isDisabled;
   }
 
-  onRadioChange(): void {
-    if (this.value) {
+  onRadioChange(): void
+  {
+    if (this.value)
+    {
       this.onChange(this.value);
       this.onTouched();
     }

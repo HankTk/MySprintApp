@@ -9,6 +9,7 @@ import { AxCardComponent } from '@ui/components';
   templateUrl: './card-page.component.html',
   styleUrls: ['./card-page.component.scss']
 })
-export class CardPageComponent {
+export class CardPageComponent
+{
 }
 

@@ -9,7 +9,8 @@ import {
   AxIconComponent
 } from '@ui/components';
 
-interface MaintenanceItem {
+interface MaintenanceItem
+{
   id: string;
   name: string;
   description: string;
@@ -17,7 +18,8 @@ interface MaintenanceItem {
   action: () => void;
 }
 
-interface MaintenanceCategory {
+interface MaintenanceCategory
+{
   id: string;
   name: string;
   nameKey: string;
@@ -39,17 +41,20 @@ interface MaintenanceCategory {
   templateUrl: './master-maintenance.component.html',
   styleUrls: ['./master-maintenance.component.scss']
 })
-export class MasterMaintenanceComponent {
+export class MasterMaintenanceComponent
+{
   private router = inject(Router);
   
   selectedCategory = signal<string>('data-management');
   
-  selectedCategoryIndex = computed(() => {
+  selectedCategoryIndex = computed(() =>
+  {
     const index = this.categories.findIndex(cat => cat.id === this.selectedCategory());
     return index >= 0 ? index : 0;
   });
   
-  get selectedIndex(): number {
+  get selectedIndex(): number
+ {
     return this.selectedCategoryIndex();
   }
 
@@ -122,44 +127,53 @@ export class MasterMaintenanceComponent {
     }
   ];
 
-  onTabChange(event: MatTabChangeEvent | number): void {
+  onTabChange(event: MatTabChangeEvent | number): void
+  {
     const index = typeof event === 'number' ? event : event.index;
     const category = this.categories[index];
-    if (category) {
+    if (category)
+    {
       this.selectedCategory.set(category.id);
     }
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/master']);
   }
 
-  exportData(): void {
+  exportData(): void
+  {
     // TODO: Implement data export
     console.log('Export data');
   }
 
-  importData(): void {
+  importData(): void
+  {
     // TODO: Implement data import
     console.log('Import data');
   }
 
-  backupData(): void {
+  backupData(): void
+  {
     // TODO: Implement data backup
     console.log('Backup data');
   }
 
-  restoreData(): void {
+  restoreData(): void
+  {
     // TODO: Implement data restore
     console.log('Restore data');
   }
 
-  cleanupData(): void {
+  cleanupData(): void
+  {
     // TODO: Implement data cleanup
     console.log('Cleanup data');
   }
 
-  validateData(): void {
+  validateData(): void
+  {
     // TODO: Implement data validation
     console.log('Validate data');
   }

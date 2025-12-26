@@ -15,9 +15,11 @@ import { TranslateModule } from '@ngx-translate/core';
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
-export class ModalComponent {
+export class ModalComponent
+{
   constructor(
     @Optional() public dialogRef: MatDialogRef<ModalComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  )
+  {}
 }

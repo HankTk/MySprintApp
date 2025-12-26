@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './ax-heading.component.html',
   styleUrls: ['./ax-heading.component.scss']
 })
-export class AxHeadingComponent {
+export class AxHeadingComponent
+{
   @Input() level: 1 | 2 | 3 | 4 | 5 | 6 = 3;
 }

@@ -47,7 +47,8 @@ import { GLEntry, GLEntryType } from '../../models/general-ledger-entry.model';
   templateUrl: './general-ledger-list.component.html',
   styleUrls: ['./general-ledger-list.component.scss']
 })
-export class GeneralLedgerListComponent implements OnInit, AfterViewInit {
+export class GeneralLedgerListComponent implements OnInit, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   glEntries = signal<GLEntry[]>([]);
   showFilters = signal<boolean>(false);
@@ -78,30 +79,37 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
 
-  constructor() {
-    effect(() => {
+  constructor()
+  {
+    effect(() =>
+    {
       // Access signal to create dependency
       this.glEntries();
       // Reinitialize columns if templates are available
-      if (this.typeCellTemplate) {
+      if (this.typeCellTemplate)
+      {
         this.initializeColumns();
       }
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadGLEntries();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  loadGLEntries(): void {
+  loadGLEntries(): void
+  {
     this.isLoading.set(true);
     this.glService.getGLEntries().subscribe({
-      next: (entries) => {
+      next: (entries) =>
+      {
         this.glEntries.set(entries.map(entry => ({
           ...entry,
           debitAmount: (entry.type === 'COST' || entry.type === 'EXPENSE' || entry.type === 'ACCOUNTS_PAYABLE') ? entry.amount : undefined,
@@ -109,14 +117,16 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit {
         })));
         this.isLoading.set(false);
       },
-      error: (error) => {
+      error: (error) =>
+      {
         console.error('Error loading GL entries:', error);
         this.isLoading.set(false);
       }
     });
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     this.columns.set([
       {
         key: 'date',
@@ -215,19 +225,23 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit {
     ]);
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
 
@@ -240,92 +254,115 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  formatDate(dateString: string): string {
+  formatDate(dateString: string): string
+  {
     if (!dateString) return '';
-    try {
+    try 
+{
       const date = new Date(dateString);
       return date.toLocaleDateString();
-    } catch {
+    }
+ catch
+ {
       return dateString;
     }
   }
 
-  getTypeColor(type: GLEntryType): string {
+  getTypeColor(type: GLEntryType): string
+  {
     return this.glService.getTypeColor(type);
   }
 
-  getTypeBackgroundColor(type: GLEntryType): string {
+  getTypeBackgroundColor(type: GLEntryType): string
+  {
     return this.glService.getTypeBackgroundColor(type);
   }
 
-  getTypeLabel(type: GLEntryType): string {
+  getTypeLabel(type: GLEntryType): string
+  {
     return this.glService.getTypeLabel(type);
   }
 
-  getDebitAmount(entry: GLEntry): number {
+  getDebitAmount(entry: GLEntry): number
+  {
     return (entry.type === 'COST' || entry.type === 'EXPENSE' || entry.type === 'ACCOUNTS_PAYABLE') ? entry.amount : 0;
   }
 
-  getCreditAmount(entry: GLEntry): number {
+  getCreditAmount(entry: GLEntry): number
+  {
     return (entry.type === 'REVENUE' || entry.type === 'PAYMENT') ? entry.amount : 0;
   }
 
-  viewEntry(entry: GLEntry): void {
-    if (entry.orderId) {
+  viewEntry(entry: GLEntry): void
+  {
+    if (entry.orderId)
+    {
       this.router.navigate(['/orders', entry.orderId]);
-    } else if (entry.poId) {
+    }
+ else if (entry.poId)
+ {
       this.router.navigate(['/purchase-orders', entry.poId]);
     }
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/']);
   }
 
   // Get filtered entries from table (ax-table handles filtering internally)
-  get filteredEntries(): GLEntry[] {
+  get filteredEntries(): GLEntry[] 
+{
     // The table handles filtering internally, so we use glEntries
     // The summary will show totals for all entries (filtering is handled by table display)
     return this.glEntries();
   }
 
   // Calculate totals (using all entries - table handles filtering for display)
-  get totalDebit(): number {
+  get totalDebit(): number
+ {
     return this.filteredEntries.filter(e => e.type === 'COST' || e.type === 'EXPENSE' || e.type === 'ACCOUNTS_PAYABLE')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
-  get totalCredit(): number {
+  get totalCredit(): number
+ {
     return this.filteredEntries.filter(e => e.type === 'REVENUE' || e.type === 'PAYMENT')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
-  get totalRevenue(): number {
+  get totalRevenue(): number
+ {
     return this.filteredEntries.filter(e => e.type === 'REVENUE')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
-  get totalCost(): number {
+  get totalCost(): number
+ {
     return this.filteredEntries.filter(e => e.type === 'COST')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
-  get totalExpense(): number {
+  get totalExpense(): number
+ {
     return this.filteredEntries.filter(e => e.type === 'EXPENSE')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
-  get totalAccountsPayable(): number {
+  get totalAccountsPayable(): number
+ {
     return this.filteredEntries.filter(e => e.type === 'ACCOUNTS_PAYABLE')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
-  get totalPayment(): number {
+  get totalPayment(): number
+ {
     return this.filteredEntries.filter(e => e.type === 'PAYMENT')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
-  get netIncome(): number {
+  get netIncome(): number
+ {
     return this.totalRevenue - this.totalCost - this.totalExpense;
   }
 }

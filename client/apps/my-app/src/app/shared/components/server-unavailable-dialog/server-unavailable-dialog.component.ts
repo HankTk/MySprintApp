@@ -9,7 +9,8 @@ import { catchError, of } from 'rxjs';
 import { AxButtonComponent, AxIconComponent } from '@ui/components';
 import { showServerUnavailableDialog } from '../../../core/http-interceptor';
 
-export interface ServerUnavailableDialogData {
+export interface ServerUnavailableDialogData
+{
   message?: string;
 }
 
@@ -33,7 +34,8 @@ export interface ServerUnavailableDialogData {
   templateUrl: './server-unavailable-dialog.component.html',
   styleUrls: ['./server-unavailable-dialog.component.scss']
 })
-export class ServerUnavailableDialogComponent {
+export class ServerUnavailableDialogComponent
+{
   isRetrying = false;
 
   private http = inject(HttpClient);
@@ -44,33 +46,41 @@ export class ServerUnavailableDialogComponent {
     public dialogRef: MatDialogRef<ServerUnavailableDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ServerUnavailableDialogData,
     private translate: TranslateService
-  ) {}
+  )
+  {}
 
-  get message(): string {
+  get message(): string
+ {
     return this.data?.message || this.translate.instant('messages.serverUnavailable');
   }
 
-  onRetry(): void {
+  onRetry(): void
+  {
     this.isRetrying = true;
     console.log('Retry button clicked - checking server availability...');
     
     // Try to make a simple request to check if server is available
     // Use a lightweight endpoint like checking users
     this.http.get(`${this.apiUrl}/users`, { observe: 'response' }).pipe(
-      catchError((error: HttpErrorResponse) => {
+      catchError((error: HttpErrorResponse) =>
+      {
         console.log('Server still unavailable:', error);
         this.isRetrying = false;
         
         // Server is still unavailable (status === 0 or other error)
-        if (error.status === 0) {
+        if (error.status === 0)
+        {
           // Close current dialog
           this.dialogRef.close(false);
           
           // Show dialog again after a short delay to ensure the previous one is closed
-          setTimeout(() => {
+          setTimeout(() =>
+          {
             showServerUnavailableDialog(this.dialog, this.translate);
           }, 100);
-        } else {
+        }
+ else
+ {
           // Other error, just close the dialog
           this.dialogRef.close(false);
         }
@@ -78,15 +88,18 @@ export class ServerUnavailableDialogComponent {
         return of(null);
       })
     ).subscribe({
-      next: (response) => {
-        if (response) {
+      next: (response) =>
+      {
+        if (response)
+        {
           console.log('Server is now available!');
           this.isRetrying = false;
           // Server is available, close the dialog
           this.dialogRef.close(true);
         }
       },
-      error: (error) => {
+      error: (error) =>
+      {
         // Already handled in catchError
         this.isRetrying = false;
       }

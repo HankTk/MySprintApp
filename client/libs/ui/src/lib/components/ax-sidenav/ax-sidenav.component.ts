@@ -13,7 +13,8 @@ import { MatSidenavModule, MatSidenav, MatDrawerMode } from '@angular/material/s
   templateUrl: './ax-sidenav.component.html',
   styleUrls: ['./ax-sidenav.component.scss']
 })
-export class AxSidenavComponent {
+export class AxSidenavComponent
+{
   @ViewChild('sidenav') sidenav?: MatSidenav;
   
   @Input() mode: MatDrawerMode = 'side';
@@ -27,27 +28,33 @@ export class AxSidenavComponent {
   @Output() closedStart = new EventEmitter<void>();
   @Output() openedStart = new EventEmitter<void>();
 
-  open(): void {
+  open(): void
+  {
     this.sidenav?.open();
   }
 
-  close(): void {
+  close(): void
+  {
     this.sidenav?.close();
   }
 
-  toggle(): void {
+  toggle(): void
+  {
     this.sidenav?.toggle();
   }
 
-  onOpenedChange(opened: boolean): void {
+  onOpenedChange(opened: boolean): void
+  {
     this.openedChange.emit(opened);
   }
 
-  onClosedStart(): void {
+  onClosedStart(): void
+  {
     this.closedStart.emit();
   }
 
-  onOpenedStart(): void {
+  onOpenedStart(): void
+  {
     this.openedStart.emit();
   }
 }

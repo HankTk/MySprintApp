@@ -46,7 +46,8 @@ import { Customer } from '../../../customers/models/customer.model';
   templateUrl: './account-receivable-list.component.html',
   styleUrls: ['./account-receivable-list.component.scss']
 })
-export class AccountReceivableListComponent implements OnInit, AfterViewInit {
+export class AccountReceivableListComponent implements OnInit, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['invoiceNumber', 'orderNumber', 'customer', 'invoiceDate', 'invoiceAmount', 'paidAmount', 'outstanding', 'status', 'actions']);
   showFilters = signal<boolean>(false);
@@ -81,7 +82,8 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
   customers = this.store.select('customers');
 
   // Filter orders that have been invoiced (INVOICED or PAID status)
-  invoicedOrders = computed(() => {
+  invoicedOrders = computed(() =>
+  {
     const orders = this.orders() || [];
     return orders.filter((order: Order) =>
       order.status === 'INVOICED' || order.status === 'PAID'
@@ -94,30 +96,36 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
   // No need for separate filteredOrders computed - ax-table handles filtering internally
   filteredOrders = this.invoicedOrders;
 
-  constructor() {
+  constructor()
+  {
     // Reinitialize columns when orders or customers change (using effect)
-    effect(() => {
+    effect(() =>
+    {
       // Access signals to create dependency
       this.invoicedOrders();
       this.customers();
       // Reinitialize columns if templates are available
-      if (this.statusCellTemplate) {
+      if (this.statusCellTemplate)
+      {
         this.initializeColumns();
       }
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadOrders();
     this.loadCustomers();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     this.columns.set([
       {
         key: 'invoiceNumber',
@@ -144,11 +152,14 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
         sortable: true,
         filterable: true,
         filterType: 'select',
-        filterOptions: (data: Order[]): FilterOption[] => {
+        filterOptions: (data: Order[]): FilterOption[] => 
+{
           const customers = this.customers() || [];
           const customerMap = new Map<string, string>();
-          data.forEach(order => {
-            if (order.customerId && !customerMap.has(order.customerId)) {
+          data.forEach(order => 
+{
+            if (order.customerId && !customerMap.has(order.customerId))
+            {
               const customer = customers.find((c: Customer) => c.id === order.customerId);
               const name = customer ? (customer.companyName || `${customer.firstName || ''} ${customer.lastName || ''}`.trim() || customer.email || order.customerId) : (order.customerId || '');
               customerMap.set(order.customerId, name);
@@ -231,19 +242,23 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
     ]);
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
 
@@ -256,39 +271,49 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  private loadOrders(): void {
+  private loadOrders(): void
+ {
     this.orderService.loadOrders(this.isLoading);
   }
 
-  private loadCustomers(): void {
+  private loadCustomers(): void
+ {
     this.customerService.loadCustomers(this.isLoading);
   }
 
-  getCustomerName(customerId?: string): string {
+  getCustomerName(customerId?: string): string
+  {
     if (!customerId) return 'N/A';
     const customers = this.customers() || [];
     const customer = customers.find((c: Customer) => c.id === customerId);
     return customer ? (customer.companyName || `${customer.firstName || ''} ${customer.lastName || ''}`.trim() || customer.email || 'N/A') : customerId;
   }
 
-  formatDate(dateString?: string | Date): string {
+  formatDate(dateString?: string | Date): string
+  {
     if (!dateString) return 'N/A';
-    try {
+    try 
+{
       const date = dateString instanceof Date ? dateString : new Date(dateString);
       return date.toLocaleDateString();
-    } catch {
+    }
+ catch
+ {
       return String(dateString);
     }
   }
 
-  calculateOutstandingAmount(order: Order): number {
+  calculateOutstandingAmount(order: Order): number
+  {
     const total = order.total || 0;
     const paymentAmount = order.jsonData?.paymentAmount || 0;
     return Math.max(0, total - paymentAmount);
   }
 
-  getStatusColor(status?: string): string {
-    switch (status) {
+  getStatusColor(status?: string): string
+  {
+    switch (status)
+    {
       case 'INVOICED':
         return '#8B5CF6'; // Purple
       case 'PAID':
@@ -298,8 +323,10 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getStatusBackgroundColor(status?: string): string {
-    switch (status) {
+  getStatusBackgroundColor(status?: string): string
+  {
+    switch (status)
+    {
       case 'INVOICED':
         return '#EDE9FE'; // Light purple
       case 'PAID':
@@ -309,8 +336,10 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getStatusLabel(status?: string): string {
-    switch (status) {
+  getStatusLabel(status?: string): string
+  {
+    switch (status)
+    {
       case 'INVOICED':
         return 'Invoiced';
       case 'PAID':
@@ -320,11 +349,13 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  viewInvoice(order: Order): void {
+  viewInvoice(order: Order): void
+  {
     this.router.navigate(['/account-receivable', order.id]);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/']);
   }
 }

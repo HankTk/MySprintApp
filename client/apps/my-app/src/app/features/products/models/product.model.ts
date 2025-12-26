@@ -1,4 +1,5 @@
-export interface Product {
+export interface Product
+{
   id?: string;
   productCode?: string;
   productName?: string;
@@ -10,7 +11,8 @@ export interface Product {
   jsonData?: any;
 }
 
-export interface CreateProductRequest {
+export interface CreateProductRequest
+{
   productCode?: string;
   productName?: string;
   description?: string;

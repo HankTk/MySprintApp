@@ -46,7 +46,8 @@ import { Vendor } from '../../../vendors/models/vendor.model';
   templateUrl: './account-payable-list.component.html',
   styleUrls: ['./account-payable-list.component.scss']
 })
-export class AccountPayableListComponent implements OnInit, AfterViewInit {
+export class AccountPayableListComponent implements OnInit, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['invoiceNumber', 'poNumber', 'supplier', 'invoiceDate', 'invoiceAmount', 'paidAmount', 'outstanding', 'status', 'actions']);
   showFilters = signal<boolean>(false);
@@ -81,7 +82,8 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
   vendors = this.store.select('vendors');
 
   // Filter POs that have been invoiced (INVOICED or PAID status)
-  invoicedPOs = computed(() => {
+  invoicedPOs = computed(() =>
+  {
     const pos = this.purchaseOrders() || [];
     return pos.filter((po: PurchaseOrder) =>
       po.status === 'INVOICED' || po.status === 'PAID'
@@ -94,30 +96,36 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
   // No need for separate filteredPOs computed - ax-table handles filtering internally
   filteredPOs = this.invoicedPOs;
 
-  constructor() {
+  constructor()
+  {
     // Reinitialize columns when purchase orders or vendors change (using effect)
-    effect(() => {
+    effect(() =>
+    {
       // Access signals to create dependency
       this.invoicedPOs();
       this.vendors();
       // Reinitialize columns if templates are available
-      if (this.statusCellTemplate) {
+      if (this.statusCellTemplate)
+      {
         this.initializeColumns();
       }
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadPurchaseOrders();
     this.loadVendors();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     this.columns.set([
       {
         key: 'invoiceNumber',
@@ -144,11 +152,14 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
         sortable: true,
         filterable: true,
         filterType: 'select',
-        filterOptions: (data: PurchaseOrder[]): FilterOption[] => {
+        filterOptions: (data: PurchaseOrder[]): FilterOption[] => 
+{
           const vendors = this.vendors() || [];
           const vendorMap = new Map<string, string>();
-          data.forEach(po => {
-            if (po.supplierId && !vendorMap.has(po.supplierId)) {
+          data.forEach(po => 
+{
+            if (po.supplierId && !vendorMap.has(po.supplierId))
+            {
               const vendor = vendors.find((v: Vendor) => v.id === po.supplierId);
               const name = vendor ? (vendor.companyName || `${vendor.firstName || ''} ${vendor.lastName || ''}`.trim() || vendor.email || po.supplierId) : (po.supplierId || '');
               vendorMap.set(po.supplierId, name);
@@ -247,19 +258,23 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
     ]);
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
 
@@ -272,39 +287,49 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  private loadPurchaseOrders(): void {
+  private loadPurchaseOrders(): void
+ {
     this.purchaseOrderService.loadPurchaseOrders(this.isLoading);
   }
 
-  private loadVendors(): void {
+  private loadVendors(): void
+ {
     this.vendorService.loadVendors(this.isLoading);
   }
 
-  getSupplierName(supplierId?: string): string {
+  getSupplierName(supplierId?: string): string
+  {
     if (!supplierId) return 'N/A';
     const vendors = this.vendors() || [];
     const vendor = vendors.find((v: Vendor) => v.id === supplierId);
     return vendor ? (vendor.companyName || `${vendor.firstName || ''} ${vendor.lastName || ''}`.trim() || vendor.email || 'N/A') : supplierId;
   }
 
-  formatDate(dateString?: string | Date): string {
+  formatDate(dateString?: string | Date): string
+  {
     if (!dateString) return 'N/A';
-    try {
+    try 
+{
       const date = dateString instanceof Date ? dateString : new Date(dateString);
       return date.toLocaleDateString();
-    } catch {
+    }
+ catch
+ {
       return String(dateString);
     }
   }
 
-  calculateOutstandingAmount(po: PurchaseOrder): number {
+  calculateOutstandingAmount(po: PurchaseOrder): number
+  {
     const total = po.total || 0;
     const paidAmount = po.jsonData?.paymentAmount || 0;
     return Math.max(0, total - paidAmount);
   }
 
-  getStatusColor(status?: string): string {
-    switch (status) {
+  getStatusColor(status?: string): string
+  {
+    switch (status)
+    {
       case 'INVOICED':
         return '#8B5CF6'; // Purple
       case 'PAID':
@@ -314,8 +339,10 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getStatusBackgroundColor(status?: string): string {
-    switch (status) {
+  getStatusBackgroundColor(status?: string): string
+  {
+    switch (status)
+    {
       case 'INVOICED':
         return '#EDE9FE'; // Light purple
       case 'PAID':
@@ -325,8 +352,10 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  getStatusLabel(status?: string): string {
-    switch (status) {
+  getStatusLabel(status?: string): string
+  {
+    switch (status)
+    {
       case 'INVOICED':
         return 'Invoiced';
       case 'PAID':
@@ -336,11 +365,13 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  viewInvoice(po: PurchaseOrder): void {
+  viewInvoice(po: PurchaseOrder): void
+  {
     this.router.navigate(['/account-payable', po.id]);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/']);
   }
 }

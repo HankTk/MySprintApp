@@ -12,7 +12,8 @@ import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../
 @Injectable({
   providedIn: 'root'
 })
-export class RMAService {
+export class RMAService
+{
   private apiUrl = 'http://localhost:8080/api/rmas';
 
   private http = inject(HttpClient);
@@ -21,27 +22,33 @@ export class RMAService {
   private dialog = inject(MatDialog);
   private router = inject(Router);
 
-  getRMAs(): Observable<RMA[]> {
+  getRMAs(): Observable<RMA[]>
+  {
     return this.http.get<RMA[]>(this.apiUrl);
   }
 
-  getRMA(id: string): Observable<RMA> {
+  getRMA(id: string): Observable<RMA>
+  {
     return this.http.get<RMA>(`${this.apiUrl}/${id}`);
   }
 
-  createRMA(rma: CreateRMARequest): Observable<RMA> {
+  createRMA(rma: CreateRMARequest): Observable<RMA>
+  {
     return this.http.post<RMA>(this.apiUrl, rma);
   }
 
-  updateRMA(id: string, rma: RMA): Observable<RMA> {
+  updateRMA(id: string, rma: RMA): Observable<RMA>
+  {
     return this.http.put<RMA>(`${this.apiUrl}/${id}`, rma);
   }
 
-  deleteRMA(id: string): Observable<void> {
+  deleteRMA(id: string): Observable<void>
+  {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  loadRMAs(isLoading: WritableSignal<boolean>): void {
+  loadRMAs(isLoading: WritableSignal<boolean>): void
+  {
     this.resourceManager.loadResource(
       'rmas',
       isLoading,
@@ -52,7 +59,8 @@ export class RMAService {
   createRMAWithNotification(
     rmaData: CreateRMARequest,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.createResource(
       'rmas',
       rmaData,
@@ -65,7 +73,8 @@ export class RMAService {
   updateRMAWithNotification(
     rmaData: RMA,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.updateResource(
       'rmas',
       rmaData.id!,
@@ -79,7 +88,8 @@ export class RMAService {
   deleteRMAWithNotification(
     id: string,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.deleteResource(
       'rmas',
       id,
@@ -89,39 +99,49 @@ export class RMAService {
     );
   }
 
-  openAddRMADialog(isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(RMADialogComponent, {
+  openAddRMADialog(isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(RMADialogComponent,
+    {
       data: { isEdit: false } as RMADialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'create') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'create')
+      {
         this.createRMAWithNotification(result.rma, isLoading);
       }
     });
   }
 
-  openEditRMADialog(rma: RMA, isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(RMADialogComponent, {
+  openEditRMADialog(rma: RMA, isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(RMADialogComponent,
+    {
       data: { rma, isEdit: true } as RMADialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'update') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'update')
+      {
         this.updateRMAWithNotification(result.rma, isLoading);
       }
     });
   }
 
-  openDeleteRMADialog(rma: RMA, isLoading: WritableSignal<boolean>): void {
+  openDeleteRMADialog(rma: RMA, isLoading: WritableSignal<boolean>): void
+  {
     const rmaLabel = rma.rmaNumber || rma.id || 'RMA';
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
+    {
       data: {
         userName: rmaLabel,
         userEmail: ''
@@ -131,14 +151,17 @@ export class RMAService {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result === true)
+      {
         this.deleteRMAWithNotification(rma.id!, isLoading);
       }
     });
   }
 
-  addRMAItem(rmaId: string, productId: string, quantity: number, reason?: string): Observable<RMA> {
+  addRMAItem(rmaId: string, productId: string, quantity: number, reason?: string): Observable<RMA>
+  {
     return this.http.post<RMA>(`${this.apiUrl}/${rmaId}/items`, {
       productId,
       quantity,
@@ -146,30 +169,36 @@ export class RMAService {
     });
   }
 
-  updateRMAItemQuantity(rmaId: string, itemId: string, quantity: number): Observable<RMA> {
+  updateRMAItemQuantity(rmaId: string, itemId: string, quantity: number): Observable<RMA>
+  {
     return this.http.put<RMA>(`${this.apiUrl}/${rmaId}/items/${itemId}/quantity`, {
       quantity
     });
   }
 
-  updateRMAItemReturnedQuantity(rmaId: string, itemId: string, returnedQuantity: number): Observable<RMA> {
+  updateRMAItemReturnedQuantity(rmaId: string, itemId: string, returnedQuantity: number): Observable<RMA>
+  {
     return this.http.put<RMA>(`${this.apiUrl}/${rmaId}/items/${itemId}/returned-quantity`, {
       returnedQuantity
     });
   }
 
-  removeRMAItem(rmaId: string, itemId: string): Observable<RMA> {
+  removeRMAItem(rmaId: string, itemId: string): Observable<RMA>
+  {
     return this.http.delete<RMA>(`${this.apiUrl}/${rmaId}/items/${itemId}`);
   }
 
-  openAddRMAEntry(isLoading: WritableSignal<boolean>): void {
+  openAddRMAEntry(isLoading: WritableSignal<boolean>): void
+  {
     // Navigate to RMA entry page instead of opening dialog
     this.router.navigate(['/rmas/new']);
   }
 
-  openEditRMAEntry(rma: RMA, isLoading: WritableSignal<boolean>): void {
+  openEditRMAEntry(rma: RMA, isLoading: WritableSignal<boolean>): void
+  {
     // Navigate to RMA entry page instead of opening dialog
-    if (rma.id) {
+    if (rma.id)
+    {
       this.router.navigate(['/rmas', rma.id]);
     }
   }

@@ -10,7 +10,8 @@ import { AxCheckboxComponent, AxFormGroupComponent, AxCardComponent, MatCardModu
   templateUrl: './checkbox-page.component.html',
   styleUrls: ['./checkbox-page.component.scss']
 })
-export class CheckboxPageComponent {
+export class CheckboxPageComponent
+{
   checkbox1 = false;
   checkbox2 = true;
   checkbox3 = false;

@@ -19,5 +19,6 @@ import { PurchaseOrderDialogComponent } from './components/po-dialog/po-dialog.c
     PurchaseOrderDialogComponent
   ]
 })
-export class PurchaseOrdersModule { }
-
+export class PurchaseOrdersModule
+{
+}

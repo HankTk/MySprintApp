@@ -10,7 +10,8 @@ import { AxDatepickerComponent, AxCardComponent, MatCardModule } from '@ui/compo
   templateUrl: './datepicker-page.component.html',
   styleUrls: ['./datepicker-page.component.scss']
 })
-export class DatepickerPageComponent {
+export class DatepickerPageComponent
+{
   selectedDate: Date | null = null;
   birthDate: Date | null = null;
 }

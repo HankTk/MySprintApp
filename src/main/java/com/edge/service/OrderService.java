@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class OrderService {
+public class OrderService
+{
     
     @Autowired
     private OrderRepository orderRepository;
@@ -37,27 +38,33 @@ public class OrderService {
     
     private static final String DATA_TYPE_ID = "orders";
     
-    public List<Order> getAllOrders() {
+    public List<Order> getAllOrders()
+    {
         return orderRepository.getAllOrders();
     }
     
-    public Optional<Order> getOrderById(String id) {
+    public Optional<Order> getOrderById(String id)
+    {
         return orderRepository.getOrderById(id);
     }
     
-    public Optional<Order> getOrderByOrderNumber(String orderNumber) {
+    public Optional<Order> getOrderByOrderNumber(String orderNumber)
+    {
         return orderRepository.getOrderByOrderNumber(orderNumber);
     }
     
-    public List<Order> getOrdersByCustomerId(String customerId) {
+    public List<Order> getOrdersByCustomerId(String customerId)
+    {
         return orderRepository.getOrdersByCustomerId(customerId);
     }
     
-    public List<Order> getOrdersByStatus(String status) {
+    public List<Order> getOrdersByStatus(String status)
+    {
         return orderRepository.getOrdersByStatus(status);
     }
     
-    public Order createOrder(Order order) {
+    public Order createOrder(Order order)
+ {
         // Enrich order items with product information
         enrichOrderItems(order);
         Order created = orderRepository.createOrder(order);
@@ -65,7 +72,8 @@ public class OrderService {
         return created;
     }
     
-    public Order updateOrder(String id, Order orderDetails) {
+    public Order updateOrder(String id, Order orderDetails)
+ {
         System.out.println("OrderService.updateOrder - ID: " + id + ", Status: " + orderDetails.getStatus());
         
         // Get existing order to check status change
@@ -79,7 +87,8 @@ public class OrderService {
         System.out.println("OrderService.updateOrder - Updated status: " + updated.getStatus());
         
         // Handle inventory decrease when order is shipped
-        if ("SHIPPED".equals(updated.getStatus()) && !"SHIPPED".equals(oldStatus)) {
+        if ("SHIPPED".equals(updated.getStatus()) && !"SHIPPED".equals(oldStatus))
+        {
             decreaseInventoryForOrder(updated);
         }
         
@@ -89,7 +98,8 @@ public class OrderService {
         return updated;
     }
     
-    public Order addOrderItem(String orderId, String productId, Integer quantity) {
+    public Order addOrderItem(String orderId, String productId, Integer quantity)
+ {
         Order order = orderRepository.getOrderById(orderId)
             .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
         
@@ -101,12 +111,14 @@ public class OrderService {
             .filter(item -> productId.equals(item.getProductId()))
             .findFirst();
         
-        if (existingItem.isPresent()) {
+        if (existingItem.isPresent())
+        {
             // Update quantity
             OrderItem item = existingItem.get();
             item.setQuantity(item.getQuantity() + quantity);
             item.calculateLineTotal();
-        } else {
+        } else
+ {
             // Create new item
             OrderItem newItem = new OrderItem();
             newItem.setId(java.util.UUID.randomUUID().toString());
@@ -123,7 +135,8 @@ public class OrderService {
         return orderRepository.updateOrder(orderId, order);
     }
     
-    public Order updateOrderItemQuantity(String orderId, String itemId, Integer quantity) {
+    public Order updateOrderItemQuantity(String orderId, String itemId, Integer quantity)
+ {
         Order order = orderRepository.getOrderById(orderId)
             .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
         
@@ -139,12 +152,14 @@ public class OrderService {
         return orderRepository.updateOrder(orderId, order);
     }
     
-    public Order removeOrderItem(String orderId, String itemId) {
+    public Order removeOrderItem(String orderId, String itemId)
+ {
         Order order = orderRepository.getOrderById(orderId)
             .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
         
         boolean removed = order.getItems().removeIf(item -> itemId.equals(item.getId()));
-        if (!removed) {
+        if (!removed)
+        {
             throw new RuntimeException("Order item not found with id: " + itemId);
         }
         
@@ -152,28 +167,37 @@ public class OrderService {
         return orderRepository.updateOrder(orderId, order);
     }
     
-    public void deleteOrder(String id) {
+    public void deleteOrder(String id)
+ {
         Optional<Order> orderToDelete = orderRepository.getOrderById(id);
         orderRepository.deleteOrder(id);
         
         // Broadcast deletion via WebSocket
-        if (orderToDelete.isPresent()) {
+        if (orderToDelete.isPresent())
+        {
             notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, orderToDelete.get());
         }
     }
     
-    public String generateNextInvoiceNumber() {
+    public String generateNextInvoiceNumber()
+ {
         return orderRepository.generateNextInvoiceNumber();
     }
     
-    private void enrichOrderItems(Order order) {
-        if (order.getItems() != null) {
-            for (OrderItem item : order.getItems()) {
-                if (item.getProductId() != null) {
-                    productRepository.getProductById(item.getProductId()).ifPresent(product -> {
+    private void enrichOrderItems(Order order)
+ {
+        if (order.getItems() != null)
+        {
+            for (OrderItem item : order.getItems())
+            {
+                if (item.getProductId() != null)
+                {
+                    productRepository.getProductById(item.getProductId()).ifPresent(product ->
+                    {
                         item.setProductCode(product.getProductCode());
                         item.setProductName(product.getProductName());
-                        if (item.getUnitPrice() == null) {
+                        if (item.getUnitPrice() == null)
+                        {
                             item.setUnitPrice(product.getUnitPrice());
                         }
                         item.calculateLineTotal();
@@ -183,18 +207,22 @@ public class OrderService {
         }
     }
     
-    private void decreaseInventoryForOrder(Order order) {
-        if (order.getItems() == null || order.getItems().isEmpty()) {
+    private void decreaseInventoryForOrder(Order order)
+ {
+        if (order.getItems() == null || order.getItems().isEmpty())
+        {
             return;
         }
         
         // Get default warehouse (first active warehouse, or first warehouse if none active)
         List<Warehouse> warehouses = warehouseRepository.getActiveWarehouses();
-        if (warehouses.isEmpty()) {
+        if (warehouses.isEmpty())
+        {
             warehouses = warehouseRepository.getAllWarehouses();
         }
         
-        if (warehouses.isEmpty()) {
+        if (warehouses.isEmpty())
+        {
             System.out.println("Warning: No warehouses found. Cannot decrease inventory for order " + order.getId());
             return;
         }
@@ -203,13 +231,16 @@ public class OrderService {
         String warehouseId = defaultWarehouse.getId();
         
         // Decrease inventory for each order item
-        for (OrderItem item : order.getItems()) {
-            if (item.getProductId() != null && item.getQuantity() != null && item.getQuantity() > 0) {
+        for (OrderItem item : order.getItems())
+        {
+            if (item.getProductId() != null && item.getQuantity() != null && item.getQuantity() > 0)
+            {
                 try {
                     inventoryService.adjustInventory(item.getProductId(), warehouseId, -item.getQuantity());
                     System.out.println("Decreased inventory for product " + item.getProductId() + 
                         " by " + item.getQuantity() + " in warehouse " + warehouseId);
-                } catch (Exception e) {
+                } catch (Exception e)
+ {
                     System.err.println("Error decreasing inventory for product " + item.getProductId() + ": " + e.getMessage());
                 }
             }

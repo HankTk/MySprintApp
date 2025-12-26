@@ -19,5 +19,6 @@ import { CustomerDialogComponent } from './components/customer-dialog/customer-d
     CustomerDialogComponent
   ]
 })
-export class CustomersModule { }
-
+export class CustomersModule
+{
+}

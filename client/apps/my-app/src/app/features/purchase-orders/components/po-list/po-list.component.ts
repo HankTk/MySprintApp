@@ -42,7 +42,8 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './po-list.component.html',
   styleUrls: ['./po-list.component.scss']
 })
-export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['orderNumber', 'supplierName', 'orderDate', 'status', 'total', 'actions']);
   showFilters = signal<boolean>(false);
@@ -76,34 +77,41 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
 
   purchaseOrders = this.store.select('purchase-orders');
 
-  constructor() {
+  constructor()
+  {
     // Reinitialize columns when purchase orders or vendors change (using effect)
-    effect(() => {
+    effect(() =>
+    {
       // Access signals to create dependency
       this.purchaseOrders();
       this.vendors();
       // Reinitialize columns if templates are available
-      if (this.supplierNameCellTemplate) {
+      if (this.supplierNameCellTemplate)
+      {
         this.initializeColumns();
       }
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> 
+{
     await this.loadVendors();
     this.loadPurchaseOrders();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.subscriptions.unsubscribe();
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     this.columns.set([
       {
         key: 'orderNumber',
@@ -121,11 +129,14 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
         sortable: true,
         filterable: true,
         filterType: 'select',
-        filterOptions: (data: PurchaseOrder[]): FilterOption[] => {
+        filterOptions: (data: PurchaseOrder[]): FilterOption[] => 
+{
           const vendors = this.vendors() || [];
           const vendorMap = new Map<string, string>();
-          data.forEach(po => {
-            if (po.supplierId && !vendorMap.has(po.supplierId)) {
+          data.forEach(po => 
+{
+            if (po.supplierId && !vendorMap.has(po.supplierId))
+            {
               const vendor = vendors.find((v: Vendor) => v.id === po.supplierId);
               const name = vendor ? (vendor.companyName || `${vendor.lastName} ${vendor.firstName}` || vendor.email || po.supplierId) : (po.supplierId || '');
               vendorMap.set(po.supplierId, name);
@@ -181,68 +192,87 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
     ]);
   }
 
-  loadPurchaseOrders(): void {
+  loadPurchaseOrders(): void
+  {
     this.purchaseOrderService.loadPurchaseOrders(this.isLoading);
   }
 
-  openAddPurchaseOrderDialog(): void {
+  openAddPurchaseOrderDialog(): void
+  {
     this.purchaseOrderService.openAddPurchaseOrderEntry(this.isLoading);
   }
 
-  openEditPurchaseOrderDialog(po: PurchaseOrder): void {
+  openEditPurchaseOrderDialog(po: PurchaseOrder): void
+  {
     this.purchaseOrderService.openEditPurchaseOrderEntry(po, this.isLoading);
   }
 
-  deletePurchaseOrder(po: PurchaseOrder): void {
+  deletePurchaseOrder(po: PurchaseOrder): void
+  {
     this.purchaseOrderService.openDeletePurchaseOrderDialog(po, this.isLoading);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/']);
   }
 
-  private async loadVendors(): Promise<void> {
-    try {
+  private async loadVendors(): Promise<void> 
+{
+    try 
+{
       const vendors = await firstValueFrom(this.vendorService.getVendors());
       this.vendors.set(vendors);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading vendors:', err);
     }
   }
 
-  getSupplierName(supplierId?: string): string {
+  getSupplierName(supplierId?: string): string
+  {
     if (!supplierId) return 'N/A';
     const vendors = this.vendors() || [];
     const vendor = vendors.find((v: Vendor) => v.id === supplierId);
-    if (vendor) {
+    if (vendor)
+    {
       return vendor.companyName || `${vendor.lastName} ${vendor.firstName}` || vendor.email || supplierId;
     }
     return supplierId;
   }
 
-  formatDate(dateString?: string): string {
+  formatDate(dateString?: string): string
+  {
     if (!dateString) return 'N/A';
-    try {
+    try 
+{
       const date = new Date(dateString);
       return date.toLocaleDateString();
-    } catch {
+    }
+ catch
+ {
       return dateString;
     }
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
 

@@ -5,7 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 
-export interface AxSelectOption {
+export interface AxSelectOption
+{
   value: any;
   label: string;
   disabled?: boolean;
@@ -29,7 +30,8 @@ export interface AxSelectOption {
     }
   ]
 })
-export class AxSelectComponent implements ControlValueAccessor, OnInit {
+export class AxSelectComponent implements ControlValueAccessor, OnInit
+{
   @Input() label?: string;
   @Input() placeholder?: string;
   @Input() options: AxSelectOption[] = [];
@@ -45,41 +47,52 @@ export class AxSelectComponent implements ControlValueAccessor, OnInit {
   private onChange = (value: any) => {};
   private onTouched = () => {};
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     // Initialize value as empty array if multiple is true and no value is set
-    if (this.multiple && this.value === undefined) {
+    if (this.multiple && this.value === undefined)
+    {
       this.value = [];
     }
   }
 
-  writeValue(value: any): void {
-    if (this.multiple) {
+  writeValue(value: any): void
+  {
+    if (this.multiple)
+    {
       // Ensure value is an array for multiple selection
       this.value = Array.isArray(value) ? value : (value !== null && value !== undefined ? [value] : []);
-    } else {
+    }
+    else
+    {
       this.value = value;
     }
   }
 
-  registerOnChange(fn: (value: any) => void): void {
+  registerOnChange(fn: (value: any) => void): void
+  {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: () => void): void
+  {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  setDisabledState(isDisabled: boolean): void
+  {
     this.disabled = isDisabled;
   }
 
-  onSelectionChange(event: MatSelectChange): void {
+  onSelectionChange(event: MatSelectChange): void
+  {
     this.value = event.value;
     this.onChange(this.value);
     this.selectionChange.emit(this.value);
   }
 
-  onBlur(): void {
+  onBlur(): void
+  {
     this.onTouched();
   }
 }

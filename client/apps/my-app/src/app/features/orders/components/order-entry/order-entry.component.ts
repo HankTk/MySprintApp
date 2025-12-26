@@ -48,7 +48,8 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './order-entry.component.html',
   styleUrls: ['./order-entry.component.scss']
 })
-export class OrderEntryComponent implements OnInit {
+export class OrderEntryComponent implements OnInit
+{
   currentStep = signal<OrderStep>('entry');
   currentEntrySubStep = signal<EntrySubStep>('customer');
   order = signal<Order | null>(null);
@@ -83,16 +84,21 @@ export class OrderEntryComponent implements OnInit {
   historyNote = signal<string>('');
   
   // Computed signal for order history
-  orderHistory = computed(() => {
+  orderHistory = computed(() =>
+  {
     const order = this.order();
     if (!order?.jsonData?.history) return [];
     // Handle both object and string jsonData
     let history = order.jsonData.history;
-    if (typeof history === 'string') {
-      try {
+    if (typeof history === 'string')
+    {
+      try 
+{
         const parsed = JSON.parse(history);
         history = parsed.history || parsed;
-      } catch {
+      }
+ catch
+ {
         return [];
       }
     }
@@ -125,7 +131,8 @@ export class OrderEntryComponent implements OnInit {
     { key: 'review', label: 'orderEntry.subStep.review' }
   ];
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> 
+{
     const orderId = this.route.snapshot.paramMap.get('id');
     
     await Promise.all([
@@ -134,18 +141,24 @@ export class OrderEntryComponent implements OnInit {
       this.loadAddresses()
     ]);
 
-    if (orderId) {
+    if (orderId)
+    {
       await this.loadOrder(orderId);
-    } else {
+    }
+ else
+ {
       // Only create order when user actually starts entering data (when customer is selected)
       // Don't create empty draft orders automatically
     }
   }
 
-  private async createNewOrder(): Promise<void> {
-    try {
+  private async createNewOrder(): Promise<void> 
+{
+    try 
+{
       this.loading.set(true);
-      const newOrder: Partial<Order> = {
+      const newOrder: Partial<Order> =
+      {
         status: 'DRAFT',
         items: [],
         subtotal: 0,
@@ -154,57 +167,81 @@ export class OrderEntryComponent implements OnInit {
         total: 0,
       };
       const created = await firstValueFrom(this.orderService.createOrder(newOrder as CreateOrderRequest));
-      if (created && created.id) {
+      if (created && created.id)
+      {
         this.order.set(created);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error creating order:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  private async loadOrder(id: string): Promise<void> {
-    try {
+  private async loadOrder(id: string): Promise<void> 
+{
+    try 
+{
       this.loading.set(true);
       const order = await firstValueFrom(this.orderService.getOrder(id));
-      if (order) {
+      if (order)
+      {
         this.order.set(order);
         // Addresses are already loaded in ngOnInit
         // Set step based on order status
         this.setStepFromStatus(order.status);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading order:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  private setStepFromStatus(status?: string): void {
+  private setStepFromStatus(status?: string): void
+ {
     const order = this.order();
     
-    switch (status) {
+    switch (status)
+    {
       case 'DRAFT':
         this.currentStep.set('entry');
-        if (order?.customerId) {
-          if (order.items && order.items.length > 0) {
-            if (order.shippingAddressId && order.billingAddressId) {
+        if (order?.customerId)
+        {
+          if (order.items && order.items.length > 0)
+          {
+            if (order.shippingAddressId && order.billingAddressId)
+            {
               this.currentEntrySubStep.set('review');
-            } else {
+            }
+ else
+ {
               this.currentEntrySubStep.set('shipping');
             }
-          } else {
+          }
+ else
+ {
             this.currentEntrySubStep.set('products');
           }
-        } else {
+        }
+ else
+ {
           this.currentEntrySubStep.set('customer');
         }
         break;
       case 'PENDING_APPROVAL':
         this.currentStep.set('approval');
         // Load approval data from jsonData
-        if (order?.jsonData) {
+        if (order?.jsonData)
+        {
           this.approvalNotes.set(order.jsonData.approvalNotes || '');
           this.creditCheckPassed.set(order.jsonData.creditCheckPassed || false);
           this.inventoryConfirmed.set(order.jsonData.inventoryConfirmed || false);
@@ -217,7 +254,8 @@ export class OrderEntryComponent implements OnInit {
       case 'SHIPPING_INSTRUCTED':
         this.currentStep.set('shipping');
         // Load shipping instruction data
-        if (order?.jsonData) {
+        if (order?.jsonData)
+        {
           this.shippingInstructions.set(order.jsonData.shippingInstructions || '');
           const dateStr = order.jsonData.requestedShipDate;
           this.requestedShipDate.set(dateStr ? new Date(dateStr) : null);
@@ -226,7 +264,8 @@ export class OrderEntryComponent implements OnInit {
       case 'SHIPPED':
         this.currentStep.set('invoicing');
         // Load shipping data
-        if (order?.jsonData) {
+        if (order?.jsonData)
+        {
           this.actualShipDate.set(order.shipDate ? new Date(order.shipDate) : null);
           this.trackingNumber.set(order.jsonData.trackingNumber || '');
         }
@@ -235,11 +274,15 @@ export class OrderEntryComponent implements OnInit {
       case 'PAID':
         this.currentStep.set('history');
         // Load invoicing data
-        if (order) {
+        if (order)
+        {
           this.invoiceNumber.set(order.invoiceNumber || order.jsonData?.invoiceNumber || '');
-          if (order.invoiceDate) {
+          if (order.invoiceDate)
+          {
             this.invoiceDate.set(new Date(order.invoiceDate));
-          } else if (order.jsonData?.invoiceDate) {
+          }
+ else if (order.jsonData?.invoiceDate)
+ {
             const dateStr = order.jsonData.invoiceDate;
             this.invoiceDate.set(dateStr ? new Date(dateStr) : null);
           }
@@ -251,37 +294,50 @@ export class OrderEntryComponent implements OnInit {
     }
   }
 
-  private async loadCustomers(): Promise<void> {
-    try {
+  private async loadCustomers(): Promise<void> 
+{
+    try 
+{
       const customers = await firstValueFrom(this.customerService.getCustomers());
       this.customers.set(customers);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading customers:', err);
     }
   }
 
-  private async loadProducts(): Promise<void> {
-    try {
+  private async loadProducts(): Promise<void> 
+{
+    try 
+{
       const products = await firstValueFrom(this.productService.getProducts());
       const activeProducts = products.filter(p => p.active !== false);
       this.products.set(activeProducts);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading products:', err);
     }
   }
 
-  private async loadAddresses(customerId?: string): Promise<void> {
-    try {
+  private async loadAddresses(customerId?: string): Promise<void> 
+{
+    try 
+{
       // Load all addresses from address master
       const allAddresses = await firstValueFrom(this.addressService.getAddresses());
       this.addresses.set(allAddresses);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading addresses:', err);
       this.addresses.set([]);
     }
   }
 
-  getAddressDisplay(address: Address): string {
+  getAddressDisplay(address: Address): string
+  {
     const parts: string[] = [];
     if (address.streetAddress1) parts.push(address.streetAddress1);
     if (address.city) parts.push(address.city);
@@ -293,26 +349,35 @@ export class OrderEntryComponent implements OnInit {
     return (addressStr || address.id || '') + type;
   }
 
-  async onCustomerChange(customerId: string | null): Promise<void> {
+  async onCustomerChange(customerId: string | null): Promise<void> 
+{
     // Normalize empty string to null/undefined
     const normalizedCustomerId = customerId && customerId.trim() !== '' ? customerId : undefined;
     
-    if (!normalizedCustomerId) {
+    if (!normalizedCustomerId)
+    {
       // Keep all addresses loaded (from address master), don't clear them
       // Clear customerId from order if customer is deselected
       const order = this.order();
-      if (order && order.id) {
-        try {
+      if (order && order.id)
+      {
+        try 
+{
           this.loading.set(true);
           const updated = await firstValueFrom(
             this.orderService.updateOrder(order.id, { ...order, customerId: undefined })
           );
-          if (updated) {
+          if (updated)
+          {
             this.order.set(updated);
           }
-        } catch (err) {
+        }
+ catch (err)
+ {
           console.error('Error clearing customer:', err);
-        } finally {
+        }
+ finally
+ {
           this.loading.set(false);
         }
       }
@@ -321,128 +386,167 @@ export class OrderEntryComponent implements OnInit {
     
     // Create order if it doesn't exist yet (only when user starts entering data)
     let order = this.order();
-    if (!order || !order.id) {
+    if (!order || !order.id)
+    {
       await this.createNewOrder();
       order = this.order();
-      if (!order || !order.id) {
+      if (!order || !order.id)
+      {
         console.error('Failed to create order.');
         alert('Failed to create order. Please try again.');
         return;
       }
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       console.log('Updating order customer:', order.id, 'to customer:', normalizedCustomerId);
       const orderToUpdate = { ...order, customerId: normalizedCustomerId };
       const updated = await firstValueFrom(
         this.orderService.updateOrder(order.id, orderToUpdate)
       );
-      if (updated) {
+      if (updated)
+      {
         console.log('Customer updated successfully. Updated order:', updated);
         this.order.set(updated);
         // Addresses are already loaded from address master in ngOnInit
-      } else {
+      }
+ else
+      {
         console.error('Order update returned null or undefined');
         alert('Failed to update customer. Please try again.');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error updating customer:', err);
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       alert(`Failed to update customer: ${errorMessage}. Please try again.`);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onAddProduct(): Promise<void> {
+  async onAddProduct(): Promise<void>
+  {
     const productId = this.selectedProduct();
     const qty = this.quantity();
     let order = this.order();
 
-    if (!productId) {
+    if (!productId)
+    {
       return;
     }
 
     // Create order if it doesn't exist yet (only when user starts entering data)
-    if (!order || !order.id) {
+    if (!order || !order.id)
+    {
       await this.createNewOrder();
       order = this.order();
-      if (!order || !order.id) {
+      if (!order || !order.id)
+      {
         console.error('Failed to create order.');
         alert('Failed to create order. Please try again.');
         return;
       }
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.orderService.addOrderItem(order.id, productId, qty)
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
         this.selectedProduct.set(null);
         this.quantity.set(1);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error adding product:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onUpdateQuantity(itemId: string, quantity: number): Promise<void> {
+  async onUpdateQuantity(itemId: string, quantity: number): Promise<void> 
+{
     if (quantity < 1) return;
     
     const order = this.order();
-    if (!order || !order.id) {
+    if (!order || !order.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.orderService.updateOrderItemQuantity(order.id, itemId, quantity)
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating quantity:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onRemoveItem(itemId: string): Promise<void> {
+  async onRemoveItem(itemId: string): Promise<void> 
+{
     const order = this.order();
-    if (!order || !order.id) {
+    if (!order || !order.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.orderService.removeOrderItem(order.id, itemId)
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error removing item:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onShippingInfoChange(shippingAddressId: string, billingAddressId: string): Promise<void> {
+  async onShippingInfoChange(shippingAddressId: string, billingAddressId: string): Promise<void> 
+{
     const order = this.order();
-    if (!order || !order.id) {
+    if (!order || !order.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.orderService.updateOrder(order.id, {
@@ -451,22 +555,30 @@ export class OrderEntryComponent implements OnInit {
           billingAddressId
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating shipping info:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  canProceedToNext(): boolean {
-    if (this.currentStep() === 'entry') {
+  canProceedToNext(): boolean
+  {
+    if (this.currentStep() === 'entry')
+    {
       const subStep = this.currentEntrySubStep();
       const order = this.order();
       
-      switch (subStep) {
+      switch (subStep)
+      {
         case 'customer':
           return !!order?.customerId;
         case 'products':
@@ -480,7 +592,8 @@ export class OrderEntryComponent implements OnInit {
       }
     }
     
-    switch (this.currentStep()) {
+    switch (this.currentStep())
+    {
       case 'approval':
         return !!(this.creditCheckPassed() && this.inventoryConfirmed() && this.priceApproved());
       case 'confirmation':
@@ -498,82 +611,115 @@ export class OrderEntryComponent implements OnInit {
     }
   }
 
-  handleNext(): void {
-    if (this.currentStep() === 'entry') {
+  handleNext(): void
+  {
+    if (this.currentStep() === 'entry')
+    {
       const currentSubIndex = this.entrySubSteps.findIndex(s => s.key === this.currentEntrySubStep());
-      if (currentSubIndex < this.entrySubSteps.length - 1) {
+      if (currentSubIndex < this.entrySubSteps.length - 1)
+      {
         this.currentEntrySubStep.set(this.entrySubSteps[currentSubIndex + 1].key);
-      } else {
+      }
+ else
+ {
         // Move to next main step
         const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-        if (currentIndex < this.steps.length - 1) {
+        if (currentIndex < this.steps.length - 1)
+        {
           this.currentStep.set(this.steps[currentIndex + 1].key);
         }
       }
-    } else {
+    }
+ else
+ {
       const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-      if (currentIndex < this.steps.length - 1) {
+      if (currentIndex < this.steps.length - 1)
+      {
         const nextStep = this.steps[currentIndex + 1].key;
         this.currentStep.set(nextStep);
         // Auto-load invoice number when entering invoicing step
-        if (nextStep === 'invoicing') {
+        if (nextStep === 'invoicing')
+        {
           this.loadInvoiceNumber();
         }
       }
     }
   }
 
-  handlePrevious(): void {
-    if (this.currentStep() === 'entry') {
+  handlePrevious(): void
+  {
+    if (this.currentStep() === 'entry')
+    {
       const currentSubIndex = this.entrySubSteps.findIndex(s => s.key === this.currentEntrySubStep());
-      if (currentSubIndex > 0) {
+      if (currentSubIndex > 0)
+      {
         this.currentEntrySubStep.set(this.entrySubSteps[currentSubIndex - 1].key);
-      } else {
+      }
+ else
+ {
         // Move to previous main step
         const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-        if (currentIndex > 0) {
+        if (currentIndex > 0)
+        {
           this.currentStep.set(this.steps[currentIndex - 1].key);
         }
       }
-    } else {
+    }
+ else
+ {
       const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-      if (currentIndex > 0) {
-        if (this.steps[currentIndex - 1].key === 'entry') {
+      if (currentIndex > 0)
+      {
+        if (this.steps[currentIndex - 1].key === 'entry')
+        {
           this.currentStep.set('entry');
           this.currentEntrySubStep.set('review');
-        } else {
+        }
+ else
+ {
           this.currentStep.set(this.steps[currentIndex - 1].key);
         }
       }
     }
   }
 
-  goBack(): void {
-    if (window.history.length > 1) {
+  goBack(): void
+  {
+    if (window.history.length > 1)
+    {
       this.location.back();
-    } else {
+    }
+ else
+ {
       this.router.navigate(['/orders']);
     }
   }
 
-  async onStepClick(stepKey: OrderStep): Promise<void> {
+  async onStepClick(stepKey: OrderStep): Promise<void> 
+{
     const isCompleted = this.isStepCompleted(stepKey);
     const isActive = this.currentStep() === stepKey;
     
     // Allow navigation to completed or active steps
-    if (isCompleted || isActive) {
+    if (isCompleted || isActive)
+    {
       const currentOrder = this.order();
-      if (currentOrder?.id) {
+      if (currentOrder?.id)
+      {
         // Reload order to get latest data
-        try {
+        try 
+{
           this.loading.set(true);
           const latestOrder = await firstValueFrom(this.orderService.getOrder(currentOrder.id));
-          if (latestOrder) {
+          if (latestOrder)
+          {
             this.order.set(latestOrder);
             // Addresses are already loaded from address master in ngOnInit
             // Load step-specific data from jsonData
-            if (latestOrder.jsonData) {
-              switch (stepKey) {
+            if (latestOrder.jsonData)
+            {
+              switch (stepKey)
+              {
                 case 'approval':
                   this.approvalNotes.set(latestOrder.jsonData.approvalNotes || '');
                   this.creditCheckPassed.set(latestOrder.jsonData.creditCheckPassed || false);
@@ -586,47 +732,59 @@ export class OrderEntryComponent implements OnInit {
                   this.requestedShipDate.set(dateStr ? new Date(dateStr) : null);
                   break;
                 case 'shipping':
-                  if (latestOrder.shipDate) {
+                  if (latestOrder.shipDate)
+                  {
                     this.actualShipDate.set(new Date(latestOrder.shipDate));
                   }
                   this.trackingNumber.set(latestOrder.jsonData.trackingNumber || '');
                   break;
                 case 'invoicing':
                   this.invoiceNumber.set(latestOrder.invoiceNumber || latestOrder.jsonData.invoiceNumber || '');
-                  if (latestOrder.invoiceDate) {
+                  if (latestOrder.invoiceDate)
+                  {
                     this.invoiceDate.set(new Date(latestOrder.invoiceDate));
-                  } else if (latestOrder.jsonData.invoiceDate) {
+                  }
+ else if (latestOrder.jsonData.invoiceDate)
+ {
                     const invDateStr = latestOrder.jsonData.invoiceDate;
                     this.invoiceDate.set(invDateStr ? new Date(invDateStr) : null);
                   }
                   // Auto-load invoice number if not set
-                  if (!this.invoiceNumber()) {
+                  if (!this.invoiceNumber())
+                  {
                     await this.loadInvoiceNumber();
                   }
                   break;
               }
             }
           }
-        } catch (err) {
+        }
+ catch (err)
+ {
           console.error('Error reloading order:', err);
-        } finally {
+        }
+ finally
+ {
           this.loading.set(false);
         }
       }
       
       this.currentStep.set(stepKey);
       // If navigating to entry step, set to review sub-step
-      if (stepKey === 'entry') {
+      if (stepKey === 'entry')
+      {
         this.currentEntrySubStep.set('review');
       }
     }
   }
 
-  isStepCompleted(step: OrderStep): boolean {
+  isStepCompleted(step: OrderStep): boolean
+  {
     const order = this.order();
     if (!order) return false;
 
-    switch (step) {
+    switch (step)
+    {
       case 'entry':
         return !!(order.customerId && order.items && order.items.length > 0 && order.shippingAddressId && order.billingAddressId);
       case 'approval':
@@ -646,11 +804,13 @@ export class OrderEntryComponent implements OnInit {
     }
   }
 
-  isSubStepCompleted(subStep: EntrySubStep): boolean {
+  isSubStepCompleted(subStep: EntrySubStep): boolean
+  {
     const order = this.order();
     if (!order) return false;
 
-    switch (subStep) {
+    switch (subStep)
+    {
       case 'customer':
         return !!order.customerId;
       case 'products':
@@ -664,45 +824,54 @@ export class OrderEntryComponent implements OnInit {
     }
   }
 
-  getCustomerName(customerId?: string): string {
+  getCustomerName(customerId?: string): string
+  {
     if (!customerId) return '';
     const customer = this.customers().find(c => c.id === customerId);
     return customer?.companyName || `${customer?.firstName || ''} ${customer?.lastName || ''}`.trim() || '';
   }
 
-  getCurrentStepLabel(): string {
+  getCurrentStepLabel(): string
+  {
     const step = this.steps.find(s => s.key === this.currentStep());
     return step?.label || '';
   }
 
-  async handleCompleteEntry(): Promise<void> {
+  async handleCompleteEntry(): Promise<void>
+  {
     const order = this.order();
-    if (!order || !order.id) {
+    if (!order || !order.id)
+    {
       alert('Order is not ready. Please wait a moment and try again.');
       return;
     }
 
     // Validate required fields
-    if (!order.customerId) {
+    if (!order.customerId)
+    {
       alert('Please select a customer before completing the entry.');
       this.currentEntrySubStep.set('customer');
       return;
     }
-    if (!order.items || order.items.length === 0) {
+    if (!order.items || order.items.length === 0)
+    {
       alert('Please add at least one product before completing the entry.');
       this.currentEntrySubStep.set('products');
       return;
     }
-    if (!order.shippingAddressId || !order.billingAddressId) {
+    if (!order.shippingAddressId || !order.billingAddressId)
+    {
       alert('Please select shipping and billing addresses before completing the entry.');
       this.currentEntrySubStep.set('shipping');
       return;
     }
 
-    try {
+    try 
+{
       this.submitting.set(true);
       // Ensure all current order data is included
-      const orderToUpdate: Order = {
+      const orderToUpdate: Order =
+      {
         ...order,
         customerId: order.customerId,
         shippingAddressId: order.shippingAddressId,
@@ -713,7 +882,8 @@ export class OrderEntryComponent implements OnInit {
       const updated = await firstValueFrom(
         this.orderService.updateOrder(order.id, orderToUpdate)
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
         // Add history record
         await this.addHistoryRecord(
@@ -729,23 +899,31 @@ export class OrderEntryComponent implements OnInit {
         );
         this.currentStep.set('approval');
         console.log('Entry completed successfully. Order:', updated);
-      } else {
+      }
+ else
+ {
         console.error('Order update returned null or undefined');
         alert('Failed to complete entry. Please try again.');
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error completing entry:', err);
       alert('Failed to complete entry. Please try again.');
-    } finally {
+    }
+ finally
+ {
       this.submitting.set(false);
     }
   }
 
-  async handleApproveOrder(): Promise<void> {
+  async handleApproveOrder(): Promise<void>
+  {
     const order = this.order();
     if (!order || !order.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = order.jsonData || {};
       jsonData.approvalNotes = this.approvalNotes();
@@ -762,7 +940,8 @@ export class OrderEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
         // Add history record
         await this.addHistoryRecord(
@@ -778,18 +957,24 @@ export class OrderEntryComponent implements OnInit {
         );
         this.currentStep.set('confirmation');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error approving order:', err);
-    } finally {
+    }
+ finally
+    {
       this.submitting.set(false);
     }
   }
 
-  async handleConfirmOrder(): Promise<void> {
+  async handleConfirmOrder(): Promise<void>
+  {
     const order = this.order();
     if (!order || !order.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = order.jsonData || {};
       jsonData.confirmedAt = new Date().toISOString();
@@ -800,7 +985,8 @@ export class OrderEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
         // Add history record
         await this.addHistoryRecord(
@@ -814,18 +1000,24 @@ export class OrderEntryComponent implements OnInit {
         );
         this.currentStep.set('shipping_instruction');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error confirming order:', err);
-    } finally {
+    }
+ finally
+ {
       this.submitting.set(false);
     }
   }
 
-  async handleShippingInstruction(): Promise<void> {
+  async handleShippingInstruction(): Promise<void> 
+{
     const order = this.order();
     if (!order || !order.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = order.jsonData || {};
       jsonData.shippingInstructions = this.shippingInstructions();
@@ -838,7 +1030,8 @@ export class OrderEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
         // Add history record
         await this.addHistoryRecord(
@@ -852,18 +1045,24 @@ export class OrderEntryComponent implements OnInit {
         );
         this.currentStep.set('shipping');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error creating shipping instruction:', err);
-    } finally {
+    }
+ finally
+ {
       this.submitting.set(false);
     }
   }
 
-  async handleShipOrder(): Promise<void> {
+  async handleShipOrder(): Promise<void> 
+{
     const order = this.order();
     if (!order || !order.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = order.jsonData || {};
       jsonData.trackingNumber = this.trackingNumber();
@@ -877,7 +1076,8 @@ export class OrderEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
         // Add history record
         await this.addHistoryRecord(
@@ -894,18 +1094,24 @@ export class OrderEntryComponent implements OnInit {
         await this.loadInvoiceNumber();
         this.currentStep.set('invoicing');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error shipping order:', err);
-    } finally {
+    }
+ finally
+ {
       this.submitting.set(false);
     }
   }
 
-  async handleInvoiceOrder(): Promise<void> {
+  async handleInvoiceOrder(): Promise<void> 
+{
     const order = this.order();
     if (!order || !order.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = order.jsonData || {};
       jsonData.invoiceNumber = this.invoiceNumber();
@@ -921,7 +1127,8 @@ export class OrderEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
         // Add history record
         await this.addHistoryRecord(
@@ -937,35 +1144,47 @@ export class OrderEntryComponent implements OnInit {
         );
         this.currentStep.set('history');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error invoicing order:', err);
-    } finally {
+    }
+ finally
+    {
       this.submitting.set(false);
     }
   }
 
-  async loadInvoiceNumber(): Promise<void> {
-    try {
+  async loadInvoiceNumber(): Promise<void>
+  {
+    try 
+{
       const response = await firstValueFrom(this.orderService.getNextInvoiceNumber());
-      if (response && response.invoiceNumber) {
+      if (response && response.invoiceNumber)
+      {
         this.invoiceNumber.set(response.invoiceNumber);
-        if (!this.invoiceDate()) {
+        if (!this.invoiceDate())
+        {
           this.invoiceDate.set(new Date());
         }
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error loading invoice number:', err);
     }
   }
 
-  async handleAddHistoryNote(): Promise<void> {
+  async handleAddHistoryNote(): Promise<void>
+  {
     const order = this.order();
     if (!order || !order.id) return;
 
     const note = this.historyNote();
     if (!note.trim()) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const updatedNotes = order.notes ? `${order.notes}\n\n${note}` : note;
       const updated = await firstValueFrom(
@@ -974,7 +1193,8 @@ export class OrderEntryComponent implements OnInit {
           notes: updatedNotes
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
         // Add history record for the note
         await this.addHistoryRecord(
@@ -985,9 +1205,13 @@ export class OrderEntryComponent implements OnInit {
         );
         this.historyNote.set('');
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error adding note:', err);
-    } finally {
+    }
+ finally
+ {
       this.submitting.set(false);
     }
   }
@@ -999,11 +1223,13 @@ export class OrderEntryComponent implements OnInit {
     notes?: string,
     status?: string,
     data?: Record<string, any>
-  ): Promise<void> {
+  ): Promise<void>
+  {
     const order = this.order();
     if (!order || !order.id) return;
 
-    try {
+    try 
+{
       const jsonData = order.jsonData || {};
       const history = jsonData.history || [];
       const newRecord = {
@@ -1022,10 +1248,13 @@ export class OrderEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error adding history record:', err);
     }
   }

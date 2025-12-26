@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class RMA {
+public class RMA
+{
     private String id;
     private String rmaNumber;
     private String orderId; // Reference to original order
@@ -29,14 +30,17 @@ public class RMA {
     private String notes;
     private Map<String, Object> jsonData;
 
-    public RMA() {
+    public RMA()
+    {
         this.items = new ArrayList<>();
         this.status = "DRAFT";
         this.rmaDate = LocalDateTime.now();
     }
 
-    public void calculateTotals() {
-        if (items == null) {
+    public void calculateTotals()
+ {
+        if (items == null)
+        {
             items = new ArrayList<>();
         }
         
@@ -47,10 +51,12 @@ public class RMA {
             .reduce(BigDecimal.ZERO, BigDecimal::add);
         
         // Default tax and restocking fee to zero if null
-        if (tax == null) {
+        if (tax == null)
+        {
             tax = BigDecimal.ZERO;
         }
-        if (restockingFee == null) {
+        if (restockingFee == null)
+        {
             restockingFee = BigDecimal.ZERO;
         }
         

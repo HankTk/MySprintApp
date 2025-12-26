@@ -14,7 +14,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './ax-button.component.html',
   styleUrls: ['./ax-button.component.scss'],
 })
-export class AxButtonComponent {
+export class AxButtonComponent
+{
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() color: 'primary' | 'accent' | 'warn' = 'primary';
   @Input() variant: 'raised' | 'flat' | 'stroked' | 'icon' = 'raised';
@@ -23,11 +24,14 @@ export class AxButtonComponent {
   @Input() label?: string;
   @Output() click = new EventEmitter<MouseEvent>();
 
-  onButtonClick(event: MouseEvent): void {
-    if (!this.disabled && !this.loading) {
+  onButtonClick(event: MouseEvent): void
+  {
+    if (!this.disabled && !this.loading)
+    {
       console.log('AxButtonComponent: Button clicked', { variant: this.variant, type: this.type });
       this.click.emit(event);
-    } else {
+    } else
+ {
       console.log('AxButtonComponent: Button click ignored (disabled or loading)', { disabled: this.disabled, loading: this.loading });
     }
   }

@@ -9,7 +9,8 @@ import { AxChartComponent, AxCardComponent, ChartConfig, MatCardModule } from '@
   templateUrl: './chart-page.component.html',
   styleUrls: ['./chart-page.component.scss']
 })
-export class ChartPageComponent {
+export class ChartPageComponent
+{
   // Line Chart Configuration
   lineChartConfig: ChartConfig = {
     title: {

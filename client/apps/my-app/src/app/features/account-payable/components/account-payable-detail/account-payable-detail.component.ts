@@ -23,7 +23,8 @@ import { Vendor } from '../../../vendors/models/vendor.model';
 
 type AccountPayableStep = 'invoice' | 'payment' | 'history';
 
-interface HistoryRecord {
+interface HistoryRecord
+{
   step: string;
   status: string;
   timestamp: string;
@@ -56,7 +57,8 @@ interface HistoryRecord {
   templateUrl: './account-payable-detail.component.html',
   styleUrls: ['./account-payable-detail.component.scss']
 })
-export class AccountPayableDetailComponent implements OnInit {
+export class AccountPayableDetailComponent implements OnInit
+{
   currentStep = signal<AccountPayableStep>('invoice');
   po = signal<PurchaseOrder | null>(null);
   loading = signal<boolean>(true);
@@ -74,27 +76,33 @@ export class AccountPayableDetailComponent implements OnInit {
   purchaseOrders = this.store.select('purchase-orders');
   vendors = this.store.select('vendors');
 
-  selectedSupplier = computed(() => {
+  selectedSupplier = computed(() =>
+  {
     const po = this.po();
     if (!po?.supplierId) return null;
     return this.vendors().find((v: Vendor) => v.id === po.supplierId) || null;
   });
 
-  outstandingAmount = computed(() => {
+  outstandingAmount = computed(() =>
+  {
     const po = this.po();
     const payment = this.paymentAmount();
     return Math.max(0, (po?.total || 0) - payment);
   });
 
-  poHistory = computed(() => {
+  poHistory = computed(() =>
+  {
     const po = this.po();
     if (!po?.jsonData?.history) return [];
     const allHistory = po.jsonData.history as HistoryRecord[];
-    return allHistory.filter(record => {
-      if (record.step === 'invoicing' || record.step === 'payment') {
+    return allHistory.filter(record => 
+{
+      if (record.step === 'invoicing' || record.step === 'payment')
+      {
         return true;
       }
-      if (record.step === 'status_change' && record.data) {
+      if (record.step === 'status_change' && record.data)
+      {
         const newStatus = record.data['newStatus'];
         return newStatus === 'INVOICED' || newStatus === 'PAID';
       }
@@ -104,22 +112,28 @@ export class AccountPayableDetailComponent implements OnInit {
 
   displayedColumns = ['product', 'quantity', 'unitPrice', 'lineTotal'];
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     const invoiceId = this.route.snapshot.paramMap.get('id');
-    if (invoiceId) {
+    if (invoiceId)
+    {
       this.loadPurchaseOrder(invoiceId);
     }
   }
 
-  private async loadPurchaseOrder(id: string): Promise<void> {
-    try {
+  private async loadPurchaseOrder(id: string): Promise<void> 
+{
+    try 
+{
       this.loading.set(true);
       const po = await firstValueFrom(this.purchaseOrderService.getPurchaseOrder(id));
-      if (po) {
+      if (po)
+      {
         this.po.set(po);
         
         // Load payment data from jsonData
-        if (po.jsonData) {
+        if (po.jsonData)
+        {
           this.paymentAmount.set(po.jsonData.paymentAmount || 0);
           const paymentDateStr = po.jsonData.paymentDate;
           this.paymentDate.set(paymentDateStr ? new Date(paymentDateStr) : null);
@@ -127,27 +141,38 @@ export class AccountPayableDetailComponent implements OnInit {
         }
         
         // Set initial step based on PO status
-        if (po.status === 'PAID' || (po.jsonData?.paymentAmount && po.jsonData.paymentAmount > 0)) {
+        if (po.status === 'PAID' || (po.jsonData?.paymentAmount && po.jsonData.paymentAmount > 0))
+        {
           this.currentStep.set('history');
-        } else if (po.status === 'INVOICED') {
+        }
+ else if (po.status === 'INVOICED')
+ {
           this.currentStep.set('payment');
-        } else {
+        }
+ else
+ {
           this.currentStep.set('invoice');
         }
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading purchase order:', err);
       this.po.set(null);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async handlePayment(): Promise<void> {
+  async handlePayment(): Promise<void> 
+{
     const po = this.po();
     if (!po || !po.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = po.jsonData || {};
       jsonData.paymentAmount = this.paymentAmount();
@@ -162,12 +187,14 @@ export class AccountPayableDetailComponent implements OnInit {
         })
       );
       
-      if (updated) {
+      if (updated)
+      {
         this.po.set(updated);
         
         // Add history record
         const history = jsonData.history || [];
-        const newRecord: HistoryRecord = {
+        const newRecord: HistoryRecord =
+        {
           step: 'payment',
           status: this.paymentAmount() >= (po.total || 0) ? 'PAID' : 'INVOICED',
           timestamp: new Date().toISOString(),
@@ -187,38 +214,50 @@ export class AccountPayableDetailComponent implements OnInit {
           })
         );
         
-        if (finalUpdated) {
+        if (finalUpdated)
+        {
           this.po.set(finalUpdated);
           this.currentStep.set('history');
           alert('Payment recorded successfully!');
         }
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error recording payment:', err);
       alert('Failed to record payment');
-    } finally {
+    }
+ finally
+    {
       this.submitting.set(false);
     }
   }
 
-  getSupplierName(): string {
+  getSupplierName(): string
+  {
     const supplier = this.selectedSupplier();
     if (!supplier) return 'N/A';
     return supplier.companyName || `${supplier.firstName || ''} ${supplier.lastName || ''}`.trim() || supplier.email || 'N/A';
   }
 
-  formatDate(dateString?: string | Date): string {
+  formatDate(dateString?: string | Date): string
+  {
     if (!dateString) return 'N/A';
-    try {
+    try 
+{
       const date = dateString instanceof Date ? dateString : new Date(dateString);
       return date.toLocaleDateString();
-    } catch {
+    }
+ catch
+    {
       return String(dateString);
     }
   }
 
-  formatDateTime(dateString: string): string {
-    try {
+  formatDateTime(dateString: string): string
+  {
+    try 
+{
       const date = new Date(dateString);
       return date.toLocaleString('en-US', {
         year: 'numeric',
@@ -227,13 +266,17 @@ export class AccountPayableDetailComponent implements OnInit {
         hour: '2-digit',
         minute: '2-digit'
       });
-    } catch {
+    }
+ catch
+    {
       return dateString;
     }
   }
 
-  getStepLabel(step: string): string {
-    const stepLabels: Record<string, string> = {
+  getStepLabel(step: string): string
+  {
+    const stepLabels: Record<string, string> =
+    {
       'invoicing': 'accountsPayable.history.stepLabels.invoicing',
       'payment': 'accountsPayable.history.stepLabels.payment',
       'status_change': 'accountsPayable.history.stepLabels.statusChange'
@@ -241,17 +284,21 @@ export class AccountPayableDetailComponent implements OnInit {
     return stepLabels[step] || step;
   }
 
-  getStatusLabel(status?: string): string {
+  getStatusLabel(status?: string): string
+  {
     if (!status) return 'N/A';
-    const statusMap: Record<string, string> = {
+    const statusMap: Record<string, string> =
+    {
       'INVOICED': 'accountsPayable.history.statusLabels.invoiced',
       'PAID': 'accountsPayable.history.statusLabels.paid'
     };
     return statusMap[status] || status;
   }
 
-  getDataKeyLabel(key: string): string {
-    const keyMap: Record<string, string> = {
+  getDataKeyLabel(key: string): string
+  {
+    const keyMap: Record<string, string> =
+    {
       'invoiceNumber': 'accountsPayable.history.dataLabels.invoiceNumber',
       'invoiceDate': 'accountsPayable.history.dataLabels.invoiceDate',
       'paymentAmount': 'accountsPayable.history.dataLabels.paymentAmount',
@@ -263,26 +310,35 @@ export class AccountPayableDetailComponent implements OnInit {
     return keyMap[key] || key;
   }
 
-  formatDataValue(key: string, value: any): string {
+  formatDataValue(key: string, value: any): string
+  {
     // Handle null or undefined
-    if (value == null) {
+    if (value == null)
+    {
       return 'N/A';
     }
     
     // Handle objects - convert to JSON string
-    if (typeof value === 'object' && !(value instanceof Date)) {
-      try {
+    if (typeof value === 'object' && !(value instanceof Date))
+    {
+      try 
+{
         return JSON.stringify(value);
-      } catch {
+      }
+ catch
+      {
         return 'N/A';
       }
     }
     
-    if (key === 'oldStatus' || key === 'newStatus') {
+    if (key === 'oldStatus' || key === 'newStatus')
+    {
       return this.getStatusLabel(String(value));
     }
-    if (key === 'paymentMethod') {
-      const methodMap: Record<string, string> = {
+    if (key === 'paymentMethod')
+    {
+      const methodMap: Record<string, string> =
+      {
         'BANK_TRANSFER': 'accountsPayable.payment.method.bankTransfer',
         'CREDIT_CARD': 'accountsPayable.payment.method.creditCard',
         'CASH': 'accountsPayable.payment.method.cash',
@@ -291,19 +347,23 @@ export class AccountPayableDetailComponent implements OnInit {
       };
       return methodMap[String(value)] || String(value);
     }
-    if (key === 'paymentAmount' && typeof value === 'number') {
+    if (key === 'paymentAmount' && typeof value === 'number')
+    {
       return `$${value.toFixed(2)}`;
     }
-    if ((key === 'invoiceDate' || key === 'paymentDate') && value) {
+    if ((key === 'invoiceDate' || key === 'paymentDate') && value)
+    {
       return this.formatDate(String(value));
     }
     return String(value);
   }
 
-  isStepCompleted(step: AccountPayableStep): boolean {
+  isStepCompleted(step: AccountPayableStep): boolean
+  {
     const po = this.po();
     if (!po) return false;
-    switch (step) {
+    switch (step)
+    {
       case 'invoice':
         return !!po.invoiceNumber;
       case 'payment':
@@ -315,15 +375,18 @@ export class AccountPayableDetailComponent implements OnInit {
     }
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/account-payable']);
   }
 
-  hasDataKeys(data?: Record<string, any>): boolean {
+  hasDataKeys(data?: Record<string, any>): boolean
+  {
     return data ? Object.keys(data).length > 0 : false;
   }
 
-  toString(value: string | number | symbol): string {
+  toString(value: string | number | symbol): string
+  {
     return String(value);
   }
 }

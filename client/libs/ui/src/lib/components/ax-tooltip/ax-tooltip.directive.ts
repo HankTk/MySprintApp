@@ -15,7 +15,8 @@ import { MatTooltip, TooltipPosition } from '@angular/material/tooltip';
     }
   ]
 })
-export class AxTooltipDirective {
+export class AxTooltipDirective
+{
   @Input() axTooltip?: string;
   @Input() axTooltipPosition: TooltipPosition = 'below';
   @Input() axTooltipDisabled = false;

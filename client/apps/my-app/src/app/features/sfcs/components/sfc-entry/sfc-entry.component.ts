@@ -47,7 +47,8 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './sfc-entry.component.html',
   styleUrls: ['./sfc-entry.component.scss']
 })
-export class SFCEntryComponent implements OnInit {
+export class SFCEntryComponent implements OnInit
+{
   currentStep = signal<SFCStep>('entry');
   currentEntrySubStep = signal<EntrySubStep>('rma');
   sfc = signal<SFC | null>(null);
@@ -71,15 +72,20 @@ export class SFCEntryComponent implements OnInit {
   historyNote = signal<string>('');
   
   // Computed signal for SFC history
-  sfcHistory = computed(() => {
+  sfcHistory = computed(() =>
+  {
     const sfc = this.sfc();
     if (!sfc?.jsonData?.history) return [];
     let history = sfc.jsonData.history;
-    if (typeof history === 'string') {
-      try {
+    if (typeof history === 'string')
+    {
+      try 
+{
         const parsed = JSON.parse(history);
         history = parsed.history || parsed;
-      } catch {
+      }
+ catch
+ {
         return [];
       }
     }
@@ -108,28 +114,34 @@ export class SFCEntryComponent implements OnInit {
     { key: 'review', label: 'sfcEntry.subStep.review' }
   ];
 
-  constructor() {
+  constructor()
+  {
     // Watch for RMA store updates
-    effect(() => {
+    effect(() =>
+    {
       const rmasFromStore = this.store.select('rmas')() || [];
       const processableRMAs = rmasFromStore.filter((r: RMA) => 
         (r.status === 'APPROVED' || r.status === 'RECEIVED')
       );
-      if (processableRMAs.length > 0) {
+      if (processableRMAs.length > 0)
+      {
         this.rmas.set(processableRMAs);
       }
     });
 
     // Watch for customer store updates
-    effect(() => {
+    effect(() =>
+    {
       const customersFromStore = this.store.select('customers')() || [];
-      if (customersFromStore.length > 0) {
+      if (customersFromStore.length > 0)
+      {
         this.customers.set(customersFromStore);
       }
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> 
+{
     const sfcId = this.route.snapshot.paramMap.get('id');
     
     // Load RMAs and customers first using services that update the store
@@ -144,85 +156,117 @@ export class SFCEntryComponent implements OnInit {
     await this.loadRMAsFromStore();
     await this.loadCustomersFromStore();
 
-    if (sfcId) {
+    if (sfcId)
+    {
       await this.loadSFC(sfcId);
-    } else {
+    }
+ else
+ {
       await this.createNewSFC();
     }
   }
 
-  private async createNewSFC(): Promise<void> {
-    try {
+  private async createNewSFC(): Promise<void> 
+{
+    try 
+{
       this.loading.set(true);
-      const newSFC: Partial<SFC> = {
+      const newSFC: Partial<SFC> =
+      {
         status: 'PENDING',
       };
       const created = await firstValueFrom(this.sfcService.createSFC(newSFC as CreateSFCRequest));
-      if (created && created.id) {
+      if (created && created.id)
+      {
         this.sfc.set(created);
         // Wait a moment for the store to be updated
         await new Promise(resolve => setTimeout(resolve, 100));
-      } else {
+      }
+ else
+ {
         console.error('SFC was created but has no ID');
         alert('Failed to create SFC. Please try again.');
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error creating SFC:', err);
       alert('Failed to create SFC. Please try again.');
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  private async loadSFC(id: string): Promise<void> {
-    try {
+  private async loadSFC(id: string): Promise<void> 
+{
+    try 
+{
       this.loading.set(true);
       const sfc = await firstValueFrom(this.sfcService.getSFC(id));
-      if (sfc) {
+      if (sfc)
+      {
         this.sfc.set(sfc);
         this.assignedTo.set(sfc.assignedTo || null);
         this.notes.set(sfc.notes || '');
-        if (sfc.startedDate) {
+        if (sfc.startedDate)
+        {
           this.startedDate.set(new Date(sfc.startedDate));
         }
-        if (sfc.completedDate) {
+        if (sfc.completedDate)
+        {
           this.completedDate.set(new Date(sfc.completedDate));
         }
         // Set step based on SFC status
         this.setStepFromStatus(sfc.status);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading SFC:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  private setStepFromStatus(status?: string): void {
+  private setStepFromStatus(status?: string): void
+ {
     const sfc = this.sfc();
     
-    switch (status) {
+    switch (status)
+    {
       case 'PENDING':
         this.currentStep.set('entry');
-        if (sfc?.rmaId) {
-          if (sfc.assignedTo) {
+        if (sfc?.rmaId)
+        {
+          if (sfc.assignedTo)
+          {
             this.currentEntrySubStep.set('review');
-          } else {
+          }
+ else
+ {
             this.currentEntrySubStep.set('assignment');
           }
-        } else {
+        }
+ else
+ {
           this.currentEntrySubStep.set('rma');
         }
         break;
       case 'IN_PROGRESS':
         this.currentStep.set('in_progress');
-        if (sfc?.startedDate) {
+        if (sfc?.startedDate)
+        {
           this.startedDate.set(new Date(sfc.startedDate));
         }
         break;
       case 'COMPLETED':
         this.currentStep.set('history');
-        if (sfc?.completedDate) {
+        if (sfc?.completedDate)
+        {
           this.completedDate.set(new Date(sfc.completedDate));
         }
         break;
@@ -232,8 +276,10 @@ export class SFCEntryComponent implements OnInit {
     }
   }
 
-  private async loadRMAsFromStore(): Promise<void> {
-    try {
+  private async loadRMAsFromStore(): Promise<void> 
+{
+    try 
+{
       const allRMAs = this.store.select('rmas')() || [];
       // Filter to only show RMAs that can be processed (APPROVED or RECEIVED status)
       // Also exclude RMAs that already have an SFC (unless we're editing an existing SFC)
@@ -241,30 +287,41 @@ export class SFCEntryComponent implements OnInit {
         (r.status === 'APPROVED' || r.status === 'RECEIVED')
       );
       this.rmas.set(processableRMAs);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading RMAs from store:', err);
     }
   }
 
-  private async loadCustomersFromStore(): Promise<void> {
-    try {
+  private async loadCustomersFromStore(): Promise<void> 
+{
+    try 
+{
       const customers = this.store.select('customers')() || [];
       this.customers.set(customers);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading customers from store:', err);
     }
   }
 
-  private async loadUsers(): Promise<void> {
-    try {
+  private async loadUsers(): Promise<void> 
+{
+    try 
+{
       const users = await firstValueFrom(this.userService.getUsers());
       this.users.set(users);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading users:', err);
     }
   }
 
-  async onRMAChange(rmaId: string | null): Promise<void> {
+  async onRMAChange(rmaId: string | null): Promise<void> 
+{
     // Normalize null/empty values
     const normalizedRMAId = (rmaId && rmaId.trim() !== '') ? rmaId : null;
     
@@ -272,16 +329,19 @@ export class SFCEntryComponent implements OnInit {
     let sfc = this.sfc();
     
     // If SFC doesn't exist yet, wait for it to be created
-    if (!sfc || !sfc.id) {
+    if (!sfc || !sfc.id)
+    {
       let retries = 0;
       const maxRetries = 20; // Increase retries
-      while ((!sfc || !sfc.id) && retries < maxRetries) {
+      while ((!sfc || !sfc.id) && retries < maxRetries)
+      {
         await new Promise(resolve => setTimeout(resolve, 200));
         sfc = this.sfc();
         retries++;
       }
       
-      if (!sfc || !sfc.id) {
+      if (!sfc || !sfc.id)
+      {
         console.error('SFC not available. Cannot update RMA.');
         alert('SFC is not ready yet. Please wait a moment and try again.');
         return;
@@ -289,8 +349,10 @@ export class SFCEntryComponent implements OnInit {
     }
 
     // If clearing RMA selection
-    if (!normalizedRMAId) {
-      try {
+    if (!normalizedRMAId)
+    {
+      try 
+{
         this.loading.set(true);
         const updated = await firstValueFrom(
           this.sfcService.updateSFC(sfc.id, { 
@@ -303,13 +365,18 @@ export class SFCEntryComponent implements OnInit {
             customerName: undefined
           })
         );
-        if (updated) {
+        if (updated)
+        {
           this.sfc.set(updated);
         }
-      } catch (err) {
+      }
+ catch (err)
+ {
         console.error('Error clearing RMA:', err);
         alert('Failed to clear RMA selection. Please try again.');
-      } finally {
+      }
+ finally
+ {
         this.loading.set(false);
       }
       return;
@@ -320,25 +387,32 @@ export class SFCEntryComponent implements OnInit {
     const rmasFromStore = this.store.select('rmas')() || [];
     rma = rmasFromStore.find((r: RMA) => r.id === normalizedRMAId) || null;
     
-    if (!rma) {
+    if (!rma)
+    {
       // Fallback to API call
-      try {
+      try 
+{
         rma = await firstValueFrom(this.rmaService.getRMA(normalizedRMAId));
-      } catch (err) {
+      }
+ catch (err)
+ {
         console.error('Error fetching RMA:', err);
         alert('Failed to load RMA details. Please try again.');
         return;
       }
     }
 
-    if (!rma) {
+    if (!rma)
+    {
       alert('RMA not found. Please select a different RMA.');
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
-      const sfcToUpdate: SFC = { 
+      const sfcToUpdate: SFC =
+      {
         ...sfc, 
         rmaId: normalizedRMAId,
         rmaNumber: rma.rmaNumber,
@@ -350,28 +424,37 @@ export class SFCEntryComponent implements OnInit {
       const updated = await firstValueFrom(
         this.sfcService.updateSFC(sfc.id, sfcToUpdate)
       );
-      if (updated) {
+      if (updated)
+      {
         this.sfc.set(updated);
         // Move to next sub-step if RMA is selected
-        if (this.currentEntrySubStep() === 'rma') {
+        if (this.currentEntrySubStep() === 'rma')
+        {
           this.currentEntrySubStep.set('assignment');
         }
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating RMA:', err);
       alert('Failed to update RMA. Please try again.');
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onAssignmentChange(assignedTo: string | null, notes: string): Promise<void> {
+  async onAssignmentChange(assignedTo: string | null, notes: string): Promise<void> 
+{
     const sfc = this.sfc();
-    if (!sfc || !sfc.id) {
+    if (!sfc || !sfc.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.sfcService.updateSFC(sfc.id, {
@@ -380,24 +463,32 @@ export class SFCEntryComponent implements OnInit {
           notes: notes || undefined
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.sfc.set(updated);
         this.assignedTo.set(assignedTo);
         this.notes.set(notes);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating assignment:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  canProceedToNext(): boolean {
-    if (this.currentStep() === 'entry') {
+  canProceedToNext(): boolean
+  {
+    if (this.currentStep() === 'entry')
+    {
       const subStep = this.currentEntrySubStep();
       const sfc = this.sfc();
       
-      switch (subStep) {
+      switch (subStep)
+      {
         case 'rma':
           return !!sfc?.rmaId;
         case 'assignment':
@@ -409,7 +500,8 @@ export class SFCEntryComponent implements OnInit {
       }
     }
     
-    switch (this.currentStep()) {
+    switch (this.currentStep())
+    {
       case 'in_progress':
         return !!this.startedDate();
       case 'completed':
@@ -421,102 +513,140 @@ export class SFCEntryComponent implements OnInit {
     }
   }
 
-  handleNext(): void {
-    if (this.currentStep() === 'entry') {
+  handleNext(): void
+  {
+    if (this.currentStep() === 'entry')
+    {
       const currentSubIndex = this.entrySubSteps.findIndex(s => s.key === this.currentEntrySubStep());
-      if (currentSubIndex < this.entrySubSteps.length - 1) {
+      if (currentSubIndex < this.entrySubSteps.length - 1)
+      {
         this.currentEntrySubStep.set(this.entrySubSteps[currentSubIndex + 1].key);
-      } else {
+      }
+ else
+ {
         const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-        if (currentIndex < this.steps.length - 1) {
+        if (currentIndex < this.steps.length - 1)
+        {
           this.currentStep.set(this.steps[currentIndex + 1].key);
         }
       }
-    } else {
+    }
+ else
+ {
       const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-      if (currentIndex < this.steps.length - 1) {
+      if (currentIndex < this.steps.length - 1)
+      {
         this.currentStep.set(this.steps[currentIndex + 1].key);
       }
     }
   }
 
-  handlePrevious(): void {
-    if (this.currentStep() === 'entry') {
+  handlePrevious(): void
+  {
+    if (this.currentStep() === 'entry')
+    {
       const currentSubIndex = this.entrySubSteps.findIndex(s => s.key === this.currentEntrySubStep());
-      if (currentSubIndex > 0) {
+      if (currentSubIndex > 0)
+      {
         this.currentEntrySubStep.set(this.entrySubSteps[currentSubIndex - 1].key);
-      } else {
+      }
+ else
+ {
         const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-        if (currentIndex > 0) {
+        if (currentIndex > 0)
+        {
           this.currentStep.set(this.steps[currentIndex - 1].key);
         }
       }
-    } else {
+    }
+ else
+ {
       const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-      if (currentIndex > 0) {
-        if (this.steps[currentIndex - 1].key === 'entry') {
+      if (currentIndex > 0)
+      {
+        if (this.steps[currentIndex - 1].key === 'entry')
+        {
           this.currentStep.set('entry');
           this.currentEntrySubStep.set('review');
-        } else {
+        }
+ else
+ {
           this.currentStep.set(this.steps[currentIndex - 1].key);
         }
       }
     }
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/sfcs']);
   }
 
-  async onStepClick(stepKey: SFCStep): Promise<void> {
+  async onStepClick(stepKey: SFCStep): Promise<void> 
+{
     const isCompleted = this.isStepCompleted(stepKey);
     const isActive = this.currentStep() === stepKey;
     
-    if (isCompleted || isActive) {
+    if (isCompleted || isActive)
+    {
       const currentSFC = this.sfc();
-      if (currentSFC?.id) {
-        try {
+      if (currentSFC?.id)
+      {
+        try 
+{
           this.loading.set(true);
           const latestSFC = await firstValueFrom(this.sfcService.getSFC(currentSFC.id));
-          if (latestSFC) {
+          if (latestSFC)
+          {
             this.sfc.set(latestSFC);
             this.assignedTo.set(latestSFC.assignedTo || null);
             this.notes.set(latestSFC.notes || '');
             
-            if (latestSFC.jsonData) {
-              switch (stepKey) {
+            if (latestSFC.jsonData)
+            {
+              switch (stepKey)
+              {
                 case 'in_progress':
-                  if (latestSFC.startedDate) {
+                  if (latestSFC.startedDate)
+                  {
                     this.startedDate.set(new Date(latestSFC.startedDate));
                   }
                   break;
                 case 'completed':
-                  if (latestSFC.completedDate) {
+                  if (latestSFC.completedDate)
+                  {
                     this.completedDate.set(new Date(latestSFC.completedDate));
                   }
                   break;
               }
             }
           }
-        } catch (err) {
+        }
+ catch (err)
+ {
           console.error('Error reloading SFC:', err);
-        } finally {
+        }
+ finally
+ {
           this.loading.set(false);
         }
       }
       
       this.currentStep.set(stepKey);
-      if (stepKey === 'entry') {
+      if (stepKey === 'entry')
+      {
         this.currentEntrySubStep.set('review');
       }
     }
   }
 
-  isStepCompleted(step: SFCStep): boolean {
+  isStepCompleted(step: SFCStep): boolean
+  {
     const sfc = this.sfc();
     if (!sfc) return false;
 
-    switch (step) {
+    switch (step)
+    {
       case 'entry':
         return !!(sfc.rmaId && sfc.assignedTo);
       case 'in_progress':
@@ -530,11 +660,13 @@ export class SFCEntryComponent implements OnInit {
     }
   }
 
-  isSubStepCompleted(subStep: EntrySubStep): boolean {
+  isSubStepCompleted(subStep: EntrySubStep): boolean
+  {
     const sfc = this.sfc();
     if (!sfc) return false;
 
-    switch (subStep) {
+    switch (subStep)
+    {
       case 'rma':
         return !!sfc.rmaId;
       case 'assignment':
@@ -546,50 +678,60 @@ export class SFCEntryComponent implements OnInit {
     }
   }
 
-  getRMANumber(rmaId?: string): string {
+  getRMANumber(rmaId?: string): string
+  {
     if (!rmaId) return '';
     const rma = this.rmas().find(r => r.id === rmaId);
     return rma?.rmaNumber || '';
   }
 
-  getCustomerName(customerId?: string): string {
+  getCustomerName(customerId?: string): string
+  {
     if (!customerId) return '';
     const customer = this.customers().find(c => c.id === customerId);
     return customer?.companyName || `${customer?.firstName || ''} ${customer?.lastName || ''}`.trim() || '';
   }
 
-  getUserName(userId?: string): string {
+  getUserName(userId?: string): string
+  {
     if (!userId) return '';
     const user = this.users().find(u => u.id === userId);
     return user ? `${user.firstName} ${user.lastName}`.trim() : '';
   }
 
-  getCurrentStepLabel(): string {
+  getCurrentStepLabel(): string
+  {
     const step = this.steps.find(s => s.key === this.currentStep());
     return step?.label || '';
   }
 
-  async handleCompleteEntry(): Promise<void> {
+  async handleCompleteEntry(): Promise<void> 
+{
     const sfc = this.sfc();
-    if (!sfc || !sfc.id) {
+    if (!sfc || !sfc.id)
+    {
       alert('SFC is not ready. Please wait a moment and try again.');
       return;
     }
 
-    if (!sfc.rmaId) {
+    if (!sfc.rmaId)
+    {
       alert('Please select an RMA before completing the entry.');
       this.currentEntrySubStep.set('rma');
       return;
     }
-    if (!sfc.assignedTo) {
+    if (!sfc.assignedTo)
+    {
       alert('Please assign a user before completing the entry.');
       this.currentEntrySubStep.set('assignment');
       return;
     }
 
-    try {
+    try 
+{
       this.submitting.set(true);
-      const sfcToUpdate: SFC = {
+      const sfcToUpdate: SFC =
+      {
         ...sfc,
         rmaId: sfc.rmaId,
         assignedTo: sfc.assignedTo,
@@ -600,7 +742,8 @@ export class SFCEntryComponent implements OnInit {
       const updated = await firstValueFrom(
         this.sfcService.updateSFC(sfc.id, sfcToUpdate)
       );
-      if (updated) {
+      if (updated)
+      {
         this.sfc.set(updated);
         await this.addHistoryRecord(
           'entry',
@@ -614,19 +757,25 @@ export class SFCEntryComponent implements OnInit {
         );
         this.currentStep.set('in_progress');
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error completing entry:', err);
       alert('Failed to complete entry. Please try again.');
-    } finally {
+    }
+ finally
+ {
       this.submitting.set(false);
     }
   }
 
-  async handleStartProcessing(): Promise<void> {
+  async handleStartProcessing(): Promise<void> 
+{
     const sfc = this.sfc();
     if (!sfc || !sfc.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = sfc.jsonData || {};
       const startedDateObj = this.startedDate() ? this.startedDate()!.toISOString() : undefined;
@@ -640,7 +789,8 @@ export class SFCEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.sfc.set(updated);
         await this.addHistoryRecord(
           'in_progress',
@@ -653,18 +803,24 @@ export class SFCEntryComponent implements OnInit {
         );
         this.currentStep.set('completed');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error starting processing:', err);
-    } finally {
+    }
+ finally
+    {
       this.submitting.set(false);
     }
   }
 
-  async handleCompleteProcessing(): Promise<void> {
+  async handleCompleteProcessing(): Promise<void>
+  {
     const sfc = this.sfc();
     if (!sfc || !sfc.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = sfc.jsonData || {};
       const completedDateObj = this.completedDate() ? this.completedDate()!.toISOString() : undefined;
@@ -678,7 +834,8 @@ export class SFCEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.sfc.set(updated);
         await this.addHistoryRecord(
           'completed',
@@ -691,21 +848,27 @@ export class SFCEntryComponent implements OnInit {
         );
         this.currentStep.set('history');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error completing processing:', err);
-    } finally {
+    }
+ finally
+    {
       this.submitting.set(false);
     }
   }
 
-  async handleAddHistoryNote(): Promise<void> {
+  async handleAddHistoryNote(): Promise<void>
+  {
     const sfc = this.sfc();
     if (!sfc || !sfc.id) return;
 
     const note = this.historyNote();
     if (!note.trim()) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const updatedNotes = sfc.notes ? `${sfc.notes}\n\n${note}` : note;
       const updated = await firstValueFrom(
@@ -714,7 +877,8 @@ export class SFCEntryComponent implements OnInit {
           notes: updatedNotes
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.sfc.set(updated);
         await this.addHistoryRecord(
           'note',
@@ -724,9 +888,13 @@ export class SFCEntryComponent implements OnInit {
         );
         this.historyNote.set('');
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error adding note:', err);
-    } finally {
+    }
+ finally
+ {
       this.submitting.set(false);
     }
   }
@@ -737,14 +905,17 @@ export class SFCEntryComponent implements OnInit {
     notes?: string,
     status?: string,
     data?: Record<string, any>
-  ): Promise<void> {
+  ): Promise<void> 
+{
     const sfc = this.sfc();
     if (!sfc || !sfc.id) return;
 
-    try {
+    try 
+{
       const jsonData = sfc.jsonData || {};
       const history = jsonData.history || [];
-      const newRecord = {
+      const newRecord =
+      {
         step,
         stepLabel,
         timestamp: new Date().toISOString(),
@@ -760,27 +931,34 @@ export class SFCEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.sfc.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error adding history record:', err);
     }
   }
 
-  hasDataKeys(data?: Record<string, any>): boolean {
+  hasDataKeys(data?: Record<string, any>): boolean
+  {
     return !!(data && Object.keys(data).length > 0);
   }
 
-  toString(value: string | number | symbol): string {
+  toString(value: string | number | symbol): string
+  {
     return String(value);
   }
 
-  getDataKeyLabel(key: string): string {
+  getDataKeyLabel(key: string): string
+  {
     return `sfcEntry.history.data.${key}`;
   }
 
-  formatDataValue(key: string, value: any): string {
+  formatDataValue(key: string, value: any): string
+  {
     if (value === null || value === undefined) return '';
     if (typeof value === 'boolean') return value ? 'Yes' : 'No';
     if (typeof value === 'number') return value.toString();

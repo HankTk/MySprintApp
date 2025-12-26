@@ -7,7 +7,8 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class RMAItem {
+public class RMAItem
+{
     private String id;
     private String productId;
     private String productCode;
@@ -19,8 +20,10 @@ public class RMAItem {
     private String reason; // Reason for return
     private String condition; // Condition of returned item (e.g., "NEW", "USED", "DAMAGED")
     
-    public void calculateLineTotal() {
-        if (returnedQuantity != null && unitPrice != null) {
+    public void calculateLineTotal()
+ {
+        if (returnedQuantity != null && unitPrice != null)
+        {
             lineTotal = unitPrice.multiply(BigDecimal.valueOf(returnedQuantity));
         }
     }

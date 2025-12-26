@@ -5,7 +5,8 @@ import { MatTabsModule, MatTabChangeEvent } from '@angular/material/tabs';
 /**
  * Tab panel configuration
  */
-export interface AxTabPanel {
+export interface AxTabPanel
+{
   label: string;
   disabled?: boolean;
   icon?: string;
@@ -22,7 +23,8 @@ export interface AxTabPanel {
   templateUrl: './ax-tabs.component.html',
   styleUrls: ['./ax-tabs.component.scss']
 })
-export class AxTabsComponent {
+export class AxTabsComponent
+{
   @Input() tabs: AxTabPanel[] = [];
   @Input() selectedIndex = 0;
   @Input() animationDuration = '500ms';
@@ -33,7 +35,8 @@ export class AxTabsComponent {
   @Output() selectedTabChange = new EventEmitter<number>();
   @Output() selectedIndexChange = new EventEmitter<number>();
 
-  onTabChange(event: MatTabChangeEvent): void {
+  onTabChange(event: MatTabChangeEvent): void
+  {
     this.selectedTabChange.emit(event.index);
     this.selectedIndexChange.emit(event.index);
   }

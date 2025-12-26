@@ -10,8 +10,9 @@ import { AxListboxComponent, ListboxOption, AxCardComponent, MatCardModule } fro
   templateUrl: './listbox-page.component.html',
   styleUrls: ['./listbox-page.component.scss']
 })
-export class ListboxPageComponent {
-  singleValue: string = '';
+export class ListboxPageComponent
+{
+  singleValue = '';
   multipleValue: string[] = [];
 
   options: ListboxOption[] = [

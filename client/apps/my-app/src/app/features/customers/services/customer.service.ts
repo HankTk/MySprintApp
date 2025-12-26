@@ -11,7 +11,8 @@ import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../
 @Injectable({
   providedIn: 'root'
 })
-export class CustomerService {
+export class CustomerService
+{
   private apiUrl = 'http://localhost:8080/api/customers';
 
   private http = inject(HttpClient);
@@ -19,27 +20,33 @@ export class CustomerService {
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
 
-  getCustomers(): Observable<Customer[]> {
+  getCustomers(): Observable<Customer[]>
+  {
     return this.http.get<Customer[]>(this.apiUrl);
   }
 
-  getCustomer(id: string): Observable<Customer> {
+  getCustomer(id: string): Observable<Customer>
+  {
     return this.http.get<Customer>(`${this.apiUrl}/${id}`);
   }
 
-  createCustomer(customer: CreateCustomerRequest): Observable<Customer> {
+  createCustomer(customer: CreateCustomerRequest): Observable<Customer>
+  {
     return this.http.post<Customer>(this.apiUrl, customer);
   }
 
-  updateCustomer(id: string, customer: Customer): Observable<Customer> {
+  updateCustomer(id: string, customer: Customer): Observable<Customer>
+  {
     return this.http.put<Customer>(`${this.apiUrl}/${id}`, customer);
   }
 
-  deleteCustomer(id: string): Observable<void> {
+  deleteCustomer(id: string): Observable<void>
+  {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  loadCustomers(isLoading: WritableSignal<boolean>): void {
+  loadCustomers(isLoading: WritableSignal<boolean>): void
+  {
     this.resourceManager.loadResource(
       'customers',
       isLoading,
@@ -50,7 +57,8 @@ export class CustomerService {
   createCustomerWithNotification(
     customerData: CreateCustomerRequest,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.createResource(
       'customers',
       customerData,
@@ -63,7 +71,8 @@ export class CustomerService {
   updateCustomerWithNotification(
     customerData: Customer,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.updateResource(
       'customers',
       customerData.id!,
@@ -77,7 +86,8 @@ export class CustomerService {
   deleteCustomerWithNotification(
     id: string,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.deleteResource(
       'customers',
       id,
@@ -87,39 +97,49 @@ export class CustomerService {
     );
   }
 
-  openAddCustomerDialog(isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(CustomerDialogComponent, {
+  openAddCustomerDialog(isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(CustomerDialogComponent,
+    {
       data: { isEdit: false } as CustomerDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'create') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'create')
+      {
         this.createCustomerWithNotification(result.customer, isLoading);
       }
     });
   }
 
-  openEditCustomerDialog(customer: Customer, isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(CustomerDialogComponent, {
+  openEditCustomerDialog(customer: Customer, isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(CustomerDialogComponent,
+    {
       data: { customer, isEdit: true } as CustomerDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'update') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'update')
+      {
         this.updateCustomerWithNotification(result.customer, isLoading);
       }
     });
   }
 
-  openDeleteCustomerDialog(customer: Customer, isLoading: WritableSignal<boolean>): void {
+  openDeleteCustomerDialog(customer: Customer, isLoading: WritableSignal<boolean>): void
+  {
     const customerName = customer.companyName || `${customer.lastName} ${customer.firstName}`;
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
+    {
       data: {
         userName: customerName,
         userEmail: customer.email
@@ -129,8 +149,10 @@ export class CustomerService {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result === true)
+      {
         this.deleteCustomerWithNotification(customer.id!, isLoading);
       }
     });

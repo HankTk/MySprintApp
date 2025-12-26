@@ -9,13 +9,16 @@ import { AxButtonComponent, AxCardComponent, AxIconComponent, MatCardModule } fr
   templateUrl: './button-page.component.html',
   styleUrls: ['./button-page.component.scss']
 })
-export class ButtonPageComponent {
+export class ButtonPageComponent
+{
 
   isLoading = false;
 
-  onLoadingClick(): void {
+  onLoadingClick(): void
+  {
     this.isLoading = true;
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this.isLoading = false;
     }, 2000);
   }

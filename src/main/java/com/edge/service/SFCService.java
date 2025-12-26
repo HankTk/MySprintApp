@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class SFCService {
+public class SFCService
+{
     
     @Autowired
     private SFCRepository sfcRepository;
@@ -33,19 +34,23 @@ public class SFCService {
     
     private static final String DATA_TYPE_ID = "sfcs";
     
-    public List<SFC> getAllSFCs() {
+    public List<SFC> getAllSFCs()
+    {
         return sfcRepository.getAllSFCs();
     }
     
-    public Optional<SFC> getSFCById(String id) {
+    public Optional<SFC> getSFCById(String id)
+    {
         return sfcRepository.getSFCById(id);
     }
     
-    public List<SFC> getSFCsByRMAId(String rmaId) {
+    public List<SFC> getSFCsByRMAId(String rmaId)
+    {
         return sfcRepository.getSFCsByRMAId(rmaId);
     }
     
-    public List<SFC> getSFCsByStatus(String status) {
+    public List<SFC> getSFCsByStatus(String status)
+    {
         return sfcRepository.getSFCsByStatus(status);
     }
     
@@ -53,13 +58,15 @@ public class SFCService {
      * Create an SFC record from an RMA
      * This is typically called when an RMA is approved or when shop floor processing is initiated
      */
-    public SFC createSFCFromRMA(String rmaId) {
+    public SFC createSFCFromRMA(String rmaId)
+ {
         RMA rma = rmaRepository.getRMAById(rmaId)
             .orElseThrow(() -> new RuntimeException("RMA not found with id: " + rmaId));
         
         // Check if SFC already exists for this RMA
         List<SFC> existingSFCs = sfcRepository.getSFCsByRMAId(rmaId);
-        if (!existingSFCs.isEmpty()) {
+        if (!existingSFCs.isEmpty())
+        {
             // Return the first existing SFC (or could throw an exception)
             return existingSFCs.get(0);
         }
@@ -76,8 +83,10 @@ public class SFCService {
         sfc.setCreatedDate(LocalDateTime.now());
         
         // Enrich with customer information if needed
-        if (sfc.getCustomerName() == null && sfc.getCustomerId() != null) {
-            customerRepository.getCustomerById(sfc.getCustomerId()).ifPresent(customer -> {
+        if (sfc.getCustomerName() == null && sfc.getCustomerId() != null)
+        {
+            customerRepository.getCustomerById(sfc.getCustomerId()).ifPresent(customer ->
+            {
                 sfc.setCustomerName(customer.getFullName());
             });
         }
@@ -87,9 +96,11 @@ public class SFCService {
         return created;
     }
     
-    public SFC createSFC(SFC sfc) {
+    public SFC createSFC(SFC sfc)
+ {
         // Enrich SFC with RMA information if rmaId is provided
-        if (sfc.getRmaId() != null) {
+        if (sfc.getRmaId() != null)
+        {
             enrichSFCWithRMAInfo(sfc);
         }
         
@@ -98,19 +109,22 @@ public class SFCService {
         return created;
     }
     
-    public SFC updateSFC(String id, SFC sfcDetails) {
+    public SFC updateSFC(String id, SFC sfcDetails)
+ {
         SFC existingSFC = sfcRepository.getSFCById(id)
             .orElseThrow(() -> new RuntimeException("SFC not found with id: " + id));
         
         String oldStatus = existingSFC.getStatus();
         
         // Set started date when status changes to IN_PROGRESS
-        if ("IN_PROGRESS".equals(sfcDetails.getStatus()) && !"IN_PROGRESS".equals(oldStatus)) {
+        if ("IN_PROGRESS".equals(sfcDetails.getStatus()) && !"IN_PROGRESS".equals(oldStatus))
+        {
             sfcDetails.setStartedDate(LocalDateTime.now());
         }
         
         // Set completed date when status changes to COMPLETED
-        if ("COMPLETED".equals(sfcDetails.getStatus()) && !"COMPLETED".equals(oldStatus)) {
+        if ("COMPLETED".equals(sfcDetails.getStatus()) && !"COMPLETED".equals(oldStatus))
+        {
             sfcDetails.setCompletedDate(LocalDateTime.now());
         }
         
@@ -122,32 +136,42 @@ public class SFCService {
         return updated;
     }
     
-    public void deleteSFC(String id) {
+    public void deleteSFC(String id)
+ {
         Optional<SFC> sfcToDelete = sfcRepository.getSFCById(id);
         sfcRepository.deleteSFC(id);
         
         // Broadcast deletion via WebSocket
-        if (sfcToDelete.isPresent()) {
+        if (sfcToDelete.isPresent())
+        {
             notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, sfcToDelete.get());
         }
     }
     
-    private void enrichSFCWithRMAInfo(SFC sfc) {
-        if (sfc.getRmaId() != null) {
-            rmaRepository.getRMAById(sfc.getRmaId()).ifPresent(rma -> {
-                if (sfc.getRmaNumber() == null) {
+    private void enrichSFCWithRMAInfo(SFC sfc)
+ {
+        if (sfc.getRmaId() != null)
+        {
+            rmaRepository.getRMAById(sfc.getRmaId()).ifPresent(rma ->
+            {
+                if (sfc.getRmaNumber() == null)
+                {
                     sfc.setRmaNumber(rma.getRmaNumber());
                 }
-                if (sfc.getOrderId() == null) {
+                if (sfc.getOrderId() == null)
+                {
                     sfc.setOrderId(rma.getOrderId());
                 }
-                if (sfc.getOrderNumber() == null) {
+                if (sfc.getOrderNumber() == null)
+                {
                     sfc.setOrderNumber(rma.getOrderNumber());
                 }
-                if (sfc.getCustomerId() == null) {
+                if (sfc.getCustomerId() == null)
+                {
                     sfc.setCustomerId(rma.getCustomerId());
                 }
-                if (sfc.getCustomerName() == null) {
+                if (sfc.getCustomerName() == null)
+                {
                     sfc.setCustomerName(rma.getCustomerName());
                 }
             });

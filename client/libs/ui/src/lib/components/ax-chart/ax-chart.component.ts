@@ -6,7 +6,8 @@ import * as Highcharts from 'highcharts';
 /**
  * Chart configuration interface
  */
-export interface ChartConfig {
+export interface ChartConfig
+{
   title?: {
     text?: string;
   };
@@ -49,7 +50,8 @@ export interface ChartConfig {
   templateUrl: './ax-chart.component.html',
   styleUrls: ['./ax-chart.component.scss']
 })
-export class AxChartComponent implements OnChanges {
+export class AxChartComponent implements OnChanges
+{
   @Input() config: ChartConfig = {};
   @Input() height?: number | string;
   @Input() width?: number | string;
@@ -58,8 +60,10 @@ export class AxChartComponent implements OnChanges {
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: ChartConfig = {};
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['config'] || changes['updateFlag']) {
+  ngOnChanges(changes: SimpleChanges): void
+  {
+    if (changes['config'] || changes['updateFlag'])
+    {
       this.chartOptions = { ...this.config };
     }
   }

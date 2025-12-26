@@ -12,7 +12,8 @@ import {
   AxTextareaComponent 
 } from '@ui/components';
 
-export interface UserDialogData {
+export interface UserDialogData
+{
   user?: User;
   isEdit: boolean;
 }
@@ -34,7 +35,8 @@ export interface UserDialogData {
   templateUrl: './user-dialog.component.html',
   styleUrls: ['./user-dialog.component.scss']
 })
-export class UserDialogComponent implements OnInit {
+export class UserDialogComponent implements OnInit
+{
   userForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
@@ -50,7 +52,8 @@ export class UserDialogComponent implements OnInit {
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: UserDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: UserDialogData)
+  {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editUser') : this.translate.instant('addUser');
     
@@ -64,14 +67,17 @@ export class UserDialogComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (this.isEdit && this.data.user) {
+  ngOnInit(): void
+  {
+    if (this.isEdit && this.data.user)
+    {
       this.populateForm(this.data.user);
     }
     this.updateRoleOptions();
   }
 
-  private updateRoleOptions(): void {
+  private updateRoleOptions(): void
+ {
     this.roleOptions = [
       { value: '', label: this.translate.instant('rolePlaceholder') },
       { value: 'Admin', label: this.translate.instant('roleOptions.admin') },
@@ -79,16 +85,24 @@ export class UserDialogComponent implements OnInit {
     ];
   }
 
-  private populateForm(user: User): void {
+  private populateForm(user: User): void
+ {
     let jsonDataString = '{}';
-    if (user.jsonData) {
-      if (typeof user.jsonData === 'object') {
+    if (user.jsonData)
+    {
+      if (typeof user.jsonData === 'object')
+      {
         jsonDataString = JSON.stringify(user.jsonData, null, 2);
-      } else if (typeof user.jsonData === 'string') {
-        try {
+      }
+ else if (typeof user.jsonData === 'string')
+ {
+        try 
+{
           JSON.parse(user.jsonData);
           jsonDataString = user.jsonData;
-        } catch {
+        }
+ catch
+ {
           jsonDataString = '{}';
         }
       }
@@ -104,35 +118,48 @@ export class UserDialogComponent implements OnInit {
     });
   }
 
-  private jsonValidator(control: any) {
+  private jsonValidator(control: any)
+ {
     if (!control.value) return null;
-    try {
+    try 
+{
       JSON.parse(control.value);
       return null;
-    } catch (e) {
+    }
+ catch (e)
+ {
       return { invalidJson: true };
     }
   }
 
-  get isEnglish(): boolean {
+  get isEnglish(): boolean
+ {
     return this.languageService.isEnglish();
   }
 
-  onSubmit(): void {
-    if (this.userForm.valid) {
+  onSubmit(): void
+  {
+    if (this.userForm.valid)
+    {
       const formValue = this.userForm.value;
       
       let jsonData: any = {};
-      if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
-        try {
+      if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
+      {
+        try 
+{
           jsonData = JSON.parse(formValue.jsonData);
-        } catch (e) {
+        }
+ catch (e)
+ {
           return;
         }
       }
 
-      if (this.isEdit && this.data.user) {
-        const userToUpdate: User = {
+      if (this.isEdit && this.data.user)
+      {
+        const userToUpdate: User =
+        {
           id: this.data.user.id,
           userid: formValue.userid,
           firstName: formValue.firstName,
@@ -142,8 +169,11 @@ export class UserDialogComponent implements OnInit {
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', user: userToUpdate });
-      } else {
-        const userToCreate: CreateUserRequest = {
+      }
+ else
+ {
+        const userToCreate: CreateUserRequest =
+        {
           userid: formValue.userid,
           firstName: formValue.firstName,
           lastName: formValue.lastName,
@@ -156,28 +186,36 @@ export class UserDialogComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close();
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.userForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.userForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['required']) {
+    if (field?.errors)
+    {
+      if (field.errors['required'])
+      {
         return this.translate.instant('validation.required');
       }
-      if (field.errors['email']) {
+      if (field.errors['email'])
+      {
         return this.translate.instant('validation.email');
       }
-      if (field.errors['minlength']) {
+      if (field.errors['minlength'])
+      {
         return this.translate.instant('validation.minlength', { min: field.errors['minlength'].requiredLength });
       }
-      if (field.errors['invalidJson']) {
+      if (field.errors['invalidJson'])
+      {
         return this.translate.instant('validation.invalidJson');
       }
     }

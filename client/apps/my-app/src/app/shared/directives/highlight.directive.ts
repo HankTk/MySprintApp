@@ -8,13 +8,17 @@ import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/
   selector: '[appHighlight]',
   standalone: true
 })
-export class HighlightDirective {
+export class HighlightDirective
+{
   @Input() highlightColor = 'yellow';
   private originalColor = '';
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(private el: ElementRef, private renderer: Renderer2)
+  {
+  }
 
-  @HostListener('mouseenter') onMouseEnter() {
+  @HostListener('mouseenter') onMouseEnter()
+  {
     this.originalColor = this.el.nativeElement.style.backgroundColor;
     this.renderer.setStyle(
       this.el.nativeElement,
@@ -23,7 +27,8 @@ export class HighlightDirective {
     );
   }
 
-  @HostListener('mouseleave') onMouseLeave() {
+  @HostListener('mouseleave') onMouseLeave()
+  {
     this.renderer.setStyle(
       this.el.nativeElement,
       'backgroundColor',

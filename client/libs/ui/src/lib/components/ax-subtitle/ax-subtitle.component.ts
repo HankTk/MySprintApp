@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './ax-subtitle.component.html',
   styleUrls: ['./ax-subtitle.component.scss']
 })
-export class AxSubtitleComponent {
+export class AxSubtitleComponent
+{
 }
 

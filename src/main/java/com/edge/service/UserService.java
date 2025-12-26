@@ -42,7 +42,8 @@ public class UserService
     public User createUser(User user)
     {
         // Hash password if provided
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+        if (user.getPassword() != null && !user.getPassword().isEmpty())
+        {
             String hashedPassword = authService.encodePassword(user.getPassword());
             user.setPassword(hashedPassword);
         }
@@ -54,7 +55,8 @@ public class UserService
     public User updateUser(String id, User userDetails)
     {
         // Hash password if provided
-        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
+        if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty())
+        {
             String hashedPassword = authService.encodePassword(userDetails.getPassword());
             userDetails.setPassword(hashedPassword);
         }
@@ -67,7 +69,8 @@ public class UserService
     {
         Optional<User> userToDelete = userRepository.getUserById(id);
         userRepository.deleteUser(id);
-        if (userToDelete.isPresent()) {
+        if (userToDelete.isPresent())
+        {
             notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, userToDelete.get());
         }
     }

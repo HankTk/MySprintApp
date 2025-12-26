@@ -16,7 +16,8 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable({
   providedIn: 'root'
 })
-export class GeneralLedgerService {
+export class GeneralLedgerService
+{
   private orderService = inject(OrderService);
   private purchaseOrderService = inject(PurchaseOrderService);
   private customerService = inject(CustomerService);
@@ -24,7 +25,8 @@ export class GeneralLedgerService {
   private productService = inject(ProductService);
   private translate = inject(TranslateService);
 
-  getGLEntries(): Observable<GLEntry[]> {
+  getGLEntries(): Observable<GLEntry[]>
+  {
     return forkJoin({
       orders: this.orderService.getOrders(),
       purchaseOrders: this.purchaseOrderService.getPurchaseOrders(),
@@ -32,7 +34,8 @@ export class GeneralLedgerService {
       vendors: this.vendorService.getVendors(),
       products: this.productService.getProducts()
     }).pipe(
-      map(({ orders, purchaseOrders, customers, vendors, products }) => {
+      map(({ orders, purchaseOrders, customers, vendors, products }) =>
+      {
         const entries: GLEntry[] = [];
         
         // Process orders
@@ -40,7 +43,8 @@ export class GeneralLedgerService {
           order.status === 'SHIPPED' || order.status === 'INVOICED' || order.status === 'PAID'
         );
         
-        processedOrders.forEach(order => {
+        processedOrders.forEach(order => 
+{
           const customer = customers.find(c => c.id === order.customerId);
           const customerName = customer 
             ? (customer.companyName || `${customer.lastName || ''} ${customer.firstName || ''}`.trim() || customer.email || this.translate.instant('generalLedger.unknown'))
@@ -53,14 +57,16 @@ export class GeneralLedgerService {
           const totalQuantity = order.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
           
           // Calculate product cost
-          const productCost = order.items?.reduce((sum, item) => {
+          const productCost = order.items?.reduce((sum, item) =>
+          {
             const product = products.find(p => p.id === item.productId);
             const itemCost = product?.cost || (item.unitPrice || 0) * 0.7;
             return sum + (itemCost * (item.quantity || 0));
           }, 0) || 0;
           
           // REVENUE entry
-          if (order.status === 'SHIPPED' || order.status === 'INVOICED' || order.status === 'PAID') {
+          if (order.status === 'SHIPPED' || order.status === 'INVOICED' || order.status === 'PAID')
+          {
             entries.push({
               id: `${order.id}-revenue`,
               date: shipDate || invoiceDate,
@@ -80,11 +86,13 @@ export class GeneralLedgerService {
           }
           
           // COST entry
-          if (order.status === 'SHIPPED' || order.status === 'INVOICED' || order.status === 'PAID') {
+          if (order.status === 'SHIPPED' || order.status === 'INVOICED' || order.status === 'PAID')
+          {
             const shippingCost = order.shippingCost || 0;
             const totalCost = productCost + shippingCost;
             
-            if (totalCost > 0) {
+            if (totalCost > 0)
+            {
               entries.push({
                 id: `${order.id}-cost`,
                 date: shipDate || invoiceDate,
@@ -107,11 +115,13 @@ export class GeneralLedgerService {
           }
           
           // PAYMENT entry
-          if (order.status === 'PAID' && order.jsonData?.paymentAmount) {
+          if (order.status === 'PAID' && order.jsonData?.paymentAmount)
+          {
             const paymentAmount = order.jsonData.paymentAmount || 0;
             const paymentDate = order.jsonData.paymentDate || order.orderDate || '';
             
-            if (paymentAmount > 0) {
+            if (paymentAmount > 0)
+            {
               entries.push({
                 id: `${order.id}-payment`,
                 date: paymentDate,
@@ -137,7 +147,8 @@ export class GeneralLedgerService {
           po.status === 'RECEIVED' || po.status === 'INVOICED' || po.status === 'PAID'
         );
         
-        processedPOs.forEach(po => {
+        processedPOs.forEach(po => 
+{
           const vendor = vendors.find(v => v.id === po.supplierId);
           const supplierName = vendor 
             ? (vendor.companyName || `${vendor.lastName || ''} ${vendor.firstName || ''}`.trim() || vendor.email || this.translate.instant('generalLedger.unknown'))
@@ -145,17 +156,25 @@ export class GeneralLedgerService {
           
           // Handle receivedDate
           let receivedDate: string | null = null;
-          if (po.jsonData?.receivedDate) {
-            try {
+          if (po.jsonData?.receivedDate)
+          {
+            try 
+{
               const receivedDateValue = po.jsonData.receivedDate;
-              if (typeof receivedDateValue === 'string') {
-                if (receivedDateValue.match(/^\d{4}-\d{2}-\d{2}$/)) {
+              if (typeof receivedDateValue === 'string')
+              {
+                if (receivedDateValue.match(/^\d{4}-\d{2}-\d{2}$/))
+                {
                   receivedDate = receivedDateValue;
-                } else {
+                }
+ else
+ {
                   receivedDate = new Date(receivedDateValue).toISOString().split('T')[0];
                 }
               }
-            } catch (e) {
+            }
+ catch (e)
+ {
               console.warn('Error parsing receivedDate:', e);
             }
           }
@@ -173,18 +192,21 @@ export class GeneralLedgerService {
           const totalQuantity = po.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0;
           
           // Calculate product cost
-          const productCost = po.items?.reduce((sum, item) => {
+          const productCost = po.items?.reduce((sum, item) =>
+          {
             const product = products.find(p => p.id === item.productId);
             const itemCost = product?.cost || (item.unitPrice || 0) * 0.7;
             return sum + (itemCost * (item.quantity || 0));
           }, 0) || 0;
           
           // EXPENSE entry
-          if (po.status === 'RECEIVED' || po.status === 'INVOICED' || po.status === 'PAID') {
+          if (po.status === 'RECEIVED' || po.status === 'INVOICED' || po.status === 'PAID')
+          {
             const shippingCost = po.shippingCost || 0;
             const totalCost = productCost + shippingCost;
             
-            if (totalCost > 0) {
+            if (totalCost > 0)
+            {
               entries.push({
                 id: `${po.id}-expense`,
                 date: transactionDate || '',
@@ -207,7 +229,8 @@ export class GeneralLedgerService {
           }
           
           // ACCOUNTS_PAYABLE entry
-          if (po.status === 'INVOICED' || po.status === 'PAID') {
+          if (po.status === 'INVOICED' || po.status === 'PAID')
+          {
             entries.push({
               id: `${po.id}-ap`,
               date: invoiceDateStr || orderDateStr || '',
@@ -227,24 +250,32 @@ export class GeneralLedgerService {
           }
           
           // PAYMENT entry
-          if (po.status === 'PAID' && po.jsonData?.paymentAmount) {
+          if (po.status === 'PAID' && po.jsonData?.paymentAmount)
+          {
             const paymentAmount = po.jsonData.paymentAmount || 0;
-            let paymentDate: string = '';
-            if (po.jsonData.paymentDate) {
+            let paymentDate = '';
+            if (po.jsonData.paymentDate)
+            {
               const paymentDateValue = po.jsonData.paymentDate;
-              if (typeof paymentDateValue === 'string') {
-                if (paymentDateValue.match(/^\d{4}-\d{2}-\d{2}$/)) {
+              if (typeof paymentDateValue === 'string')
+              {
+                if (paymentDateValue.match(/^\d{4}-\d{2}-\d{2}$/))
+                {
                   paymentDate = paymentDateValue;
-                } else {
+                }
+ else
+ {
                   paymentDate = new Date(paymentDateValue).toISOString().split('T')[0];
                 }
               }
             }
-            if (!paymentDate) {
+            if (!paymentDate)
+            {
               paymentDate = orderDateStr;
             }
             
-            if (paymentAmount > 0) {
+            if (paymentAmount > 0)
+            {
               entries.push({
                 id: `${po.id}-payment`,
                 date: paymentDate,
@@ -273,8 +304,10 @@ export class GeneralLedgerService {
     );
   }
 
-  getTypeColor(type: GLEntryType): string {
-    switch (type) {
+  getTypeColor(type: GLEntryType): string
+  {
+    switch (type)
+    {
       case 'REVENUE':
         return '#047857';
       case 'COST':
@@ -290,8 +323,10 @@ export class GeneralLedgerService {
     }
   }
 
-  getTypeBackgroundColor(type: GLEntryType): string {
-    switch (type) {
+  getTypeBackgroundColor(type: GLEntryType): string
+  {
+    switch (type)
+    {
       case 'REVENUE':
         return '#D1FAE5';
       case 'COST':
@@ -307,8 +342,10 @@ export class GeneralLedgerService {
     }
   }
 
-  getTypeLabel(type: GLEntryType): string {
-    switch (type) {
+  getTypeLabel(type: GLEntryType): string
+  {
+    switch (type)
+    {
       case 'REVENUE':
         return this.translate.instant('generalLedger.type.revenue');
       case 'COST':

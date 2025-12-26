@@ -5,7 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 
-export interface AxMenuItem {
+export interface AxMenuItem
+{
   label: string;
   icon?: string;
   disabled?: boolean;
@@ -24,7 +25,8 @@ export interface AxMenuItem {
   templateUrl: './ax-menu.component.html',
   styleUrls: ['./ax-menu.component.scss']
 })
-export class AxMenuComponent {
+export class AxMenuComponent
+{
   @ViewChild('menu') menu?: MatMenu;
   
   @Input() items: AxMenuItem[] = [];
@@ -37,17 +39,21 @@ export class AxMenuComponent {
   @Output() menuOpened = new EventEmitter<void>();
   @Output() menuClosed = new EventEmitter<void>();
 
-  onItemClick(item: AxMenuItem): void {
-    if (!item.disabled && !item.divider) {
+  onItemClick(item: AxMenuItem): void
+  {
+    if (!item.disabled && !item.divider)
+    {
       this.itemClick.emit(item);
     }
   }
 
-  onMenuOpened(): void {
+  onMenuOpened(): void
+  {
     this.menuOpened.emit();
   }
 
-  onMenuClosed(): void {
+  onMenuClosed(): void
+  {
     this.menuClosed.emit();
   }
 }

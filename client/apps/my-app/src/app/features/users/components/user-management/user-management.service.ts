@@ -103,7 +103,8 @@ export class UserManagementService
   // Dialog handling methods
   openAddUserDialog(isLoading: WritableSignal<boolean>): void
   {
-    const dialogRef = this.dialog.open(UserDialogComponent, {
+    const dialogRef = this.dialog.open(UserDialogComponent,
+    {
       data: { isEdit: false } as UserDialogData,
       width: '1200px',
       maxWidth: '90vw',
@@ -121,7 +122,8 @@ export class UserManagementService
 
   openEditUserDialog(user: User, isLoading: WritableSignal<boolean>): void
   {
-    const dialogRef = this.dialog.open(UserDialogComponent, {
+    const dialogRef = this.dialog.open(UserDialogComponent,
+    {
       data: { user, isEdit: true } as UserDialogData,
       width: '1200px',
       maxWidth: '90vw',
@@ -139,7 +141,8 @@ export class UserManagementService
 
   openDeleteUserDialog(user: User, isLoading: WritableSignal<boolean>): void
   {
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
+    {
       data: {
         userName: `${user.lastName} ${user.firstName}`,
         userEmail: user.email

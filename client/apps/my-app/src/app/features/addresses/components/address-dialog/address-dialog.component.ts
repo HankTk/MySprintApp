@@ -9,7 +9,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { AxButtonComponent, AxIconComponent } from '@ui/components';
 
-export interface AddressDialogData {
+export interface AddressDialogData
+{
   address?: Address;
   isEdit: boolean;
 }
@@ -31,7 +32,8 @@ export interface AddressDialogData {
   templateUrl: './address-dialog.component.html',
   styleUrls: ['./address-dialog.component.scss']
 })
-export class AddressDialogComponent implements OnInit {
+export class AddressDialogComponent implements OnInit
+{
   addressForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
@@ -42,7 +44,8 @@ export class AddressDialogComponent implements OnInit {
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: AddressDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: AddressDialogData)
+  {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editAddress') : this.translate.instant('addAddress');
     
@@ -59,22 +62,32 @@ export class AddressDialogComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (this.isEdit && this.data.address) {
+  ngOnInit(): void
+  {
+    if (this.isEdit && this.data.address)
+    {
       this.populateForm(this.data.address);
     }
   }
 
-  private populateForm(address: Address): void {
+  private populateForm(address: Address): void
+ {
     let jsonDataString = '{}';
-    if (address.jsonData) {
-      if (typeof address.jsonData === 'object') {
+    if (address.jsonData)
+    {
+      if (typeof address.jsonData === 'object')
+      {
         jsonDataString = JSON.stringify(address.jsonData, null, 2);
-      } else if (typeof address.jsonData === 'string') {
-        try {
+      }
+ else if (typeof address.jsonData === 'string')
+ {
+        try 
+{
           JSON.parse(address.jsonData);
           jsonDataString = address.jsonData;
-        } catch {
+        }
+ catch
+ {
           jsonDataString = '{}';
         }
       }
@@ -93,35 +106,48 @@ export class AddressDialogComponent implements OnInit {
     });
   }
 
-  private jsonValidator(control: any) {
+  private jsonValidator(control: any)
+ {
     if (!control.value) return null;
-    try {
+    try 
+{
       JSON.parse(control.value);
       return null;
-    } catch (e) {
+    }
+ catch (e)
+ {
       return { invalidJson: true };
     }
   }
 
-  get isEnglish(): boolean {
+  get isEnglish(): boolean
+ {
     return this.languageService.isEnglish();
   }
 
-  onSubmit(): void {
-    if (this.addressForm.valid) {
+  onSubmit(): void
+  {
+    if (this.addressForm.valid)
+    {
       const formValue = this.addressForm.value;
       
       let jsonData: any = {};
-      if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
-        try {
+      if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
+      {
+        try 
+{
           jsonData = JSON.parse(formValue.jsonData);
-        } catch (e) {
+        }
+ catch (e)
+ {
           return;
         }
       }
 
-      if (this.isEdit && this.data.address) {
-        const addressToUpdate: Address = {
+      if (this.isEdit && this.data.address)
+      {
+        const addressToUpdate: Address =
+        {
           id: this.data.address.id,
           addressType: formValue.addressType,
           streetAddress1: formValue.streetAddress1,
@@ -134,8 +160,11 @@ export class AddressDialogComponent implements OnInit {
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', address: addressToUpdate });
-      } else {
-        const addressToCreate: CreateAddressRequest = {
+      }
+ else
+ {
+        const addressToCreate: CreateAddressRequest =
+        {
           addressType: formValue.addressType,
           streetAddress1: formValue.streetAddress1,
           streetAddress2: formValue.streetAddress2,
@@ -151,22 +180,28 @@ export class AddressDialogComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close();
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.addressForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.addressForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['required']) {
+    if (field?.errors)
+    {
+      if (field.errors['required'])
+      {
         return this.translate.instant('validation.required');
       }
-      if (field.errors['invalidJson']) {
+      if (field.errors['invalidJson'])
+      {
         return this.translate.instant('validation.invalidJson');
       }
     }

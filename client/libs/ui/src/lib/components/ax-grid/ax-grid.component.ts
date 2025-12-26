@@ -12,7 +12,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './ax-grid.component.html',
   styleUrls: ['./ax-grid.component.scss']
 })
-export class AxGridComponent {
+export class AxGridComponent
+{
   @Input() columns?: number;
   @Input() gap?: string = '16px';
 }

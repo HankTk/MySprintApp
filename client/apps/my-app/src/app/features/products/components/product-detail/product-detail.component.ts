@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
-export class ProductDetailComponent {
+export class ProductDetailComponent
+{
   // TODO: Implement product detail functionality
 }

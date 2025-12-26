@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Ui } from './ui';
 
-describe('Ui', () => {
+describe('Ui', () =>
+{
   let component: Ui;
   let fixture: ComponentFixture<Ui>;
 
-  beforeEach(async () => {
+  beforeEach(async () =>
+  {
     await TestBed.configureTestingModule({
       imports: [Ui],
     }).compileComponents();
@@ -15,7 +17,8 @@ describe('Ui', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', () =>
+  {
     expect(component).toBeTruthy();
   });
 });

@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class PurchaseOrder {
+public class PurchaseOrder
+{
     private String id;
     private String orderNumber;
     private String supplierId;
@@ -30,14 +31,17 @@ public class PurchaseOrder {
     private String notes;
     private Map<String, Object> jsonData;
 
-    public PurchaseOrder() {
+    public PurchaseOrder()
+    {
         this.items = new ArrayList<>();
         this.status = "DRAFT";
         this.orderDate = LocalDateTime.now();
     }
 
-    public void calculateTotals() {
-        if (items == null) {
+    public void calculateTotals()
+ {
+        if (items == null)
+        {
             items = new ArrayList<>();
         }
         
@@ -48,10 +52,12 @@ public class PurchaseOrder {
             .reduce(BigDecimal.ZERO, BigDecimal::add);
         
         // Default tax and shipping to zero if null
-        if (tax == null) {
+        if (tax == null)
+        {
             tax = BigDecimal.ZERO;
         }
-        if (shippingCost == null) {
+        if (shippingCost == null)
+        {
             shippingCost = BigDecimal.ZERO;
         }
         

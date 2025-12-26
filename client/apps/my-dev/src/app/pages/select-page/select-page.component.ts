@@ -10,9 +10,10 @@ import { AxSelectComponent, AxSelectOption, AxCardComponent, MatCardModule } fro
   templateUrl: './select-page.component.html',
   styleUrls: ['./select-page.component.scss']
 })
-export class SelectPageComponent {
-  selectedValue: string = '';
-  selectedCountry: string = '';
+export class SelectPageComponent
+{
+  selectedValue = '';
+  selectedCountry = '';
   selectedMultiple: string[] = [];
   selectedMultipleCountries: string[] = [];
 

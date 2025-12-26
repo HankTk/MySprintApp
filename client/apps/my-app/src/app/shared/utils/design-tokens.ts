@@ -14,7 +14,8 @@
  * These constants define the CSS variable names used in the design system.
  * The actual values are defined in _design-tokens.scss and read at runtime.
  */
-export const CSSVariables = {
+export const CSSVariables =
+{
   // Color Variables
   colorPrimary: '--color-primary',
   colorPrimaryDark: '--color-primary-dark',
@@ -69,58 +70,143 @@ export const CSSVariables = {
  * Provides getter functions that read from CSS variables dynamically.
  * This ensures values are always in sync with the current theme.
  */
-export const DesignTokens = {
+export const DesignTokens =
+{
   /**
    * Color Tokens - Read from CSS variables
    */
   colors: {
     // Get current theme colors (automatically adapts to light/dark)
-    get primary() { return getCSSVariable(CSSVariables.colorPrimary); },
-    get primaryDark() { return getCSSVariable(CSSVariables.colorPrimaryDark); },
-    get primaryLight() { return getCSSVariable(CSSVariables.colorPrimaryLight); },
-    get secondary() { return getCSSVariable(CSSVariables.colorSecondary); },
-    get success() { return getCSSVariable(CSSVariables.colorSuccess); },
-    get error() { return getCSSVariable(CSSVariables.colorError); },
-    get warning() { return getCSSVariable(CSSVariables.colorWarning); },
-    get info() { return getCSSVariable(CSSVariables.colorInfo); },
+    get primary()
+    {
+      return getCSSVariable(CSSVariables.colorPrimary);
+    },
+    get primaryDark()
+    {
+      return getCSSVariable(CSSVariables.colorPrimaryDark);
+    },
+    get primaryLight()
+    {
+      return getCSSVariable(CSSVariables.colorPrimaryLight);
+    },
+    get secondary()
+    {
+      return getCSSVariable(CSSVariables.colorSecondary);
+    },
+    get success()
+    {
+      return getCSSVariable(CSSVariables.colorSuccess);
+    },
+    get error()
+    {
+      return getCSSVariable(CSSVariables.colorError);
+    },
+    get warning()
+    {
+      return getCSSVariable(CSSVariables.colorWarning);
+    },
+    get info()
+    {
+      return getCSSVariable(CSSVariables.colorInfo);
+    }
   },
   
   /**
    * Background Tokens - Read from CSS variables
    */
   backgrounds: {
-    get primary() { return getCSSVariable(CSSVariables.bgPrimary); },
-    get secondary() { return getCSSVariable(CSSVariables.bgSecondary); },
-    get card() { return getCSSVariable(CSSVariables.bgCard); },
-    get toolbar() { return getCSSVariable(CSSVariables.bgToolbar); },
-    get sidenav() { return getCSSVariable(CSSVariables.bgSidenav); },
-    get table() { return getCSSVariable(CSSVariables.bgTable); },
-    get tableHeader() { return getCSSVariable(CSSVariables.bgTableHeader); },
-    get formField() { return getCSSVariable(CSSVariables.bgFormField); },
-    get hover() { return getCSSVariable(CSSVariables.bgHover); },
-    get overlay() { return getCSSVariable(CSSVariables.bgOverlay); },
+    get primary()
+    {
+      return getCSSVariable(CSSVariables.bgPrimary);
+    },
+    get secondary()
+    {
+      return getCSSVariable(CSSVariables.bgSecondary);
+    },
+    get card()
+    {
+      return getCSSVariable(CSSVariables.bgCard);
+    },
+    get toolbar()
+    {
+      return getCSSVariable(CSSVariables.bgToolbar);
+    },
+    get sidenav()
+    {
+      return getCSSVariable(CSSVariables.bgSidenav);
+    },
+    get table()
+    {
+      return getCSSVariable(CSSVariables.bgTable);
+    },
+    get tableHeader()
+    {
+      return getCSSVariable(CSSVariables.bgTableHeader);
+    },
+    get formField()
+    {
+      return getCSSVariable(CSSVariables.bgFormField);
+    },
+    get hover()
+    {
+      return getCSSVariable(CSSVariables.bgHover);
+    },
+    get overlay()
+    {
+      return getCSSVariable(CSSVariables.bgOverlay);
+    }
   },
   
   /**
    * Text Tokens - Read from CSS variables
    */
   text: {
-    get primary() { return getCSSVariable(CSSVariables.textPrimary); },
-    get secondary() { return getCSSVariable(CSSVariables.textSecondary); },
-    get heading() { return getCSSVariable(CSSVariables.textHeading); },
-    get white() { return getCSSVariable(CSSVariables.textWhite); },
-    get disabled() { return getCSSVariable(CSSVariables.textDisabled); },
+    get primary()
+    {
+      return getCSSVariable(CSSVariables.textPrimary);
+    },
+    get secondary()
+    {
+      return getCSSVariable(CSSVariables.textSecondary);
+    },
+    get heading()
+    {
+      return getCSSVariable(CSSVariables.textHeading);
+    },
+    get white()
+    {
+      return getCSSVariable(CSSVariables.textWhite);
+    },
+    get disabled()
+    {
+      return getCSSVariable(CSSVariables.textDisabled);
+    }
   },
   
   /**
    * Border Tokens - Read from CSS variables
    */
   borders: {
-    get primary() { return getCSSVariable(CSSVariables.borderPrimary); },
-    get secondary() { return getCSSVariable(CSSVariables.borderSecondary); },
-    get card() { return getCSSVariable(CSSVariables.borderCard); },
-    get form() { return getCSSVariable(CSSVariables.borderForm); },
-    get divider() { return getCSSVariable(CSSVariables.borderDivider); },
+    get primary()
+    {
+      return getCSSVariable(CSSVariables.borderPrimary);
+    },
+    get secondary()
+    {
+      return getCSSVariable(CSSVariables.borderSecondary);
+    },
+    get card()
+    {
+      return getCSSVariable(CSSVariables.borderCard);
+    },
+    get form()
+    {
+      return getCSSVariable(CSSVariables.borderForm);
+    },
+    get divider()
+    {
+      return getCSSVariable(CSSVariables.borderDivider);
+    }
   },
   
   /**
@@ -204,11 +290,26 @@ export const DesignTokens = {
    * Shadow Tokens - Read from CSS variables
    */
   shadows: {
-    get xs() { return getCSSVariable(CSSVariables.shadowXs); },
-    get sm() { return getCSSVariable(CSSVariables.shadowSm); },
-    get md() { return getCSSVariable(CSSVariables.shadowMd); },
-    get lg() { return getCSSVariable(CSSVariables.shadowLg); },
-    get xl() { return getCSSVariable(CSSVariables.shadowXl); },
+    get xs()
+    {
+      return getCSSVariable(CSSVariables.shadowXs);
+    },
+    get sm()
+    {
+      return getCSSVariable(CSSVariables.shadowSm);
+    },
+    get md()
+    {
+      return getCSSVariable(CSSVariables.shadowMd);
+    },
+    get lg()
+    {
+      return getCSSVariable(CSSVariables.shadowLg);
+    },
+    get xl()
+    {
+      return getCSSVariable(CSSVariables.shadowXl);
+    }
   },
   
   /**
@@ -216,9 +317,18 @@ export const DesignTokens = {
    */
   transitions: {
     duration: {
-      get fast() { return getCSSVariable(CSSVariables.transitionFast); },
-      get base() { return getCSSVariable(CSSVariables.transitionBase); },
-      get slow() { return getCSSVariable(CSSVariables.transitionSlow); },
+      get fast()
+      {
+        return getCSSVariable(CSSVariables.transitionFast);
+      },
+      get base()
+      {
+        return getCSSVariable(CSSVariables.transitionBase);
+      },
+      get slow()
+      {
+        return getCSSVariable(CSSVariables.transitionSlow);
+      }
     },
     easing: {
       linear: 'linear',
@@ -274,7 +384,8 @@ export const DesignTokens = {
 /**
  * Helper function to get CSS variable value
  */
-export function getCSSVariable(variableName: string): string {
+export function getCSSVariable(variableName: string): string
+{
   return getComputedStyle(document.documentElement)
     .getPropertyValue(variableName)
     .trim();
@@ -283,20 +394,23 @@ export function getCSSVariable(variableName: string): string {
 /**
  * Helper function to set CSS variable value
  */
-export function setCSSVariable(variableName: string, value: string): void {
+export function setCSSVariable(variableName: string, value: string): void
+{
   document.documentElement.style.setProperty(variableName, value);
 }
 
 /**
  * Helper function to get spacing value in pixels
  */
-export function getSpacing(multiplier: number): string {
+export function getSpacing(multiplier: number): string
+{
   return `${DesignTokens.spacing.base * multiplier}px`;
 }
 
 /**
  * Helper function to check if current theme is dark
  */
-export function isDarkTheme(): boolean {
+export function isDarkTheme(): boolean
+{
   return document.documentElement.classList.contains('dark-theme');
 }

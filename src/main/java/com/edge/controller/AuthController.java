@@ -29,13 +29,15 @@ public class AuthController
         String userid = credentials.get("userid");
         String password = credentials.get("password");
 
-        if (userid == null || password == null) {
+        if (userid == null || password == null)
+        {
             return ResponseEntity.badRequest().body(Map.of("error", "User ID and password are required"));
         }
 
         try {
             User user = authService.authenticate(userid, password);
-            if (user != null) {
+            if (user != null)
+            {
                 // Generate JWT token
                 String token = jwtTokenProvider.generateToken(user.getUserid(), user.getRole() != null ? user.getRole() : "USER");
                 
@@ -54,10 +56,13 @@ public class AuthController
                 response.put("token", token);
                 
                 return ResponseEntity.ok(response);
-            } else {
+            } else
+ {
                 return ResponseEntity.status(401).body(Map.of("error", "Invalid user ID or password"));
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+ {
             return ResponseEntity.status(500).body(Map.of("error", "Authentication failed: " + e.getMessage()));
         }
     }

@@ -13,7 +13,8 @@ import { MatFormFieldModule, MatFormFieldAppearance } from '@angular/material/fo
   templateUrl: './ax-form-field.component.html',
   styleUrls: ['./ax-form-field.component.scss']
 })
-export class AxFormFieldComponent {
+export class AxFormFieldComponent
+{
   @Input() label?: string;
   @Input() hint?: string;
   @Input() error?: string;

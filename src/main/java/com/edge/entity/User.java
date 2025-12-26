@@ -4,7 +4,8 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class User {
+public class User
+{
 
     private String id;
     private String userid;
@@ -16,7 +17,8 @@ public class User {
     private Map<String, Object> jsonData;
 
     // Method to get the full name
-    public String getFullName() {
+    public String getFullName()
+    {
         return lastName + " " + firstName;
     }
 }

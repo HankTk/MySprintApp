@@ -21,7 +21,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     }
   ]
 })
-export class AxCheckboxComponent implements ControlValueAccessor {
+export class AxCheckboxComponent implements ControlValueAccessor
+{
   @Input() label?: string;
   @Input() error = false;
   @Input() disabled = false;
@@ -30,26 +31,32 @@ export class AxCheckboxComponent implements ControlValueAccessor {
   private onChange = (value: boolean) => {};
   private onTouched = () => {};
 
-  writeValue(value: boolean): void {
+  writeValue(value: boolean): void
+  {
     // Only update if checked is not explicitly set via @Input
-    if (value !== undefined && value !== null) {
+    if (value !== undefined && value !== null)
+    {
       this.checked = value;
     }
   }
 
-  registerOnChange(fn: (value: boolean) => void): void {
+  registerOnChange(fn: (value: boolean) => void): void
+  {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: () => void): void
+  {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  setDisabledState(isDisabled: boolean): void
+  {
     this.disabled = isDisabled;
   }
 
-  onCheckboxChange(event: any): void {
+  onCheckboxChange(event: any): void
+  {
     this.checked = event.checked;
     this.onChange(this.checked);
     this.onTouched();

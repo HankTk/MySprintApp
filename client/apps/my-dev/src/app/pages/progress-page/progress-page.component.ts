@@ -9,18 +9,23 @@ import { AxProgressComponent, AxCardComponent, MatCardModule } from '@ui/compone
   templateUrl: './progress-page.component.html',
   styleUrls: ['./progress-page.component.scss']
 })
-export class ProgressPageComponent implements OnInit, OnDestroy {
+export class ProgressPageComponent implements OnInit, OnDestroy
+{
   progressValue = 0;
   private intervalId?: number;
 
-  ngOnInit(): void {
-    this.intervalId = window.setInterval(() => {
+  ngOnInit(): void
+  {
+    this.intervalId = window.setInterval(() =>
+    {
       this.progressValue = (this.progressValue >= 100) ? 0 : this.progressValue + 10;
     }, 1000);
   }
 
-  ngOnDestroy(): void {
-    if (this.intervalId) {
+  ngOnDestroy(): void
+  {
+    if (this.intervalId)
+    {
       clearInterval(this.intervalId);
     }
   }

@@ -20,16 +20,19 @@ public class AuthService
     public User authenticate(String userid, String password)
     {
         Optional<User> userOpt = userRepository.getUserByUserid(userid);
-        if (userOpt.isEmpty()) {
+        if (userOpt.isEmpty())
+        {
             return null;
         }
         
         User user = userOpt.get();
-        if (user.getPassword() == null) {
+        if (user.getPassword() == null)
+        {
             return null;
         }
         
-        if (passwordEncoder.matches(password, user.getPassword())) {
+        if (passwordEncoder.matches(password, user.getPassword()))
+        {
             return user;
         }
         

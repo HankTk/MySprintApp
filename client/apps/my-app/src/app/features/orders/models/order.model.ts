@@ -1,4 +1,5 @@
-export interface OrderItem {
+export interface OrderItem
+{
   id?: string;
   productId?: string;
   productCode?: string;
@@ -8,7 +9,8 @@ export interface OrderItem {
   lineTotal?: number;
 }
 
-export interface Order {
+export interface Order
+{
   id?: string;
   orderNumber?: string;
   customerId?: string;
@@ -28,7 +30,8 @@ export interface Order {
   jsonData?: any;
 }
 
-export interface CreateOrderRequest {
+export interface CreateOrderRequest
+{
   customerId?: string;
   shippingAddressId?: string;
   billingAddressId?: string;

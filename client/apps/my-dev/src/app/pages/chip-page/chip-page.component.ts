@@ -9,7 +9,8 @@ import { AxChipComponent, AxCardComponent, MatCardModule } from '@ui/components'
   templateUrl: './chip-page.component.html',
   styleUrls: ['./chip-page.component.scss']
 })
-export class ChipPageComponent {
+export class ChipPageComponent
+{
   tags = ['Angular', 'TypeScript', 'Material', 'Components'];
   
   statusChips: { label: string; color: 'primary' | 'accent' | 'warn' }[] = [
@@ -18,7 +19,8 @@ export class ChipPageComponent {
     { label: 'Error', color: 'warn' }
   ];
 
-  onChipClick(chip: string): void {
+  onChipClick(chip: string): void
+  {
     console.log('Chip clicked:', chip);
   }
 }

@@ -31,7 +31,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     }
   ]
 })
-export class AxDatepickerComponent implements ControlValueAccessor {
+export class AxDatepickerComponent implements ControlValueAccessor
+{
   @Input() label?: string;
   @Input() placeholder?: string;
   @Input() required = false;
@@ -47,29 +48,35 @@ export class AxDatepickerComponent implements ControlValueAccessor {
   private onChange = (value: Date | null) => {};
   private onTouched = () => {};
 
-  writeValue(value: Date | null): void {
+  writeValue(value: Date | null): void
+  {
     this.value = value;
   }
 
-  registerOnChange(fn: (value: Date | null) => void): void {
+  registerOnChange(fn: (value: Date | null) => void): void
+  {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: () => void): void
+  {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  setDisabledState(isDisabled: boolean): void
+  {
     this.disabled = isDisabled;
   }
 
-  onDateChange(event: MatDatepickerInputEvent<Date>): void {
+  onDateChange(event: MatDatepickerInputEvent<Date>): void
+  {
     this.value = event.value;
     this.onChange(this.value);
     this.dateChange.emit(this.value);
   }
 
-  onBlur(): void {
+  onBlur(): void
+  {
     this.onTouched();
   }
 }

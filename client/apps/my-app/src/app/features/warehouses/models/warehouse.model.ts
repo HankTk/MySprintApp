@@ -1,4 +1,5 @@
-export interface Warehouse {
+export interface Warehouse
+{
   id?: string;
   warehouseCode?: string;
   warehouseName?: string;
@@ -8,7 +9,8 @@ export interface Warehouse {
   jsonData?: any;
 }
 
-export interface CreateWarehouseRequest {
+export interface CreateWarehouseRequest
+{
   warehouseCode?: string;
   warehouseName?: string;
   addressId?: string;

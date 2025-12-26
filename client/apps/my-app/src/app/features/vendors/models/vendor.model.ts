@@ -1,4 +1,5 @@
-export interface Vendor {
+export interface Vendor
+{
   id?: string;
   vendorNumber?: string;
   companyName?: string;
@@ -10,7 +11,8 @@ export interface Vendor {
   jsonData?: any;
 }
 
-export interface CreateVendorRequest {
+export interface CreateVendorRequest
+{
   vendorNumber?: string;
   companyName?: string;
   firstName?: string;

@@ -11,7 +11,8 @@ import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../
 @Injectable({
   providedIn: 'root'
 })
-export class WarehouseService {
+export class WarehouseService
+{
   private apiUrl = 'http://localhost:8080/api/warehouses';
 
   private http = inject(HttpClient);
@@ -19,27 +20,33 @@ export class WarehouseService {
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
 
-  getWarehouses(): Observable<Warehouse[]> {
+  getWarehouses(): Observable<Warehouse[]>
+  {
     return this.http.get<Warehouse[]>(this.apiUrl);
   }
 
-  getWarehouse(id: string): Observable<Warehouse> {
+  getWarehouse(id: string): Observable<Warehouse>
+  {
     return this.http.get<Warehouse>(`${this.apiUrl}/${id}`);
   }
 
-  createWarehouse(warehouse: CreateWarehouseRequest): Observable<Warehouse> {
+  createWarehouse(warehouse: CreateWarehouseRequest): Observable<Warehouse>
+  {
     return this.http.post<Warehouse>(this.apiUrl, warehouse);
   }
 
-  updateWarehouse(id: string, warehouse: Warehouse): Observable<Warehouse> {
+  updateWarehouse(id: string, warehouse: Warehouse): Observable<Warehouse>
+  {
     return this.http.put<Warehouse>(`${this.apiUrl}/${id}`, warehouse);
   }
 
-  deleteWarehouse(id: string): Observable<void> {
+  deleteWarehouse(id: string): Observable<void>
+  {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  loadWarehouses(isLoading: WritableSignal<boolean>): void {
+  loadWarehouses(isLoading: WritableSignal<boolean>): void
+  {
     this.resourceManager.loadResource(
       'warehouses',
       isLoading,
@@ -50,7 +57,8 @@ export class WarehouseService {
   createWarehouseWithNotification(
     warehouseData: CreateWarehouseRequest,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.createResource(
       'warehouses',
       warehouseData,
@@ -63,7 +71,8 @@ export class WarehouseService {
   updateWarehouseWithNotification(
     warehouseData: Warehouse,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.updateResource(
       'warehouses',
       warehouseData.id!,
@@ -77,7 +86,8 @@ export class WarehouseService {
   deleteWarehouseWithNotification(
     id: string,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.deleteResource(
       'warehouses',
       id,
@@ -87,39 +97,49 @@ export class WarehouseService {
     );
   }
 
-  openAddWarehouseDialog(isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(WarehouseDialogComponent, {
+  openAddWarehouseDialog(isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(WarehouseDialogComponent,
+    {
       data: { isEdit: false } as WarehouseDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'create') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'create')
+      {
         this.createWarehouseWithNotification(result.warehouse, isLoading);
       }
     });
   }
 
-  openEditWarehouseDialog(warehouse: Warehouse, isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(WarehouseDialogComponent, {
+  openEditWarehouseDialog(warehouse: Warehouse, isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(WarehouseDialogComponent,
+    {
       data: { warehouse, isEdit: true } as WarehouseDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'update') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'update')
+      {
         this.updateWarehouseWithNotification(result.warehouse, isLoading);
       }
     });
   }
 
-  openDeleteWarehouseDialog(warehouse: Warehouse, isLoading: WritableSignal<boolean>): void {
+  openDeleteWarehouseDialog(warehouse: Warehouse, isLoading: WritableSignal<boolean>): void
+  {
     const warehouseName = warehouse.warehouseName || warehouse.warehouseCode || warehouse.id || 'Warehouse';
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
+    {
       data: {
         userName: warehouseName,
         userEmail: ''
@@ -129,8 +149,10 @@ export class WarehouseService {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result === true)
+      {
         this.deleteWarehouseWithNotification(warehouse.id!, isLoading);
       }
     });

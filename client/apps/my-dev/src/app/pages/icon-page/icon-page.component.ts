@@ -9,7 +9,8 @@ import { AxIconComponent, AxCardComponent, MatCardModule } from '@ui/components'
   templateUrl: './icon-page.component.html',
   styleUrls: ['./icon-page.component.scss']
 })
-export class IconPageComponent {
+export class IconPageComponent
+{
   commonIcons = [
     'home', 'settings', 'person', 'search', 'menu', 'close', 'add', 'edit', 'delete', 'save',
     'check', 'arrow_back', 'arrow_forward', 'expand_more', 'expand_less', 'more_vert'

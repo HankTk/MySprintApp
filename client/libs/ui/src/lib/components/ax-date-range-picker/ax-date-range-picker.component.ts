@@ -13,14 +13,16 @@ import { Overlay, OverlayRef, OverlayModule } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { PortalModule } from '@angular/cdk/portal';
 
-export interface DateRange {
+export interface DateRange
+{
   start: Date | null;
   end: Date | null;
 }
 
-export interface PredefinedRange {
+export interface PredefinedRange
+{
   label: string;
-  getValue: () => { start: Date; end: Date };
+  getValue: () => DateRange;
 }
 
 /**
@@ -54,7 +56,8 @@ export interface PredefinedRange {
     { provide: DateAdapter, useClass: NativeDateAdapter }
   ]
 })
-export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit, OnDestroy {
+export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit, OnDestroy
+{
   private overlay = inject(Overlay);
   private viewContainerRef = inject(ViewContainerRef);
   private cdr = inject(ChangeDetectorRef);
@@ -96,14 +99,16 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
   predefinedRanges: PredefinedRange[] = [
     {
       label: 'Today',
-      getValue: () => {
+      getValue: () =>
+      {
         const today = new Date();
         return { start: new Date(today), end: new Date(today) };
       }
     },
     {
       label: 'Last 7 Days',
-      getValue: () => {
+      getValue: () =>
+      {
         const end = new Date();
         const start = new Date();
         start.setDate(start.getDate() - 6);
@@ -112,7 +117,8 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     },
     {
       label: 'Last 30 Days',
-      getValue: () => {
+      getValue: () =>
+      {
         const end = new Date();
         const start = new Date();
         start.setDate(start.getDate() - 29);
@@ -121,7 +127,8 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     },
     {
       label: 'Last Month',
-      getValue: () => {
+      getValue: () =>
+      {
         const today = new Date();
         const start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
         const end = new Date(today.getFullYear(), today.getMonth(), 0);
@@ -130,7 +137,8 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     },
     {
       label: 'This Month',
-      getValue: () => {
+      getValue: () =>
+      {
         const today = new Date();
         const start = new Date(today.getFullYear(), today.getMonth(), 1);
         const end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
@@ -139,7 +147,8 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     },
     {
       label: 'Month To Date',
-      getValue: () => {
+      getValue: () =>
+      {
         const today = new Date();
         const start = new Date(today.getFullYear(), today.getMonth(), 1);
         return { start, end: today };
@@ -147,7 +156,8 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     },
     {
       label: 'Year To Date',
-      getValue: () => {
+      getValue: () =>
+      {
         const today = new Date();
         const start = new Date(today.getFullYear(), 0, 1);
         return { start, end: today };
@@ -156,40 +166,48 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
   ];
 
   private onChange = (value: DateRange) => {};
-  onTouched = () => {};
+  public onTouched = () => {};
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.initializeCalendar();
     this.initializeYearRange();
-    if (this.startDate || this.endDate) {
+    if (this.startDate || this.endDate)
+    {
       this.tempStartDate = this.startDate || null;
       this.tempEndDate = this.endDate || null;
     }
   }
   
-  initializeYearRange(): void {
+  initializeYearRange(): void
+  {
     const currentYear = new Date().getFullYear();
     const startYear = currentYear - 25; // 25 years back
     const endYear = currentYear + 25; // 25 years forward
     this.yearRange = [];
-    for (let year = startYear; year <= endYear; year++) {
+    for (let year = startYear; year <= endYear; year++)
+    {
       this.yearRange.push(year);
     }
   }
 
-  initializeCalendar(): void {
+  initializeCalendar(): void
+  {
     const today = new Date();
     this.calendarStartDate = new Date(today.getFullYear(), today.getMonth(), 1);
     this.calendarEndDate = new Date(today.getFullYear(), today.getMonth() + 1, 1);
   }
 
-  writeValue(value: DateRange | null): void {
-    if (value) {
+  writeValue(value: DateRange | null): void
+  {
+    if (value)
+    {
       this.startDate = value.start;
       this.endDate = value.end;
       this.tempStartDate = value.start;
       this.tempEndDate = value.end;
-      if (value.start) {
+      if (value.start)
+      {
         this.calendarStartDate = new Date(value.start.getFullYear(), value.start.getMonth(), 1);
         this.calendarEndDate = new Date(value.start.getFullYear(), value.start.getMonth() + 1, 1);
       }
@@ -204,11 +222,13 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  setDisabledState(isDisabled: boolean): void
+  {
     this.disabled = isDisabled;
   }
 
-  onStartDateChange(date: Date | null): void {
+  onStartDateChange(date: Date | null): void
+  {
     this.startDate = date;
     this.tempStartDate = date;
     this.startDateChange.emit(date);
@@ -216,7 +236,8 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     this.onTouched();
   }
 
-  onEndDateChange(date: Date | null): void {
+  onEndDateChange(date: Date | null): void
+  {
     this.endDate = date;
     this.tempEndDate = date;
     this.endDateChange.emit(date);
@@ -224,31 +245,41 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     this.onTouched();
   }
 
-  updateValue(): void {
-    const value = { start: this.startDate || null, end: this.endDate || null };
+  updateValue(): void
+  {
+    const value: DateRange = {
+      start: this.tempStartDate,
+      end: this.tempEndDate
+    };
     this.onChange(value);
     this.rangeChange.emit(value);
   }
 
   // Calendar date selection
-  onCalendarDateSelect(date: Date): void {
-    if (!this.tempStartDate || (this.tempStartDate && this.tempEndDate)) {
+  onCalendarDateSelect(date: Date): void
+  {
+    if (!this.tempStartDate || (this.tempStartDate && this.tempEndDate))
+    {
       // Start new selection
       this.tempStartDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
       this.tempEndDate = null;
-    } else if (this.tempStartDate && !this.tempEndDate) {
+    } else if (this.tempStartDate && !this.tempEndDate)
+ {
       // Complete selection
       const selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-      if (selectedDate < this.tempStartDate) {
+      if (selectedDate < this.tempStartDate)
+      {
         this.tempEndDate = new Date(this.tempStartDate);
         this.tempStartDate = selectedDate;
-      } else {
+      } else
+ {
         this.tempEndDate = selectedDate;
       }
     }
   }
 
-  isDateInRange(date: Date): boolean {
+  isDateInRange(date: Date): boolean
+  {
     if (!this.tempStartDate || !this.tempEndDate) return false;
     const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     const start = new Date(this.tempStartDate.getFullYear(), this.tempStartDate.getMonth(), this.tempStartDate.getDate());
@@ -256,14 +287,16 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     return checkDate >= start && checkDate <= end;
   }
 
-  isDateStart(date: Date): boolean {
+  isDateStart(date: Date): boolean
+  {
     if (!this.tempStartDate) return false;
     const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     const start = new Date(this.tempStartDate.getFullYear(), this.tempStartDate.getMonth(), this.tempStartDate.getDate());
     return checkDate.getTime() === start.getTime();
   }
 
-  isDateEnd(date: Date): boolean {
+  isDateEnd(date: Date): boolean
+  {
     if (!this.tempEndDate) return false;
     const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     const end = new Date(this.tempEndDate.getFullYear(), this.tempEndDate.getMonth(), this.tempEndDate.getDate());
@@ -271,30 +304,40 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
   }
 
   // Predefined range selection
-  selectPredefinedRange(range: PredefinedRange): void {
+  selectPredefinedRange(range: PredefinedRange): void
+  {
     const { start, end } = range.getValue();
-    this.tempStartDate = new Date(start);
-    this.tempEndDate = new Date(end);
-    // Set calendar to show the start month and next month
-    this.calendarStartDate = new Date(start.getFullYear(), start.getMonth(), 1);
-    this.calendarEndDate = new Date(start.getFullYear(), start.getMonth() + 1, 1);
+    if (start)
+    {
+      this.tempStartDate = new Date(start);
+      // Set calendar to show the start month and next month
+      this.calendarStartDate = new Date(start.getFullYear(), start.getMonth(), 1);
+      this.calendarEndDate = new Date(start.getFullYear(), start.getMonth() + 1, 1);
+    }
+    if (end)
+    {
+      this.tempEndDate = new Date(end);
+    }
     // Auto-apply predefined ranges
     this.applySelection();
   }
 
   // Calendar navigation
-  previousMonth(): void {
+  previousMonth(): void
+  {
     this.calendarStartDate = new Date(this.calendarStartDate.getFullYear(), this.calendarStartDate.getMonth() - 1, 1);
     this.calendarEndDate = new Date(this.calendarStartDate.getFullYear(), this.calendarStartDate.getMonth() + 1, 1);
   }
 
-  nextMonth(): void {
+  nextMonth(): void
+  {
     this.calendarStartDate = new Date(this.calendarStartDate.getFullYear(), this.calendarStartDate.getMonth() + 1, 1);
     this.calendarEndDate = new Date(this.calendarStartDate.getFullYear(), this.calendarStartDate.getMonth() + 1, 1);
   }
   
   // Month/Year selection methods - Material UI style
-  openMonthSelection(calendarIndex: number): void {
+  openMonthSelection(calendarIndex: number): void
+  {
     this.activeCalendarIndex = calendarIndex;
     // Material UI: Clicking month/year opens month view first
     this.viewMode = 'month';
@@ -302,7 +345,8 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     this.selectedYear = calendarIndex === 0 ? this.calendarStartDate.getFullYear() : this.calendarEndDate.getFullYear();
   }
   
-  openYearSelection(calendarIndex: number): void {
+  openYearSelection(calendarIndex: number): void
+  {
     this.activeCalendarIndex = calendarIndex;
     const currentYear = calendarIndex === 0 ? this.calendarStartDate.getFullYear() : this.calendarEndDate.getFullYear();
     this.selectedYear = currentYear;
@@ -311,67 +355,81 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     this.initializeYearRangeForMultiYear(currentYear);
   }
   
-  initializeYearRangeForMultiYear(centerYear: number): void {
+  initializeYearRangeForMultiYear(centerYear: number): void
+  {
     // Material UI shows 24 years per view (e.g., 2020-2043)
     const startYear = Math.floor(centerYear / 24) * 24;
     const endYear = startYear + 23;
     this.yearRange = [];
-    for (let year = startYear; year <= endYear; year++) {
+    for (let year = startYear; year <= endYear; year++)
+    {
       this.yearRange.push(year);
     }
     this.selectedYearRange = { start: startYear, end: endYear };
   }
   
-  navigateYearRange(direction: 'prev' | 'next'): void {
+  navigateYearRange(direction: 'prev' | 'next'): void
+  {
     if (!this.selectedYearRange) return;
     const rangeSize = 24;
-    if (direction === 'prev') {
+    if (direction === 'prev')
+    {
       this.selectedYearRange = {
         start: this.selectedYearRange.start - rangeSize,
         end: this.selectedYearRange.end - rangeSize
       };
-    } else {
+    } else
+ {
       this.selectedYearRange = {
         start: this.selectedYearRange.start + rangeSize,
         end: this.selectedYearRange.end + rangeSize
       };
     }
     this.yearRange = [];
-    for (let year = this.selectedYearRange.start; year <= this.selectedYearRange.end; year++) {
+    for (let year = this.selectedYearRange.start; year <= this.selectedYearRange.end; year++)
+    {
       this.yearRange.push(year);
     }
   }
   
-  selectMonth(monthIndex: number): void {
+  selectMonth(monthIndex: number): void
+  {
     this.selectedMonthIndex = monthIndex;
     // If year is already selected, apply immediately
-    if (this.selectedYear !== null) {
+    if (this.selectedYear !== null)
+    {
       this.applyYearAndMonthSelection();
     }
     // If no year selected yet, the month selection will stay and user can click year to select
   }
   
-  selectYear(year: number): void {
+  selectYear(year: number): void
+  {
     this.selectedYear = year;
     // After selecting year in multi-year view, go to month selection (Material UI behavior)
     this.viewMode = 'month';
     // Preserve the month selection if it was already made
-    if (this.selectedMonthIndex === null) {
+    if (this.selectedMonthIndex === null)
+    {
       this.selectedMonthIndex = this.activeCalendarIndex === 0 ? this.calendarStartDate.getMonth() : this.calendarEndDate.getMonth();
     }
     // If month was already selected, apply the selection
-    if (this.selectedMonthIndex !== null) {
+    if (this.selectedMonthIndex !== null)
+    {
       this.applyYearAndMonthSelection();
     }
   }
   
-  applyYearAndMonthSelection(): void {
+  applyYearAndMonthSelection(): void
+  {
     if (this.selectedYear === null || this.selectedMonthIndex === null) return;
     
-    if (this.activeCalendarIndex === 0) {
+    if (this.activeCalendarIndex === 0)
+    {
       this.calendarStartDate = new Date(this.selectedYear, this.selectedMonthIndex, 1);
       this.calendarEndDate = new Date(this.selectedYear, this.selectedMonthIndex + 1, 1);
-    } else {
+    } else
+ {
       this.calendarEndDate = new Date(this.selectedYear, this.selectedMonthIndex, 1);
       // Ensure calendarStartDate is one month before calendarEndDate
       this.calendarStartDate = new Date(this.selectedYear, this.selectedMonthIndex - 1, 1);
@@ -382,82 +440,100 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     this.selectedYearRange = null;
   }
   
-  backToCalendar(): void {
+  backToCalendar(): void
+  {
     this.viewMode = 'calendar';
     this.selectedMonthIndex = null;
     this.selectedYear = null;
     this.selectedYearRange = null;
   }
   
-  backFromYearToMonth(): void {
-    if (this.viewMode === 'multi-year') {
+  backFromYearToMonth(): void
+  {
+    if (this.viewMode === 'multi-year')
+    {
       this.viewMode = 'month';
-    } else if (this.viewMode === 'year') {
+    } else if (this.viewMode === 'year')
+ {
       this.viewMode = 'month';
     }
   }
   
-  isSelectedYearInRange(year: number): boolean {
+  isSelectedYearInRange(year: number): boolean
+  {
     return this.selectedYear === year;
   }
   
-  getYearRangeLabel(): string {
+  getYearRangeLabel(): string
+  {
     if (!this.selectedYearRange) return '';
     return `${this.selectedYearRange.start} - ${this.selectedYearRange.end}`;
   }
   
   // Reset view mode when opening popover or initializing
-  resetViewMode(): void {
+  resetViewMode(): void
+  {
     this.viewMode = 'calendar';
   }
   
-  getMonthNames(): string[] {
+  getMonthNames(): string[]
+  {
     return ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   }
   
-  getMonthNamesFull(): string[] {
+  getMonthNamesFull(): string[]
+  {
     return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   }
   
-  getCurrentMonth(calendarIndex: number): number {
+  getCurrentMonth(calendarIndex: number): number
+  {
     return calendarIndex === 0 ? this.calendarStartDate.getMonth() : this.calendarEndDate.getMonth();
   }
   
-  getCurrentYear(calendarIndex: number): number {
+  getCurrentYear(calendarIndex: number): number
+  {
     return calendarIndex === 0 ? this.calendarStartDate.getFullYear() : this.calendarEndDate.getFullYear();
   }
   
-  isSelectedMonth(monthIndex: number, calendarIndex: number): boolean {
+  isSelectedMonth(monthIndex: number, calendarIndex: number): boolean
+  {
     return this.getCurrentMonth(calendarIndex) === monthIndex;
   }
   
-  isSelectedYear(year: number, calendarIndex: number): boolean {
+  isSelectedYear(year: number, calendarIndex: number): boolean
+  {
     return this.getCurrentYear(calendarIndex) === year;
   }
 
   // Apply and Cancel
-  applySelection(): void {
+  applySelection(): void
+  {
     this.startDate = this.tempStartDate;
     this.endDate = this.tempEndDate;
     this.startDateChange.emit(this.startDate);
     this.endDateChange.emit(this.endDate);
     this.updateValue();
     this.isCalendarOpen = false;
-    if (this.popoverMode && this.overlayRef) {
+    if (this.popoverMode && this.overlayRef)
+    {
       this.closePopover();
     }
   }
 
-  cancelSelection(): void {
+  cancelSelection(): void
+  {
     this.tempStartDate = this.startDate || null;
     this.tempEndDate = this.endDate || null;
     this.isCalendarOpen = false;
-    if (this.popoverMode && this.overlayRef) {
+    if (this.popoverMode && this.overlayRef)
+    {
       this.closePopover();
     }
   }
 
-  clearSelection(): void {
+  clearSelection(): void
+  {
     this.tempStartDate = null;
     this.tempEndDate = null;
     this.startDate = null;
@@ -467,29 +543,36 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     this.updateValue();
   }
 
-  getFormattedDateRange(): string {
-    if (!this.tempStartDate && !this.tempEndDate) {
+  getFormattedDateRange(): string
+  {
+    if (!this.tempStartDate && !this.tempEndDate)
+    {
       return '';
     }
-    const formatDate = (date: Date): string => {
+    const formatDate = (date: Date): string =>
+    {
       const day = String(date.getDate()).padStart(2, '0');
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     };
-    if (this.tempStartDate && this.tempEndDate) {
+    if (this.tempStartDate && this.tempEndDate)
+    {
       return `${formatDate(this.tempStartDate)} - ${formatDate(this.tempEndDate)}`;
-    } else if (this.tempStartDate) {
+    } else if (this.tempStartDate)
+ {
       return formatDate(this.tempStartDate);
     }
     return '';
   }
 
-  getMonthName(date: Date): string {
+  getMonthName(date: Date): string
+  {
     return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase();
   }
 
-  getDaysInMonth(date: Date): Date[] {
+  getDaysInMonth(date: Date): Date[]
+  {
     const year = date.getFullYear();
     const month = date.getMonth();
     const firstDay = new Date(year, month, 1);
@@ -498,58 +581,70 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     
     // Add days from previous month to fill the week
     const startDay = firstDay.getDay();
-    for (let i = startDay - 1; i >= 0; i--) {
+    for (let i = startDay - 1; i >= 0; i--)
+    {
       const prevDate = new Date(year, month, -i);
       days.push(prevDate);
     }
     
     // Add days of current month
-    for (let day = 1; day <= lastDay.getDate(); day++) {
+    for (let day = 1; day <= lastDay.getDate(); day++)
+    {
       days.push(new Date(year, month, day));
     }
     
     // Add days from next month to fill the week (ensure we have 6 weeks = 42 days)
     const remainingDays = 42 - days.length;
-    for (let day = 1; day <= remainingDays; day++) {
+    for (let day = 1; day <= remainingDays; day++)
+    {
       days.push(new Date(year, month + 1, day));
     }
     
     return days;
   }
 
-  isCurrentMonth(date: Date, calendarDate: Date): boolean {
+  isCurrentMonth(date: Date, calendarDate: Date): boolean
+  {
     return date.getMonth() === calendarDate.getMonth() && date.getFullYear() === calendarDate.getFullYear();
   }
 
-  isToday(date: Date): boolean {
+  isToday(date: Date): boolean
+  {
     const today = new Date();
     return date.toDateString() === today.toDateString();
   }
 
-  isCustomRange(): boolean {
-    if (!this.tempStartDate || !this.tempEndDate) {
+  isCustomRange(): boolean
+  {
+    if (!this.tempStartDate || !this.tempEndDate)
+    {
       return false;
     }
     return !this.predefinedRanges.some(r => {
       const range = r.getValue();
-      return range.start.toDateString() === this.tempStartDate?.toDateString() && 
+      return range.start && range.end &&
+             range.start.toDateString() === this.tempStartDate?.toDateString() &&
              range.end.toDateString() === this.tempEndDate?.toDateString();
     });
   }
 
   // Popover methods
-  openPopover(event?: Event): void {
-    if (this.disabled || this.isCalendarOpen) {
+  openPopover(event?: Event): void
+  {
+    if (this.disabled || this.isCalendarOpen)
+    {
       return;
     }
 
-    if (this.overlayRef) {
+    if (this.overlayRef)
+    {
       this.closePopover();
       return;
     }
 
     const triggerElement = this.inputTrigger?.nativeElement || (event?.target as HTMLElement)?.closest('.ax-date-range-input-wrapper');
-    if (!triggerElement) {
+    if (!triggerElement)
+    {
       return;
     }
 
@@ -585,12 +680,14 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     });
 
     // Close on backdrop click
-    this.overlayRef.backdropClick().subscribe(() => {
+    this.overlayRef.backdropClick().subscribe(() =>
+    {
       this.cancelSelection();
     });
 
     // Attach template portal
-    if (!this.calendarTemplate) {
+    if (!this.calendarTemplate)
+    {
       console.error('Calendar template not found');
       return;
     }
@@ -607,41 +704,51 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     this.resetViewMode();
 
     // Force change detection
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this.cdr.detectChanges();
     }, 0);
   }
 
-  closePopover(): void {
-    if (this.overlayRef) {
+  closePopover(): void
+  {
+    if (this.overlayRef)
+    {
       this.overlayRef.dispose();
       this.overlayRef = null;
       this.isCalendarOpen = false;
     }
   }
 
-  getDateRangeDisplay(): string {
-    if (!this.startDate && !this.endDate) {
+  getDateRangeDisplay(): string
+  {
+    if (!this.startDate && !this.endDate)
+    {
       return '';
     }
-    const formatDate = (date: Date | null): string => {
+    const formatDate = (date: Date | null): string =>
+    {
       if (!date) return '';
       const day = String(date.getDate()).padStart(2, '0');
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     };
-    if (this.startDate && this.endDate) {
+    if (this.startDate && this.endDate)
+    {
       return `${formatDate(this.startDate)} - ${formatDate(this.endDate)}`;
-    } else if (this.startDate) {
+    } else if (this.startDate)
+ {
       return `From ${formatDate(this.startDate)}`;
-    } else if (this.endDate) {
+    } else if (this.endDate)
+ {
       return `Until ${formatDate(this.endDate)}`;
     }
     return '';
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.closePopover();
   }
 }

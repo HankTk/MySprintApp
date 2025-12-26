@@ -22,7 +22,8 @@ import { MatInputModule } from '@angular/material/input';
     }
   ]
 })
-export class AxTextareaComponent implements ControlValueAccessor {
+export class AxTextareaComponent implements ControlValueAccessor
+{
   @Input() label?: string;
   @Input() placeholder?: string;
   @Input() rows = 4;
@@ -37,29 +38,35 @@ export class AxTextareaComponent implements ControlValueAccessor {
   private onChange = (value: string) => {};
   private onTouched = () => {};
 
-  writeValue(value: string): void {
+  writeValue(value: string): void
+  {
     this.value = value || '';
   }
 
-  registerOnChange(fn: (value: string) => void): void {
+  registerOnChange(fn: (value: string) => void): void
+  {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: () => void): void
+  {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  setDisabledState(isDisabled: boolean): void
+  {
     this.disabled = isDisabled;
   }
 
-  onInput(event: Event): void {
+  onInput(event: Event): void
+  {
     const target = event.target as HTMLTextAreaElement;
     this.value = target.value;
     this.onChange(this.value);
   }
 
-  onBlur(): void {
+  onBlur(): void
+  {
     this.onTouched();
   }
 }

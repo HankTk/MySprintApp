@@ -14,71 +14,86 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class ProductRepository extends AbstractJsonRepository<Product> {
+public class ProductRepository extends AbstractJsonRepository<Product>
+{
     private static final Logger logger = LoggerFactory.getLogger(ProductRepository.class);
     private static final String DATA_FILE_NAME = "products.json";
     private static final String DATA_DIR_NAME = "data";
 
-    public ProductRepository() {
+    public ProductRepository()
+    {
         super(DATA_DIR_NAME, DATA_FILE_NAME, "products");
     }
 
     @Override
     protected void loadItemsFromFile() throws IOException {
         String content = new String(java.nio.file.Files.readAllBytes(dataFilePath));
-        if (content.trim().isEmpty()) {
+        if (content.trim().isEmpty())
+        {
             logger.info("Data file is empty, starting with empty product list");
             items = new java.util.ArrayList<>();
             return;
         }
-        try {
+        try
+        {
             items = objectMapper.readValue(dataFilePath.toFile(), new TypeReference<List<Product>>() {});
             logger.info("Successfully loaded {} products from data file", items.size());
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error("Error parsing JSON data: {}", e.getMessage(), e);
             items = new java.util.ArrayList<>();
         }
     }
 
     @Override
-    protected String getId(Product entity) {
+    protected String getId(Product entity)
+ {
         return entity.getId();
     }
 
     @Override
-    protected void setId(Product entity, String id) {
+    protected void setId(Product entity, String id)
+ {
         entity.setId(id);
     }
 
-    public Optional<Product> getProductById(String id) {
+    public Optional<Product> getProductById(String id)
+    {
         return findById(id);
     }
 
-    public Optional<Product> getProductByProductCode(String productCode) {
+    public Optional<Product> getProductByProductCode(String productCode)
+    {
         if (productCode == null || productCode.trim().isEmpty()) return Optional.empty();
         return items.stream().filter(product -> productCode.equals(product.getProductCode())).findFirst();
     }
 
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts()
+    {
         return findAll();
     }
 
-    public List<Product> getActiveProducts() {
+    public List<Product> getActiveProducts()
+    {
         return items.stream()
             .filter(product -> product.isActive())
             .collect(java.util.stream.Collectors.toList());
     }
 
-    public Product createProduct(Product product) {
+    public Product createProduct(Product product)
+ {
         if (product == null) throw new IllegalArgumentException("Product cannot be null");
         if (product.getProductCode() != null && !product.getProductCode().trim().isEmpty() && 
-            getProductByProductCode(product.getProductCode()).isPresent()) {
+            getProductByProductCode(product.getProductCode()).isPresent())
+            {
             throw new ProductAlreadyExistsException("Product with code " + product.getProductCode() + " already exists");
         }
         return save(product);
     }
 
-    public Product updateProduct(String id, Product productDetails) {
+    public Product updateProduct(String id, Product productDetails)
+ {
         if (id == null || id.trim().isEmpty())
             throw new IllegalArgumentException("Product ID cannot be null or empty");
         if (productDetails == null)
@@ -87,9 +102,11 @@ public class ProductRepository extends AbstractJsonRepository<Product> {
         Product existingProduct = findById(id).orElseThrow(() -> 
             new ProductNotFoundException("Product not found with id: " + id));
 
-        if (productDetails.getProductCode() != null && !productDetails.getProductCode().trim().isEmpty()) {
+        if (productDetails.getProductCode() != null && !productDetails.getProductCode().trim().isEmpty())
+        {
             Optional<Product> codeCheck = getProductByProductCode(productDetails.getProductCode());
-            if (codeCheck.isPresent() && !id.equals(codeCheck.get().getId())) {
+            if (codeCheck.isPresent() && !id.equals(codeCheck.get().getId()))
+            {
                 throw new ProductAlreadyExistsException("Product with code " + productDetails.getProductCode() + " already exists");
             }
         }
@@ -109,16 +126,29 @@ public class ProductRepository extends AbstractJsonRepository<Product> {
         return existingProduct;
     }
 
-    public void deleteProduct(String id) {
+    public void deleteProduct(String id)
+ {
         deleteById(id);
     }
 
-    public static class ProductNotFoundException extends EntityNotFoundException {
-        public ProductNotFoundException(String message) { super(message); }
+    static class ProductNotFoundException extends EntityNotFoundException
+    {
+
+        public ProductNotFoundException(String message)
+        {
+
+            super(message);
+        }
     }
 
-    public static class ProductAlreadyExistsException extends EntityAlreadyExistsException {
-        public ProductAlreadyExistsException(String message) { super(message); }
+    static class ProductAlreadyExistsException extends EntityAlreadyExistsException
+    {
+
+        public ProductAlreadyExistsException(String message)
+        {
+
+            super(message);
+        }
     }
 }
 

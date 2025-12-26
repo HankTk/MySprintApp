@@ -19,5 +19,6 @@ import { WarehouseDialogComponent } from './components/warehouse-dialog/warehous
     WarehouseDialogComponent
   ]
 })
-export class WarehousesModule { }
-
+export class WarehousesModule
+{
+}

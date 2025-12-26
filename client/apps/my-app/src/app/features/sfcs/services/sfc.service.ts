@@ -12,7 +12,8 @@ import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../
 @Injectable({
   providedIn: 'root'
 })
-export class SFCService {
+export class SFCService
+{
   private apiUrl = 'http://localhost:8080/api/sfcs';
 
   private http = inject(HttpClient);
@@ -21,27 +22,33 @@ export class SFCService {
   private dialog = inject(MatDialog);
   private router = inject(Router);
 
-  getSFCs(): Observable<SFC[]> {
+  getSFCs(): Observable<SFC[]>
+  {
     return this.http.get<SFC[]>(this.apiUrl);
   }
 
-  getSFC(id: string): Observable<SFC> {
+  getSFC(id: string): Observable<SFC>
+  {
     return this.http.get<SFC>(`${this.apiUrl}/${id}`);
   }
 
-  createSFC(sfc: CreateSFCRequest): Observable<SFC> {
+  createSFC(sfc: CreateSFCRequest): Observable<SFC>
+  {
     return this.http.post<SFC>(this.apiUrl, sfc);
   }
 
-  updateSFC(id: string, sfc: SFC): Observable<SFC> {
+  updateSFC(id: string, sfc: SFC): Observable<SFC>
+  {
     return this.http.put<SFC>(`${this.apiUrl}/${id}`, sfc);
   }
 
-  deleteSFC(id: string): Observable<void> {
+  deleteSFC(id: string): Observable<void>
+  {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  loadSFCs(isLoading: WritableSignal<boolean>): void {
+  loadSFCs(isLoading: WritableSignal<boolean>): void
+  {
     this.resourceManager.loadResource(
       'sfcs',
       isLoading,
@@ -52,7 +59,8 @@ export class SFCService {
   createSFCWithNotification(
     sfcData: CreateSFCRequest,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.createResource(
       'sfcs',
       sfcData,
@@ -65,7 +73,8 @@ export class SFCService {
   updateSFCWithNotification(
     sfcData: SFC,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.updateResource(
       'sfcs',
       sfcData.id!,
@@ -79,7 +88,8 @@ export class SFCService {
   deleteSFCWithNotification(
     id: string,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.deleteResource(
       'sfcs',
       id,
@@ -89,39 +99,49 @@ export class SFCService {
     );
   }
 
-  openAddSFCDialog(isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(SFCDialogComponent, {
+  openAddSFCDialog(isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(SFCDialogComponent,
+    {
       data: { isEdit: false } as SFCDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'create') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'create')
+      {
         this.createSFCWithNotification(result.sfc, isLoading);
       }
     });
   }
 
-  openEditSFCDialog(sfc: SFC, isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(SFCDialogComponent, {
+  openEditSFCDialog(sfc: SFC, isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(SFCDialogComponent,
+    {
       data: { sfc, isEdit: true } as SFCDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'update') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'update')
+      {
         this.updateSFCWithNotification(result.sfc, isLoading);
       }
     });
   }
 
-  openDeleteSFCDialog(sfc: SFC, isLoading: WritableSignal<boolean>): void {
+  openDeleteSFCDialog(sfc: SFC, isLoading: WritableSignal<boolean>): void
+  {
     const sfcLabel = sfc.sfcNumber || sfc.id || 'SFC';
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
+    {
       data: {
         userName: sfcLabel,
         userEmail: ''
@@ -131,26 +151,32 @@ export class SFCService {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result === true)
+      {
         this.deleteSFCWithNotification(sfc.id!, isLoading);
       }
     });
   }
 
-  openAddSFCEntry(isLoading: WritableSignal<boolean>): void {
+  openAddSFCEntry(isLoading: WritableSignal<boolean>): void
+  {
     // Navigate to SFC entry page instead of opening dialog
     this.router.navigate(['/sfcs/new']);
   }
 
-  openEditSFCEntry(sfc: SFC, isLoading: WritableSignal<boolean>): void {
+  openEditSFCEntry(sfc: SFC, isLoading: WritableSignal<boolean>): void
+  {
     // Navigate to SFC entry page instead of opening dialog
-    if (sfc.id) {
+    if (sfc.id)
+    {
       this.router.navigate(['/sfcs', sfc.id]);
     }
   }
 
-  createSFCFromRMA(rmaId: string): Observable<SFC> {
+  createSFCFromRMA(rmaId: string): Observable<SFC>
+  {
     return this.http.post<SFC>(`${this.apiUrl}/from-rma/${rmaId}`, {});
   }
 }

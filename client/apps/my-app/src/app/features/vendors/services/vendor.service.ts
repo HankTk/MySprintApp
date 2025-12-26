@@ -11,7 +11,8 @@ import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../
 @Injectable({
   providedIn: 'root'
 })
-export class VendorService {
+export class VendorService
+{
   private apiUrl = 'http://localhost:8080/api/vendors';
 
   private http = inject(HttpClient);
@@ -19,27 +20,33 @@ export class VendorService {
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
 
-  getVendors(): Observable<Vendor[]> {
+  getVendors(): Observable<Vendor[]>
+  {
     return this.http.get<Vendor[]>(this.apiUrl);
   }
 
-  getVendor(id: string): Observable<Vendor> {
+  getVendor(id: string): Observable<Vendor>
+  {
     return this.http.get<Vendor>(`${this.apiUrl}/${id}`);
   }
 
-  createVendor(vendor: CreateVendorRequest): Observable<Vendor> {
+  createVendor(vendor: CreateVendorRequest): Observable<Vendor>
+  {
     return this.http.post<Vendor>(this.apiUrl, vendor);
   }
 
-  updateVendor(id: string, vendor: Vendor): Observable<Vendor> {
+  updateVendor(id: string, vendor: Vendor): Observable<Vendor>
+  {
     return this.http.put<Vendor>(`${this.apiUrl}/${id}`, vendor);
   }
 
-  deleteVendor(id: string): Observable<void> {
+  deleteVendor(id: string): Observable<void>
+  {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  loadVendors(isLoading: WritableSignal<boolean>): void {
+  loadVendors(isLoading: WritableSignal<boolean>): void
+  {
     this.resourceManager.loadResource(
       'vendors',
       isLoading,
@@ -50,7 +57,8 @@ export class VendorService {
   createVendorWithNotification(
     vendorData: CreateVendorRequest,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.createResource(
       'vendors',
       vendorData,
@@ -63,7 +71,8 @@ export class VendorService {
   updateVendorWithNotification(
     vendorData: Vendor,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.updateResource(
       'vendors',
       vendorData.id!,
@@ -77,7 +86,8 @@ export class VendorService {
   deleteVendorWithNotification(
     id: string,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.deleteResource(
       'vendors',
       id,
@@ -87,39 +97,49 @@ export class VendorService {
     );
   }
 
-  openAddVendorDialog(isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(VendorDialogComponent, {
+  openAddVendorDialog(isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(VendorDialogComponent,
+    {
       data: { isEdit: false } as VendorDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'create') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'create')
+      {
         this.createVendorWithNotification(result.vendor, isLoading);
       }
     });
   }
 
-  openEditVendorDialog(vendor: Vendor, isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(VendorDialogComponent, {
+  openEditVendorDialog(vendor: Vendor, isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(VendorDialogComponent,
+    {
       data: { vendor, isEdit: true } as VendorDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'update') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'update')
+      {
         this.updateVendorWithNotification(result.vendor, isLoading);
       }
     });
   }
 
-  openDeleteVendorDialog(vendor: Vendor, isLoading: WritableSignal<boolean>): void {
+  openDeleteVendorDialog(vendor: Vendor, isLoading: WritableSignal<boolean>): void
+  {
     const vendorName = vendor.companyName || `${vendor.lastName} ${vendor.firstName}`;
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
+    {
       data: {
         userName: vendorName,
         userEmail: vendor.email
@@ -129,8 +149,10 @@ export class VendorService {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result === true)
+      {
         this.deleteVendorWithNotification(vendor.id!, isLoading);
       }
     });

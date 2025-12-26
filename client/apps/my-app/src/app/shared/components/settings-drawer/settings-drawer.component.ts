@@ -27,12 +27,14 @@ import { MatListModule } from '@angular/material/list';
   templateUrl: './settings-drawer.component.html',
   styleUrls: ['./settings-drawer.component.scss']
 })
-export class SettingsDrawerComponent {
+export class SettingsDrawerComponent
+{
   @Output() closeDrawer = new EventEmitter<void>();
   
   private languageService = inject(LanguageService);
 
-  onClose(): void {
+  onClose(): void
+  {
     this.closeDrawer.emit();
   }
 }

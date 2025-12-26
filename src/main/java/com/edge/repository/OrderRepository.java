@@ -18,7 +18,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class OrderRepository extends AbstractJsonRepository<Order> {
+public class OrderRepository extends AbstractJsonRepository<Order>
+{
     private static final Logger logger = LoggerFactory.getLogger(OrderRepository.class);
     private static final String DATA_FILE_NAME = "orders.json";
     private static final String DATA_DIR_NAME = "data";
@@ -29,23 +30,27 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
     private java.nio.file.Path counterFilePath;
     private java.nio.file.Path invoiceCounterFilePath;
 
-    public OrderRepository() {
+    public OrderRepository()
+    {
         super(DATA_DIR_NAME, DATA_FILE_NAME, "orders");
         try {
             java.nio.file.Path dataDir = java.nio.file.Paths.get(DATA_DIR_NAME);
-            if (!java.nio.file.Files.exists(dataDir)) {
+            if (!java.nio.file.Files.exists(dataDir))
+            {
                 java.nio.file.Files.createDirectories(dataDir);
             }
             counterFilePath = dataDir.resolve(COUNTER_FILE_NAME);
             invoiceCounterFilePath = dataDir.resolve(INVOICE_COUNTER_FILE_NAME);
-        } catch (IOException e) {
+        } catch (IOException e)
+ {
             logger.error("Error initializing counter file path", e);
             throw new RuntimeException("Failed to initialize order counter", e);
         }
     }
 
     @Override
-    protected ObjectMapper createObjectMapper() {
+    protected ObjectMapper createObjectMapper()
+ {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.registerModule(new JavaTimeModule());
@@ -55,45 +60,56 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
     @Override
     protected void loadItemsFromFile() throws IOException {
         String content = new String(java.nio.file.Files.readAllBytes(dataFilePath));
-        if (content.trim().isEmpty()) {
+        if (content.trim().isEmpty())
+        {
             logger.info("Data file is empty, starting with empty order list");
             items = new java.util.ArrayList<>();
             return;
         }
-        try {
+        try
+            {
             items = objectMapper.readValue(dataFilePath.toFile(), new TypeReference<List<Order>>() {});
             logger.info("Successfully loaded {} orders from data file", items.size());
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+ {
             logger.error("Error parsing JSON data: {}", e.getMessage(), e);
             items = new java.util.ArrayList<>();
         }
     }
 
     @Override
-    protected String getId(Order entity) {
+    protected String getId(Order entity)
+ {
         return entity.getId();
     }
 
     @Override
-    protected void setId(Order entity, String id) {
+    protected void setId(Order entity, String id)
+ {
         entity.setId(id);
     }
 
-    public Optional<Order> getOrderById(String id) {
+    public Optional<Order> getOrderById(String id)
+    {
         return findById(id);
     }
 
-    public Optional<Order> getOrderByOrderNumber(String orderNumber) {
+    public Optional<Order> getOrderByOrderNumber(String orderNumber)
+    {
         if (orderNumber == null || orderNumber.trim().isEmpty()) return Optional.empty();
         return items.stream().filter(order -> orderNumber.equals(order.getOrderNumber())).findFirst();
     }
 
-    public List<Order> getAllOrders() {
+    public List<Order> getAllOrders()
+    {
         return findAll();
     }
 
-    public List<Order> getOrdersByCustomerId(String customerId) {
-        if (customerId == null || customerId.trim().isEmpty()) {
+    public List<Order> getOrdersByCustomerId(String customerId)
+    {
+        if (customerId == null || customerId.trim().isEmpty())
+        {
             return new java.util.ArrayList<>();
         }
         return items.stream()
@@ -101,8 +117,10 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
             .collect(Collectors.toList());
     }
 
-    public List<Order> getOrdersByStatus(String status) {
-        if (status == null || status.trim().isEmpty()) {
+    public List<Order> getOrdersByStatus(String status)
+    {
+        if (status == null || status.trim().isEmpty())
+        {
             return new java.util.ArrayList<>();
         }
         return items.stream()
@@ -110,15 +128,18 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
             .collect(Collectors.toList());
     }
 
-    public Order createOrder(Order order) {
+    public Order createOrder(Order order)
+ {
         if (order == null) throw new IllegalArgumentException("Order cannot be null");
         
         // Generate order number if not provided
-        if (order.getOrderNumber() == null || order.getOrderNumber().trim().isEmpty()) {
+        if (order.getOrderNumber() == null || order.getOrderNumber().trim().isEmpty())
+        {
             String newOrderNumber = generateNextOrderNumber();
             order.setOrderNumber(newOrderNumber);
             logger.info("Generated order number: {}", newOrderNumber);
-        } else if (getOrderByOrderNumber(order.getOrderNumber()).isPresent()) {
+        } else if (getOrderByOrderNumber(order.getOrderNumber()).isPresent())
+        {
             throw new OrderAlreadyExistsException("Order with number " + order.getOrderNumber() + " already exists");
         }
         
@@ -127,7 +148,8 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
         return save(order);
     }
     
-    private synchronized String generateNextOrderNumber() {
+    private synchronized String generateNextOrderNumber()
+ {
         try {
             // Read current counter value from file
             long currentCounter = readCounter();
@@ -140,7 +162,8 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
             logger.info("Generated order number: {} (counter updated from {} to {})", 
                 nextOrderNumber, currentCounter, nextOrderNumber);
             return String.valueOf(nextOrderNumber);
-        } catch (IOException e) {
+        } catch (IOException e)
+ {
             logger.error("Error generating order number", e);
             throw new RuntimeException("Failed to generate order number", e);
         }
@@ -148,7 +171,8 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
     
     private long readCounter() throws IOException {
         // If counter file doesn't exist, initialize it with the initial value
-        if (!java.nio.file.Files.exists(counterFilePath)) {
+        if (!java.nio.file.Files.exists(counterFilePath))
+        {
             long initialValue = INITIAL_ORDER_NUMBER;
             writeCounter(initialValue);
             logger.info("Initialized order counter file with value: {}", initialValue);
@@ -158,7 +182,8 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
         // Read the counter value from file
         try {
             String content = new String(java.nio.file.Files.readAllBytes(counterFilePath)).trim();
-            if (content.isEmpty()) {
+            if (content.isEmpty())
+            {
                 // File exists but is empty, initialize with initial value
                 long initialValue = INITIAL_ORDER_NUMBER;
                 writeCounter(initialValue);
@@ -168,13 +193,15 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
             
             long counterValue = Long.parseLong(content);
             // Ensure counter is at least INITIAL_ORDER_NUMBER
-            if (counterValue < INITIAL_ORDER_NUMBER) {
+            if (counterValue < INITIAL_ORDER_NUMBER)
+            {
                 counterValue = INITIAL_ORDER_NUMBER;
                 writeCounter(counterValue);
                 logger.info("Counter value was below initial value, reset to: {}", counterValue);
             }
             return counterValue;
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException e)
+ {
             // File contains invalid data, reset to initial value
             logger.warn("Counter file contains invalid data, resetting to initial value: {}", INITIAL_ORDER_NUMBER);
             long initialValue = INITIAL_ORDER_NUMBER;
@@ -187,7 +214,8 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
         java.nio.file.Files.write(counterFilePath, String.valueOf(value).getBytes());
     }
     
-    public synchronized String generateNextInvoiceNumber() {
+    public synchronized String generateNextInvoiceNumber()
+ {
         try {
             // Read current invoice counter value from file
             long currentCounter = readInvoiceCounter();
@@ -200,7 +228,8 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
             logger.info("Generated invoice number: {} (counter updated from {} to {})", 
                 nextInvoiceNumber, currentCounter, nextInvoiceNumber);
             return String.valueOf(nextInvoiceNumber);
-        } catch (IOException e) {
+        } catch (IOException e)
+ {
             logger.error("Error generating invoice number", e);
             throw new RuntimeException("Failed to generate invoice number", e);
         }
@@ -208,7 +237,8 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
     
     private long readInvoiceCounter() throws IOException {
         // If counter file doesn't exist, initialize it with the initial value
-        if (!java.nio.file.Files.exists(invoiceCounterFilePath)) {
+        if (!java.nio.file.Files.exists(invoiceCounterFilePath))
+        {
             long initialValue = INITIAL_INVOICE_NUMBER;
             writeInvoiceCounter(initialValue);
             logger.info("Initialized invoice counter file with value: {}", initialValue);
@@ -218,7 +248,8 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
         // Read the counter value from file
         try {
             String content = new String(java.nio.file.Files.readAllBytes(invoiceCounterFilePath)).trim();
-            if (content.isEmpty()) {
+            if (content.isEmpty())
+            {
                 // File exists but is empty, initialize with initial value
                 long initialValue = INITIAL_INVOICE_NUMBER;
                 writeInvoiceCounter(initialValue);
@@ -228,13 +259,15 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
             
             long counterValue = Long.parseLong(content);
             // Ensure counter is at least INITIAL_INVOICE_NUMBER
-            if (counterValue < INITIAL_INVOICE_NUMBER) {
+            if (counterValue < INITIAL_INVOICE_NUMBER)
+            {
                 counterValue = INITIAL_INVOICE_NUMBER;
                 writeInvoiceCounter(counterValue);
                 logger.info("Invoice counter value was below initial value, reset to: {}", counterValue);
             }
             return counterValue;
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException e)
+ {
             // File contains invalid data, reset to initial value
             logger.warn("Invoice counter file contains invalid data, resetting to initial value: {}", INITIAL_INVOICE_NUMBER);
             long initialValue = INITIAL_INVOICE_NUMBER;
@@ -247,7 +280,8 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
         java.nio.file.Files.write(invoiceCounterFilePath, String.valueOf(value).getBytes());
     }
 
-    public Order updateOrder(String id, Order orderDetails) {
+    public Order updateOrder(String id, Order orderDetails)
+ {
         if (id == null || id.trim().isEmpty())
             throw new IllegalArgumentException("Order ID cannot be null or empty");
         if (orderDetails == null)
@@ -260,61 +294,78 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
             id, orderDetails.getStatus(), existingOrder.getStatus());
         logger.info("Full orderDetails object: {}", orderDetails);
 
-        if (orderDetails.getOrderNumber() != null && !orderDetails.getOrderNumber().trim().isEmpty()) {
+        if (orderDetails.getOrderNumber() != null && !orderDetails.getOrderNumber().trim().isEmpty())
+        {
             Optional<Order> numberCheck = getOrderByOrderNumber(orderDetails.getOrderNumber());
-            if (numberCheck.isPresent() && !id.equals(numberCheck.get().getId())) {
+            if (numberCheck.isPresent() && !id.equals(numberCheck.get().getId()))
+            {
                 throw new OrderAlreadyExistsException("Order with number " + orderDetails.getOrderNumber() + " already exists");
             }
         }
 
         // Update fields
-        if (orderDetails.getOrderNumber() != null) {
+        if (orderDetails.getOrderNumber() != null)
+        {
             existingOrder.setOrderNumber(orderDetails.getOrderNumber());
         }
-        if (orderDetails.getCustomerId() != null) {
+        if (orderDetails.getCustomerId() != null)
+        {
             existingOrder.setCustomerId(orderDetails.getCustomerId());
         }
-        if (orderDetails.getShippingAddressId() != null) {
+        if (orderDetails.getShippingAddressId() != null)
+        {
             existingOrder.setShippingAddressId(orderDetails.getShippingAddressId());
         }
-        if (orderDetails.getBillingAddressId() != null) {
+        if (orderDetails.getBillingAddressId() != null)
+        {
             existingOrder.setBillingAddressId(orderDetails.getBillingAddressId());
         }
-        if (orderDetails.getOrderDate() != null) {
+        if (orderDetails.getOrderDate() != null)
+        {
             existingOrder.setOrderDate(orderDetails.getOrderDate());
         }
-        if (orderDetails.getShipDate() != null) {
+        if (orderDetails.getShipDate() != null)
+        {
             existingOrder.setShipDate(orderDetails.getShipDate());
         }
         // Always update status if provided (even if it's the same value)
         String incomingStatus = orderDetails.getStatus();
-        if (incomingStatus != null) {
+        if (incomingStatus != null)
+        {
             logger.info("Updating order status from '{}' to '{}' for order ID: {}", 
                 existingOrder.getStatus(), incomingStatus, id);
             existingOrder.setStatus(incomingStatus);
             logger.info("Status updated successfully. Current status: {}", existingOrder.getStatus());
-        } else {
+        } else
+ {
             logger.warn("Status is null in orderDetails for order ID: {}", id);
         }
-        if (orderDetails.getItems() != null) {
+        if (orderDetails.getItems() != null)
+        {
             existingOrder.setItems(orderDetails.getItems());
         }
-        if (orderDetails.getTax() != null) {
+        if (orderDetails.getTax() != null)
+        {
             existingOrder.setTax(orderDetails.getTax());
         }
-        if (orderDetails.getShippingCost() != null) {
+        if (orderDetails.getShippingCost() != null)
+        {
             existingOrder.setShippingCost(orderDetails.getShippingCost());
         }
-        if (orderDetails.getNotes() != null) {
+        if (orderDetails.getNotes() != null)
+        {
             existingOrder.setNotes(orderDetails.getNotes());
         }
-        if (orderDetails.getInvoiceNumber() != null) {
+        if (orderDetails.getInvoiceNumber() != null)
+        {
             existingOrder.setInvoiceNumber(orderDetails.getInvoiceNumber());
         }
-        if (orderDetails.getInvoiceDate() != null) {
+        if (orderDetails.getInvoiceDate() != null)
+        {
             existingOrder.setInvoiceDate(orderDetails.getInvoiceDate());
         }
-        if (orderDetails.getJsonData() != null) {
+        if (orderDetails.getJsonData() != null)
+        {
             existingOrder.setJsonData(orderDetails.getJsonData());
         }
         
@@ -328,16 +379,25 @@ public class OrderRepository extends AbstractJsonRepository<Order> {
         return existingOrder;
     }
 
-    public void deleteOrder(String id) {
+    public void deleteOrder(String id)
+ {
         deleteById(id);
     }
 
-    public static class OrderNotFoundException extends EntityNotFoundException {
-        public OrderNotFoundException(String message) { super(message); }
+ static class OrderNotFoundException extends EntityNotFoundException
+ {
+        public OrderNotFoundException(String message)
+        {
+            super(message);
+        }
     }
 
-    public static class OrderAlreadyExistsException extends EntityAlreadyExistsException {
-        public OrderAlreadyExistsException(String message) { super(message); }
+ static class OrderAlreadyExistsException extends EntityAlreadyExistsException
+ {
+        public OrderAlreadyExistsException(String message)
+        {
+            super(message);
+        }
     }
 }
 

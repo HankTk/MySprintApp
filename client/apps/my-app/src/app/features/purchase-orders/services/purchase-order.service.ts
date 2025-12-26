@@ -12,7 +12,8 @@ import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../
 @Injectable({
   providedIn: 'root'
 })
-export class PurchaseOrderService {
+export class PurchaseOrderService
+{
   private apiUrl = 'http://localhost:8080/api/purchase-orders';
 
   private http = inject(HttpClient);
@@ -21,27 +22,33 @@ export class PurchaseOrderService {
   private dialog = inject(MatDialog);
   private router = inject(Router);
 
-  getPurchaseOrders(): Observable<PurchaseOrder[]> {
+  getPurchaseOrders(): Observable<PurchaseOrder[]>
+  {
     return this.http.get<PurchaseOrder[]>(this.apiUrl);
   }
 
-  getPurchaseOrder(id: string): Observable<PurchaseOrder> {
+  getPurchaseOrder(id: string): Observable<PurchaseOrder>
+  {
     return this.http.get<PurchaseOrder>(`${this.apiUrl}/${id}`);
   }
 
-  createPurchaseOrder(po: CreatePurchaseOrderRequest): Observable<PurchaseOrder> {
+  createPurchaseOrder(po: CreatePurchaseOrderRequest): Observable<PurchaseOrder>
+  {
     return this.http.post<PurchaseOrder>(this.apiUrl, po);
   }
 
-  updatePurchaseOrder(id: string, po: PurchaseOrder): Observable<PurchaseOrder> {
+  updatePurchaseOrder(id: string, po: PurchaseOrder): Observable<PurchaseOrder>
+  {
     return this.http.put<PurchaseOrder>(`${this.apiUrl}/${id}`, po);
   }
 
-  deletePurchaseOrder(id: string): Observable<void> {
+  deletePurchaseOrder(id: string): Observable<void>
+  {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  loadPurchaseOrders(isLoading: WritableSignal<boolean>): void {
+  loadPurchaseOrders(isLoading: WritableSignal<boolean>): void
+  {
     this.resourceManager.loadResource(
       'purchase-orders',
       isLoading,
@@ -52,7 +59,8 @@ export class PurchaseOrderService {
   createPurchaseOrderWithNotification(
     poData: CreatePurchaseOrderRequest,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.createResource(
       'purchase-orders',
       poData,
@@ -65,7 +73,8 @@ export class PurchaseOrderService {
   updatePurchaseOrderWithNotification(
     poData: PurchaseOrder,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.updateResource(
       'purchase-orders',
       poData.id!,
@@ -79,7 +88,8 @@ export class PurchaseOrderService {
   deletePurchaseOrderWithNotification(
     id: string,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.deleteResource(
       'purchase-orders',
       id,
@@ -89,39 +99,49 @@ export class PurchaseOrderService {
     );
   }
 
-  openAddPurchaseOrderDialog(isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(PurchaseOrderDialogComponent, {
+  openAddPurchaseOrderDialog(isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(PurchaseOrderDialogComponent,
+    {
       data: { isEdit: false } as PurchaseOrderDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'create') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'create')
+      {
         this.createPurchaseOrderWithNotification(result.purchaseOrder, isLoading);
       }
     });
   }
 
-  openEditPurchaseOrderDialog(po: PurchaseOrder, isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(PurchaseOrderDialogComponent, {
+  openEditPurchaseOrderDialog(po: PurchaseOrder, isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(PurchaseOrderDialogComponent,
+    {
       data: { purchaseOrder: po, isEdit: true } as PurchaseOrderDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'update') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'update')
+      {
         this.updatePurchaseOrderWithNotification(result.purchaseOrder, isLoading);
       }
     });
   }
 
-  openDeletePurchaseOrderDialog(po: PurchaseOrder, isLoading: WritableSignal<boolean>): void {
+  openDeletePurchaseOrderDialog(po: PurchaseOrder, isLoading: WritableSignal<boolean>): void
+  {
     const poLabel = po.orderNumber || po.id || 'Purchase Order';
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
+    {
       data: {
         userName: poLabel,
         userEmail: ''
@@ -131,42 +151,51 @@ export class PurchaseOrderService {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result === true)
+      {
         this.deletePurchaseOrderWithNotification(po.id!, isLoading);
       }
     });
   }
 
-  addPurchaseOrderItem(poId: string, productId: string, quantity: number): Observable<PurchaseOrder> {
+  addPurchaseOrderItem(poId: string, productId: string, quantity: number): Observable<PurchaseOrder>
+  {
     return this.http.post<PurchaseOrder>(`${this.apiUrl}/${poId}/items`, {
       productId,
       quantity
     });
   }
 
-  updatePurchaseOrderItemQuantity(poId: string, itemId: string, quantity: number): Observable<PurchaseOrder> {
+  updatePurchaseOrderItemQuantity(poId: string, itemId: string, quantity: number): Observable<PurchaseOrder>
+  {
     return this.http.put<PurchaseOrder>(`${this.apiUrl}/${poId}/items/${itemId}/quantity`, {
       quantity
     });
   }
 
-  removePurchaseOrderItem(poId: string, itemId: string): Observable<PurchaseOrder> {
+  removePurchaseOrderItem(poId: string, itemId: string): Observable<PurchaseOrder>
+  {
     return this.http.delete<PurchaseOrder>(`${this.apiUrl}/${poId}/items/${itemId}`);
   }
 
-  getNextInvoiceNumber(): Observable<{ invoiceNumber: string }> {
+  getNextInvoiceNumber(): Observable<{ invoiceNumber: string }>
+  {
     return this.http.get<{ invoiceNumber: string }>(`${this.apiUrl}/invoice/next-number`);
   }
 
-  openAddPurchaseOrderEntry(isLoading: WritableSignal<boolean>): void {
+  openAddPurchaseOrderEntry(isLoading: WritableSignal<boolean>): void
+  {
     // Navigate to purchase order entry page instead of opening dialog
     this.router.navigate(['/purchase-orders/new']);
   }
 
-  openEditPurchaseOrderEntry(po: PurchaseOrder, isLoading: WritableSignal<boolean>): void {
+  openEditPurchaseOrderEntry(po: PurchaseOrder, isLoading: WritableSignal<boolean>): void
+  {
     // Navigate to purchase order entry page instead of opening dialog
-    if (po.id) {
+    if (po.id)
+    {
       this.router.navigate(['/purchase-orders', po.id]);
     }
   }

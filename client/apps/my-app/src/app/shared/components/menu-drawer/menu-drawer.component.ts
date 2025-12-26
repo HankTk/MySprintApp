@@ -23,7 +23,8 @@ import { MatListModule } from '@angular/material/list';
   styleUrls: ['./menu-drawer.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MenuDrawerComponent {
+export class MenuDrawerComponent
+{
   @Output() closeDrawer = new EventEmitter<void>();
 
   menuItems = [
@@ -39,7 +40,8 @@ export class MenuDrawerComponent {
     { icon: 'settings', label: 'menu.master', route: '/master' },
   ];
 
-  onClose(): void {
+  onClose(): void
+  {
     this.closeDrawer.emit();
   }
 }

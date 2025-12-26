@@ -9,5 +9,6 @@ import { AxButtonComponent, AxTooltipDirective, AxCardComponent, AxIconComponent
   templateUrl: './tooltip-page.component.html',
   styleUrls: ['./tooltip-page.component.scss']
 })
-export class TooltipPageComponent {
+export class TooltipPageComponent
+{
 }

@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './ax-container.component.html',
   styleUrls: ['./ax-container.component.scss']
 })
-export class AxContainerComponent {
+export class AxContainerComponent
+{
 }
 

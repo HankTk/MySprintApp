@@ -1,4 +1,5 @@
-export interface Inventory {
+export interface Inventory
+{
   id?: string;
   productId?: string;
   warehouseId?: string;
@@ -6,7 +7,8 @@ export interface Inventory {
   jsonData?: any;
 }
 
-export interface CreateInventoryRequest {
+export interface CreateInventoryRequest
+{
   productId?: string;
   warehouseId?: string;
   quantity?: number;

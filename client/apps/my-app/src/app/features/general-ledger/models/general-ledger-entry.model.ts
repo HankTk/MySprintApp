@@ -1,6 +1,7 @@
 export type GLEntryType = 'REVENUE' | 'COST' | 'PAYMENT' | 'EXPENSE' | 'ACCOUNTS_PAYABLE';
 
-export interface GLEntry {
+export interface GLEntry
+{
   id: string;
   date: string;
   type: GLEntryType;

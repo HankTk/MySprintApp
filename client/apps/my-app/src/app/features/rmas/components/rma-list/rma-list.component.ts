@@ -40,7 +40,8 @@ import { RMAService } from '../../services/rma.service';
   templateUrl: './rma-list.component.html',
   styleUrls: ['./rma-list.component.scss']
 })
-export class RMAListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class RMAListComponent implements OnInit, OnDestroy, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['rmaNumber', 'orderNumber', 'customerName', 'rmaDate', 'status', 'total', 'actions']);
   showFilters = signal<boolean>(false);
@@ -73,9 +74,11 @@ export class RMAListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   rmas = this.store.select('rmas');
 
-  constructor() {
+  constructor()
+  {
     // Reinitialize columns when rmas change (using effect)
-    effect(() => {
+    effect(() =>
+    {
       // Access signal to create dependency
       this.rmas();
       // Reinitialize columns if templates are available
@@ -83,20 +86,24 @@ export class RMAListComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadRMAs();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.subscriptions.unsubscribe();
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     this.columns.set([
       {
         key: 'rmaNumber',
@@ -166,39 +173,48 @@ export class RMAListComponent implements OnInit, OnDestroy, AfterViewInit {
     ]);
   }
 
-  loadRMAs(): void {
+  loadRMAs(): void
+  {
     this.rmaService.loadRMAs(this.isLoading);
   }
 
-  openAddRMADialog(): void {
+  openAddRMADialog(): void
+  {
     this.rmaService.openAddRMAEntry(this.isLoading);
   }
 
-  openEditRMADialog(rma: RMA): void {
+  openEditRMADialog(rma: RMA): void
+  {
     this.rmaService.openEditRMAEntry(rma, this.isLoading);
   }
 
-  deleteRMA(rma: RMA): void {
+  deleteRMA(rma: RMA): void
+  {
     this.rmaService.openDeleteRMADialog(rma, this.isLoading);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/']);
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
 

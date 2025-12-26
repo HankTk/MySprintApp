@@ -10,7 +10,8 @@ import { AxTextareaComponent, AxCardComponent, MatCardModule } from '@ui/compone
   templateUrl: './textarea-page.component.html',
   styleUrls: ['./textarea-page.component.scss']
 })
-export class TextareaPageComponent {
+export class TextareaPageComponent
+{
   description = '';
   feedback = '';
   notes = 'This is some pre-filled content.';

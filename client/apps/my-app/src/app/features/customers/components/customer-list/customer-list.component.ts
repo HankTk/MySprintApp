@@ -39,7 +39,8 @@ import { AxTooltipDirective } from '@ui/components';
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.scss']
 })
-export class CustomerListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CustomerListComponent implements OnInit, OnDestroy, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['customerNumber', 'companyName', 'lastName', 'firstName', 'email', 'phone', 'actions']);
   showFilters = signal<boolean>(false);
@@ -70,9 +71,11 @@ export class CustomerListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   customers = this.store.select('customers');
 
-  constructor() {
+  constructor()
+  {
     // Reinitialize columns when customers change (using effect)
-    effect(() => {
+    effect(() =>
+    {
       // Access signal to create dependency
       this.customers();
       // Reinitialize columns if templates are available
@@ -80,20 +83,24 @@ export class CustomerListComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadCustomers();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.subscriptions.unsubscribe();
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     const isEnglish = this.languageService.isEnglish();
     this.columns.set([
       {
@@ -162,39 +169,48 @@ export class CustomerListComponent implements OnInit, OnDestroy, AfterViewInit {
     ]);
   }
 
-  loadCustomers(): void {
+  loadCustomers(): void
+  {
     this.customerService.loadCustomers(this.isLoading);
   }
 
-  openAddCustomerDialog(): void {
+  openAddCustomerDialog(): void
+  {
     this.customerService.openAddCustomerDialog(this.isLoading);
   }
 
-  openEditCustomerDialog(customer: Customer): void {
+  openEditCustomerDialog(customer: Customer): void
+  {
     this.customerService.openEditCustomerDialog(customer, this.isLoading);
   }
 
-  deleteCustomer(customer: Customer): void {
+  deleteCustomer(customer: Customer): void
+  {
     this.customerService.openDeleteCustomerDialog(customer, this.isLoading);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/master']);
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
 

@@ -11,7 +11,8 @@ import { User, LoginRequest } from '../../features/users/models/user';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService
+{
   private http = inject(HttpClient);
   private router = inject(Router);
   private apiUrl = 'http://localhost:8080/api';
@@ -24,21 +25,25 @@ export class AuthService {
   currentUser = signal<User | null>(this.getStoredUser());
   hasUsers = signal<boolean | null>(null);
 
-  constructor() {
+  constructor()
+  {
     this.checkUsers();
   }
 
   /**
    * Check if any users exist in the system
    */
-  checkUsers(): Observable<boolean> {
+  checkUsers(): Observable<boolean>
+  {
     return this.http.get<{ hasUsers: boolean }>(`${this.apiUrl}/auth/check-users`).pipe(
       map(response => response.hasUsers),
-      tap(hasUsers => {
+      tap(hasUsers => 
+{
         this.hasUsers.set(hasUsers);
         localStorage.setItem(this.HAS_USERS_KEY, String(hasUsers));
       }),
-      catchError(() => {
+      catchError(() =>
+      {
         this.hasUsers.set(false);
         return of(false);
       })
@@ -48,9 +53,11 @@ export class AuthService {
   /**
    * Login with email and password
    */
-  login(credentials: LoginRequest): Observable<User> {
+  login(credentials: LoginRequest): Observable<User>
+  {
     return this.http.post<{ user: User; token: string }>(`${this.apiUrl}/auth/login`, credentials).pipe(
-      tap(response => {
+      tap(response => 
+{
         const { user, token } = response;
         this.currentUser.set(user);
         localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(user));
@@ -63,7 +70,8 @@ export class AuthService {
   /**
    * Logout current user
    */
-  logout(): void {
+  logout(): void
+  {
     this.currentUser.set(null);
     localStorage.removeItem(this.CURRENT_USER_KEY);
     localStorage.removeItem(this.JWT_TOKEN_KEY);
@@ -73,27 +81,34 @@ export class AuthService {
   /**
    * Check if user is authenticated
    */
-  isAuthenticated(): boolean {
+  isAuthenticated(): boolean
+  {
     return this.currentUser() !== null && this.hasToken();
   }
 
   /**
    * Get current user
    */
-  getCurrentUser(): User | null {
+  getCurrentUser(): User | null
+  {
     return this.currentUser();
   }
 
   /**
    * Get stored user from localStorage
    */
-  private getStoredUser(): User | null {
-    try {
+  private getStoredUser(): User | null 
+{
+    try 
+{
       const stored = localStorage.getItem(this.CURRENT_USER_KEY);
-      if (stored) {
+      if (stored)
+      {
         return JSON.parse(stored);
       }
-    } catch (e) {
+    }
+ catch (e)
+ {
       console.error('Error parsing stored user', e);
     }
     return null;
@@ -102,7 +117,8 @@ export class AuthService {
   /**
    * Check if users exist (from localStorage cache)
    */
-  getHasUsersCached(): boolean | null {
+  getHasUsersCached(): boolean | null
+  {
     const stored = localStorage.getItem(this.HAS_USERS_KEY);
     return stored === 'true' ? true : stored === 'false' ? false : null;
   }
@@ -110,14 +126,16 @@ export class AuthService {
   /**
    * Get JWT token from localStorage
    */
-  getToken(): string | null {
+  getToken(): string | null
+  {
     return localStorage.getItem(this.JWT_TOKEN_KEY);
   }
 
   /**
    * Check if user has a valid token
    */
-  hasToken(): boolean {
+  hasToken(): boolean
+  {
     return this.getToken() !== null;
   }
 }

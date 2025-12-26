@@ -38,7 +38,8 @@ import { AxTooltipDirective } from '@ui/components';
   templateUrl: './vendor-list.component.html',
   styleUrls: ['./vendor-list.component.scss']
 })
-export class VendorListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class VendorListComponent implements OnInit, OnDestroy, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['vendorNumber', 'companyName', 'lastName', 'firstName', 'email', 'phone', 'actions']);
   showFilters = signal<boolean>(false);
@@ -69,9 +70,11 @@ export class VendorListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   vendors = this.store.select('vendors');
 
-  constructor() {
+  constructor()
+  {
     // Reinitialize columns when vendors change (using effect)
-    effect(() => {
+    effect(() =>
+    {
       // Access signal to create dependency
       this.vendors();
       // Reinitialize columns if templates are available
@@ -79,20 +82,24 @@ export class VendorListComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadVendors();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.subscriptions.unsubscribe();
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     const isEnglish = this.languageService.isEnglish();
     this.columns.set([
       {
@@ -161,39 +168,48 @@ export class VendorListComponent implements OnInit, OnDestroy, AfterViewInit {
     ]);
   }
 
-  loadVendors(): void {
+  loadVendors(): void
+  {
     this.vendorService.loadVendors(this.isLoading);
   }
 
-  openAddVendorDialog(): void {
+  openAddVendorDialog(): void
+  {
     this.vendorService.openAddVendorDialog(this.isLoading);
   }
 
-  openEditVendorDialog(vendor: Vendor): void {
+  openEditVendorDialog(vendor: Vendor): void
+  {
     this.vendorService.openEditVendorDialog(vendor, this.isLoading);
   }
 
-  deleteVendor(vendor: Vendor): void {
+  deleteVendor(vendor: Vendor): void
+  {
     this.vendorService.openDeleteVendorDialog(vendor, this.isLoading);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/master']);
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
 

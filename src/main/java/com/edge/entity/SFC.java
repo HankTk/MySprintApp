@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Data
-public class SFC {
+public class SFC
+{
     private String id;
     private String sfcNumber; // Auto-generated SFC number
     private String rmaId; // Reference to RMA
@@ -25,7 +26,8 @@ public class SFC {
     private String notes;
     private Map<String, Object> jsonData;
 
-    public SFC() {
+    public SFC()
+    {
         this.status = "PENDING";
         this.createdDate = LocalDateTime.now();
     }

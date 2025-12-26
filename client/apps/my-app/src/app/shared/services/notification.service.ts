@@ -11,12 +11,15 @@ export type NotificationType = 'success' | 'error' | 'info' | 'warning';
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationService {
+export class NotificationService
+{
   private snackBar = inject(MatSnackBar);
   private translate = inject(TranslateService);
 
-  show(message: string, type: NotificationType = 'info', duration: number = 5000): void {
-    const config: MatSnackBarConfig = {
+  show(message: string, type: NotificationType = 'info', duration = 5000): void
+  {
+    const config: MatSnackBarConfig =
+    {
       duration,
       horizontalPosition: 'end',
       verticalPosition: 'top',
@@ -27,19 +30,23 @@ export class NotificationService {
     this.snackBar.open(message, closeLabel, config);
   }
 
-  success(message: string, duration?: number): void {
+  success(message: string, duration?: number): void
+  {
     this.show(message, 'success', duration);
   }
 
-  error(message: string, duration?: number): void {
+  error(message: string, duration?: number): void
+  {
     this.show(message, 'error', duration);
   }
 
-  info(message: string, duration?: number): void {
+  info(message: string, duration?: number): void
+  {
     this.show(message, 'info', duration);
   }
 
-  warning(message: string, duration?: number): void {
+  warning(message: string, duration?: number): void
+  {
     this.show(message, 'warning', duration);
   }
 }

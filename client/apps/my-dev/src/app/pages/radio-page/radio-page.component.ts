@@ -10,7 +10,8 @@ import { AxRadioComponent, AxFormGroupComponent, AxCardComponent, MatCardModule 
   templateUrl: './radio-page.component.html',
   styleUrls: ['./radio-page.component.scss']
 })
-export class RadioPageComponent {
+export class RadioPageComponent
+{
   radioValue = 'option1';
   radioValue2 = 'option1';
 }

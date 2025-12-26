@@ -13,7 +13,8 @@ import { MatDividerModule } from '@angular/material/divider';
   templateUrl: './ax-divider.component.html',
   styleUrls: ['./ax-divider.component.scss']
 })
-export class AxDividerComponent {
+export class AxDividerComponent
+{
   @Input() vertical = false;
   @Input() inset = false;
 }

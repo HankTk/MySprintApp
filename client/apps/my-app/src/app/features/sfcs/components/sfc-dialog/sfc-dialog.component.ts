@@ -8,7 +8,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { AxButtonComponent, AxIconComponent } from '@ui/components';
 
-export interface SFCDialogData {
+export interface SFCDialogData
+{
   sfc?: SFC;
   isEdit: boolean;
 }
@@ -29,7 +30,8 @@ export interface SFCDialogData {
   templateUrl: './sfc-dialog.component.html',
   styleUrls: ['./sfc-dialog.component.scss']
 })
-export class SFCDialogComponent implements OnInit {
+export class SFCDialogComponent implements OnInit
+{
   sfcForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
@@ -39,7 +41,8 @@ export class SFCDialogComponent implements OnInit {
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: SFCDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: SFCDialogData)
+  {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editSFC') : this.translate.instant('addSFC');
     
@@ -57,22 +60,32 @@ export class SFCDialogComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (this.isEdit && this.data.sfc) {
+  ngOnInit(): void
+  {
+    if (this.isEdit && this.data.sfc)
+    {
       this.populateForm(this.data.sfc);
     }
   }
 
-  private populateForm(sfc: SFC): void {
+  private populateForm(sfc: SFC): void
+ {
     let jsonDataString = '{}';
-    if (sfc.jsonData) {
-      if (typeof sfc.jsonData === 'object') {
+    if (sfc.jsonData)
+    {
+      if (typeof sfc.jsonData === 'object')
+      {
         jsonDataString = JSON.stringify(sfc.jsonData, null, 2);
-      } else if (typeof sfc.jsonData === 'string') {
-        try {
+      }
+ else if (typeof sfc.jsonData === 'string')
+ {
+        try 
+{
           JSON.parse(sfc.jsonData);
           jsonDataString = sfc.jsonData;
-        } catch {
+        }
+ catch
+ {
           jsonDataString = '{}';
         }
       }
@@ -92,31 +105,43 @@ export class SFCDialogComponent implements OnInit {
     });
   }
 
-  private jsonValidator(control: any) {
+  private jsonValidator(control: any)
+ {
     if (!control.value) return null;
-    try {
+    try 
+{
       JSON.parse(control.value);
       return null;
-    } catch (e) {
+    }
+ catch (e)
+ {
       return { invalidJson: true };
     }
   }
 
-  onSubmit(): void {
-    if (this.sfcForm.valid) {
+  onSubmit(): void
+  {
+    if (this.sfcForm.valid)
+    {
       const formValue = this.sfcForm.value;
       
       let jsonData: any = {};
-      if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
-        try {
+      if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
+      {
+        try 
+{
           jsonData = JSON.parse(formValue.jsonData);
-        } catch (e) {
+        }
+ catch (e)
+ {
           return;
         }
       }
 
-      if (this.isEdit && this.data.sfc) {
-        const sfcToUpdate: SFC = {
+      if (this.isEdit && this.data.sfc)
+      {
+        const sfcToUpdate: SFC =
+        {
           ...this.data.sfc,
           rmaId: formValue.rmaId,
           rmaNumber: formValue.rmaNumber,
@@ -130,8 +155,11 @@ export class SFCDialogComponent implements OnInit {
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', sfc: sfcToUpdate });
-      } else {
-        const sfcToCreate: CreateSFCRequest = {
+      }
+ else
+ {
+        const sfcToCreate: CreateSFCRequest =
+        {
           rmaId: formValue.rmaId,
           rmaNumber: formValue.rmaNumber,
           orderId: formValue.orderId,
@@ -148,19 +176,24 @@ export class SFCDialogComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close();
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.sfcForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.sfcForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['invalidJson']) {
+    if (field?.errors)
+    {
+      if (field.errors['invalidJson'])
+      {
         return this.translate.instant('validation.invalidJson');
       }
     }

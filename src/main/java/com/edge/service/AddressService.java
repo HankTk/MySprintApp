@@ -18,7 +18,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class AddressService {
+public class AddressService
+{
     
     @Autowired
     private AddressRepository addressRepository;
@@ -34,22 +35,27 @@ public class AddressService {
     
     private static final String DATA_TYPE_ID = "addresses";
     
-    public List<Address> getAllAddresses() {
+    public List<Address> getAllAddresses()
+    {
         return addressRepository.getAllAddresses();
     }
     
-    public Optional<Address> getAddressById(String id) {
+    public Optional<Address> getAddressById(String id)
+    {
         return addressRepository.getAddressById(id);
     }
     
-    public List<Address> getAddressesByCustomerId(String customerId) {
-        if (customerId == null || customerId.trim().isEmpty()) {
+    public List<Address> getAddressesByCustomerId(String customerId)
+    {
+        if (customerId == null || customerId.trim().isEmpty())
+        {
             return java.util.Collections.emptyList();
         }
         
         // Get customer to retrieve addressIds
         Optional<Customer> customerOpt = customerRepository.getCustomerById(customerId);
-        if (!customerOpt.isPresent()) {
+        if (!customerOpt.isPresent())
+        {
             return java.util.Collections.emptyList();
         }
         
@@ -57,16 +63,19 @@ public class AddressService {
         List<String> addressIds = null;
         
         // Get addressIds from customer's jsonData
-        if (customer.getJsonData() != null && customer.getJsonData().containsKey("addressIds")) {
+        if (customer.getJsonData() != null && customer.getJsonData().containsKey("addressIds"))
+        {
             Object addressIdsObj = customer.getJsonData().get("addressIds");
-            if (addressIdsObj instanceof List) {
+            if (addressIdsObj instanceof List)
+            {
                 @SuppressWarnings("unchecked")
                 List<String> ids = (List<String>) addressIdsObj;
                 addressIds = ids;
             }
         }
         
-        if (addressIds == null || addressIds.isEmpty()) {
+        if (addressIds == null || addressIds.isEmpty())
+        {
             return java.util.Collections.emptyList();
         }
         
@@ -80,12 +89,14 @@ public class AddressService {
             .collect(Collectors.toList());
     }
     
-    public List<Address> getAddressesByCustomerIdAndType(String customerId, String addressType) {
+    public List<Address> getAddressesByCustomerIdAndType(String customerId, String addressType)
+    {
         // Get addresses by customer ID first
         List<Address> addresses = getAddressesByCustomerId(customerId);
         
         // Filter by address type if specified
-        if (addressType == null || addressType.trim().isEmpty()) {
+        if (addressType == null || addressType.trim().isEmpty())
+        {
             return addresses;
         }
         
@@ -94,14 +105,17 @@ public class AddressService {
             .collect(Collectors.toList());
     }
     
-    public List<Address> getAddressesByVendorId(String vendorId) {
-        if (vendorId == null || vendorId.trim().isEmpty()) {
+    public List<Address> getAddressesByVendorId(String vendorId)
+    {
+        if (vendorId == null || vendorId.trim().isEmpty())
+        {
             return java.util.Collections.emptyList();
         }
         
         // Get vendor to retrieve addressIds
         Optional<Vendor> vendorOpt = vendorRepository.getVendorById(vendorId);
-        if (!vendorOpt.isPresent()) {
+        if (!vendorOpt.isPresent())
+        {
             return java.util.Collections.emptyList();
         }
         
@@ -109,16 +123,19 @@ public class AddressService {
         List<String> addressIds = null;
         
         // Get addressIds from vendor's jsonData
-        if (vendor.getJsonData() != null && vendor.getJsonData().containsKey("addressIds")) {
+        if (vendor.getJsonData() != null && vendor.getJsonData().containsKey("addressIds"))
+        {
             Object addressIdsObj = vendor.getJsonData().get("addressIds");
-            if (addressIdsObj instanceof List) {
+            if (addressIdsObj instanceof List)
+            {
                 @SuppressWarnings("unchecked")
                 List<String> ids = (List<String>) addressIdsObj;
                 addressIds = ids;
             }
         }
         
-        if (addressIds == null || addressIds.isEmpty()) {
+        if (addressIds == null || addressIds.isEmpty())
+        {
             return java.util.Collections.emptyList();
         }
         
@@ -132,36 +149,44 @@ public class AddressService {
             .collect(Collectors.toList());
     }
     
-    public Address createAddress(Address address) {
+    public Address createAddress(Address address)
+ {
         Address created = addressRepository.createAddress(address);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.CREATE, DATA_TYPE_ID, created);
         return created;
     }
     
-    public Address updateAddress(String id, Address addressDetails) {
+    public Address updateAddress(String id, Address addressDetails)
+ {
         Address updated = addressRepository.updateAddress(id, addressDetails);
         notificationService.notifyDataChange(DataChangeNotification.ChangeType.UPDATE, DATA_TYPE_ID, updated);
         return updated;
     }
     
-    public void deleteAddress(String id) {
+    public void deleteAddress(String id)
+ {
         // Remove this address ID from all customers that reference it
         List<Customer> allCustomers = customerRepository.getAllCustomers();
-        for (Customer customer : allCustomers) {
+        for (Customer customer : allCustomers)
+        {
             List<String> addressIds = null;
-            if (customer.getJsonData() != null && customer.getJsonData().containsKey("addressIds")) {
+            if (customer.getJsonData() != null && customer.getJsonData().containsKey("addressIds"))
+            {
                 Object addressIdsObj = customer.getJsonData().get("addressIds");
-                if (addressIdsObj instanceof List) {
+                if (addressIdsObj instanceof List)
+                {
                     @SuppressWarnings("unchecked")
                     List<String> ids = (List<String>) addressIdsObj;
                     addressIds = new java.util.ArrayList<>(ids);
                 }
             }
             
-            if (addressIds != null && addressIds.contains(id)) {
+            if (addressIds != null && addressIds.contains(id))
+            {
                 addressIds.remove(id);
                 // Update customer with updated addressIds
-                if (customer.getJsonData() == null) {
+                if (customer.getJsonData() == null)
+                {
                     customer.setJsonData(new java.util.HashMap<>());
                 }
                 customer.getJsonData().put("addressIds", addressIds);
@@ -172,7 +197,8 @@ public class AddressService {
         // Delete the address
         Optional<Address> addressToDelete = addressRepository.getAddressById(id);
         addressRepository.deleteAddress(id);
-        if (addressToDelete.isPresent()) {
+        if (addressToDelete.isPresent())
+        {
             notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, addressToDelete.get());
         }
     }

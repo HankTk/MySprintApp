@@ -24,7 +24,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   templateUrl: './language-switcher.component.html',
   styleUrl: './language-switcher.component.scss'
 })
-export class LanguageSwitcherComponent implements OnInit, OnDestroy, AfterViewInit {
+export class LanguageSwitcherComponent implements OnInit, OnDestroy, AfterViewInit
+{
   @Input() showLabel = true;
   @ViewChild('languageSelect', { static: false }) languageSelect!: MatSelect;
   
@@ -38,12 +39,15 @@ export class LanguageSwitcherComponent implements OnInit, OnDestroy, AfterViewIn
     { value: 'ja' as Language, label: '日本語' }
   ];
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.currentLanguage = this.languageService.getCurrentLanguage();
     
     this.subscription.add(
-      this.languageService.currentLanguage$.subscribe(lang => {
-        if (this.currentLanguage !== lang) {
+      this.languageService.currentLanguage$.subscribe(lang => 
+{
+        if (this.currentLanguage !== lang)
+        {
           this.currentLanguage = lang;
           this.cdr.detectChanges();
         }
@@ -51,14 +55,20 @@ export class LanguageSwitcherComponent implements OnInit, OnDestroy, AfterViewIn
     );
   }
 
-  ngAfterViewInit(): void {
-    if (this.languageSelect) {
-      this.languageSelect.openedChange.subscribe((opened: boolean) => {
-        if (opened) {
-          setTimeout(() => {
+  ngAfterViewInit(): void
+  {
+    if (this.languageSelect)
+    {
+      this.languageSelect.openedChange.subscribe((opened: boolean) =>
+      {
+        if (opened)
+        {
+          setTimeout(() =>
+          {
             const panel = document.querySelector('.language-select-panel') as HTMLElement;
             const formField = document.querySelector('.language-select-field .mat-mdc-form-field') as HTMLElement;
-            if (panel && formField) {
+            if (panel && formField)
+            {
               const triggerWidth = formField.offsetWidth;
               panel.style.width = triggerWidth + 'px';
               panel.style.minWidth = triggerWidth + 'px';
@@ -70,12 +80,15 @@ export class LanguageSwitcherComponent implements OnInit, OnDestroy, AfterViewIn
     }
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.subscription.unsubscribe();
   }
 
-  onLanguageChange(newLanguage: Language): void {
-    if (newLanguage && (newLanguage === 'en' || newLanguage === 'ja')) {
+  onLanguageChange(newLanguage: Language): void
+  {
+    if (newLanguage && (newLanguage === 'en' || newLanguage === 'ja'))
+    {
       this.languageService.setLanguage(newLanguage);
       this.currentLanguage = newLanguage;
     }

@@ -10,7 +10,8 @@ import { AxInputComponent, AxCardComponent, MatCardModule } from '@ui/components
   templateUrl: './input-page.component.html',
   styleUrls: ['./input-page.component.scss']
 })
-export class InputPageComponent {
+export class InputPageComponent
+{
   email = '';
   password = '';
   requiredField = '';
@@ -18,7 +19,8 @@ export class InputPageComponent {
   errorField = '';
   hintField = '';
 
-  get hasError(): boolean {
+  get hasError(): boolean
+ {
     return this.errorField.length > 0 && this.errorField.length < 3;
   }
 }

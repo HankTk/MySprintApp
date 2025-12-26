@@ -12,7 +12,8 @@ import { OrderDialogComponent, OrderDialogData } from '../components/order-dialo
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+export class OrderService
+{
   private apiUrl = 'http://localhost:8080/api/orders';
 
   private http = inject(HttpClient);
@@ -21,43 +22,53 @@ export class OrderService {
   private dialog = inject(MatDialog);
   private router = inject(Router);
 
-  getOrders(): Observable<Order[]> {
+  getOrders(): Observable<Order[]>
+  {
     return this.http.get<Order[]>(this.apiUrl);
   }
 
-  getOrder(id: string): Observable<Order> {
+  getOrder(id: string): Observable<Order>
+  {
     return this.http.get<Order>(`${this.apiUrl}/${id}`);
   }
 
-  createOrder(order: CreateOrderRequest): Observable<Order> {
+  createOrder(order: CreateOrderRequest): Observable<Order>
+  {
     return this.http.post<Order>(this.apiUrl, order);
   }
 
-  updateOrder(id: string, order: Order): Observable<Order> {
+  updateOrder(id: string, order: Order): Observable<Order>
+  {
     return this.http.put<Order>(`${this.apiUrl}/${id}`, order);
   }
 
-  deleteOrder(id: string): Observable<void> {
+  deleteOrder(id: string): Observable<void>
+  {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  addOrderItem(orderId: string, productId: string, quantity: number): Observable<Order> {
+  addOrderItem(orderId: string, productId: string, quantity: number): Observable<Order>
+  {
     return this.http.post<Order>(`${this.apiUrl}/${orderId}/items`, { productId, quantity });
   }
 
-  updateOrderItemQuantity(orderId: string, itemId: string, quantity: number): Observable<Order> {
+  updateOrderItemQuantity(orderId: string, itemId: string, quantity: number): Observable<Order>
+  {
     return this.http.put<Order>(`${this.apiUrl}/${orderId}/items/${itemId}/quantity`, { quantity });
   }
 
-  removeOrderItem(orderId: string, itemId: string): Observable<Order> {
+  removeOrderItem(orderId: string, itemId: string): Observable<Order>
+  {
     return this.http.delete<Order>(`${this.apiUrl}/${orderId}/items/${itemId}`);
   }
 
-  getNextInvoiceNumber(): Observable<{ invoiceNumber: string }> {
+  getNextInvoiceNumber(): Observable<{ invoiceNumber: string }>
+  {
     return this.http.get<{ invoiceNumber: string }>(`${this.apiUrl}/invoice/next-number`);
   }
 
-  loadOrders(isLoading: WritableSignal<boolean>): void {
+  loadOrders(isLoading: WritableSignal<boolean>): void
+  {
     this.resourceManager.loadResource(
       'orders',
       isLoading,
@@ -68,7 +79,8 @@ export class OrderService {
   createOrderWithNotification(
     orderData: CreateOrderRequest,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.createResource(
       'orders',
       orderData,
@@ -81,7 +93,8 @@ export class OrderService {
   updateOrderWithNotification(
     orderData: Order,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.updateResource(
       'orders',
       orderData.id!,
@@ -95,7 +108,8 @@ export class OrderService {
   deleteOrderWithNotification(
     id: string,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.deleteResource(
       'orders',
       id,
@@ -105,21 +119,26 @@ export class OrderService {
     );
   }
 
-  openAddOrderDialog(isLoading: WritableSignal<boolean>): void {
+  openAddOrderDialog(isLoading: WritableSignal<boolean>): void
+  {
     // Navigate to order entry page instead of opening dialog
     this.router.navigate(['/orders/new']);
   }
 
-  openEditOrderDialog(order: Order, isLoading: WritableSignal<boolean>): void {
+  openEditOrderDialog(order: Order, isLoading: WritableSignal<boolean>): void
+  {
     // Navigate to order entry page instead of opening dialog
-    if (order.id) {
+    if (order.id)
+    {
       this.router.navigate(['/orders', order.id]);
     }
   }
 
-  openDeleteOrderDialog(order: Order, isLoading: WritableSignal<boolean>): void {
+  openDeleteOrderDialog(order: Order, isLoading: WritableSignal<boolean>): void
+  {
     const orderName = order.orderNumber || order.id || 'Order';
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
+    {
       data: {
         title: this.translate.instant('deleteDialog.confirmOrderDeletion'),
         message: this.translate.instant('deleteDialog.deleteOrderMessage'),
@@ -130,15 +149,19 @@ export class OrderService {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result === true)
+      {
         this.deleteOrderWithNotification(order.id!, isLoading);
       }
     });
   }
 
-  getStatusColor(status?: string): string {
-    switch (status) {
+  getStatusColor(status?: string): string
+  {
+    switch (status)
+    {
       case 'DRAFT':
         return '#6B7280';
       case 'PENDING_APPROVAL':
@@ -161,8 +184,10 @@ export class OrderService {
     }
   }
 
-  getStatusBackgroundColor(status?: string): string {
-    switch (status) {
+  getStatusBackgroundColor(status?: string): string
+  {
+    switch (status)
+    {
       case 'DRAFT':
         return '#F3F4F6';
       case 'PENDING_APPROVAL':

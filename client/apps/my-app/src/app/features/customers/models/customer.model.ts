@@ -1,4 +1,5 @@
-export interface Customer {
+export interface Customer
+{
   id?: string;
   customerNumber?: string;
   companyName?: string;
@@ -10,7 +11,8 @@ export interface Customer {
   jsonData?: any;
 }
 
-export interface CreateCustomerRequest {
+export interface CreateCustomerRequest
+{
   customerNumber?: string;
   companyName?: string;
   firstName?: string;

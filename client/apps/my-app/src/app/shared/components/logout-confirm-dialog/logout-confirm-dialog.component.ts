@@ -18,15 +18,18 @@ import { AxIconComponent } from '@ui/components';
   templateUrl: './logout-confirm-dialog.component.html',
   styleUrls: ['./logout-confirm-dialog.component.scss']
 })
-export class LogoutConfirmDialogComponent {
+export class LogoutConfirmDialogComponent
+{
   private dialogRef = inject(MatDialogRef<LogoutConfirmDialogComponent>);
 
-  onConfirm(): void {
+  onConfirm(): void
+  {
     // Close dialog immediately
     this.dialogRef.close(true);
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     // Close dialog immediately
     this.dialogRef.close(false);
   }

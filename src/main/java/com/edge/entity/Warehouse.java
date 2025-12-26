@@ -7,7 +7,8 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class Warehouse {
+public class Warehouse
+{
     private String id;
     private String warehouseCode;
     private String warehouseName;

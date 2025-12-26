@@ -16,52 +16,63 @@ import java.util.List;
 @Component
 @RestController
 @RequestMapping("/api/rmas")
-public class RMAController {
+public class RMAController
+{
 
     @Autowired
     private RMAService rmaService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public List<RMA> getAllRMAs() {
+    public List<RMA> getAllRMAs()
+    {
         return rmaService.getAllRMAs();
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<RMA> getRMAById(@PathVariable String id) {
+    public ResponseEntity<RMA> getRMAById(@PathVariable String id)
+{
         return rmaService.getRMAById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping(value = "/order/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public List<RMA> getRMAsByOrderId(@PathVariable String orderId) {
-        return rmaService.getRMAsByOrderId(orderId);
+    public ResponseEntity<List<RMA>> getRMAsByOrderId(@PathVariable String orderId)
+{
+        return ResponseEntity.ok(rmaService.getRMAsByOrderId(orderId));
     }
 
     @GetMapping(value = "/customer/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public List<RMA> getRMAsByCustomerId(@PathVariable String customerId) {
-        return rmaService.getRMAsByCustomerId(customerId);
+    public ResponseEntity<List<RMA>> getRMAsByCustomerId(@PathVariable String customerId)
+{
+        return ResponseEntity.ok(rmaService.getRMAsByCustomerId(customerId));
     }
 
     @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public List<RMA> getRMAsByStatus(@PathVariable String status) {
-        return rmaService.getRMAsByStatus(status);
+    public ResponseEntity<List<RMA>> getRMAsByStatus(@PathVariable String status)
+{
+        return ResponseEntity.ok(rmaService.getRMAsByStatus(status));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public RMA createRMA(@RequestBody RMA rma) {
-        return rmaService.createRMA(rma);
+    public ResponseEntity<RMA> createRMA(@RequestBody RMA rma)
+{
+        return ResponseEntity.ok(rmaService.createRMA(rma));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<RMA> updateRMA(@PathVariable String id, @RequestBody RMA rmaDetails) {
-        try {
+    public ResponseEntity<RMA> updateRMA(@PathVariable String id, @RequestBody RMA rmaDetails)
+    {
+        try
+{
             System.out.println("Received update request for RMA ID: " + id);
             System.out.println("RMA details status: " + rmaDetails.getStatus());
             RMA updatedRMA = rmaService.updateRMA(id, rmaDetails);
             System.out.println("Updated RMA status: " + updatedRMA.getStatus());
             return ResponseEntity.ok(updatedRMA);
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e)
+ {
             System.err.println("Error updating RMA: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.notFound().build();
@@ -71,11 +82,15 @@ public class RMAController {
     @PostMapping(value = "/{rmaId}/items", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<RMA> addRMAItem(
             @PathVariable String rmaId,
-            @RequestBody AddRMAItemRequest request) {
-        try {
+            @RequestBody AddRMAItemRequest request)
+            {
+        try
+        {
             RMA updatedRMA = rmaService.addRMAItem(rmaId, request.getProductId(), request.getQuantity(), request.getReason());
             return ResponseEntity.ok(updatedRMA);
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e)
+ {
             return ResponseEntity.notFound().build();
         }
     }
@@ -84,11 +99,15 @@ public class RMAController {
     public ResponseEntity<RMA> updateRMAItemQuantity(
             @PathVariable String rmaId,
             @PathVariable String itemId,
-            @RequestBody UpdateQuantityRequest request) {
-        try {
+            @RequestBody UpdateQuantityRequest request)
+            {
+        try
+        {
             RMA updatedRMA = rmaService.updateRMAItemQuantity(rmaId, itemId, request.getQuantity());
             return ResponseEntity.ok(updatedRMA);
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e)
+ {
             return ResponseEntity.notFound().build();
         }
     }
@@ -97,11 +116,15 @@ public class RMAController {
     public ResponseEntity<RMA> updateRMAItemReturnedQuantity(
             @PathVariable String rmaId,
             @PathVariable String itemId,
-            @RequestBody UpdateQuantityRequest request) {
-        try {
+            @RequestBody UpdateQuantityRequest request)
+            {
+        try
+        {
             RMA updatedRMA = rmaService.updateRMAItemReturnedQuantity(rmaId, itemId, request.getQuantity());
             return ResponseEntity.ok(updatedRMA);
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e)
+ {
             return ResponseEntity.notFound().build();
         }
     }
@@ -110,11 +133,15 @@ public class RMAController {
     public ResponseEntity<RMA> updateRMAItemCondition(
             @PathVariable String rmaId,
             @PathVariable String itemId,
-            @RequestBody UpdateConditionRequest request) {
-        try {
+            @RequestBody UpdateConditionRequest request)
+            {
+        try
+        {
             RMA updatedRMA = rmaService.updateRMAItemCondition(rmaId, itemId, request.getCondition());
             return ResponseEntity.ok(updatedRMA);
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e)
+ {
             return ResponseEntity.notFound().build();
         }
     }
@@ -122,76 +149,97 @@ public class RMAController {
     @DeleteMapping(value = "/{rmaId}/items/{itemId}")
     public ResponseEntity<RMA> removeRMAItem(
             @PathVariable String rmaId,
-            @PathVariable String itemId) {
-        try {
+            @PathVariable String itemId)
+            {
+        try
+        {
             RMA updatedRMA = rmaService.removeRMAItem(rmaId, itemId);
             return ResponseEntity.ok(updatedRMA);
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e)
+ {
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRMA(@PathVariable String id) {
-        try {
+    public ResponseEntity<Void> deleteRMA(@PathVariable String id)
+    {
+        try
+{
             rmaService.deleteRMA(id);
             return ResponseEntity.ok().build();
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e)
+ {
             return ResponseEntity.notFound().build();
         }
     }
 
     // Request DTOs
-    public static class AddRMAItemRequest {
+ static class AddRMAItemRequest
+ {
         private String productId;
         private Integer quantity;
         private String reason;
 
-        public String getProductId() {
+        public String getProductId()
+ {
             return productId;
         }
 
-        public void setProductId(String productId) {
+        public void setProductId(String productId)
+ {
             this.productId = productId;
         }
 
-        public Integer getQuantity() {
+        public Integer getQuantity()
+ {
             return quantity;
         }
 
-        public void setQuantity(Integer quantity) {
+        public void setQuantity(Integer quantity)
+ {
             this.quantity = quantity;
         }
 
-        public String getReason() {
+        public String getReason()
+ {
             return reason;
         }
 
-        public void setReason(String reason) {
+        public void setReason(String reason)
+ {
             this.reason = reason;
         }
     }
 
-    public static class UpdateQuantityRequest {
+ static class UpdateQuantityRequest
+ {
         private Integer quantity;
 
-        public Integer getQuantity() {
+        public Integer getQuantity()
+ {
             return quantity;
         }
 
-        public void setQuantity(Integer quantity) {
+        public void setQuantity(Integer quantity)
+ {
             this.quantity = quantity;
         }
     }
 
-    public static class UpdateConditionRequest {
+ static class UpdateConditionRequest
+ {
         private String condition;
 
-        public String getCondition() {
+        public String getCondition()
+ {
             return condition;
         }
 
-        public void setCondition(String condition) {
+        public void setCondition(String condition)
+ {
             this.condition = condition;
         }
     }

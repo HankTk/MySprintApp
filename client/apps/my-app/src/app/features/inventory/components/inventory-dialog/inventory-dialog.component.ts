@@ -14,7 +14,8 @@ import { Product } from '../../../products/models/product.model';
 import { Warehouse } from '../../../warehouses/models/warehouse.model';
 import { firstValueFrom } from 'rxjs';
 
-export interface InventoryDialogData {
+export interface InventoryDialogData
+{
   inventory?: Inventory;
   isEdit: boolean;
 }
@@ -36,7 +37,8 @@ export interface InventoryDialogData {
   templateUrl: './inventory-dialog.component.html',
   styleUrls: ['./inventory-dialog.component.scss']
 })
-export class InventoryDialogComponent implements OnInit {
+export class InventoryDialogComponent implements OnInit
+{
   inventoryForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
@@ -50,7 +52,8 @@ export class InventoryDialogComponent implements OnInit {
   private productService = inject(ProductService);
   private warehouseService = inject(WarehouseService);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: InventoryDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: InventoryDialogData)
+  {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editInventory') : this.translate.instant('addInventory');
     
@@ -62,62 +65,84 @@ export class InventoryDialogComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> 
+{
     await Promise.all([
       this.loadProducts(),
       this.loadWarehouses()
     ]);
-    if (this.isEdit && this.data.inventory) {
+    if (this.isEdit && this.data.inventory)
+    {
       this.populateForm(this.data.inventory);
     }
   }
 
-  private async loadProducts(): Promise<void> {
-    try {
+  private async loadProducts(): Promise<void> 
+{
+    try 
+{
       const products = await firstValueFrom(this.productService.getProducts());
       // Filter to show only active products
       const activeProducts = products.filter(p => p.active !== false);
       this.products.set(activeProducts);
-    } catch (error) {
+    }
+ catch (error)
+ {
       console.error('Failed to load products:', error);
     }
   }
 
-  private async loadWarehouses(): Promise<void> {
-    try {
+  private async loadWarehouses(): Promise<void> 
+{
+    try 
+{
       const warehouses = await firstValueFrom(this.warehouseService.getWarehouses());
       // Filter to show only active warehouses
       const activeWarehouses = warehouses.filter(w => w.active !== false);
       this.warehouses.set(activeWarehouses);
-    } catch (error) {
+    }
+ catch (error)
+ {
       console.error('Failed to load warehouses:', error);
     }
   }
 
-  getProductDisplay(product: Product): string {
-    if (product.productName && product.productCode) {
+  getProductDisplay(product: Product): string
+  {
+    if (product.productName && product.productCode)
+    {
       return `${product.productCode} - ${product.productName}`;
     }
     return product.productName || product.productCode || product.id || '';
   }
 
-  getWarehouseDisplay(warehouse: Warehouse): string {
-    if (warehouse.warehouseName && warehouse.warehouseCode) {
+  getWarehouseDisplay(warehouse: Warehouse): string
+  {
+    if (warehouse.warehouseName && warehouse.warehouseCode)
+    {
       return `${warehouse.warehouseCode} - ${warehouse.warehouseName}`;
     }
     return warehouse.warehouseName || warehouse.warehouseCode || warehouse.id || '';
   }
 
-  private populateForm(inventory: Inventory): void {
+  private populateForm(inventory: Inventory): void
+ {
     let jsonDataString = '{}';
-    if (inventory.jsonData) {
-      if (typeof inventory.jsonData === 'object') {
+    if (inventory.jsonData)
+    {
+      if (typeof inventory.jsonData === 'object')
+      {
         jsonDataString = JSON.stringify(inventory.jsonData, null, 2);
-      } else if (typeof inventory.jsonData === 'string') {
-        try {
+      }
+ else if (typeof inventory.jsonData === 'string')
+ {
+        try 
+{
           JSON.parse(inventory.jsonData);
           jsonDataString = inventory.jsonData;
-        } catch {
+        }
+ catch
+ {
           jsonDataString = '{}';
         }
       }
@@ -131,31 +156,43 @@ export class InventoryDialogComponent implements OnInit {
     });
   }
 
-  private jsonValidator(control: any) {
+  private jsonValidator(control: any)
+ {
     if (!control.value) return null;
-    try {
+    try 
+{
       JSON.parse(control.value);
       return null;
-    } catch (e) {
+    }
+ catch (e)
+ {
       return { invalidJson: true };
     }
   }
 
-  onSubmit(): void {
-    if (this.inventoryForm.valid) {
+  onSubmit(): void
+  {
+    if (this.inventoryForm.valid)
+    {
       const formValue = this.inventoryForm.value;
       
       let jsonData: any = {};
-      if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
-        try {
+      if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
+      {
+        try 
+{
           jsonData = JSON.parse(formValue.jsonData);
-        } catch (e) {
+        }
+ catch (e)
+ {
           return;
         }
       }
 
-      if (this.isEdit && this.data.inventory) {
-        const inventoryToUpdate: Inventory = {
+      if (this.isEdit && this.data.inventory)
+      {
+        const inventoryToUpdate: Inventory =
+        {
           id: this.data.inventory.id,
           productId: formValue.productId,
           warehouseId: formValue.warehouseId,
@@ -163,8 +200,11 @@ export class InventoryDialogComponent implements OnInit {
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', inventory: inventoryToUpdate });
-      } else {
-        const inventoryToCreate: CreateInventoryRequest = {
+      }
+ else
+ {
+        const inventoryToCreate: CreateInventoryRequest =
+        {
           productId: formValue.productId,
           warehouseId: formValue.warehouseId,
           quantity: formValue.quantity,
@@ -175,25 +215,32 @@ export class InventoryDialogComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close();
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.inventoryForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.inventoryForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['required']) {
+    if (field?.errors)
+    {
+      if (field.errors['required'])
+      {
         return this.translate.instant('validation.required');
       }
-      if (field.errors['min']) {
+      if (field.errors['min'])
+      {
         return this.translate.instant('validation.min', { min: field.errors['min'].min });
       }
-      if (field.errors['invalidJson']) {
+      if (field.errors['invalidJson'])
+      {
         return this.translate.instant('validation.invalidJson');
       }
     }

@@ -10,7 +10,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { AxButtonComponent, AxIconComponent } from '@ui/components';
 
-export interface RMADialogData {
+export interface RMADialogData
+{
   rma?: RMA;
   isEdit: boolean;
 }
@@ -33,7 +34,8 @@ export interface RMADialogData {
   templateUrl: './rma-dialog.component.html',
   styleUrls: ['./rma-dialog.component.scss']
 })
-export class RMADialogComponent implements OnInit {
+export class RMADialogComponent implements OnInit
+{
   rmaForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
@@ -43,7 +45,8 @@ export class RMADialogComponent implements OnInit {
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: RMADialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: RMADialogData)
+  {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editRMA') : this.translate.instant('addRMA');
     
@@ -59,22 +62,32 @@ export class RMADialogComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (this.isEdit && this.data.rma) {
+  ngOnInit(): void
+  {
+    if (this.isEdit && this.data.rma)
+    {
       this.populateForm(this.data.rma);
     }
   }
 
-  private populateForm(rma: RMA): void {
+  private populateForm(rma: RMA): void
+ {
     let jsonDataString = '{}';
-    if (rma.jsonData) {
-      if (typeof rma.jsonData === 'object') {
+    if (rma.jsonData)
+    {
+      if (typeof rma.jsonData === 'object')
+      {
         jsonDataString = JSON.stringify(rma.jsonData, null, 2);
-      } else if (typeof rma.jsonData === 'string') {
-        try {
+      }
+ else if (typeof rma.jsonData === 'string')
+ {
+        try 
+{
           JSON.parse(rma.jsonData);
           jsonDataString = rma.jsonData;
-        } catch {
+        }
+ catch
+ {
           jsonDataString = '{}';
         }
       }
@@ -92,31 +105,43 @@ export class RMADialogComponent implements OnInit {
     });
   }
 
-  private jsonValidator(control: any) {
+  private jsonValidator(control: any)
+ {
     if (!control.value) return null;
-    try {
+    try 
+{
       JSON.parse(control.value);
       return null;
-    } catch (e) {
+    }
+ catch (e)
+ {
       return { invalidJson: true };
     }
   }
 
-  onSubmit(): void {
-    if (this.rmaForm.valid) {
+  onSubmit(): void
+  {
+    if (this.rmaForm.valid)
+    {
       const formValue = this.rmaForm.value;
       
       let jsonData: any = {};
-      if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
-        try {
+      if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
+      {
+        try 
+{
           jsonData = JSON.parse(formValue.jsonData);
-        } catch (e) {
+        }
+ catch (e)
+ {
           return;
         }
       }
 
-      if (this.isEdit && this.data.rma) {
-        const rmaToUpdate: RMA = {
+      if (this.isEdit && this.data.rma)
+      {
+        const rmaToUpdate: RMA =
+        {
           ...this.data.rma,
           orderId: formValue.orderId,
           orderNumber: formValue.orderNumber,
@@ -128,8 +153,11 @@ export class RMADialogComponent implements OnInit {
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', rma: rmaToUpdate });
-      } else {
-        const rmaToCreate: CreateRMARequest = {
+      }
+ else
+ {
+        const rmaToCreate: CreateRMARequest =
+        {
           orderId: formValue.orderId,
           orderNumber: formValue.orderNumber,
           customerId: formValue.customerId,
@@ -144,19 +172,24 @@ export class RMADialogComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close();
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.rmaForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.rmaForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['invalidJson']) {
+    if (field?.errors)
+    {
+      if (field.errors['invalidJson'])
+      {
         return this.translate.instant('validation.invalidJson');
       }
     }

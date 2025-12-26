@@ -28,5 +28,6 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './typography-page.component.html',
   styleUrls: ['./typography-page.component.scss']
 })
-export class TypographyPageComponent {
+export class TypographyPageComponent
+{
 }

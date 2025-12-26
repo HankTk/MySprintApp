@@ -9,7 +9,8 @@ import {
   MatCardModule 
 } from '@ui/components';
 
-interface MasterItem {
+interface MasterItem
+{
   id: string;
   route: string;
   icon: string;
@@ -30,7 +31,8 @@ interface MasterItem {
   templateUrl: './master.component.html',
   styleUrls: ['./master.component.scss']
 })
-export class MasterComponent {
+export class MasterComponent
+{
   private router = inject(Router);
 
   masterItems: MasterItem[] = [
@@ -43,11 +45,13 @@ export class MasterComponent {
     { id: 'master-maintenance', route: '/master/maintenance', icon: 'build', labelKey: 'master.maintenance' }
   ];
 
-  navigateTo(route: string): void {
+  navigateTo(route: string): void
+  {
     this.router.navigate([route]);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/']);
   }
 }

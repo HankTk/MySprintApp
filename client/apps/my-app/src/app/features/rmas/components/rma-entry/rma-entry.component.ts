@@ -46,7 +46,8 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './rma-entry.component.html',
   styleUrls: ['./rma-entry.component.scss']
 })
-export class RMAEntryComponent implements OnInit {
+export class RMAEntryComponent implements OnInit
+{
   currentStep = signal<RMAStep>('entry');
   currentEntrySubStep = signal<EntrySubStep>('order');
   rma = signal<RMA | null>(null);
@@ -74,15 +75,20 @@ export class RMAEntryComponent implements OnInit {
   historyNote = signal<string>('');
   
   // Computed signal for RMA history
-  rmaHistory = computed(() => {
+  rmaHistory = computed(() =>
+  {
     const rma = this.rma();
     if (!rma?.jsonData?.history) return [];
     let history = rma.jsonData.history;
-    if (typeof history === 'string') {
-      try {
+    if (typeof history === 'string')
+    {
+      try 
+{
         const parsed = JSON.parse(history);
         history = parsed.history || parsed;
-      } catch {
+      }
+ catch
+ {
         return [];
       }
     }
@@ -112,24 +118,31 @@ export class RMAEntryComponent implements OnInit {
     { key: 'review', label: 'rmaEntry.subStep.review' }
   ];
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> 
+{
     const rmaId = this.route.snapshot.paramMap.get('id');
     
     await this.loadOrders();
     await this.loadCustomers();
     await this.loadProducts();
 
-    if (rmaId) {
+    if (rmaId)
+    {
       await this.loadRMA(rmaId);
-    } else {
+    }
+ else
+ {
       await this.createNewRMA();
     }
   }
 
-  private async createNewRMA(): Promise<void> {
-    try {
+  private async createNewRMA(): Promise<void> 
+{
+    try 
+{
       this.loading.set(true);
-      const newRMA: Partial<RMA> = {
+      const newRMA: Partial<RMA> =
+      {
         status: 'DRAFT',
         items: [],
         subtotal: 0,
@@ -138,72 +151,99 @@ export class RMAEntryComponent implements OnInit {
         total: 0,
       };
       const created = await firstValueFrom(this.rmaService.createRMA(newRMA as CreateRMARequest));
-      if (created && created.id) {
+      if (created && created.id)
+      {
         this.rma.set(created);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error creating RMA:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  private async loadRMA(id: string): Promise<void> {
-    try {
+  private async loadRMA(id: string): Promise<void> 
+{
+    try 
+{
       this.loading.set(true);
       const rma = await firstValueFrom(this.rmaService.getRMA(id));
-      if (rma) {
+      if (rma)
+      {
         this.rma.set(rma);
-        if (rma.orderId) {
+        if (rma.orderId)
+        {
           await this.loadOrderProducts(rma.orderId);
         }
         this.restockingFee.set(rma.restockingFee || 0);
         // Set step based on RMA status
         this.setStepFromStatus(rma.status);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading RMA:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  private setStepFromStatus(status?: string): void {
+  private setStepFromStatus(status?: string): void
+ {
     const rma = this.rma();
     
-    switch (status) {
+    switch (status)
+    {
       case 'DRAFT':
         this.currentStep.set('entry');
-        if (rma?.orderId) {
-          if (rma.items && rma.items.length > 0) {
-            if (rma.items.every(item => item.reason)) {
+        if (rma?.orderId)
+        {
+          if (rma.items && rma.items.length > 0)
+          {
+            if (rma.items.every(item => item.reason))
+            {
               this.currentEntrySubStep.set('review');
-            } else {
+            }
+ else
+ {
               this.currentEntrySubStep.set('reason');
             }
-          } else {
+          }
+ else
+ {
             this.currentEntrySubStep.set('products');
           }
-        } else {
+        }
+ else
+ {
           this.currentEntrySubStep.set('order');
         }
         break;
       case 'PENDING_APPROVAL':
         this.currentStep.set('approval');
-        if (rma?.jsonData) {
+        if (rma?.jsonData)
+        {
           this.approvalNotes.set(rma.jsonData.approvalNotes || '');
         }
         break;
       case 'APPROVED':
         this.currentStep.set('received');
-        if (rma?.jsonData) {
+        if (rma?.jsonData)
+        {
           const receivedDateStr = rma.jsonData.receivedDate;
           this.receivedDate.set(receivedDateStr ? new Date(receivedDateStr) : null);
         }
         break;
       case 'RECEIVED':
         this.currentStep.set('processed');
-        if (rma?.jsonData) {
+        if (rma?.jsonData)
+        {
           const processedDateStr = rma.jsonData.processedDate;
           this.processedDate.set(processedDateStr ? new Date(processedDateStr) : null);
         }
@@ -217,42 +257,57 @@ export class RMAEntryComponent implements OnInit {
     }
   }
 
-  private async loadOrders(): Promise<void> {
-    try {
+  private async loadOrders(): Promise<void> 
+{
+    try 
+{
       const orders = await firstValueFrom(this.orderService.getOrders());
       // Filter to only show orders that can be returned (SHIPPED, INVOICED, PAID)
       const returnableOrders = orders.filter(o => 
         o.status === 'SHIPPED' || o.status === 'INVOICED' || o.status === 'PAID'
       );
       this.orders.set(returnableOrders);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading orders:', err);
     }
   }
 
-  private async loadCustomers(): Promise<void> {
-    try {
+  private async loadCustomers(): Promise<void> 
+{
+    try 
+{
       const customers = await firstValueFrom(this.customerService.getCustomers());
       this.customers.set(customers);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading customers:', err);
     }
   }
 
-  private async loadProducts(): Promise<void> {
-    try {
+  private async loadProducts(): Promise<void> 
+{
+    try 
+{
       const products = await firstValueFrom(this.productService.getProducts());
       const activeProducts = products.filter(p => p.active !== false);
       this.products.set(activeProducts);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading products:', err);
     }
   }
 
-  private async loadOrderProducts(orderId: string): Promise<void> {
-    try {
+  private async loadOrderProducts(orderId: string): Promise<void> 
+{
+    try 
+{
       const order = await firstValueFrom(this.orderService.getOrder(orderId));
-      if (order && order.items) {
+      if (order && order.items)
+      {
         // Update products list to include products from the selected order
         const orderProductIds = order.items.map(item => item.productId).filter(Boolean) as string[];
         const allProducts = this.products();
@@ -260,28 +315,39 @@ export class RMAEntryComponent implements OnInit {
         // Keep all products but prioritize order products
         this.products.set([...orderProducts, ...allProducts.filter(p => !orderProductIds.includes(p.id!))]);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading order products:', err);
     }
   }
 
-  async onOrderChange(orderId: string | null): Promise<void> {
+  async onOrderChange(orderId: string | null): Promise<void> 
+{
     const normalizedOrderId = orderId && orderId.trim() !== '' ? orderId : undefined;
     
-    if (!normalizedOrderId) {
+    if (!normalizedOrderId)
+    {
       const rma = this.rma();
-      if (rma && rma.id) {
-        try {
+      if (rma && rma.id)
+      {
+        try 
+{
           this.loading.set(true);
           const updated = await firstValueFrom(
             this.rmaService.updateRMA(rma.id, { ...rma, orderId: undefined, customerId: undefined })
           );
-          if (updated) {
+          if (updated)
+          {
             this.rma.set(updated);
           }
-        } catch (err) {
+        }
+ catch (err)
+ {
           console.error('Error clearing order:', err);
-        } finally {
+        }
+ finally
+ {
           this.loading.set(false);
         }
       }
@@ -289,26 +355,32 @@ export class RMAEntryComponent implements OnInit {
     }
     
     let rma = this.rma();
-    if (!rma || !rma.id) {
+    if (!rma || !rma.id)
+    {
       let retries = 0;
-      while ((!rma || !rma.id) && retries < 10) {
+      while ((!rma || !rma.id) && retries < 10)
+      {
         await new Promise(resolve => setTimeout(resolve, 100));
         rma = this.rma();
         retries++;
       }
       
-      if (!rma || !rma.id) {
+      if (!rma || !rma.id)
+      {
         console.error('RMA not available. Cannot update order.');
         alert('RMA is not ready yet. Please wait a moment and try again.');
         return;
       }
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const order = await firstValueFrom(this.orderService.getOrder(normalizedOrderId));
-      if (order) {
-        const rmaToUpdate = { 
+      if (order)
+      {
+        const rmaToUpdate =
+        {
           ...rma, 
           orderId: normalizedOrderId,
           orderNumber: order.orderNumber,
@@ -318,106 +390,139 @@ export class RMAEntryComponent implements OnInit {
         const updated = await firstValueFrom(
           this.rmaService.updateRMA(rma.id, rmaToUpdate)
         );
-        if (updated) {
+        if (updated)
+        {
           this.rma.set(updated);
           await this.loadOrderProducts(normalizedOrderId);
         }
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating order:', err);
       alert('Failed to update order. Please try again.');
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onAddProduct(): Promise<void> {
+  async onAddProduct(): Promise<void> 
+{
     const productId = this.selectedProduct();
     const qty = this.quantity();
     const returnReason = this.reason();
     const rma = this.rma();
 
-    if (!productId || !rma || !rma.id) {
+    if (!productId || !rma || !rma.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.rmaService.addRMAItem(rma.id, productId, qty, returnReason)
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
         this.selectedProduct.set(null);
         this.quantity.set(1);
         this.reason.set('');
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error adding product:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onUpdateQuantity(itemId: string, quantity: number): Promise<void> {
+  async onUpdateQuantity(itemId: string, quantity: number): Promise<void> 
+{
     if (quantity < 1) return;
     
     const rma = this.rma();
-    if (!rma || !rma.id) {
+    if (!rma || !rma.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.rmaService.updateRMAItemQuantity(rma.id, itemId, quantity)
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating quantity:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onUpdateReturnedQuantity(itemId: string, returnedQuantity: number): Promise<void> {
+  async onUpdateReturnedQuantity(itemId: string, returnedQuantity: number): Promise<void> 
+{
     if (returnedQuantity < 0) return;
     
     const rma = this.rma();
-    if (!rma || !rma.id) {
+    if (!rma || !rma.id)
+    {
       return;
     }
 
     const item = rma.items?.find(i => i.id === itemId);
-    if (item && item.quantity && returnedQuantity > item.quantity) {
+    if (item && item.quantity && returnedQuantity > item.quantity)
+    {
       alert(`Returned quantity cannot exceed requested quantity (${item.quantity})`);
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.rmaService.updateRMAItemReturnedQuantity(rma.id, itemId, returnedQuantity)
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating returned quantity:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onUpdateReason(itemId: string, reason: string): Promise<void> {
+  async onUpdateReason(itemId: string, reason: string): Promise<void> 
+{
     const rma = this.rma();
-    if (!rma || !rma.id) {
+    if (!rma || !rma.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const items = rma.items?.map(item => 
         item.id === itemId ? { ...item, reason } : item
@@ -425,65 +530,89 @@ export class RMAEntryComponent implements OnInit {
       const updated = await firstValueFrom(
         this.rmaService.updateRMA(rma.id, { ...rma, items })
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating reason:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onRemoveItem(itemId: string): Promise<void> {
+  async onRemoveItem(itemId: string): Promise<void> 
+{
     const rma = this.rma();
-    if (!rma || !rma.id) {
+    if (!rma || !rma.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.rmaService.removeRMAItem(rma.id, itemId)
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error removing item:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onRestockingFeeChange(fee: number): Promise<void> {
+  async onRestockingFeeChange(fee: number): Promise<void> 
+{
     const rma = this.rma();
-    if (!rma || !rma.id) {
+    if (!rma || !rma.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.rmaService.updateRMA(rma.id, { ...rma, restockingFee: fee })
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
         this.restockingFee.set(fee);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating restocking fee:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  canProceedToNext(): boolean {
-    if (this.currentStep() === 'entry') {
+  canProceedToNext(): boolean
+  {
+    if (this.currentStep() === 'entry')
+    {
       const subStep = this.currentEntrySubStep();
       const rma = this.rma();
       
-      switch (subStep) {
+      switch (subStep)
+      {
         case 'order':
           return !!rma?.orderId;
         case 'products':
@@ -497,7 +626,8 @@ export class RMAEntryComponent implements OnInit {
       }
     }
     
-    switch (this.currentStep()) {
+    switch (this.currentStep())
+    {
       case 'approval':
         return !!this.approvalNotes();
       case 'received':
@@ -511,71 +641,101 @@ export class RMAEntryComponent implements OnInit {
     }
   }
 
-  handleNext(): void {
-    if (this.currentStep() === 'entry') {
+  handleNext(): void
+  {
+    if (this.currentStep() === 'entry')
+    {
       const currentSubIndex = this.entrySubSteps.findIndex(s => s.key === this.currentEntrySubStep());
-      if (currentSubIndex < this.entrySubSteps.length - 1) {
+      if (currentSubIndex < this.entrySubSteps.length - 1)
+      {
         this.currentEntrySubStep.set(this.entrySubSteps[currentSubIndex + 1].key);
-      } else {
+      }
+ else
+ {
         const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-        if (currentIndex < this.steps.length - 1) {
+        if (currentIndex < this.steps.length - 1)
+        {
           this.currentStep.set(this.steps[currentIndex + 1].key);
         }
       }
-    } else {
+    }
+ else
+ {
       const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-      if (currentIndex < this.steps.length - 1) {
+      if (currentIndex < this.steps.length - 1)
+      {
         this.currentStep.set(this.steps[currentIndex + 1].key);
       }
     }
   }
 
-  handlePrevious(): void {
-    if (this.currentStep() === 'entry') {
+  handlePrevious(): void
+  {
+    if (this.currentStep() === 'entry')
+    {
       const currentSubIndex = this.entrySubSteps.findIndex(s => s.key === this.currentEntrySubStep());
-      if (currentSubIndex > 0) {
+      if (currentSubIndex > 0)
+      {
         this.currentEntrySubStep.set(this.entrySubSteps[currentSubIndex - 1].key);
-      } else {
+      }
+ else
+ {
         const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-        if (currentIndex > 0) {
+        if (currentIndex > 0)
+        {
           this.currentStep.set(this.steps[currentIndex - 1].key);
         }
       }
-    } else {
+    }
+ else
+ {
       const currentIndex = this.steps.findIndex(s => s.key === this.currentStep());
-      if (currentIndex > 0) {
-        if (this.steps[currentIndex - 1].key === 'entry') {
+      if (currentIndex > 0)
+      {
+        if (this.steps[currentIndex - 1].key === 'entry')
+        {
           this.currentStep.set('entry');
           this.currentEntrySubStep.set('review');
-        } else {
+        }
+ else
+ {
           this.currentStep.set(this.steps[currentIndex - 1].key);
         }
       }
     }
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/rmas']);
   }
 
-  async onStepClick(stepKey: RMAStep): Promise<void> {
+  async onStepClick(stepKey: RMAStep): Promise<void> 
+{
     const isCompleted = this.isStepCompleted(stepKey);
     const isActive = this.currentStep() === stepKey;
     
-    if (isCompleted || isActive) {
+    if (isCompleted || isActive)
+    {
       const currentRMA = this.rma();
-      if (currentRMA?.id) {
-        try {
+      if (currentRMA?.id)
+      {
+        try 
+{
           this.loading.set(true);
           const latestRMA = await firstValueFrom(this.rmaService.getRMA(currentRMA.id));
-          if (latestRMA) {
+          if (latestRMA)
+          {
             this.rma.set(latestRMA);
-            if (latestRMA.orderId) {
+            if (latestRMA.orderId)
+            {
               await this.loadOrderProducts(latestRMA.orderId);
             }
             
-            if (latestRMA.jsonData) {
-              switch (stepKey) {
+            if (latestRMA.jsonData)
+            {
+              switch (stepKey)
+              {
                 case 'approval':
                   this.approvalNotes.set(latestRMA.jsonData.approvalNotes || '');
                   break;
@@ -590,25 +750,32 @@ export class RMAEntryComponent implements OnInit {
               }
             }
           }
-        } catch (err) {
+        }
+ catch (err)
+ {
           console.error('Error reloading RMA:', err);
-        } finally {
+        }
+ finally
+ {
           this.loading.set(false);
         }
       }
       
       this.currentStep.set(stepKey);
-      if (stepKey === 'entry') {
+      if (stepKey === 'entry')
+      {
         this.currentEntrySubStep.set('review');
       }
     }
   }
 
-  isStepCompleted(step: RMAStep): boolean {
+  isStepCompleted(step: RMAStep): boolean
+  {
     const rma = this.rma();
     if (!rma) return false;
 
-    switch (step) {
+    switch (step)
+    {
       case 'entry':
         return !!(rma.orderId && rma.items && rma.items.length > 0 && rma.items.every(item => item.reason));
       case 'approval':
@@ -624,11 +791,13 @@ export class RMAEntryComponent implements OnInit {
     }
   }
 
-  isSubStepCompleted(subStep: EntrySubStep): boolean {
+  isSubStepCompleted(subStep: EntrySubStep): boolean
+  {
     const rma = this.rma();
     if (!rma) return false;
 
-    switch (subStep) {
+    switch (subStep)
+    {
       case 'order':
         return !!rma.orderId;
       case 'products':
@@ -642,55 +811,66 @@ export class RMAEntryComponent implements OnInit {
     }
   }
 
-  getOrderNumber(orderId?: string): string {
+  getOrderNumber(orderId?: string): string
+  {
     if (!orderId) return '';
     const order = this.orders().find(o => o.id === orderId);
     return order?.orderNumber || '';
   }
 
-  getCustomerName(customerId?: string): string {
+  getCustomerName(customerId?: string): string
+  {
     if (!customerId) return '';
     const customer = this.customers().find(c => c.id === customerId);
     return customer?.companyName || `${customer?.firstName || ''} ${customer?.lastName || ''}`.trim() || '';
   }
 
-  getProductName(productId?: string): string {
+  getProductName(productId?: string): string
+  {
     if (!productId) return '';
     const product = this.products().find(p => p.id === productId);
     return product?.productName || product?.productCode || '';
   }
 
-  getCurrentStepLabel(): string {
+  getCurrentStepLabel(): string
+  {
     const step = this.steps.find(s => s.key === this.currentStep());
     return step?.label || '';
   }
 
-  async handleCompleteEntry(): Promise<void> {
+  async handleCompleteEntry(): Promise<void> 
+{
     const rma = this.rma();
-    if (!rma || !rma.id) {
+    if (!rma || !rma.id)
+    {
       alert('RMA is not ready. Please wait a moment and try again.');
       return;
     }
 
-    if (!rma.orderId) {
+    if (!rma.orderId)
+    {
       alert('Please select an order before completing the entry.');
       this.currentEntrySubStep.set('order');
       return;
     }
-    if (!rma.items || rma.items.length === 0) {
+    if (!rma.items || rma.items.length === 0)
+    {
       alert('Please add at least one product before completing the entry.');
       this.currentEntrySubStep.set('products');
       return;
     }
-    if (!rma.items.every(item => item.reason && item.reason.trim() !== '')) {
+    if (!rma.items.every(item => item.reason && item.reason.trim() !== ''))
+    {
       alert('Please provide a reason for all items before completing the entry.');
       this.currentEntrySubStep.set('reason');
       return;
     }
 
-    try {
+    try 
+{
       this.submitting.set(true);
-      const rmaToUpdate: RMA = {
+      const rmaToUpdate: RMA =
+      {
         ...rma,
         orderId: rma.orderId,
         restockingFee: this.restockingFee(),
@@ -700,7 +880,8 @@ export class RMAEntryComponent implements OnInit {
       const updated = await firstValueFrom(
         this.rmaService.updateRMA(rma.id, rmaToUpdate)
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
         await this.addHistoryRecord(
           'entry',
@@ -715,19 +896,25 @@ export class RMAEntryComponent implements OnInit {
         );
         this.currentStep.set('approval');
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error completing entry:', err);
       alert('Failed to complete entry. Please try again.');
-    } finally {
+    }
+ finally
+ {
       this.submitting.set(false);
     }
   }
 
-  async handleApproveRMA(): Promise<void> {
+  async handleApproveRMA(): Promise<void> 
+{
     const rma = this.rma();
     if (!rma || !rma.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = rma.jsonData || {};
       jsonData.approvalNotes = this.approvalNotes();
@@ -741,7 +928,8 @@ export class RMAEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
         await this.addHistoryRecord(
           'approval',
@@ -752,18 +940,24 @@ export class RMAEntryComponent implements OnInit {
         );
         this.currentStep.set('received');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error approving RMA:', err);
-    } finally {
+    }
+ finally
+    {
       this.submitting.set(false);
     }
   }
 
-  async handleReceiveRMA(): Promise<void> {
+  async handleReceiveRMA(): Promise<void>
+  {
     const rma = this.rma();
     if (!rma || !rma.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = rma.jsonData || {};
       jsonData.receivedDate = this.receivedDate() ? this.receivedDate()!.toISOString().split('T')[0] : null;
@@ -778,7 +972,8 @@ export class RMAEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
         await this.addHistoryRecord(
           'received',
@@ -791,18 +986,24 @@ export class RMAEntryComponent implements OnInit {
         );
         this.currentStep.set('processed');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error receiving RMA:', err);
-    } finally {
+    }
+ finally
+    {
       this.submitting.set(false);
     }
   }
 
-  async handleProcessRMA(): Promise<void> {
+  async handleProcessRMA(): Promise<void>
+  {
     const rma = this.rma();
     if (!rma || !rma.id) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const jsonData = rma.jsonData || {};
       jsonData.processedDate = this.processedDate() ? this.processedDate()!.toISOString().split('T')[0] : null;
@@ -816,7 +1017,8 @@ export class RMAEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
         await this.addHistoryRecord(
           'processed',
@@ -830,21 +1032,27 @@ export class RMAEntryComponent implements OnInit {
         );
         this.currentStep.set('history');
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error processing RMA:', err);
-    } finally {
+    }
+ finally
+    {
       this.submitting.set(false);
     }
   }
 
-  async handleAddHistoryNote(): Promise<void> {
+  async handleAddHistoryNote(): Promise<void>
+  {
     const rma = this.rma();
     if (!rma || !rma.id) return;
 
     const note = this.historyNote();
     if (!note.trim()) return;
 
-    try {
+    try 
+{
       this.submitting.set(true);
       const updatedNotes = rma.notes ? `${rma.notes}\n\n${note}` : note;
       const updated = await firstValueFrom(
@@ -853,7 +1061,8 @@ export class RMAEntryComponent implements OnInit {
           notes: updatedNotes
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
         await this.addHistoryRecord(
           'note',
@@ -863,9 +1072,13 @@ export class RMAEntryComponent implements OnInit {
         );
         this.historyNote.set('');
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error adding note:', err);
-    } finally {
+    }
+ finally
+ {
       this.submitting.set(false);
     }
   }
@@ -876,14 +1089,17 @@ export class RMAEntryComponent implements OnInit {
     notes?: string,
     status?: string,
     data?: Record<string, any>
-  ): Promise<void> {
+  ): Promise<void> 
+{
     const rma = this.rma();
     if (!rma || !rma.id) return;
 
-    try {
+    try 
+{
       const jsonData = rma.jsonData || {};
       const history = jsonData.history || [];
-      const newRecord = {
+      const newRecord =
+      {
         step,
         stepLabel,
         timestamp: new Date().toISOString(),
@@ -899,27 +1115,34 @@ export class RMAEntryComponent implements OnInit {
           jsonData
         })
       );
-      if (updated) {
+      if (updated)
+      {
         this.rma.set(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+    {
       console.error('Error adding history record:', err);
     }
   }
 
-  hasDataKeys(data?: Record<string, any>): boolean {
+  hasDataKeys(data?: Record<string, any>): boolean
+  {
     return !!(data && Object.keys(data).length > 0);
   }
 
-  toString(value: string | number | symbol): string {
+  toString(value: string | number | symbol): string
+  {
     return String(value);
   }
 
-  getDataKeyLabel(key: string): string {
+  getDataKeyLabel(key: string): string
+  {
     return `rmaEntry.history.data.${key}`;
   }
 
-  formatDataValue(key: string, value: any): string {
+  formatDataValue(key: string, value: any): string
+  {
     if (value === null || value === undefined) return '';
     if (typeof value === 'boolean') return value ? 'Yes' : 'No';
     if (typeof value === 'number') return value.toString();

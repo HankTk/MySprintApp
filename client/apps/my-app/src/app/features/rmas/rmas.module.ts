@@ -19,5 +19,6 @@ import { RMADialogComponent } from './components/rma-dialog/rma-dialog.component
     RMADialogComponent
   ]
 })
-export class RMAsModule { }
-
+export class RMAsModule
+{
+}

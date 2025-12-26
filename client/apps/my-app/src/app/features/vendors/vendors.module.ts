@@ -19,5 +19,6 @@ import { VendorDialogComponent } from './components/vendor-dialog/vendor-dialog.
     VendorDialogComponent
   ]
 })
-export class VendorsModule { }
-
+export class VendorsModule
+{
+}

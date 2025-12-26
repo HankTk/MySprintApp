@@ -33,7 +33,8 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit
+{
   loginForm!: FormGroup;
   isLoading = false;
   errorMessage = '';
@@ -45,45 +46,56 @@ export class LoginComponent implements OnInit {
   private languageService = inject(LanguageService);
   private dialog = inject(MatDialog);
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     const currentLang = this.languageService.getCurrentLanguage();
     
-    if (!this.translate.defaultLang) {
+    if (!this.translate.defaultLang)
+    {
       this.translate.setDefaultLang('en');
     }
     
-    this.translate.use(currentLang).subscribe(() => {});
-
-    this.loginForm = this.fb.group({
+    this.translate.use(currentLang).subscribe(() =>
+    {
+      this.loginForm = this.fb.group({
       userid: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
-    this.authService.checkUsers().subscribe(hasUsers => {
-      if (!hasUsers) {
+    this.authService.checkUsers().subscribe(hasUsers => 
+{
+      if (!hasUsers)
+      {
         this.router.navigate(['/initial-user']);
       }
     });
+    });
   }
 
-  onSubmit(): void {
-    if (this.loginForm.valid) {
+  onSubmit(): void
+  {
+    if (this.loginForm.valid)
+    {
       this.isLoading = true;
       this.errorMessage = '';
 
-      const credentials: LoginRequest = {
+      const credentials: LoginRequest =
+      {
         userid: this.loginForm.value.userid,
         password: this.loginForm.value.password
       };
 
       this.authService.login(credentials).subscribe({
-        next: () => {
+        next: () =>
+        {
           this.isLoading = false;
           this.router.navigate(['/']);
         },
-        error: (error) => {
+        error: (error) =>
+        {
           this.isLoading = false;
-          this.translate.get('login.error').subscribe(translated => {
+          this.translate.get('login.error').subscribe(translated => 
+{
             this.errorMessage = translated;
           });
         }
@@ -91,32 +103,40 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.loginForm.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.loginForm.get(fieldName);
-    if (field?.hasError('required')) {
+    if (field?.hasError('required'))
+    {
       return 'validation.required';
     }
-    if (field?.hasError('minlength')) {
+    if (field?.hasError('minlength'))
+    {
       const minLength = field.errors?.['minlength']?.requiredLength || 6;
       return `validation.minlength`.replace('{{min}}', String(minLength));
     }
     return '';
   }
 
-  shutdown(): void {
+  shutdown(): void
+  {
     console.log('=== Shutdown button clicked - LoginComponent ===');
     console.log('Step 1: Closing all dialogs...');
     
     // Close all open dialogs (including server unavailable dialog)
-    try {
+    try 
+{
       this.dialog.closeAll();
       console.log('All dialogs closed');
-    } catch (error) {
+    }
+ catch (error)
+    {
       console.error('Error closing dialogs:', error);
     }
     
@@ -125,15 +145,22 @@ export class LoginComponent implements OnInit {
     
     console.log('Step 2: Proceeding with shutdown...');
     
-    if (window.electronAPI && typeof window.electronAPI.shutdown === 'function') {
-      try {
+    if (window.electronAPI && typeof window.electronAPI.shutdown === 'function')
+    {
+      try 
+{
         window.electronAPI.shutdown();
-      } catch (error) {
+      }
+ catch (error)
+      {
         console.error('Error shutting down application:', error);
       }
-    } else {
+    }
+ else
+    {
       console.warn('Electron API not available.');
-      if (typeof window.close === 'function') {
+      if (typeof window.close === 'function')
+      {
         window.close();
       }
     }

@@ -41,7 +41,8 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './sfc-list.component.html',
   styleUrls: ['./sfc-list.component.scss']
 })
-export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['sfcNumber', 'rmaNumber', 'orderNumber', 'customerName', 'status', 'assignedTo', 'actions']);
   showFilters = signal<boolean>(false);
@@ -75,9 +76,11 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
   rmas = this.store.select('rmas');
   processingRMA = signal<string | null>(null);
 
-  constructor() {
+  constructor()
+  {
     // Reinitialize columns when sfcs change (using effect)
-    effect(() => {
+    effect(() =>
+    {
       // Access signal to create dependency
       this.sfcs();
       // Reinitialize columns if templates are available
@@ -86,11 +89,13 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // Find RMAs that need SFC creation (APPROVED or RECEIVED status, and no SFC exists)
-  rmasNeedingSFC = computed(() => {
+  rmasNeedingSFC = computed(() =>
+  {
     const rmasList = this.rmas() || [];
     const sfcsList = this.sfcs() || [];
 
-    return rmasList.filter((rma: RMA) => {
+    return rmasList.filter((rma: RMA) =>
+    {
       if (rma.status !== 'APPROVED' && rma.status !== 'RECEIVED') return false;
       if (!rma.id) return false;
       // Check if SFC already exists for this RMA
@@ -98,21 +103,25 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   });
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadSFCs();
     this.loadRMAs();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.subscriptions.unsubscribe();
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     this.columns.set([
       {
         key: 'sfcNumber',
@@ -180,63 +189,80 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit {
     ]);
   }
 
-  loadSFCs(): void {
+  loadSFCs(): void
+  {
     this.sfcService.loadSFCs(this.isLoading);
   }
 
-  loadRMAs(): void {
+  loadRMAs(): void
+  {
     this.rmaService.loadRMAs(this.isLoading);
   }
 
-  async createSFCFromRMA(rma: RMA): Promise<void> {
+  async createSFCFromRMA(rma: RMA): Promise<void> 
+{
     if (!rma.id) return;
 
-    try {
+    try 
+{
       this.processingRMA.set(rma.id);
       const sfc = await firstValueFrom(this.sfcService.createSFCFromRMA(rma.id));
       // Reload data to show the new SFC
       this.loadSFCs();
       // Navigate to the SFC entry page
-      if (sfc.id) {
+      if (sfc.id)
+      {
         this.router.navigate(['/sfcs', sfc.id]);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error creating SFC from RMA:', err);
       alert('Failed to create SFC from RMA. Please try again.');
-    } finally {
+    }
+ finally
+ {
       this.processingRMA.set(null);
     }
   }
 
-  openAddSFCDialog(): void {
+  openAddSFCDialog(): void
+  {
     this.sfcService.openAddSFCEntry(this.isLoading);
   }
 
-  openEditSFCDialog(sfc: SFC): void {
+  openEditSFCDialog(sfc: SFC): void
+  {
     this.sfcService.openEditSFCEntry(sfc, this.isLoading);
   }
 
-  deleteSFC(sfc: SFC): void {
+  deleteSFC(sfc: SFC): void
+  {
     this.sfcService.openDeleteSFCDialog(sfc, this.isLoading);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/']);
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
 

@@ -7,7 +7,8 @@ import * as Highcharts from 'highcharts';
 
 import { routes } from './app.routes';
 
-export const appConfig: ApplicationConfig = {
+export const appConfig: ApplicationConfig =
+{
   providers: [
     provideRouter(routes),
     provideHttpClient(),

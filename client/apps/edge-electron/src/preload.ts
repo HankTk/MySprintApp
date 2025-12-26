@@ -9,7 +9,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
     chrome: process.versions.chrome,
     electron: process.versions.electron,
   },
-  shutdown: () => {
+  shutdown: () =>
+  {
     console.log('Shutdown called from renderer');
     ipcRenderer.send('app-shutdown');
   },

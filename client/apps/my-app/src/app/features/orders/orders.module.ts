@@ -13,4 +13,6 @@ import { CommonModule } from '@angular/common';
   ],
   exports: []
 })
-export class OrdersModule { }
+export class OrdersModule
+{
+}

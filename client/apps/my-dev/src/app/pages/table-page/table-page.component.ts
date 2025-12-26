@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AxTableComponent, AxCardComponent, MatCardModule } from '@ui/components';
 
-interface SampleData {
+interface SampleData
+{
   id: number;
   name: string;
   email: string;
@@ -17,7 +18,8 @@ interface SampleData {
   templateUrl: './table-page.component.html',
   styleUrls: ['./table-page.component.scss']
 })
-export class TablePageComponent {
+export class TablePageComponent
+{
   dataSource: SampleData[] = [
     { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User', status: 'Active' },

@@ -7,7 +7,8 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class Address {
+public class Address
+{
     private String id;
     private String customerId; // Link to customer by ID
     private String addressType; // "SHIPPING" or "BILLING"

@@ -6,4 +6,5 @@ import { Component } from '@angular/core';
   templateUrl: './ui.html',
   styleUrl: './ui.scss',
 })
-export class Ui {}
+export class Ui
+{

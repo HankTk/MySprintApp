@@ -15,56 +15,71 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/warehouses")
-public class WarehouseController {
+public class WarehouseController
+{
     
     @Autowired
     private WarehouseService warehouseService;
     
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<List<Warehouse>> getAllWarehouses() {
+    public ResponseEntity<List<Warehouse>> getAllWarehouses()
+    {
         return ResponseEntity.ok(warehouseService.getAllWarehouses());
     }
     
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<List<Warehouse>> getActiveWarehouses() {
+    public ResponseEntity<List<Warehouse>> getActiveWarehouses()
+    {
         return ResponseEntity.ok(warehouseService.getActiveWarehouses());
     }
     
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<Warehouse> getWarehouseById(@PathVariable String id) {
+    public ResponseEntity<Warehouse> getWarehouseById(@PathVariable String id)
+{
         return warehouseService.getWarehouseById(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
     
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<Warehouse> createWarehouse(@RequestBody Warehouse warehouse) {
-        try {
+    public ResponseEntity<Warehouse> createWarehouse(@RequestBody Warehouse warehouse)
+    {
+        try
+{
             Warehouse created = warehouseService.createWarehouse(warehouse);
             return ResponseEntity.status(HttpStatus.CREATED).body(created);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+ {
             return ResponseEntity.badRequest().build();
         }
     }
     
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<Warehouse> updateWarehouse(@PathVariable String id, @RequestBody Warehouse warehouse) {
-        try {
+    public ResponseEntity<Warehouse> updateWarehouse(@PathVariable String id, @RequestBody Warehouse warehouse)
+    {
+        try
+{
             Warehouse updated = warehouseService.updateWarehouse(id, warehouse);
             return ResponseEntity.ok(updated);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+ {
             return ResponseEntity.notFound().build();
         }
     }
     
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteWarehouse(@PathVariable String id) {
-        try {
+    public ResponseEntity<Void> deleteWarehouse(@PathVariable String id)
+    {
+        try
+{
             warehouseService.deleteWarehouse(id);
             return ResponseEntity.noContent().build();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+ {
             return ResponseEntity.notFound().build();
         }
     }
 }
-

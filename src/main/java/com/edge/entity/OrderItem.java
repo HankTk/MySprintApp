@@ -7,7 +7,8 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class OrderItem {
+public class OrderItem
+{
     private String id;
     private String productId;
     private String productCode;
@@ -16,8 +17,10 @@ public class OrderItem {
     private BigDecimal unitPrice;
     private BigDecimal lineTotal;
     
-    public void calculateLineTotal() {
-        if (quantity != null && unitPrice != null) {
+    public void calculateLineTotal()
+ {
+        if (quantity != null && unitPrice != null)
+        {
             lineTotal = unitPrice.multiply(BigDecimal.valueOf(quantity));
         }
     }

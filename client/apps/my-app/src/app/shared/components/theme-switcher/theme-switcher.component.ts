@@ -23,10 +23,12 @@ import { AxTooltipDirective } from '@ui/components';
   templateUrl: './theme-switcher.component.html',
   styleUrls: ['./theme-switcher.component.scss']
 })
-export class ThemeSwitcherComponent {
+export class ThemeSwitcherComponent
+{
   themeService = inject(ThemeService);
 
-  switchTheme(theme: Theme): void {
+  switchTheme(theme: Theme): void
+  {
     this.themeService.setTheme(theme);
   }
 }

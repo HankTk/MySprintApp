@@ -8,19 +8,23 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'currency',
   standalone: true
 })
-export class CurrencyPipe implements PipeTransform {
+export class CurrencyPipe implements PipeTransform
+{
   transform(
     value: number | string,
-    currencyCode: string = 'USD',
-    locale: string = 'en-US'
-  ): string {
-    if (value == null) {
+    currencyCode = 'USD',
+    locale = 'en-US'
+  ): string 
+{
+    if (value == null)
+    {
       return '';
     }
 
     const numValue = typeof value === 'string' ? parseFloat(value) : value;
 
-    if (isNaN(numValue)) {
+    if (isNaN(numValue))
+    {
       return '';
     }
 

@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './ax-form-group.component.html',
   styleUrls: ['./ax-form-group.component.scss']
 })
-export class AxFormGroupComponent {
+export class AxFormGroupComponent
+{
 }
 

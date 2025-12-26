@@ -24,7 +24,8 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './date-range-picker-page.component.html',
   styleUrls: ['./date-range-picker-page.component.scss']
 })
-export class DateRangePickerPageComponent {
+export class DateRangePickerPageComponent
+{
   startDate: Date | null = null;
   endDate: Date | null = null;
   
@@ -38,56 +39,71 @@ export class DateRangePickerPageComponent {
   inlineEndDate: Date | null = null;
   inlineDateRange: { start: Date | null; end: Date | null } = { start: null, end: null };
 
-  toggleDateRangePicker(): void {
+  toggleDateRangePicker(): void
+  {
     this.isDateRangePickerOpen = !this.isDateRangePickerOpen;
   }
 
-  closeSingleFieldDateRangePicker(): void {
+  closeSingleFieldDateRangePicker(): void
+  {
     this.isDateRangePickerOpen = false;
   }
 
-  clearSingleFieldDateRange(): void {
+  clearSingleFieldDateRange(): void
+  {
     this.singleFieldStartDate = null;
     this.singleFieldEndDate = null;
     this.isDateRangePickerOpen = false;
   }
 
-  onSingleFieldStartDateChange(date: Date | null): void {
+  onSingleFieldStartDateChange(date: Date | null): void
+  {
     this.singleFieldStartDate = date;
   }
 
-  onSingleFieldEndDateChange(date: Date | null): void {
+  onSingleFieldEndDateChange(date: Date | null): void
+  {
     this.singleFieldEndDate = date;
   }
 
-  getDateRangeDisplay(): string {
-    if (!this.singleFieldStartDate && !this.singleFieldEndDate) {
+  getDateRangeDisplay(): string
+  {
+    if (!this.singleFieldStartDate && !this.singleFieldEndDate)
+    {
       return '';
     }
-    const formatDate = (date: Date | null): string => {
+    const formatDate = (date: Date | null): string =>
+    {
       if (!date) return '';
       return date.toLocaleDateString();
     };
     const start = formatDate(this.singleFieldStartDate);
     const end = formatDate(this.singleFieldEndDate);
-    if (start && end) {
+    if (start && end)
+    {
       return `${start} - ${end}`;
-    } else if (start) {
+    }
+ else if (start)
+ {
       return `From ${start}`;
-    } else if (end) {
+    }
+ else if (end)
+ {
       return `Until ${end}`;
     }
     return '';
   }
 
-  onInlineRangeChange(range: { start: Date | null; end: Date | null }): void {
+  onInlineRangeChange(range: { start: Date | null; end: Date | null }): void
+  {
     this.inlineDateRange = range;
     this.inlineStartDate = range.start;
     this.inlineEndDate = range.end;
   }
 
   @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
+  onDocumentClick(event: MouseEvent): void
+  {
     const target = event.target as HTMLElement;
     const isDateRangeInput = target.closest('.date-range-single-wrapper');
     const isDateRangePopup = target.closest('.date-range-popup');
@@ -105,11 +121,13 @@ export class DateRangePickerPageComponent {
         isDateRangePopup || 
         isDateRangePicker || 
         isDatePicker || 
-        isDatePickerContainer) {
+        isDatePickerContainer)
+        {
       return;
     }
     
-    if (!isDateRangeInput && this.isDateRangePickerOpen) {
+    if (!isDateRangeInput && this.isDateRangePickerOpen)
+    {
       this.isDateRangePickerOpen = false;
     }
   }

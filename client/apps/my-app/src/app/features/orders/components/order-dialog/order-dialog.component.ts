@@ -21,7 +21,8 @@ import { ProductService } from '../../../products/services/product.service';
 import { AddressService } from '../../../addresses/services/address.service';
 import { firstValueFrom } from 'rxjs';
 
-export interface OrderDialogData {
+export interface OrderDialogData
+{
   order?: Order;
   isEdit: boolean;
 }
@@ -47,7 +48,8 @@ export interface OrderDialogData {
   templateUrl: './order-dialog.component.html',
   styleUrls: ['./order-dialog.component.scss']
 })
-export class OrderDialogComponent implements OnInit {
+export class OrderDialogComponent implements OnInit
+{
   orderForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
@@ -69,7 +71,8 @@ export class OrderDialogComponent implements OnInit {
   private productService = inject(ProductService);
   private addressService = inject(AddressService);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: OrderDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: OrderDialogData)
+  {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editOrder') : this.translate.instant('addOrder');
     
@@ -91,26 +94,34 @@ export class OrderDialogComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> 
+{
     await this.loadCustomers();
     await this.loadProducts();
     
-    if (this.isEdit && this.data.order) {
+    if (this.isEdit && this.data.order)
+    {
       this.currentOrder.set(this.data.order);
       this.populateForm(this.data.order);
-      if (this.data.order.customerId) {
+      if (this.data.order.customerId)
+      {
         await this.loadAddresses(this.data.order.customerId);
       }
-    } else {
+    }
+ else
+ {
       // Create a new order first
       await this.createNewOrder();
     }
   }
 
-  private async createNewOrder(): Promise<void> {
-    try {
+  private async createNewOrder(): Promise<void> 
+{
+    try 
+{
       this.loading.set(true);
-      const newOrder: Partial<Order> = {
+      const newOrder: Partial<Order> =
+      {
         status: 'DRAFT',
         items: [],
         subtotal: 0,
@@ -119,149 +130,200 @@ export class OrderDialogComponent implements OnInit {
         total: 0,
       };
       const created = await firstValueFrom(this.orderService.createOrder(newOrder as CreateOrderRequest));
-      if (created && created.id) {
+      if (created && created.id)
+      {
         this.currentOrder.set(created);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error creating order:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  private async loadCustomers(): Promise<void> {
-    try {
+  private async loadCustomers(): Promise<void> 
+{
+    try 
+{
       const customers = await firstValueFrom(this.customerService.getCustomers());
       this.customers.set(customers);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading customers:', err);
     }
   }
 
-  private async loadProducts(): Promise<void> {
-    try {
+  private async loadProducts(): Promise<void> 
+{
+    try 
+{
       const products = await firstValueFrom(this.productService.getProducts());
       // Filter to only active products
       const activeProducts = products.filter(p => p.active !== false);
       this.products.set(activeProducts);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading products:', err);
     }
   }
 
-  private async loadAddresses(customerId: string): Promise<void> {
-    try {
+  private async loadAddresses(customerId: string): Promise<void> 
+{
+    try 
+{
       const addresses = await firstValueFrom(this.addressService.getAddressesByCustomerId(customerId));
       this.addresses.set(addresses);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error loading addresses:', err);
     }
   }
 
-  async onCustomerChange(customerId: string): Promise<void> {
-    if (!customerId) {
+  async onCustomerChange(customerId: string): Promise<void> 
+{
+    if (!customerId)
+    {
       this.addresses.set([]);
       return;
     }
     
     const order = this.currentOrder();
-    if (!order || !order.id) {
+    if (!order || !order.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       // Update order with customer
       const updated = await firstValueFrom(
         this.orderService.updateOrder(order.id, { ...order, customerId })
       );
-      if (updated) {
+      if (updated)
+      {
         this.currentOrder.set(updated);
         this.orderForm.patchValue({ customerId });
       }
       // Load addresses for the customer
       await this.loadAddresses(customerId);
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating customer:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onAddProduct(): Promise<void> {
+  async onAddProduct(): Promise<void> 
+{
     const productId = this.selectedProduct();
     const qty = this.quantity();
     const order = this.currentOrder();
 
-    if (!productId || !order || !order.id) {
+    if (!productId || !order || !order.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.orderService.addOrderItem(order.id, productId, qty)
       );
-      if (updated) {
+      if (updated)
+      {
         this.currentOrder.set(updated);
         this.updateTotalsFromOrder(updated);
         this.selectedProduct.set(null);
         this.quantity.set(1);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error adding product:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onUpdateQuantity(itemId: string, quantity: number): Promise<void> {
+  async onUpdateQuantity(itemId: string, quantity: number): Promise<void> 
+{
     if (quantity < 1) return;
     
     const order = this.currentOrder();
-    if (!order || !order.id) {
+    if (!order || !order.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.orderService.updateOrderItemQuantity(order.id, itemId, quantity)
       );
-      if (updated) {
+      if (updated)
+      {
         this.currentOrder.set(updated);
         this.updateTotalsFromOrder(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error updating quantity:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  async onRemoveItem(itemId: string): Promise<void> {
+  async onRemoveItem(itemId: string): Promise<void> 
+{
     const order = this.currentOrder();
-    if (!order || !order.id) {
+    if (!order || !order.id)
+    {
       return;
     }
 
-    try {
+    try 
+{
       this.loading.set(true);
       const updated = await firstValueFrom(
         this.orderService.removeOrderItem(order.id, itemId)
       );
-      if (updated) {
+      if (updated)
+      {
         this.currentOrder.set(updated);
         this.updateTotalsFromOrder(updated);
       }
-    } catch (err) {
+    }
+ catch (err)
+ {
       console.error('Error removing item:', err);
-    } finally {
+    }
+ finally
+ {
       this.loading.set(false);
     }
   }
 
-  private updateTotalsFromOrder(order: Order): void {
+  private updateTotalsFromOrder(order: Order): void
+ {
     this.orderForm.patchValue({
       subtotal: order.subtotal || 0,
       tax: order.tax || 0,
@@ -270,16 +332,24 @@ export class OrderDialogComponent implements OnInit {
     }, { emitEvent: false });
   }
 
-  private populateForm(order: Order): void {
+  private populateForm(order: Order): void
+ {
     let jsonDataString = '{}';
-    if (order.jsonData) {
-      if (typeof order.jsonData === 'object') {
+    if (order.jsonData)
+    {
+      if (typeof order.jsonData === 'object')
+      {
         jsonDataString = JSON.stringify(order.jsonData, null, 2);
-      } else if (typeof order.jsonData === 'string') {
-        try {
+      }
+ else if (typeof order.jsonData === 'string')
+ {
+        try 
+{
           JSON.parse(order.jsonData);
           jsonDataString = order.jsonData;
-        } catch {
+        }
+ catch
+ {
           jsonDataString = '{}';
         }
       }
@@ -303,37 +373,49 @@ export class OrderDialogComponent implements OnInit {
     });
   }
 
-  private jsonValidator(control: any) {
+  private jsonValidator(control: any)
+ {
     if (!control.value) return null;
-    try {
+    try 
+{
       JSON.parse(control.value);
       return null;
-    } catch (e) {
+    }
+ catch (e)
+ {
       return { invalidJson: true };
     }
   }
 
-  async onSubmit(): Promise<void> {
-    if (this.orderForm.valid) {
+  async onSubmit(): Promise<void> 
+{
+    if (this.orderForm.valid)
+    {
       const formValue = this.orderForm.value;
       const order = this.currentOrder();
       
-      if (!order || !order.id) {
+      if (!order || !order.id)
+      {
         console.error('No order available to submit');
         return;
       }
 
       let jsonData: any = {};
-      if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
-        try {
+      if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
+      {
+        try 
+{
           jsonData = JSON.parse(formValue.jsonData);
-        } catch (e) {
+        }
+ catch (e)
+ {
           return;
         }
       }
 
       // Update the existing order with form values
-      const orderToUpdate: Order = {
+      const orderToUpdate: Order =
+      {
         ...order,
         customerId: formValue.customerId,
         shippingAddressId: formValue.shippingAddressId,
@@ -357,38 +439,46 @@ export class OrderDialogComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close();
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.orderForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.orderForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['invalidJson']) {
+    if (field?.errors)
+    {
+      if (field.errors['invalidJson'])
+      {
         return this.translate.instant('validation.invalidJson');
       }
     }
     return '';
   }
 
-  getProductName(productId?: string): string {
+  getProductName(productId?: string): string
+  {
     if (!productId) return '';
     const product = this.products().find(p => p.id === productId);
     return product?.productName || product?.productCode || '';
   }
 
-  getCustomerName(customerId?: string): string {
+  getCustomerName(customerId?: string): string
+  {
     if (!customerId) return '';
     const customer = this.customers().find(c => c.id === customerId);
     return customer?.companyName || `${customer?.firstName || ''} ${customer?.lastName || ''}`.trim() || '';
   }
 
-  getAddressLabel(addressId?: string): string {
+  getAddressLabel(addressId?: string): string
+  {
     if (!addressId) return '';
     const address = this.addresses().find(a => a.id === addressId);
     if (!address) return '';

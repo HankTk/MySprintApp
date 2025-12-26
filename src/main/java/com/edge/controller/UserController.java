@@ -52,7 +52,6 @@ public class UserController
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<?> createUser(@RequestBody User user)
     {
-        // Allow user creation in two cases:
         // 1. When no users exist (initial user setup) - no authentication required, but role must be Admin
         // 2. When users exist - authentication is required
         boolean hasUsers = authService.hasUsers();
@@ -61,14 +60,17 @@ public class UserController
                                   authentication.isAuthenticated() && 
                                   !authentication.getName().equals("anonymousUser");
         
-        if (hasUsers && !isAuthenticated) {
+        if (hasUsers && !isAuthenticated)
+        {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Map.of("error", "User creation requires authentication when users already exist."));
         }
         
         // For initial user creation (when no users exist), enforce Admin role
-        if (!hasUsers) {
-            if (user.getRole() == null || !user.getRole().equalsIgnoreCase("Admin")) {
+        if (!hasUsers)
+        {
+            if (user.getRole() == null || !user.getRole().equalsIgnoreCase("Admin"))
+            {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(Map.of("error", "Initial user creation must have Admin role."));
             }
@@ -81,7 +83,6 @@ public class UserController
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User userDetails)
     {
-        System.out.println("Received PUT request for user ID: " + id);
         System.out.println("Request body: " + userDetails);
         try
         {

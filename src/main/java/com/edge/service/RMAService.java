@@ -21,7 +21,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class RMAService {
+public class RMAService
+{
     
     @Autowired
     private RMARepository rmaRepository;
@@ -46,31 +47,38 @@ public class RMAService {
     
     private static final String DATA_TYPE_ID = "rmas";
     
-    public List<RMA> getAllRMAs() {
+    public List<RMA> getAllRMAs()
+    {
         return rmaRepository.getAllRMAs();
     }
     
-    public Optional<RMA> getRMAById(String id) {
+    public Optional<RMA> getRMAById(String id)
+    {
         return rmaRepository.getRMAById(id);
     }
     
-    public Optional<RMA> getRMAByRMANumber(String rmaNumber) {
+    public Optional<RMA> getRMAByRMANumber(String rmaNumber)
+    {
         return rmaRepository.getRMAByRMANumber(rmaNumber);
     }
     
-    public List<RMA> getRMAsByOrderId(String orderId) {
+    public List<RMA> getRMAsByOrderId(String orderId)
+    {
         return rmaRepository.getRMAsByOrderId(orderId);
     }
     
-    public List<RMA> getRMAsByCustomerId(String customerId) {
+    public List<RMA> getRMAsByCustomerId(String customerId)
+    {
         return rmaRepository.getRMAsByCustomerId(customerId);
     }
     
-    public List<RMA> getRMAsByStatus(String status) {
+    public List<RMA> getRMAsByStatus(String status)
+    {
         return rmaRepository.getRMAsByStatus(status);
     }
     
-    public RMA createRMA(RMA rma) {
+    public RMA createRMA(RMA rma)
+ {
         // Enrich RMA with order and customer information
         enrichRMAWithOrderInfo(rma);
         enrichRMAItems(rma);
@@ -80,7 +88,8 @@ public class RMAService {
         return created;
     }
     
-    public RMA updateRMA(String id, RMA rmaDetails) {
+    public RMA updateRMA(String id, RMA rmaDetails)
+ {
         System.out.println("RMAService.updateRMA - ID: " + id + ", Status: " + rmaDetails.getStatus());
         
         // Get existing RMA to check status change
@@ -96,10 +105,12 @@ public class RMAService {
         enrichRMAItems(rmaDetails);
         
         // Set received date when status changes to RECEIVED or PROCESSED
-        if (willBeReceived && !wasReceived) {
+        if (willBeReceived && !wasReceived)
+        {
             // Status changing to RECEIVED for the first time
             rmaDetails.setReceivedDate(LocalDateTime.now());
-        } else if (willBeProcessed && !wasReceived && rmaDetails.getReceivedDate() == null) {
+        } else if (willBeProcessed && !wasReceived && rmaDetails.getReceivedDate() == null)
+        {
             // Status changing directly to PROCESSED (skipping RECEIVED)
             // Set receivedDate to indicate items were received
             rmaDetails.setReceivedDate(LocalDateTime.now());
@@ -109,14 +120,17 @@ public class RMAService {
         System.out.println("RMAService.updateRMA - Updated status: " + updated.getStatus());
         
         // Handle inventory adjustments based on status changes
-        if (willBeReceived && !wasReceived) {
+        if (willBeReceived && !wasReceived)
+        {
             // Status changed to RECEIVED - increase inventory
             increaseInventoryForRMA(updated);
-        } else if (willBeProcessed && !wasReceived) {
+        } else if (willBeProcessed && !wasReceived)
+ {
             // Status changed directly to PROCESSED (skipping RECEIVED) - increase inventory
             // This handles the case where RMA is marked as PROCESSED without going through RECEIVED
             increaseInventoryForRMA(updated);
-        } else if (willBeCancelled && wasReceived) {
+        } else if (willBeCancelled && wasReceived)
+ {
             // Status changed to CANCELLED after being received - rollback inventory
             decreaseInventoryForRMA(existingRMA);
         }
@@ -127,7 +141,8 @@ public class RMAService {
         return updated;
     }
     
-    public RMA addRMAItem(String rmaId, String productId, Integer quantity, String reason) {
+    public RMA addRMAItem(String rmaId, String productId, Integer quantity, String reason)
+ {
         RMA rma = rmaRepository.getRMAById(rmaId)
             .orElseThrow(() -> new RuntimeException("RMA not found with id: " + rmaId));
         
@@ -139,13 +154,15 @@ public class RMAService {
             .filter(item -> productId.equals(item.getProductId()))
             .findFirst();
         
-        if (existingItem.isPresent()) {
+        if (existingItem.isPresent())
+        {
             // Update quantity
             RMAItem item = existingItem.get();
             item.setQuantity(item.getQuantity() + quantity);
             item.setReturnedQuantity(item.getQuantity()); // Initially, returned quantity equals requested quantity
             item.calculateLineTotal();
-        } else {
+        } else
+ {
             // Create new item
             RMAItem newItem = new RMAItem();
             newItem.setId(java.util.UUID.randomUUID().toString());
@@ -165,7 +182,8 @@ public class RMAService {
         return rmaRepository.updateRMA(rmaId, rma);
     }
     
-    public RMA updateRMAItemQuantity(String rmaId, String itemId, Integer quantity) {
+    public RMA updateRMAItemQuantity(String rmaId, String itemId, Integer quantity)
+ {
         RMA rma = rmaRepository.getRMAById(rmaId)
             .orElseThrow(() -> new RuntimeException("RMA not found with id: " + rmaId));
         
@@ -175,7 +193,8 @@ public class RMAService {
             .orElseThrow(() -> new RuntimeException("RMA item not found with id: " + itemId));
         
         item.setQuantity(quantity);
-        if (item.getReturnedQuantity() == null || item.getReturnedQuantity() > quantity) {
+        if (item.getReturnedQuantity() == null || item.getReturnedQuantity() > quantity)
+        {
             item.setReturnedQuantity(quantity); // Adjust returned quantity if needed
         }
         item.calculateLineTotal();
@@ -184,7 +203,8 @@ public class RMAService {
         return rmaRepository.updateRMA(rmaId, rma);
     }
     
-    public RMA updateRMAItemReturnedQuantity(String rmaId, String itemId, Integer returnedQuantity) {
+    public RMA updateRMAItemReturnedQuantity(String rmaId, String itemId, Integer returnedQuantity)
+ {
         RMA rma = rmaRepository.getRMAById(rmaId)
             .orElseThrow(() -> new RuntimeException("RMA not found with id: " + rmaId));
         
@@ -200,7 +220,8 @@ public class RMAService {
         return rmaRepository.updateRMA(rmaId, rma);
     }
     
-    public RMA updateRMAItemCondition(String rmaId, String itemId, String condition) {
+    public RMA updateRMAItemCondition(String rmaId, String itemId, String condition)
+ {
         RMA rma = rmaRepository.getRMAById(rmaId)
             .orElseThrow(() -> new RuntimeException("RMA not found with id: " + rmaId));
         
@@ -220,12 +241,14 @@ public class RMAService {
         return updated;
     }
     
-    public RMA removeRMAItem(String rmaId, String itemId) {
+    public RMA removeRMAItem(String rmaId, String itemId)
+ {
         RMA rma = rmaRepository.getRMAById(rmaId)
             .orElseThrow(() -> new RuntimeException("RMA not found with id: " + rmaId));
         
         boolean removed = rma.getItems().removeIf(item -> itemId.equals(item.getId()));
-        if (!removed) {
+        if (!removed)
+        {
             throw new RuntimeException("RMA item not found with id: " + itemId);
         }
         
@@ -233,45 +256,61 @@ public class RMAService {
         return rmaRepository.updateRMA(rmaId, rma);
     }
     
-    public void deleteRMA(String id) {
+    public void deleteRMA(String id)
+ {
         Optional<RMA> rmaToDelete = rmaRepository.getRMAById(id);
         rmaRepository.deleteRMA(id);
         
         // Broadcast deletion via WebSocket
-        if (rmaToDelete.isPresent()) {
+        if (rmaToDelete.isPresent())
+        {
             notificationService.notifyDataChange(DataChangeNotification.ChangeType.DELETE, DATA_TYPE_ID, rmaToDelete.get());
         }
     }
     
-    private void enrichRMAWithOrderInfo(RMA rma) {
-        if (rma.getOrderId() != null) {
-            orderRepository.getOrderById(rma.getOrderId()).ifPresent(order -> {
+    private void enrichRMAWithOrderInfo(RMA rma)
+ {
+        if (rma.getOrderId() != null)
+        {
+            orderRepository.getOrderById(rma.getOrderId()).ifPresent(order ->
+            {
                 rma.setOrderNumber(order.getOrderNumber());
-                if (rma.getCustomerId() == null && order.getCustomerId() != null) {
+                if (rma.getCustomerId() == null && order.getCustomerId() != null)
+                {
                     rma.setCustomerId(order.getCustomerId());
-                    customerRepository.getCustomerById(order.getCustomerId()).ifPresent(customer -> {
+                    customerRepository.getCustomerById(order.getCustomerId()).ifPresent(customer ->
+                    {
                         rma.setCustomerName(customer.getFullName());
                     });
                 }
             });
-        } else if (rma.getCustomerId() != null) {
-            customerRepository.getCustomerById(rma.getCustomerId()).ifPresent(customer -> {
+        } else if (rma.getCustomerId() != null)
+        {
+            customerRepository.getCustomerById(rma.getCustomerId()).ifPresent(customer ->
+            {
                 rma.setCustomerName(customer.getFullName());
             });
         }
     }
     
-    private void enrichRMAItems(RMA rma) {
-        if (rma.getItems() != null) {
-            for (RMAItem item : rma.getItems()) {
-                if (item.getProductId() != null) {
-                    productRepository.getProductById(item.getProductId()).ifPresent(product -> {
+    private void enrichRMAItems(RMA rma)
+ {
+        if (rma.getItems() != null)
+        {
+            for (RMAItem item : rma.getItems())
+            {
+                if (item.getProductId() != null)
+                {
+                    productRepository.getProductById(item.getProductId()).ifPresent(product ->
+                    {
                         item.setProductCode(product.getProductCode());
                         item.setProductName(product.getProductName());
-                        if (item.getUnitPrice() == null) {
+                        if (item.getUnitPrice() == null)
+                        {
                             item.setUnitPrice(product.getUnitPrice());
                         }
-                        if (item.getReturnedQuantity() == null && item.getQuantity() != null) {
+                        if (item.getReturnedQuantity() == null && item.getQuantity() != null)
+                        {
                             item.setReturnedQuantity(item.getQuantity());
                         }
                         item.calculateLineTotal();
@@ -284,7 +323,8 @@ public class RMAService {
     /**
      * Checks if an RMA has been received (status is RECEIVED or PROCESSED and has receivedDate)
      */
-    private boolean isReceivedStatus(RMA rma) {
+    private boolean isReceivedStatus(RMA rma)
+ {
         if (rma == null) return false;
         String status = rma.getStatus();
         return ("RECEIVED".equals(status) || "PROCESSED".equals(status)) 
@@ -294,18 +334,22 @@ public class RMAService {
     /**
      * Increases inventory when RMA items are received/restocked
      */
-    private void increaseInventoryForRMA(RMA rma) {
-        if (rma.getItems() == null || rma.getItems().isEmpty()) {
+    private void increaseInventoryForRMA(RMA rma)
+ {
+        if (rma.getItems() == null || rma.getItems().isEmpty())
+        {
             return;
         }
         
         // Get default warehouse (first active warehouse, or first warehouse if none active)
         List<Warehouse> warehouses = warehouseRepository.getActiveWarehouses();
-        if (warehouses.isEmpty()) {
+        if (warehouses.isEmpty())
+        {
             warehouses = warehouseRepository.getAllWarehouses();
         }
         
-        if (warehouses.isEmpty()) {
+        if (warehouses.isEmpty())
+        {
             System.out.println("Warning: No warehouses found. Cannot increase inventory for RMA " + rma.getId());
             return;
         }
@@ -314,13 +358,16 @@ public class RMAService {
         String warehouseId = defaultWarehouse.getId();
         
         // Increase inventory for each RMA item (restock returned items)
-        for (RMAItem item : rma.getItems()) {
-            if (item.getProductId() != null && item.getReturnedQuantity() != null && item.getReturnedQuantity() > 0) {
+        for (RMAItem item : rma.getItems())
+        {
+            if (item.getProductId() != null && item.getReturnedQuantity() != null && item.getReturnedQuantity() > 0)
+            {
                 try {
                     inventoryService.adjustInventory(item.getProductId(), warehouseId, item.getReturnedQuantity());
                     System.out.println("Increased inventory (restocked) for product " + item.getProductId() + 
                         " by " + item.getReturnedQuantity() + " in warehouse " + warehouseId + " for RMA " + rma.getRmaNumber());
-                } catch (Exception e) {
+                } catch (Exception e)
+ {
                     System.err.println("Error increasing inventory for product " + item.getProductId() + 
                         " in RMA " + rma.getRmaNumber() + ": " + e.getMessage());
                     e.printStackTrace();
@@ -332,18 +379,22 @@ public class RMAService {
     /**
      * Decreases inventory when RMA is cancelled after items were received (rollback restock)
      */
-    private void decreaseInventoryForRMA(RMA rma) {
-        if (rma.getItems() == null || rma.getItems().isEmpty()) {
+    private void decreaseInventoryForRMA(RMA rma)
+ {
+        if (rma.getItems() == null || rma.getItems().isEmpty())
+        {
             return;
         }
         
         // Get default warehouse (first active warehouse, or first warehouse if none active)
         List<Warehouse> warehouses = warehouseRepository.getActiveWarehouses();
-        if (warehouses.isEmpty()) {
+        if (warehouses.isEmpty())
+        {
             warehouses = warehouseRepository.getAllWarehouses();
         }
         
-        if (warehouses.isEmpty()) {
+        if (warehouses.isEmpty())
+        {
             System.out.println("Warning: No warehouses found. Cannot decrease inventory for RMA " + rma.getId());
             return;
         }
@@ -352,14 +403,17 @@ public class RMAService {
         String warehouseId = defaultWarehouse.getId();
         
         // Decrease inventory for each RMA item (rollback restock)
-        for (RMAItem item : rma.getItems()) {
-            if (item.getProductId() != null && item.getReturnedQuantity() != null && item.getReturnedQuantity() > 0) {
+        for (RMAItem item : rma.getItems())
+        {
+            if (item.getProductId() != null && item.getReturnedQuantity() != null && item.getReturnedQuantity() > 0)
+            {
                 try {
                     // Use negative quantity to decrease inventory
                     inventoryService.adjustInventory(item.getProductId(), warehouseId, -item.getReturnedQuantity());
                     System.out.println("Decreased inventory (rollback) for product " + item.getProductId() + 
                         " by " + item.getReturnedQuantity() + " in warehouse " + warehouseId + " for cancelled RMA " + rma.getRmaNumber());
-                } catch (Exception e) {
+                } catch (Exception e)
+ {
                     System.err.println("Error decreasing inventory for product " + item.getProductId() + 
                         " in RMA " + rma.getRmaNumber() + ": " + e.getMessage());
                     e.printStackTrace();

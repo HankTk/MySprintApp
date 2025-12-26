@@ -9,7 +9,8 @@ const __dirname = path.dirname(__filename);
 // Keep a global reference of the window object
 let mainWindow: BrowserWindow | null = null;
 
-function createWindow(): void {
+function createWindow(): void
+{
   // Create the browser window
   mainWindow = new BrowserWindow({
     width: 1400,
@@ -29,12 +30,14 @@ function createWindow(): void {
   const appToLoad = process.env['ELECTRON_APP'] || 'my-app';
   const port = appToLoad === 'my-dev' ? '4300' : '4200';
   
-  if (isDev) {
+  if (isDev)
+  {
     // In development, load from the dev server
     mainWindow.loadURL(`http://localhost:${port}`);
     // Open DevTools in development
     mainWindow.webContents.openDevTools();
-  } else {
+  } else
+ {
     // In production, load from the built files
     const appPath = appToLoad === 'my-dev' ? 'my-dev' : 'my-app';
     const indexPath = path.join(__dirname, `../../${appPath}/index.html`);
@@ -42,32 +45,39 @@ function createWindow(): void {
   }
 
   // Emitted when the window is closed
-  mainWindow.on('closed', () => {
+  mainWindow.on('closed', () =>
+  {
     mainWindow = null;
   });
 }
 
 // Handle app shutdown from renderer - set up before window creation
-ipcMain.on('app-shutdown', () => {
+ipcMain.on('app-shutdown', () =>
+{
   console.log('Received shutdown request from renderer');
   app.quit();
 });
 
 // This method will be called when Electron has finished initialization
-app.whenReady().then(() => {
+app.whenReady().then(() =>
+{
   createWindow();
 
-  app.on('activate', () => {
+  app.on('activate', () =>
+  {
     // On macOS, re-create a window when the dock icon is clicked
-    if (BrowserWindow.getAllWindows().length === 0) {
+    if (BrowserWindow.getAllWindows().length === 0)
+    {
       createWindow();
     }
   });
 });
 
 // Quit when all windows are closed, except on macOS
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+app.on('window-all-closed', () =>
+{
+  if (process.platform !== 'darwin')
+  {
     app.quit();
   }
 });

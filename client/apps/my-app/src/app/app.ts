@@ -23,7 +23,8 @@ export class App implements OnInit
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     // Theme service will initialize automatically, but we ensure it's injected
   }
 }

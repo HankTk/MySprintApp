@@ -33,7 +33,8 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './initial-user.component.html',
   styleUrls: ['./initial-user.component.scss']
 })
-export class InitialUserComponent implements OnInit, OnDestroy {
+export class InitialUserComponent implements OnInit, OnDestroy
+{
   userForm!: FormGroup;
   isLoading = false;
   errorMessage = '';
@@ -47,7 +48,8 @@ export class InitialUserComponent implements OnInit, OnDestroy {
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.checkUsersAndRedirect();
     this.userForm = this.fb.group({
       userid: ['', [Validators.required]],
@@ -57,58 +59,72 @@ export class InitialUserComponent implements OnInit, OnDestroy {
     
     // Periodically check if users exist (in case server becomes available)
     // This helps when server unavailable dialog is closed after retry
-    this.checkUsersInterval = setInterval(() => {
-      if (!isServerUnavailableDialogOpen()) {
+    this.checkUsersInterval = setInterval(() =>
+    {
+      if (!isServerUnavailableDialogOpen())
+      {
         this.checkUsersAndRedirect();
       }
     }, 2000); // Check every 2 seconds
   }
 
-  ngOnDestroy(): void {
-    if (this.checkUsersInterval) {
+  ngOnDestroy(): void
+  {
+    if (this.checkUsersInterval)
+    {
       clearInterval(this.checkUsersInterval);
       this.checkUsersInterval = null;
     }
   }
 
-  private checkUsersAndRedirect(): void {
+  private checkUsersAndRedirect(): void
+ {
     this.authService.checkUsers().subscribe({
-      next: (hasUsers) => {
-        if (hasUsers) {
+      next: (hasUsers) =>
+      {
+        if (hasUsers)
+        {
           console.log('Users already exist, redirecting to login page');
           this.router.navigate(['/login']);
         }
       },
-      error: (error) => {
+      error: (error) =>
+      {
         // Server unavailable - error will be handled by HTTP interceptor
         console.log('Error checking users (server may be unavailable):', error);
       }
     });
   }
 
-  passwordMatchValidator(form: FormGroup) {
+  passwordMatchValidator(form: FormGroup)
+  {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
     
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
+    if (password && confirmPassword && password.value !== confirmPassword.value)
+    {
       confirmPassword.setErrors({ passwordMismatch: true });
       return { passwordMismatch: true };
     }
     return null;
   }
 
-  onSubmit(): void {
+  onSubmit(): void
+  {
     // Prevent form submission if server unavailable dialog is open
-    if (isServerUnavailableDialogOpen()) {
+    if (isServerUnavailableDialogOpen())
+    {
       console.log('Form submission prevented: Server unavailable dialog is open');
       return;
     }
 
-    if (this.userForm.valid) {
+    if (this.userForm.valid)
+    {
       this.isLoading = true;
       this.errorMessage = '';
 
-      const userData: CreateUserRequest = {
+      const userData: CreateUserRequest =
+      {
         userid: this.userForm.value.userid,
         firstName: '',
         lastName: '',
@@ -119,39 +135,50 @@ export class InitialUserComponent implements OnInit, OnDestroy {
       };
 
       this.httpService.post('users', userData).subscribe({
-        next: (createdUser) => {
-          const loginCredentials: LoginRequest = {
+        next: (createdUser) =>
+        {
+          const loginCredentials: LoginRequest =
+          {
             userid: this.userForm.value.userid,
             password: this.userForm.value.password
           };
           
           this.authService.login(loginCredentials).subscribe({
-            next: () => {
+            next: () =>
+            {
               this.isLoading = false;
-              this.authService.checkUsers().subscribe(() => {
+              this.authService.checkUsers().subscribe(() =>
+              {
                 this.router.navigate(['/']);
               });
             },
-            error: (loginError) => {
+            error: (loginError) =>
+            {
               this.isLoading = false;
-              this.authService.checkUsers().subscribe(() => {
+              this.authService.checkUsers().subscribe(() =>
+              {
                 this.router.navigate(['/login']);
               });
             }
           });
         },
-        error: (error) => {
+        error: (error) =>
+        {
           this.isLoading = false;
           // Check if error is due to server being unavailable
-          if (error.status === 0) {
+          if (error.status === 0)
+          {
             this.isServerUnavailable = true;
             // Error will be handled by HTTP interceptor (shows dialog)
             // Don't set errorMessage here as dialog will be shown
             return;
           }
-          if (error.error?.error) {
+          if (error.error?.error)
+          {
             this.errorMessage = error.error.error;
-          } else {
+          }
+ else
+ {
             this.errorMessage = 'initialUser.error';
           }
         }
@@ -159,21 +186,27 @@ export class InitialUserComponent implements OnInit, OnDestroy {
     }
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.userForm.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.userForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['required']) {
+    if (field?.errors)
+    {
+      if (field.errors['required'])
+      {
         return this.translate.instant('validation.required');
       }
-      if (field.errors['minlength']) {
+      if (field.errors['minlength'])
+      {
         return this.translate.instant('validation.minlength', { min: field.errors['minlength'].requiredLength });
       }
-      if (field.errors['passwordMismatch']) {
+      if (field.errors['passwordMismatch'])
+      {
         return this.translate.instant('initialUser.passwordMismatch');
       }
     }
@@ -183,15 +216,19 @@ export class InitialUserComponent implements OnInit, OnDestroy {
   // Expose the function to template
   isServerUnavailableDialogOpen = isServerUnavailableDialogOpen;
 
-  shutdown(): void {
+  shutdown(): void
+  {
     console.log('=== Shutdown button clicked - InitialUserComponent ===');
     console.log('Step 1: Closing all dialogs...');
     
     // Close all open dialogs (including server unavailable dialog)
-    try {
+    try
+    {
       this.dialog.closeAll();
       console.log('All dialogs closed');
-    } catch (error) {
+    }
+    catch (error)
+    {
       console.error('Error closing dialogs:', error);
     }
     
@@ -202,32 +239,45 @@ export class InitialUserComponent implements OnInit, OnDestroy {
     
     console.log('window.electronAPI:', window.electronAPI);
     
-    if (window.electronAPI && typeof window.electronAPI.shutdown === 'function') {
+    if (window.electronAPI && typeof window.electronAPI.shutdown === 'function')
+    {
       console.log('Calling window.electronAPI.shutdown()');
-      try {
+      try
+      {
         window.electronAPI.shutdown();
         console.log('Shutdown called successfully');
-      } catch (error) {
+      }
+      catch (error)
+      {
         console.error('Error shutting down application:', error);
         alert('Error shutting down: ' + error);
       }
-    } else {
+    }
+ else
+ {
       console.warn('Electron API not available.');
       console.log('Attempting window.close()');
-      if (typeof window.close === 'function') {
-        try {
+      if (typeof window.close === 'function')
+      {
+        try 
+{
           window.close();
           console.log('window.close() called');
           // Note: window.close() may not work in all browsers due to security restrictions
           // If it doesn't work, show a message to the user
-          setTimeout(() => {
+          setTimeout(() =>
+          {
             alert('このアプリケーションを閉じるには、ブラウザのタブを閉じてください。');
           }, 100);
-        } catch (error) {
+        }
+ catch (error)
+ {
           console.error('Error closing window:', error);
           alert('このアプリケーションを閉じるには、ブラウザのタブを閉じてください。');
         }
-      } else {
+      }
+ else
+ {
         console.error('window.close is not available');
         alert('このアプリケーションを閉じるには、ブラウザのタブを閉じてください。');
       }

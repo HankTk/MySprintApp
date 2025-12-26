@@ -12,26 +12,32 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnDestroy
+{
   currentPage = 'button';
   private routerSubscription?: Subscription;
 
-  constructor(private router: Router) {
+  constructor(private router: Router)
+  {
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: any) => {
+      .subscribe((event: any) =>
+      {
         const url = event.urlAfterRedirects;
         this.currentPage = url.split('/').pop() || 'button';
       });
   }
 
-  ngOnDestroy(): void {
-    if (this.routerSubscription) {
+  ngOnDestroy(): void
+  {
+    if (this.routerSubscription)
+    {
       this.routerSubscription.unsubscribe();
     }
   }
 
-  onPageChange(page: string): void {
+  onPageChange(page: string): void
+  {
     this.currentPage = page;
     this.router.navigate([`/${page}`]);
   }

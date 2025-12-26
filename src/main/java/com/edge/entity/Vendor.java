@@ -7,7 +7,8 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class Vendor {
+public class Vendor
+{
     private String id;
     private String vendorNumber;
     private String companyName;
@@ -18,8 +19,10 @@ public class Vendor {
     private String addressId;
     private Map<String, Object> jsonData;
 
-    public String getFullName() {
-        if (companyName != null && !companyName.trim().isEmpty()) {
+    public String getFullName()
+    {
+        if (companyName != null && !companyName.trim().isEmpty())
+        {
             return companyName;
         }
         return (lastName != null ? lastName : "") + " " + (firstName != null ? firstName : "").trim();

@@ -12,7 +12,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './ax-spacing.component.html',
   styleUrls: ['./ax-spacing.component.scss']
 })
-export class AxSpacingComponent {
+export class AxSpacingComponent
+{
   @Input() size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   @Input() vertical = false;
   @Input() horizontal = false;

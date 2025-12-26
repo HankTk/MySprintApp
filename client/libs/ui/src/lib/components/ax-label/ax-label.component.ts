@@ -12,7 +12,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './ax-label.component.html',
   styleUrls: ['./ax-label.component.scss']
 })
-export class AxLabelComponent {
+export class AxLabelComponent
+{
   @Input() for?: string;
   @Input() required = false;
 }

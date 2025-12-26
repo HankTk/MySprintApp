@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 
-export interface AxSnackbarConfig {
+export interface AxSnackbarConfig
+{
   duration?: number;
   horizontalPosition?: 'start' | 'center' | 'end' | 'left' | 'right';
   verticalPosition?: 'top' | 'bottom';
@@ -15,7 +16,8 @@ export interface AxSnackbarConfig {
 @Injectable({
   providedIn: 'root'
 })
-export class AxSnackbarService {
+export class AxSnackbarService
+{
   private snackBar = inject(MatSnackBar);
 
   private defaultConfig: AxSnackbarConfig = {
@@ -24,8 +26,10 @@ export class AxSnackbarService {
     verticalPosition: 'bottom'
   };
 
-  show(message: string, action?: string, config?: AxSnackbarConfig): MatSnackBarRef<TextOnlySnackBar> {
-    const mergedConfig: MatSnackBarConfig = {
+  show(message: string, action?: string, config?: AxSnackbarConfig): MatSnackBarRef<TextOnlySnackBar>
+  {
+    const mergedConfig: MatSnackBarConfig =
+    {
       duration: config?.duration ?? this.defaultConfig.duration,
       horizontalPosition: config?.horizontalPosition ?? this.defaultConfig.horizontalPosition,
       verticalPosition: config?.verticalPosition ?? this.defaultConfig.verticalPosition,
@@ -35,14 +39,16 @@ export class AxSnackbarService {
     return this.snackBar.open(message, action, mergedConfig);
   }
 
-  success(message: string, action = 'OK', config?: AxSnackbarConfig): MatSnackBarRef<TextOnlySnackBar> {
+  success(message: string, action = 'OK', config?: AxSnackbarConfig): MatSnackBarRef<TextOnlySnackBar>
+  {
     return this.show(message, action, {
       ...config,
       panelClass: ['ax-snackbar-success', ...(config?.panelClass ? (Array.isArray(config.panelClass) ? config.panelClass : [config.panelClass]) : [])]
     });
   }
 
-  error(message: string, action = 'OK', config?: AxSnackbarConfig): MatSnackBarRef<TextOnlySnackBar> {
+  error(message: string, action = 'OK', config?: AxSnackbarConfig): MatSnackBarRef<TextOnlySnackBar>
+  {
     return this.show(message, action, {
       ...config,
       duration: config?.duration ?? 5000,
@@ -50,21 +56,24 @@ export class AxSnackbarService {
     });
   }
 
-  warning(message: string, action = 'OK', config?: AxSnackbarConfig): MatSnackBarRef<TextOnlySnackBar> {
+  warning(message: string, action = 'OK', config?: AxSnackbarConfig): MatSnackBarRef<TextOnlySnackBar>
+  {
     return this.show(message, action, {
       ...config,
       panelClass: ['ax-snackbar-warning', ...(config?.panelClass ? (Array.isArray(config.panelClass) ? config.panelClass : [config.panelClass]) : [])]
     });
   }
 
-  info(message: string, action = 'OK', config?: AxSnackbarConfig): MatSnackBarRef<TextOnlySnackBar> {
+  info(message: string, action = 'OK', config?: AxSnackbarConfig): MatSnackBarRef<TextOnlySnackBar>
+  {
     return this.show(message, action, {
       ...config,
       panelClass: ['ax-snackbar-info', ...(config?.panelClass ? (Array.isArray(config.panelClass) ? config.panelClass : [config.panelClass]) : [])]
     });
   }
 
-  dismiss(): void {
+  dismiss(): void
+  {
     this.snackBar.dismiss();
   }
 }

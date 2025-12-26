@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './ax-section.component.html',
   styleUrls: ['./ax-section.component.scss']
 })
-export class AxSectionComponent {
+export class AxSectionComponent
+{
 }
 

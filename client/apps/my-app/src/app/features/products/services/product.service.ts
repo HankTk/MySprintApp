@@ -11,7 +11,8 @@ import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService {
+export class ProductService
+{
   private apiUrl = 'http://localhost:8080/api/products';
 
   private http = inject(HttpClient);
@@ -19,27 +20,33 @@ export class ProductService {
   private translate = inject(TranslateService);
   private dialog = inject(MatDialog);
 
-  getProducts(): Observable<Product[]> {
+  getProducts(): Observable<Product[]>
+  {
     return this.http.get<Product[]>(this.apiUrl);
   }
 
-  getProduct(id: string): Observable<Product> {
+  getProduct(id: string): Observable<Product>
+  {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 
-  createProduct(product: CreateProductRequest): Observable<Product> {
+  createProduct(product: CreateProductRequest): Observable<Product>
+  {
     return this.http.post<Product>(this.apiUrl, product);
   }
 
-  updateProduct(id: string, product: Product): Observable<Product> {
+  updateProduct(id: string, product: Product): Observable<Product>
+  {
     return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
   }
 
-  deleteProduct(id: string): Observable<void> {
+  deleteProduct(id: string): Observable<void>
+  {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  loadProducts(isLoading: WritableSignal<boolean>): void {
+  loadProducts(isLoading: WritableSignal<boolean>): void
+  {
     this.resourceManager.loadResource(
       'products',
       isLoading,
@@ -50,7 +57,8 @@ export class ProductService {
   createProductWithNotification(
     productData: CreateProductRequest,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.createResource(
       'products',
       productData,
@@ -63,7 +71,8 @@ export class ProductService {
   updateProductWithNotification(
     productData: Product,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.updateResource(
       'products',
       productData.id!,
@@ -77,7 +86,8 @@ export class ProductService {
   deleteProductWithNotification(
     id: string,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     this.resourceManager.deleteResource(
       'products',
       id,
@@ -87,39 +97,49 @@ export class ProductService {
     );
   }
 
-  openAddProductDialog(isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(ProductDialogComponent, {
+  openAddProductDialog(isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(ProductDialogComponent,
+    {
       data: { isEdit: false } as ProductDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'create') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'create')
+      {
         this.createProductWithNotification(result.product, isLoading);
       }
     });
   }
 
-  openEditProductDialog(product: Product, isLoading: WritableSignal<boolean>): void {
-    const dialogRef = this.dialog.open(ProductDialogComponent, {
+  openEditProductDialog(product: Product, isLoading: WritableSignal<boolean>): void
+  {
+    const dialogRef = this.dialog.open(ProductDialogComponent,
+    {
       data: { product, isEdit: true } as ProductDialogData,
       width: '1200px',
       maxWidth: '90vw',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.action === 'update') {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result && result.action === 'update')
+      {
         this.updateProductWithNotification(result.product, isLoading);
       }
     });
   }
 
-  openDeleteProductDialog(product: Product, isLoading: WritableSignal<boolean>): void {
+  openDeleteProductDialog(product: Product, isLoading: WritableSignal<boolean>): void
+  {
     const productName = product.productName || product.productCode || 'Product';
-    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
+    {
       data: {
         userName: productName,
         userEmail: ''
@@ -129,8 +149,10 @@ export class ProductService {
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
+    dialogRef.afterClosed().subscribe(result => 
+{
+      if (result === true)
+      {
         this.deleteProductWithNotification(product.id!, isLoading);
       }
     });

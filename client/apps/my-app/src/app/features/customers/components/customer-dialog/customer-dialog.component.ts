@@ -12,7 +12,8 @@ import { AddressService } from '../../../addresses/services/address.service';
 import { Address } from '../../../addresses/models/address.model';
 import { firstValueFrom } from 'rxjs';
 
-export interface CustomerDialogData {
+export interface CustomerDialogData
+{
   customer?: Customer;
   isEdit: boolean;
 }
@@ -34,7 +35,8 @@ export interface CustomerDialogData {
   templateUrl: './customer-dialog.component.html',
   styleUrls: ['./customer-dialog.component.scss']
 })
-export class CustomerDialogComponent implements OnInit {
+export class CustomerDialogComponent implements OnInit
+{
   customerForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
@@ -46,7 +48,8 @@ export class CustomerDialogComponent implements OnInit {
   private translate = inject(TranslateService);
   private addressService = inject(AddressService);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: CustomerDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: CustomerDialogData)
+  {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editCustomer') : this.translate.instant('addCustomer');
     
@@ -62,23 +65,30 @@ export class CustomerDialogComponent implements OnInit {
     });
   }
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(): Promise<void> 
+{
     await this.loadAddresses();
-    if (this.isEdit && this.data.customer) {
+    if (this.isEdit && this.data.customer)
+    {
       this.populateForm(this.data.customer);
     }
   }
 
-  private async loadAddresses(): Promise<void> {
-    try {
+  private async loadAddresses(): Promise<void> 
+{
+    try 
+{
       const addresses = await firstValueFrom(this.addressService.getAddresses());
       this.addresses.set(addresses);
-    } catch (error) {
+    }
+ catch (error)
+ {
       console.error('Failed to load addresses:', error);
     }
   }
 
-  getAddressDisplay(address: Address): string {
+  getAddressDisplay(address: Address): string
+  {
     const parts: string[] = [];
     if (address.streetAddress1) parts.push(address.streetAddress1);
     if (address.city) parts.push(address.city);
@@ -90,16 +100,24 @@ export class CustomerDialogComponent implements OnInit {
     return (addressStr || address.id || '') + type;
   }
 
-  private populateForm(customer: Customer): void {
+  private populateForm(customer: Customer): void
+ {
     let jsonDataString = '{}';
-    if (customer.jsonData) {
-      if (typeof customer.jsonData === 'object') {
+    if (customer.jsonData)
+    {
+      if (typeof customer.jsonData === 'object')
+      {
         jsonDataString = JSON.stringify(customer.jsonData, null, 2);
-      } else if (typeof customer.jsonData === 'string') {
-        try {
+      }
+ else if (typeof customer.jsonData === 'string')
+ {
+        try 
+{
           JSON.parse(customer.jsonData);
           jsonDataString = customer.jsonData;
-        } catch {
+        }
+ catch
+ {
           jsonDataString = '{}';
         }
       }
@@ -117,35 +135,48 @@ export class CustomerDialogComponent implements OnInit {
     });
   }
 
-  private jsonValidator(control: any) {
+  private jsonValidator(control: any)
+ {
     if (!control.value) return null;
-    try {
+    try 
+{
       JSON.parse(control.value);
       return null;
-    } catch (e) {
+    }
+ catch (e)
+ {
       return { invalidJson: true };
     }
   }
 
-  get isEnglish(): boolean {
+  get isEnglish(): boolean
+ {
     return this.languageService.isEnglish();
   }
 
-  onSubmit(): void {
-    if (this.customerForm.valid) {
+  onSubmit(): void
+  {
+    if (this.customerForm.valid)
+    {
       const formValue = this.customerForm.value;
       
       let jsonData: any = {};
-      if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
-        try {
+      if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
+      {
+        try 
+{
           jsonData = JSON.parse(formValue.jsonData);
-        } catch (e) {
+        }
+ catch (e)
+ {
           return;
         }
       }
 
-      if (this.isEdit && this.data.customer) {
-        const customerToUpdate: Customer = {
+      if (this.isEdit && this.data.customer)
+      {
+        const customerToUpdate: Customer =
+        {
           id: this.data.customer.id,
           customerNumber: formValue.customerNumber,
           companyName: formValue.companyName,
@@ -157,8 +188,11 @@ export class CustomerDialogComponent implements OnInit {
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', customer: customerToUpdate });
-      } else {
-        const customerToCreate: CreateCustomerRequest = {
+      }
+ else
+ {
+        const customerToCreate: CreateCustomerRequest =
+        {
           customerNumber: formValue.customerNumber,
           companyName: formValue.companyName,
           firstName: formValue.firstName,
@@ -173,22 +207,28 @@ export class CustomerDialogComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close();
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.customerForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.customerForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['email']) {
+    if (field?.errors)
+    {
+      if (field.errors['email'])
+      {
         return this.translate.instant('validation.email');
       }
-      if (field.errors['invalidJson']) {
+      if (field.errors['invalidJson'])
+      {
         return this.translate.instant('validation.invalidJson');
       }
     }

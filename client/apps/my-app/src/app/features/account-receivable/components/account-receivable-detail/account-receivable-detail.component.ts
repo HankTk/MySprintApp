@@ -25,7 +25,8 @@ import { Address } from '../../../addresses/models/address.model';
 
 type AccountReceivableStep = 'invoice' | 'payment' | 'history';
 
-interface HistoryRecord {
+interface HistoryRecord
+{
   step: string;
   status: string;
   timestamp: string;
@@ -58,7 +59,8 @@ interface HistoryRecord {
   templateUrl: './account-receivable-detail.component.html',
   styleUrls: ['./account-receivable-detail.component.scss']
 })
-export class AccountReceivableDetailComponent implements OnInit {
+export class AccountReceivableDetailComponent implements OnInit
+{
   currentStep = signal<AccountReceivableStep>('invoice');
   order = signal<Order | null>(null);
   loading = signal<boolean>(true);
@@ -78,27 +80,33 @@ export class AccountReceivableDetailComponent implements OnInit {
   customers = this.store.select('customers');
   addresses = signal<Address[]>([]);
 
-  selectedCustomer = computed(() => {
+  selectedCustomer = computed(() =>
+  {
     const order = this.order();
     if (!order?.customerId) return null;
     return this.customers().find((c: Customer) => c.id === order.customerId) || null;
   });
 
-  outstandingAmount = computed(() => {
+  outstandingAmount = computed(() =>
+  {
     const order = this.order();
     const payment = this.paymentAmount();
     return Math.max(0, (order?.total || 0) - payment);
   });
 
-  orderHistory = computed(() => {
+  orderHistory = computed(() =>
+  {
     const order = this.order();
     if (!order?.jsonData?.history) return [];
     const allHistory = order.jsonData.history as HistoryRecord[];
-    return allHistory.filter(record => {
-      if (record.step === 'invoicing' || record.step === 'payment') {
+    return allHistory.filter(record =>
+    {
+      if (record.step === 'invoicing' || record.step === 'payment')
+      {
         return true;
       }
-      if (record.step === 'status_change' && record.data) {
+      if (record.step === 'status_change' && record.data)
+      {
         const newStatus = record.data['newStatus'];
         return newStatus === 'INVOICED' || newStatus === 'PAID';
       }
@@ -108,22 +116,28 @@ export class AccountReceivableDetailComponent implements OnInit {
 
   displayedColumns = ['product', 'quantity', 'unitPrice', 'lineTotal'];
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     const invoiceId = this.route.snapshot.paramMap.get('id');
-    if (invoiceId) {
+    if (invoiceId)
+    {
       this.loadOrder(invoiceId);
     }
   }
 
-  private async loadOrder(id: string): Promise<void> {
-    try {
+  private async loadOrder(id: string): Promise<void>
+  {
+    try
+    {
       this.loading.set(true);
       const order = await firstValueFrom(this.orderService.getOrder(id));
-      if (order) {
+      if (order)
+      {
         this.order.set(order);
         
         // Load payment data from jsonData
-        if (order.jsonData) {
+        if (order.jsonData)
+        {
           this.paymentAmount.set(order.jsonData.paymentAmount || 0);
           const paymentDateStr = order.jsonData.paymentDate;
           this.paymentDate.set(paymentDateStr ? new Date(paymentDateStr) : null);
@@ -131,41 +145,57 @@ export class AccountReceivableDetailComponent implements OnInit {
         }
         
         // Load addresses if customer exists
-        if (order.customerId) {
+        if (order.customerId)
+        {
           await this.loadAddresses(order.customerId);
         }
         
         // Set initial step based on order status
-        if (order.status === 'PAID' || (order.jsonData?.paymentAmount && order.jsonData.paymentAmount > 0)) {
+        if (order.status === 'PAID' || (order.jsonData?.paymentAmount && order.jsonData.paymentAmount > 0))
+        {
           this.currentStep.set('history');
-        } else if (order.status === 'INVOICED') {
+        }
+        else if (order.status === 'INVOICED')
+        {
           this.currentStep.set('payment');
-        } else {
+        }
+        else
+        {
           this.currentStep.set('invoice');
         }
       }
-    } catch (err) {
+    }
+    catch (err)
+    {
       console.error('Error loading order:', err);
       this.order.set(null);
-    } finally {
+    }
+    finally
+    {
       this.loading.set(false);
     }
   }
 
-  private async loadAddresses(customerId: string): Promise<void> {
-    try {
+  private async loadAddresses(customerId: string): Promise<void>
+  {
+    try
+    {
       const addresses = await firstValueFrom(this.addressService.getAddressesByCustomerId(customerId));
       this.addresses.set(addresses);
-    } catch (err) {
+    }
+    catch (err)
+    {
       console.error('Error loading addresses:', err);
     }
   }
 
-  async handlePayment(): Promise<void> {
+  async handlePayment(): Promise<void>
+  {
     const order = this.order();
     if (!order || !order.id) return;
 
-    try {
+    try
+    {
       this.submitting.set(true);
       const jsonData = order.jsonData || {};
       jsonData.paymentAmount = this.paymentAmount();
@@ -180,12 +210,14 @@ export class AccountReceivableDetailComponent implements OnInit {
         })
       );
       
-      if (updated) {
+      if (updated)
+      {
         this.order.set(updated);
         
         // Add history record
         const history = jsonData.history || [];
-        const newRecord: HistoryRecord = {
+        const newRecord: HistoryRecord =
+        {
           step: 'payment',
           status: this.paymentAmount() >= (order.total || 0) ? 'PAID' : 'INVOICED',
           timestamp: new Date().toISOString(),
@@ -205,38 +237,50 @@ export class AccountReceivableDetailComponent implements OnInit {
           })
         );
         
-        if (finalUpdated) {
+        if (finalUpdated)
+        {
           this.order.set(finalUpdated);
           this.currentStep.set('history');
           alert('Payment recorded successfully!');
         }
       }
-    } catch (err) {
+    }
+    catch (err)
+    {
       console.error('Error recording payment:', err);
       alert('Failed to record payment');
-    } finally {
+    }
+    finally
+    {
       this.submitting.set(false);
     }
   }
 
-  getCustomerName(): string {
+  getCustomerName(): string
+  {
     const customer = this.selectedCustomer();
     if (!customer) return 'N/A';
     return customer.companyName || `${customer.firstName || ''} ${customer.lastName || ''}`.trim() || customer.email || 'N/A';
   }
 
-  formatDate(dateString?: string | Date): string {
+  formatDate(dateString?: string | Date): string
+  {
     if (!dateString) return 'N/A';
-    try {
+    try
+    {
       const date = dateString instanceof Date ? dateString : new Date(dateString);
       return date.toLocaleDateString();
-    } catch {
+    }
+    catch
+    {
       return String(dateString);
     }
   }
 
-  formatDateTime(dateString: string): string {
-    try {
+  formatDateTime(dateString: string): string
+  {
+    try
+    {
       const date = new Date(dateString);
       return date.toLocaleString('en-US', {
         year: 'numeric',
@@ -245,13 +289,17 @@ export class AccountReceivableDetailComponent implements OnInit {
         hour: '2-digit',
         minute: '2-digit'
       });
-    } catch {
+    }
+    catch
+    {
       return dateString;
     }
   }
 
-  getStepLabel(step: string): string {
-    const stepLabels: Record<string, string> = {
+  getStepLabel(step: string): string
+  {
+    const stepLabels: Record<string, string> =
+    {
       'invoicing': 'accountsReceivable.history.stepLabels.invoicing',
       'payment': 'accountsReceivable.history.stepLabels.payment',
       'status_change': 'accountsReceivable.history.stepLabels.statusChange'
@@ -259,17 +307,21 @@ export class AccountReceivableDetailComponent implements OnInit {
     return stepLabels[step] || step;
   }
 
-  getStatusLabel(status?: string): string {
+  getStatusLabel(status?: string): string
+  {
     if (!status) return 'N/A';
-    const statusMap: Record<string, string> = {
+    const statusMap: Record<string, string> =
+    {
       'INVOICED': 'accountsReceivable.history.statusLabels.invoiced',
       'PAID': 'accountsReceivable.history.statusLabels.paid'
     };
     return statusMap[status] || status;
   }
 
-  getDataKeyLabel(key: string): string {
-    const keyMap: Record<string, string> = {
+  getDataKeyLabel(key: string): string
+  {
+    const keyMap: Record<string, string> =
+    {
       'invoiceNumber': 'accountsReceivable.history.dataLabels.invoiceNumber',
       'invoiceDate': 'accountsReceivable.history.dataLabels.invoiceDate',
       'paymentAmount': 'accountsReceivable.history.dataLabels.paymentAmount',
@@ -281,26 +333,35 @@ export class AccountReceivableDetailComponent implements OnInit {
     return keyMap[key] || key;
   }
 
-  formatDataValue(key: string, value: any): string {
+  formatDataValue(key: string, value: any): string
+  {
     // Handle null or undefined
-    if (value == null) {
+    if (value == null)
+    {
       return 'N/A';
     }
     
     // Handle objects - convert to JSON string
-    if (typeof value === 'object' && !(value instanceof Date)) {
-      try {
+    if (typeof value === 'object' && !(value instanceof Date))
+    {
+      try
+      {
         return JSON.stringify(value);
-      } catch {
+      }
+      catch
+      {
         return 'N/A';
       }
     }
     
-    if (key === 'oldStatus' || key === 'newStatus') {
+    if (key === 'oldStatus' || key === 'newStatus')
+    {
       return this.getStatusLabel(String(value));
     }
-    if (key === 'paymentMethod') {
-      const methodMap: Record<string, string> = {
+    if (key === 'paymentMethod')
+    {
+      const methodMap: Record<string, string> =
+      {
         'BANK_TRANSFER': 'accountsReceivable.payment.method.bankTransfer',
         'CREDIT_CARD': 'accountsReceivable.payment.method.creditCard',
         'CASH': 'accountsReceivable.payment.method.cash',
@@ -309,19 +370,23 @@ export class AccountReceivableDetailComponent implements OnInit {
       };
       return methodMap[String(value)] || String(value);
     }
-    if (key === 'paymentAmount' && typeof value === 'number') {
+    if (key === 'paymentAmount' && typeof value === 'number')
+    {
       return `$${value.toFixed(2)}`;
     }
-    if ((key === 'invoiceDate' || key === 'paymentDate') && value) {
+    if ((key === 'invoiceDate' || key === 'paymentDate') && value)
+    {
       return this.formatDate(String(value));
     }
     return String(value);
   }
 
-  isStepCompleted(step: AccountReceivableStep): boolean {
+  isStepCompleted(step: AccountReceivableStep): boolean
+  {
     const order = this.order();
     if (!order) return false;
-    switch (step) {
+    switch (step)
+    {
       case 'invoice':
         return !!order.invoiceNumber;
       case 'payment':
@@ -333,15 +398,18 @@ export class AccountReceivableDetailComponent implements OnInit {
     }
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/account-receivable']);
   }
 
-  hasDataKeys(data?: Record<string, any>): boolean {
+  hasDataKeys(data?: Record<string, any>): boolean
+  {
     return data ? Object.keys(data).length > 0 : false;
   }
 
-  toString(value: string | number | symbol): string {
+  toString(value: string | number | symbol): string
+  {
     return String(value);
   }
 }

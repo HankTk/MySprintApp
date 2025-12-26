@@ -9,14 +9,16 @@ export type SuccessHook = (data: any) => void;
 export type ErrorHook = (error: any) => void;
 export type CompleteHook = () => void;
 
-export interface ResourceHooks {
+export interface ResourceHooks
+{
   onSuccess?: SuccessHook;
   onError?: ErrorHook;
   onComplete?: CompleteHook;
 }
 
 @Injectable({ providedIn: 'root' })
-export class ResourceService {
+export class ResourceService
+{
 
   private data = inject(HttpService);
   private snackBar = inject(MatSnackBar);
@@ -25,7 +27,8 @@ export class ResourceService {
   protected defaultSuccessHandler(
     data: any,
     isLoading: WritableSignal<boolean>
-  ): void {
+  ): void 
+{
     isLoading.set(false);
     globalHandlers.next(data);
   }
@@ -34,13 +37,15 @@ export class ResourceService {
     error: any,
     isLoading: WritableSignal<boolean>,
     message: string
-  ): void {
+  ): void 
+{
     this.showSnackBar(message, 'error');
     isLoading.set(false);
     globalHandlers.error(error);
   }
 
-  protected defaultCompleteHandler(): void {
+  protected defaultCompleteHandler(): void
+  {
     // Default complete handler (can be overridden)
   }
 
@@ -49,31 +54,38 @@ export class ResourceService {
     isLoading: WritableSignal<boolean>,
     errorMessage?: string,
     hooks?: ResourceHooks
-  ): void {
+  ): void 
+{
     isLoading.set(true);
     this.data.get(resource).subscribe({
-      next: (data) => {
+      next: (data) =>
+      {
         // Execute default processing first
         this.defaultSuccessHandler(data, isLoading);
         // Then execute hooks if provided
-        if (hooks?.onSuccess) {
+        if (hooks?.onSuccess)
+        {
           hooks.onSuccess(data);
         }
       },
-      error: (error) => {
+      error: (error) =>
+      {
         // Execute default processing first
-        const message = errorMessage || this.translate.instant('messages.failedToLoad', { resource });
+        const message = errorMessage || this.translate.instant('messages.failedToLoad');
         this.defaultErrorHandler(error, isLoading, message);
         // Then execute hooks if provided
-        if (hooks?.onError) {
+        if (hooks?.onError)
+        {
           hooks.onError(error);
         }
       },
-      complete: () => {
+      complete: () =>
+      {
         // Execute default processing first
         this.defaultCompleteHandler();
         // Then execute hooks if provided
-        if (hooks?.onComplete) {
+        if (hooks?.onComplete)
+        {
           hooks.onComplete();
         }
       }
@@ -85,9 +97,10 @@ export class ResourceService {
     isLoading: WritableSignal<boolean>,
     resource: string,
     successMessage?: string
-  ): void {
+  ): void 
+{
     isLoading.set(false);
-    const message = successMessage || this.translate.instant('messages.resourceCreatedSuccessfully', { resource });
+    const message = successMessage || this.translate.instant('messages.resourceCreatedSuccessfully');
     this.showSnackBar(message, 'success');
     globalHandlers.next(result);
   }
@@ -99,31 +112,38 @@ export class ResourceService {
     successMessage?: string,
     errorMessage?: string,
     hooks?: ResourceHooks
-  ): void {
+  ): void 
+{
     isLoading.set(true);
     this.data.post(resource, data).subscribe({
-      next: (result) => {
+      next: (result) =>
+      {
         // Execute default processing first
         this.defaultCreateSuccessHandler(result, isLoading, resource, successMessage);
         // Then execute hooks if provided
-        if (hooks?.onSuccess) {
+        if (hooks?.onSuccess)
+        {
           hooks.onSuccess(result);
         }
       },
-      error: (error) => {
+      error: (error) =>
+      {
         // Execute default processing first
-        const message = errorMessage || this.translate.instant('messages.failedToCreateResource', { resource });
+        const message = errorMessage || this.translate.instant('messages.failedToCreateResource');
         this.defaultErrorHandler(error, isLoading, message);
         // Then execute hooks if provided
-        if (hooks?.onError) {
+        if (hooks?.onError)
+        {
           hooks.onError(error);
         }
       },
-      complete: () => {
+      complete: () =>
+      {
         // Execute default processing first
         this.defaultCompleteHandler();
         // Then execute hooks if provided
-        if (hooks?.onComplete) {
+        if (hooks?.onComplete)
+        {
           hooks.onComplete();
         }
       }
@@ -135,9 +155,10 @@ export class ResourceService {
     isLoading: WritableSignal<boolean>,
     resource: string,
     successMessage?: string
-  ): void {
+  ): void 
+{
     isLoading.set(false);
-    const message = successMessage || this.translate.instant('messages.resourceUpdatedSuccessfully', { resource });
+    const message = successMessage || this.translate.instant('messages.resourceUpdatedSuccessfully');
     this.showSnackBar(message, 'success');
     globalHandlers.next(result);
   }
@@ -150,36 +171,44 @@ export class ResourceService {
     successMessage?: string,
     errorMessage?: string,
     hooks?: ResourceHooks
-  ): void {
-    if (!id) {
+  ): void 
+{
+    if (!id)
+    {
       console.error(`${resource} ID is missing:`, data);
       return;
     }
 
     isLoading.set(true);
     this.data.put(resource, id, data).subscribe({
-      next: (result) => {
+      next: (result) =>
+      {
         // Execute default processing first
         this.defaultUpdateSuccessHandler(result, isLoading, resource, successMessage);
         // Then execute hooks if provided
-        if (hooks?.onSuccess) {
+        if (hooks?.onSuccess)
+        {
           hooks.onSuccess(result);
         }
       },
-      error: (error) => {
+      error: (error) =>
+      {
         // Execute default processing first
-        const message = errorMessage || this.translate.instant('messages.failedToUpdateResource', { resource });
+        const message = errorMessage || this.translate.instant('messages.failedToUpdateResource');
         this.defaultErrorHandler(error, isLoading, message);
         // Then execute hooks if provided
-        if (hooks?.onError) {
+        if (hooks?.onError)
+        {
           hooks.onError(error);
         }
       },
-      complete: () => {
+      complete: () =>
+      {
         // Execute default processing first
         this.defaultCompleteHandler();
         // Then execute hooks if provided
-        if (hooks?.onComplete) {
+        if (hooks?.onComplete)
+        {
           hooks.onComplete();
         }
       }
@@ -190,9 +219,10 @@ export class ResourceService {
     isLoading: WritableSignal<boolean>,
     resource: string,
     successMessage?: string
-  ): void {
+  ): void 
+{
     isLoading.set(false);
-    const message = successMessage || this.translate.instant('messages.resourceDeletedSuccessfully', { resource });
+    const message = successMessage || this.translate.instant('messages.resourceDeletedSuccessfully');
     this.showSnackBar(message, 'success');
     globalHandlers.next(null);
   }
@@ -204,38 +234,46 @@ export class ResourceService {
     successMessage?: string,
     errorMessage?: string,
     hooks?: ResourceHooks
-  ): void {
+  ): void 
+{
     isLoading.set(true);
     this.data.delete(resource, id).subscribe({
-      next: (result) => {
+      next: (result) =>
+      {
         // Execute default processing first
         this.defaultDeleteSuccessHandler(isLoading, resource, successMessage);
         // Then execute hooks if provided
-        if (hooks?.onSuccess) {
+        if (hooks?.onSuccess)
+        {
           hooks.onSuccess(result);
         }
       },
-      error: (error) => {
+      error: (error) =>
+      {
         // Execute default processing first
-        const message = errorMessage || this.translate.instant('messages.failedToDeleteResource', { resource });
+        const message = errorMessage || this.translate.instant('messages.failedToDeleteResource');
         this.defaultErrorHandler(error, isLoading, message);
         // Then execute hooks if provided
-        if (hooks?.onError) {
+        if (hooks?.onError)
+        {
           hooks.onError(error);
         }
       },
-      complete: () => {
+      complete: () =>
+      {
         // Execute default processing first
         this.defaultCompleteHandler();
         // Then execute hooks if provided
-        if (hooks?.onComplete) {
+        if (hooks?.onComplete)
+        {
           hooks.onComplete();
         }
       }
     });
   }
 
-  private showSnackBar(message: string, type: 'success' | 'error'): void {
+  private showSnackBar(message: string, type: 'success' | 'error'): void
+  {
     const closeLabel = this.translate.instant('messages.close');
     this.snackBar.open(message, closeLabel, {
       duration: 5000,

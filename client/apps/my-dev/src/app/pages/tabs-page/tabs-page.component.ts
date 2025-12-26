@@ -10,10 +10,12 @@ import { AxCardComponent, MatCardModule } from '@ui/components';
   templateUrl: './tabs-page.component.html',
   styleUrls: ['./tabs-page.component.scss']
 })
-export class TabsPageComponent {
+export class TabsPageComponent
+{
   selectedIndex = 0;
 
-  onTabChange(index: number): void {
+  onTabChange(index: number): void
+  {
     console.log('Tab changed to:', index);
   }
 }

@@ -16,7 +16,8 @@ let currentServerUnavailableDialogRef: any = null;
  * HTTP Error Interceptor
  * Handles HTTP errors globally and displays user-friendly error messages
  */
-export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
+export const httpErrorInterceptor: HttpInterceptorFn = (req, next) =>
+{
 
   const snackBar = inject(MatSnackBar);
   const dialog = inject(MatDialog);
@@ -24,43 +25,52 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
 
   return next(req).pipe(
-    catchError((error: HttpErrorResponse) => {
+    catchError((error: HttpErrorResponse) =>
+    {
       let messageKey = '';
       let showDialog = false;
       
       // Handle different error types
-      if (error.status === 0) {
+      if (error.status === 0)
+      {
         // Network error or server unavailable
         // Status 0 typically means server is not reachable (not running, CORS issue, etc.)
         // Show modal dialog instead of toast for server unavailable
         messageKey = 'messages.serverUnavailable';
         showDialog = true;
       } 
-      else if (error.status >= 500) {
+      else if (error.status >= 500)
+ {
         // Server error
         messageKey = 'messages.serverError';
       } 
-      else if (error.status === 401) {
+      else if (error.status === 401)
+ {
         // Unauthorized - token expired or invalid
         // Don't logout for login endpoint
-        if (!req.url.includes('/auth/login')) {
+        if (!req.url.includes('/auth/login'))
+        {
           authService.logout();
         }
         messageKey = 'messages.unauthorized';
       } 
-      else if (error.status === 403) {
+      else if (error.status === 403)
+ {
         // Forbidden
         messageKey = 'messages.forbidden';
       } 
-      else if (error.status === 404) {
+      else if (error.status === 404)
+ {
         // Not found
         messageKey = 'messages.notFound';
       }
 
       // Show modal dialog for server unavailable
-      if (showDialog && !serverUnavailableDialogOpen) {
+      if (showDialog && !serverUnavailableDialogOpen)
+      {
         serverUnavailableDialogOpen = true;
-        const dialogRef = dialog.open(ServerUnavailableDialogComponent, {
+        const dialogRef = dialog.open(ServerUnavailableDialogComponent,
+        {
           width: '100vw',
           maxWidth: '100vw',
           height: '100vh',
@@ -77,13 +87,15 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
         // Store dialog reference globally so it can be closed from shutdown button
         currentServerUnavailableDialogRef = dialogRef;
 
-        dialogRef.afterClosed().subscribe(() => {
+        dialogRef.afterClosed().subscribe(() =>
+        {
           serverUnavailableDialogOpen = false;
           currentServerUnavailableDialogRef = null;
         });
       }
       // Show snackbar for other errors
-      else if (messageKey && !showDialog) {
+      else if (messageKey && !showDialog)
+ {
         const message = translate.instant(messageKey);
         const closeLabel = translate.instant('messages.close');
         snackBar.open(message, closeLabel, {
@@ -101,18 +113,22 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
  * Close server unavailable dialog from outside (e.g., shutdown button)
  * This function can be called from components to close the dialog
  */
-export function closeServerUnavailableDialog(): void {
+export function closeServerUnavailableDialog(): void
+{
   console.log('closeServerUnavailableDialog called', { 
     hasRef: !!currentServerUnavailableDialogRef, 
     isOpen: serverUnavailableDialogOpen 
   });
-  if (currentServerUnavailableDialogRef) {
+  if (currentServerUnavailableDialogRef)
+  {
     console.log('Closing dialog...');
     currentServerUnavailableDialogRef.close();
     currentServerUnavailableDialogRef = null;
     serverUnavailableDialogOpen = false;
     console.log('Dialog closed');
-  } else {
+  }
+ else
+ {
     console.warn('No dialog reference to close');
   }
 }
@@ -121,10 +137,13 @@ export function closeServerUnavailableDialog(): void {
  * Show server unavailable dialog
  * This function can be called from components to show the dialog
  */
-export function showServerUnavailableDialog(dialog: MatDialog, translate: TranslateService): void {
-  if (!serverUnavailableDialogOpen) {
+export function showServerUnavailableDialog(dialog: MatDialog, translate: TranslateService): void
+{
+  if (!serverUnavailableDialogOpen)
+  {
     serverUnavailableDialogOpen = true;
-    const dialogRef = dialog.open(ServerUnavailableDialogComponent, {
+    const dialogRef = dialog.open(ServerUnavailableDialogComponent,
+    {
       width: '100vw',
       maxWidth: '100vw',
       height: '100vh',
@@ -140,7 +159,8 @@ export function showServerUnavailableDialog(dialog: MatDialog, translate: Transl
 
     currentServerUnavailableDialogRef = dialogRef;
 
-    dialogRef.afterClosed().subscribe(() => {
+    dialogRef.afterClosed().subscribe(() =>
+    {
       serverUnavailableDialogOpen = false;
       currentServerUnavailableDialogRef = null;
     });
@@ -151,6 +171,7 @@ export function showServerUnavailableDialog(dialog: MatDialog, translate: Transl
  * Check if server unavailable dialog is currently open
  * This function can be called from components to check if the dialog is open
  */
-export function isServerUnavailableDialogOpen(): boolean {
+export function isServerUnavailableDialogOpen(): boolean
+{
   return serverUnavailableDialogOpen;
 }

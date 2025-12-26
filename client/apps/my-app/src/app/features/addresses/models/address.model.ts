@@ -1,4 +1,5 @@
-export interface Address {
+export interface Address
+{
   id?: string;
   customerId?: string;
   addressType?: string; // "SHIPPING" or "BILLING"
@@ -14,7 +15,8 @@ export interface Address {
   jsonData?: any;
 }
 
-export interface CreateAddressRequest {
+export interface CreateAddressRequest
+{
   customerId?: string;
   addressType?: string;
   streetAddress1?: string;

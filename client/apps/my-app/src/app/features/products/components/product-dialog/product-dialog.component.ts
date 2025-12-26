@@ -10,7 +10,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../../shared/services/language.service';
 import { AxButtonComponent, AxIconComponent } from '@ui/components';
 
-export interface ProductDialogData {
+export interface ProductDialogData
+{
   product?: Product;
   isEdit: boolean;
 }
@@ -33,7 +34,8 @@ export interface ProductDialogData {
   templateUrl: './product-dialog.component.html',
   styleUrls: ['./product-dialog.component.scss']
 })
-export class ProductDialogComponent implements OnInit {
+export class ProductDialogComponent implements OnInit
+{
   productForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
@@ -43,7 +45,8 @@ export class ProductDialogComponent implements OnInit {
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
   
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ProductDialogData) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ProductDialogData)
+  {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editProduct') : this.translate.instant('addProduct');
     
@@ -59,22 +62,32 @@ export class ProductDialogComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (this.isEdit && this.data.product) {
+  ngOnInit(): void
+  {
+    if (this.isEdit && this.data.product)
+    {
       this.populateForm(this.data.product);
     }
   }
 
-  private populateForm(product: Product): void {
+  private populateForm(product: Product): void
+ {
     let jsonDataString = '{}';
-    if (product.jsonData) {
-      if (typeof product.jsonData === 'object') {
+    if (product.jsonData)
+    {
+      if (typeof product.jsonData === 'object')
+      {
         jsonDataString = JSON.stringify(product.jsonData, null, 2);
-      } else if (typeof product.jsonData === 'string') {
-        try {
+      }
+ else if (typeof product.jsonData === 'string')
+ {
+        try 
+{
           JSON.parse(product.jsonData);
           jsonDataString = product.jsonData;
-        } catch {
+        }
+ catch
+ {
           jsonDataString = '{}';
         }
       }
@@ -92,31 +105,43 @@ export class ProductDialogComponent implements OnInit {
     });
   }
 
-  private jsonValidator(control: any) {
+  private jsonValidator(control: any)
+ {
     if (!control.value) return null;
-    try {
+    try 
+{
       JSON.parse(control.value);
       return null;
-    } catch (e) {
+    }
+ catch (e)
+ {
       return { invalidJson: true };
     }
   }
 
-  onSubmit(): void {
-    if (this.productForm.valid) {
+  onSubmit(): void
+  {
+    if (this.productForm.valid)
+    {
       const formValue = this.productForm.value;
       
       let jsonData: any = {};
-      if (formValue.jsonData && formValue.jsonData.trim() !== '{}') {
-        try {
+      if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
+      {
+        try 
+{
           jsonData = JSON.parse(formValue.jsonData);
-        } catch (e) {
+        }
+ catch (e)
+ {
           return;
         }
       }
 
-      if (this.isEdit && this.data.product) {
-        const productToUpdate: Product = {
+      if (this.isEdit && this.data.product)
+      {
+        const productToUpdate: Product =
+        {
           id: this.data.product.id,
           productCode: formValue.productCode,
           productName: formValue.productName,
@@ -128,8 +153,11 @@ export class ProductDialogComponent implements OnInit {
           jsonData: jsonData
         };
         this.dialogRef.close({ action: 'update', product: productToUpdate });
-      } else {
-        const productToCreate: CreateProductRequest = {
+      }
+ else
+ {
+        const productToCreate: CreateProductRequest =
+        {
           productCode: formValue.productCode,
           productName: formValue.productName,
           description: formValue.description,
@@ -144,22 +172,28 @@ export class ProductDialogComponent implements OnInit {
     }
   }
 
-  onCancel(): void {
+  onCancel(): void
+  {
     this.dialogRef.close();
   }
 
-  isFieldInvalid(fieldName: string): boolean {
+  isFieldInvalid(fieldName: string): boolean
+  {
     const field = this.productForm.get(fieldName);
     return field ? field.invalid && field.touched : false;
   }
 
-  getErrorMessage(fieldName: string): string {
+  getErrorMessage(fieldName: string): string
+  {
     const field = this.productForm.get(fieldName);
-    if (field?.errors) {
-      if (field.errors['min']) {
+    if (field?.errors)
+    {
+      if (field.errors['min'])
+      {
         return this.translate.instant('validation.min', { min: field.errors['min'].min });
       }
-      if (field.errors['invalidJson']) {
+      if (field.errors['invalidJson'])
+      {
         return this.translate.instant('validation.invalidJson');
       }
     }

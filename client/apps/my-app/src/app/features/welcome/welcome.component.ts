@@ -8,7 +8,8 @@ import { Subscription } from 'rxjs';
 import { AxIconComponent } from '@ui/components';
 import { MatCardModule } from '@angular/material/card';
 
-interface MenuItem {
+interface MenuItem
+{
   id: string;
   route: string;
   icon: string;
@@ -28,7 +29,8 @@ interface MenuItem {
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss']
 })
-export class WelcomeComponent implements OnInit, OnDestroy {
+export class WelcomeComponent implements OnInit, OnDestroy
+{
   private router = inject(Router);
   private authService = inject(AuthService);
   private translate = inject(TranslateService);
@@ -49,34 +51,41 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     { id: 'master', route: '/master', icon: 'storage', labelKey: 'menu.master' },
   ];
 
-  constructor() {
-    effect(() => {
+  constructor()
+  {
+    effect(() =>
+    {
       const user = this.authService.currentUser();
       this.currentUser.set(user);
       this.updateWelcomeMessage();
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.updateWelcomeMessage();
     
-    this.langSubscription = this.translate.onLangChange.subscribe(() => {
+    this.langSubscription = this.translate.onLangChange.subscribe(() =>
+    {
       this.updateWelcomeMessage();
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.langSubscription?.unsubscribe();
   }
 
-  private updateWelcomeMessage(): void {
+  private updateWelcomeMessage(): void
+  {
     const user = this.currentUser();
     const userName = user?.firstName || user?.userid || this.translate.instant('welcome.defaultUser');
-    const message = this.translate.instant('welcome.message', { name: userName });
+    const message = this.translate.instant('welcome.message', { userName });
     this.welcomeMessage.set(message);
   }
 
-  navigateTo(route: string): void {
+  navigateTo(route: string): void
+  {
     this.router.navigate([route]);
   }
 }

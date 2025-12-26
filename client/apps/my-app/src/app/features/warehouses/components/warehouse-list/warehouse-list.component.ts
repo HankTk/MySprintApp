@@ -38,7 +38,8 @@ import { WarehouseService } from '../../services/warehouse.service';
   templateUrl: './warehouse-list.component.html',
   styleUrls: ['./warehouse-list.component.scss']
 })
-export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['warehouseCode', 'warehouseName', 'address', 'description', 'active', 'actions']);
   showFilters = signal<boolean>(false);
@@ -70,9 +71,11 @@ export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit 
 
   warehouses = this.store.select('warehouses');
 
-  constructor() {
+  constructor()
+  {
     // Reinitialize columns when warehouses change (using effect)
-    effect(() => {
+    effect(() =>
+    {
       // Access signal to create dependency
       this.warehouses();
       // Reinitialize columns if templates are available
@@ -80,20 +83,24 @@ export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit 
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadWarehouses();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.subscriptions.unsubscribe();
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     this.columns.set([
       {
         key: 'warehouseCode',
@@ -157,39 +164,48 @@ export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit 
     ]);
   }
 
-  loadWarehouses(): void {
+  loadWarehouses(): void
+  {
     this.warehouseService.loadWarehouses(this.isLoading);
   }
 
-  openAddWarehouseDialog(): void {
+  openAddWarehouseDialog(): void
+  {
     this.warehouseService.openAddWarehouseDialog(this.isLoading);
   }
 
-  openEditWarehouseDialog(warehouse: Warehouse): void {
+  openEditWarehouseDialog(warehouse: Warehouse): void
+  {
     this.warehouseService.openEditWarehouseDialog(warehouse, this.isLoading);
   }
 
-  deleteWarehouse(warehouse: Warehouse): void {
+  deleteWarehouse(warehouse: Warehouse): void
+  {
     this.warehouseService.openDeleteWarehouseDialog(warehouse, this.isLoading);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/master']);
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
 

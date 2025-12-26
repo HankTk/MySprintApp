@@ -39,7 +39,8 @@ import { AddressService } from '../../services/address.service';
   templateUrl: './address-list.component.html',
   styleUrls: ['./address-list.component.scss']
 })
-export class AddressListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AddressListComponent implements OnInit, OnDestroy, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['addressType', 'streetAddress1', 'city', 'state', 'postalCode', 'country', 'actions']);
   showFilters = signal<boolean>(false);
@@ -72,9 +73,11 @@ export class AddressListComponent implements OnInit, OnDestroy, AfterViewInit {
 
   addresses = this.store.select('addresses');
 
-  constructor() {
+  constructor()
+  {
     // Reinitialize columns when addresses change (using effect)
-    effect(() => {
+    effect(() =>
+    {
       // Access signal to create dependency
       this.addresses();
       // Reinitialize columns if templates are available
@@ -82,20 +85,24 @@ export class AddressListComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadAddresses();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.subscriptions.unsubscribe();
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     this.columns.set([
       {
         key: 'addressType',
@@ -163,19 +170,23 @@ export class AddressListComponent implements OnInit, OnDestroy, AfterViewInit {
     ]);
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
 
@@ -188,27 +199,33 @@ export class AddressListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  loadAddresses(): void {
+  loadAddresses(): void
+  {
     this.addressService.loadAddresses(this.isLoading);
   }
 
-  openAddAddressDialog(): void {
+  openAddAddressDialog(): void
+  {
     this.addressService.openAddAddressDialog(this.isLoading);
   }
 
-  openEditAddressDialog(address: Address): void {
+  openEditAddressDialog(address: Address): void
+  {
     this.addressService.openEditAddressDialog(address, this.isLoading);
   }
 
-  deleteAddress(address: Address): void {
+  deleteAddress(address: Address): void
+  {
     this.addressService.openDeleteAddressDialog(address, this.isLoading);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/master']);
   }
 
-  getAddressTypeLabel(addressType?: string): string {
+  getAddressTypeLabel(addressType?: string): string
+  {
     if (!addressType) return '-';
     const key = addressType.toLowerCase();
     return this.translate.instant(key) || addressType;

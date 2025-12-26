@@ -44,7 +44,8 @@ import { AxTooltipDirective } from '@ui/components';
   templateUrl: './order-list.component.html',
   styleUrls: ['./order-list.component.scss']
 })
-export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
+export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit
+{
   isLoading = signal<boolean>(false);
   displayedColumns = signal<string[]>(['orderNumber', 'customerName', 'orderDate', 'status', 'total', 'actions']);
   showFilters = signal<boolean>(false);
@@ -93,40 +94,48 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
   // No need for separate filteredOrders computed - ax-table handles filtering internally
   filteredOrders = this.orders;
 
-  constructor() {
+  constructor()
+  {
     // Reinitialize columns when orders or customers change (using effect)
-    effect(() => {
+    effect(() =>
+    {
       // Access signals to create dependency
       this.orders();
       this.customers();
       // Reinitialize columns if templates are available
-      if (this.statusCellTemplate) {
+      if (this.statusCellTemplate)
+      {
         this.initializeColumns();
       }
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void
+  {
     this.loadOrders();
     this.loadCustomers();
 
     this.subscriptions.add(
       this.router.events
         .pipe(filter(event => event instanceof NavigationEnd))
-        .subscribe((event: any) => {
-          if (event.url === '/orders' || event.urlAfterRedirects === '/orders') {
+        .subscribe((event: any) =>
+        {
+          if (event.url === '/orders' || event.urlAfterRedirects === '/orders')
+          {
             this.loadOrders();
           }
         })
     );
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void
+  {
     // Initialize columns after view init so templates are available
     this.initializeColumns();
   }
 
-  private initializeColumns(): void {
+  private initializeColumns(): void
+ {
     this.columns.set([
       {
         key: 'orderNumber',
@@ -144,11 +153,14 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
         sortable: true,
         filterable: true,
         filterType: 'select',
-        filterOptions: (data: Order[]): FilterOption[] => {
+        filterOptions: (data: Order[]): FilterOption[] => 
+{
           const customers = this.customers() || [];
           const customerMap = new Map<string, string>();
-          data.forEach(order => {
-            if (order.customerId && !customerMap.has(order.customerId)) {
+          data.forEach(order => 
+{
+            if (order.customerId && !customerMap.has(order.customerId))
+            {
               const customer = customers.find((c: Customer) => c.id === order.customerId);
               const name = customer ? (customer.companyName || `${customer.lastName} ${customer.firstName}` || customer.email || order.customerId) : (order.customerId || '');
               customerMap.set(order.customerId, name);
@@ -211,56 +223,70 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
     ]);
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void
+  {
     this.subscriptions.unsubscribe();
   }
 
-  loadOrders(): void {
+  loadOrders(): void
+  {
     this.orderService.loadOrders(this.isLoading);
   }
 
-  loadCustomers(): void {
+  loadCustomers(): void
+  {
     this.customerService.loadCustomers(this.isLoading);
   }
 
-  openAddOrderDialog(): void {
+  openAddOrderDialog(): void
+  {
     this.orderService.openAddOrderDialog(this.isLoading);
   }
 
-  openEditOrderDialog(order: Order): void {
+  openEditOrderDialog(order: Order): void
+  {
     this.orderService.openEditOrderDialog(order, this.isLoading);
   }
 
 
-  getCustomerName(customerId?: string): string {
+  getCustomerName(customerId?: string): string
+  {
     if (!customerId) return 'N/A';
     const customers = this.customers() || [];
     const customer = customers.find((c: Customer) => c.id === customerId);
-    if (customer) {
+    if (customer)
+    {
       return customer.companyName || `${customer.lastName} ${customer.firstName}` || customer.email || customerId;
     }
     return customerId;
   }
 
-  formatDate(dateString?: string): string {
+  formatDate(dateString?: string): string
+  {
     if (!dateString) return 'N/A';
-    try {
+    try 
+{
       const date = new Date(dateString);
       return date.toLocaleDateString();
-    } catch {
+    }
+ catch
+ {
       return dateString;
     }
   }
 
-  getStatusColor(status?: string): string {
+  getStatusColor(status?: string): string
+  {
     return this.orderService.getStatusColor(status);
   }
 
-  getStatusBackgroundColor(status?: string): string {
+  getStatusBackgroundColor(status?: string): string
+  {
     return this.orderService.getStatusBackgroundColor(status);
   }
 
-  getStatusLabel(status?: string): string {
+  getStatusLabel(status?: string): string
+  {
     if (!status) return 'N/A';
     // Convert status like "PENDING_APPROVAL" to "pendingApproval" to match translation keys
     const camelCaseStatus = status.toLowerCase().split('_').map((word, index) =>
@@ -272,27 +298,33 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
     return translated && translated !== key ? translated : status;
   }
 
-  deleteOrder(order: Order): void {
+  deleteOrder(order: Order): void
+  {
     this.orderService.openDeleteOrderDialog(order, this.isLoading);
   }
 
-  goBack(): void {
+  goBack(): void
+  {
     this.router.navigate(['/']);
   }
 
-  clearTableFilters(): void {
-    if (this.axTable) {
+  clearTableFilters(): void
+  {
+    if (this.axTable)
+    {
       this.axTable.clearFilters();
     }
   }
 
-  getClearFiltersLabel(): string {
+  getClearFiltersLabel(): string
+  {
     const translated = this.languageService.instant('clearFilters');
     // If translation returns the key itself, it means the key wasn't found
     return translated && translated !== 'clearFilters' ? translated : 'Clear Filters';
   }
 
-  toggleFilters(): void {
+  toggleFilters(): void
+  {
     console.log('[OrderList] toggleFilters() CALLED!');
     const currentValue = this.showFilters();
     const newValue = !currentValue;
@@ -316,7 +348,8 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cdr.detectChanges();
 
     // Additional check after a short delay
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       console.log('[OrderList] After change detection:', {
         showFilters: this.showFilters(),
         showFilterValue: this.showFilterValue

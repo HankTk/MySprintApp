@@ -1,4 +1,5 @@
-export interface RMAItem {
+export interface RMAItem
+{
   id?: string;
   productId?: string;
   productCode?: string;
@@ -11,7 +12,8 @@ export interface RMAItem {
   condition?: string;
 }
 
-export interface RMA {
+export interface RMA
+{
   id?: string;
   rmaNumber?: string;
   orderId?: string;
@@ -30,7 +32,8 @@ export interface RMA {
   jsonData?: any;
 }
 
-export interface CreateRMARequest {
+export interface CreateRMARequest
+{
   orderId?: string;
   orderNumber?: string;
   customerId?: string;
