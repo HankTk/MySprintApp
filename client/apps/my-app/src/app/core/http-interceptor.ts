@@ -58,8 +58,24 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) =>
         }
         else if (error.status === 403)
         {
-          // Forbidden
-          messageKey = 'messages.forbidden';
+          // Forbidden - could be:
+          // 1. User not authenticated (no token or expired/invalid token)
+          // 2. User authenticated but lacks permission
+          // If user appears authenticated but gets 403, likely token is expired/invalid
+          // Treat as authentication failure and redirect to login
+          if (authService.hasToken())
+          {
+            // User has a token but got 403 - likely expired or invalid
+            // Clear token and redirect to login
+            authService.logout();
+            messageKey = 'messages.unauthorized';
+          }
+          else
+          {
+            // No token - user needs to log in
+            authService.logout();
+            messageKey = 'messages.unauthorized';
+          }
         }
         else if (error.status === 404)
         {
