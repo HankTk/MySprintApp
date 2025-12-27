@@ -39,12 +39,12 @@ export class GeneralLedgerService
         const entries: GLEntry[] = [];
         
         // Process orders
-        const processedOrders = orders.filter(order => 
+        const processedOrders = orders.filter(order =>
           order.status === 'SHIPPED' || order.status === 'INVOICED' || order.status === 'PAID'
         );
         
-        processedOrders.forEach(order => 
-{
+        processedOrders.forEach(order =>
+        {
           const customer = customers.find(c => c.id === order.customerId);
           const customerName = customer 
             ? (customer.companyName || `${customer.lastName || ''} ${customer.firstName || ''}`.trim() || customer.email || this.translate.instant('generalLedger.unknown'))
@@ -143,12 +143,12 @@ export class GeneralLedgerService
         });
         
         // Process Purchase Orders
-        const processedPOs = purchaseOrders.filter(po => 
+        const processedPOs = purchaseOrders.filter(po =>
           po.status === 'RECEIVED' || po.status === 'INVOICED' || po.status === 'PAID'
         );
         
-        processedPOs.forEach(po => 
-{
+        processedPOs.forEach(po =>
+        {
           const vendor = vendors.find(v => v.id === po.supplierId);
           const supplierName = vendor 
             ? (vendor.companyName || `${vendor.lastName || ''} ${vendor.firstName || ''}`.trim() || vendor.email || this.translate.instant('generalLedger.unknown'))
@@ -158,8 +158,8 @@ export class GeneralLedgerService
           let receivedDate: string | null = null;
           if (po.jsonData?.receivedDate)
           {
-            try 
-{
+            try
+            {
               const receivedDateValue = po.jsonData.receivedDate;
               if (typeof receivedDateValue === 'string')
               {
@@ -167,14 +167,14 @@ export class GeneralLedgerService
                 {
                   receivedDate = receivedDateValue;
                 }
- else
- {
+                else
+                {
                   receivedDate = new Date(receivedDateValue).toISOString().split('T')[0];
                 }
               }
             }
- catch (e)
- {
+            catch (e)
+            {
               console.warn('Error parsing receivedDate:', e);
             }
           }
@@ -263,8 +263,8 @@ export class GeneralLedgerService
                 {
                   paymentDate = paymentDateValue;
                 }
- else
- {
+                else
+                {
                   paymentDate = new Date(paymentDateValue).toISOString().split('T')[0];
                 }
               }

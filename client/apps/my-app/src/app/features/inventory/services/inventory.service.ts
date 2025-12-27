@@ -62,8 +62,8 @@ export class InventoryService
   createInventoryWithNotification(
     inventoryData: CreateInventoryRequest,
     isLoading: WritableSignal<boolean>
-  ): void 
-{
+  ): void
+  {
     this.resourceManager.createResource(
       'inventory',
       inventoryData,
@@ -76,8 +76,8 @@ export class InventoryService
   updateInventoryWithNotification(
     inventoryData: Inventory,
     isLoading: WritableSignal<boolean>
-  ): void 
-{
+  ): void
+  {
     this.resourceManager.updateResource(
       'inventory',
       inventoryData.id!,
@@ -91,8 +91,8 @@ export class InventoryService
   deleteInventoryWithNotification(
     id: string,
     isLoading: WritableSignal<boolean>
-  ): void 
-{
+  ): void
+  {
     this.resourceManager.deleteResource(
       'inventory',
       id,
@@ -105,15 +105,15 @@ export class InventoryService
   openAddInventoryDialog(isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(InventoryDialogComponent,
-    {
-      data: { isEdit: false } as InventoryDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+      {
+        data: { isEdit: false } as InventoryDialogData,
+        width: '1200px',
+        maxWidth: '90vw',
+        disableClose: true
+      });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'create')
       {
         this.createInventoryWithNotification(result.inventory, isLoading);
@@ -124,15 +124,15 @@ export class InventoryService
   openEditInventoryDialog(inventory: Inventory, isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(InventoryDialogComponent,
-    {
-      data: { inventory, isEdit: true } as InventoryDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+      {
+        data: { inventory, isEdit: true } as InventoryDialogData,
+        width: '1200px',
+        maxWidth: '90vw',
+        disableClose: true
+      });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'update')
       {
         this.updateInventoryWithNotification(result.inventory, isLoading);
@@ -144,18 +144,18 @@ export class InventoryService
   {
     const inventoryLabel = `Product: ${inventory.productId}, Warehouse: ${inventory.warehouseId}`;
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
-    {
-      data: {
-        userName: inventoryLabel,
-        userEmail: ''
-      } as DeleteConfirmDialogData,
-      width: '500px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+      {
+        data: {
+          userName: inventoryLabel,
+          userEmail: ''
+        } as DeleteConfirmDialogData,
+        width: '500px',
+        maxWidth: '90vw',
+        disableClose: true
+      });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result === true)
       {
         this.deleteInventoryWithNotification(inventory.id!, isLoading);

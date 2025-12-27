@@ -65,8 +65,8 @@ export class CustomerDialogComponent implements OnInit
     });
   }
 
-  async ngOnInit(): Promise<void> 
-{
+  async ngOnInit(): Promise<void>
+  {
     await this.loadAddresses();
     if (this.isEdit && this.data.customer)
     {
@@ -74,15 +74,15 @@ export class CustomerDialogComponent implements OnInit
     }
   }
 
-  private async loadAddresses(): Promise<void> 
-{
-    try 
-{
+  private async loadAddresses(): Promise<void>
+  {
+    try
+    {
       const addresses = await firstValueFrom(this.addressService.getAddresses());
       this.addresses.set(addresses);
     }
- catch (error)
- {
+    catch (error)
+    {
       console.error('Failed to load addresses:', error);
     }
   }
@@ -101,7 +101,7 @@ export class CustomerDialogComponent implements OnInit
   }
 
   private populateForm(customer: Customer): void
- {
+  {
     let jsonDataString = '{}';
     if (customer.jsonData)
     {
@@ -109,15 +109,15 @@ export class CustomerDialogComponent implements OnInit
       {
         jsonDataString = JSON.stringify(customer.jsonData, null, 2);
       }
- else if (typeof customer.jsonData === 'string')
- {
-        try 
-{
+      else if (typeof customer.jsonData === 'string')
+      {
+        try
+        {
           JSON.parse(customer.jsonData);
           jsonDataString = customer.jsonData;
         }
- catch
- {
+        catch
+        {
           jsonDataString = '{}';
         }
       }
@@ -136,21 +136,21 @@ export class CustomerDialogComponent implements OnInit
   }
 
   private jsonValidator(control: any)
- {
+  {
     if (!control.value) return null;
-    try 
-{
+    try
+    {
       JSON.parse(control.value);
       return null;
     }
- catch (e)
- {
+    catch (e)
+    {
       return { invalidJson: true };
     }
   }
 
   get isEnglish(): boolean
- {
+  {
     return this.languageService.isEnglish();
   }
 
@@ -163,12 +163,12 @@ export class CustomerDialogComponent implements OnInit
       let jsonData: any = {};
       if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
       {
-        try 
-{
+        try
+        {
           jsonData = JSON.parse(formValue.jsonData);
         }
- catch (e)
- {
+        catch (e)
+        {
           return;
         }
       }
@@ -189,8 +189,8 @@ export class CustomerDialogComponent implements OnInit
         };
         this.dialogRef.close({ action: 'update', customer: customerToUpdate });
       }
- else
- {
+      else
+      {
         const customerToCreate: CreateCustomerRequest =
         {
           customerNumber: formValue.customerNumber,

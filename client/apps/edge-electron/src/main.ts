@@ -36,8 +36,9 @@ function createWindow(): void
     mainWindow.loadURL(`http://localhost:${port}`);
     // Open DevTools in development
     mainWindow.webContents.openDevTools();
-  } else
- {
+  }
+  else
+  {
     // In production, load from the built files
     const appPath = appToLoad === 'my-dev' ? 'my-dev' : 'my-app';
     const indexPath = path.join(__dirname, `../../${appPath}/index.html`);

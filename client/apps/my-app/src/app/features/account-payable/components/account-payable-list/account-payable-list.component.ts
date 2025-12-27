@@ -125,7 +125,7 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit
   }
 
   private initializeColumns(): void
- {
+  {
     this.columns.set([
       {
         key: 'invoiceNumber',
@@ -152,12 +152,12 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit
         sortable: true,
         filterable: true,
         filterType: 'select',
-        filterOptions: (data: PurchaseOrder[]): FilterOption[] => 
-{
+        filterOptions: (data: PurchaseOrder[]): FilterOption[] =>
+        {
           const vendors = this.vendors() || [];
           const vendorMap = new Map<string, string>();
-          data.forEach(po => 
-{
+          data.forEach(po =>
+          {
             if (po.supplierId && !vendorMap.has(po.supplierId))
             {
               const vendor = vendors.find((v: Vendor) => v.id === po.supplierId);
@@ -288,12 +288,12 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit
   }
 
   private loadPurchaseOrders(): void
- {
+  {
     this.purchaseOrderService.loadPurchaseOrders(this.isLoading);
   }
 
   private loadVendors(): void
- {
+  {
     this.vendorService.loadVendors(this.isLoading);
   }
 
@@ -308,13 +308,13 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit
   formatDate(dateString?: string | Date): string
   {
     if (!dateString) return 'N/A';
-    try 
-{
+    try
+    {
       const date = dateString instanceof Date ? dateString : new Date(dateString);
       return date.toLocaleDateString();
     }
- catch
- {
+    catch
+    {
       return String(dateString);
     }
   }

@@ -125,7 +125,7 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit
   }
 
   private initializeColumns(): void
- {
+  {
     this.columns.set([
       {
         key: 'invoiceNumber',
@@ -152,12 +152,12 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit
         sortable: true,
         filterable: true,
         filterType: 'select',
-        filterOptions: (data: Order[]): FilterOption[] => 
-{
+        filterOptions: (data: Order[]): FilterOption[] =>
+        {
           const customers = this.customers() || [];
           const customerMap = new Map<string, string>();
-          data.forEach(order => 
-{
+          data.forEach(order =>
+          {
             if (order.customerId && !customerMap.has(order.customerId))
             {
               const customer = customers.find((c: Customer) => c.id === order.customerId);
@@ -272,12 +272,12 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit
   }
 
   private loadOrders(): void
- {
+  {
     this.orderService.loadOrders(this.isLoading);
   }
 
   private loadCustomers(): void
- {
+  {
     this.customerService.loadCustomers(this.isLoading);
   }
 
@@ -292,13 +292,13 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit
   formatDate(dateString?: string | Date): string
   {
     if (!dateString) return 'N/A';
-    try 
-{
+    try
+    {
       const date = dateString instanceof Date ? dateString : new Date(dateString);
       return date.toLocaleDateString();
     }
- catch
- {
+    catch
+    {
       return String(dateString);
     }
   }

@@ -37,8 +37,8 @@ export class AuthService
   {
     return this.http.get<{ hasUsers: boolean }>(`${this.apiUrl}/auth/check-users`).pipe(
       map(response => response.hasUsers),
-      tap(hasUsers => 
-{
+      tap(hasUsers =>
+      {
         this.hasUsers.set(hasUsers);
         localStorage.setItem(this.HAS_USERS_KEY, String(hasUsers));
       }),
@@ -56,8 +56,8 @@ export class AuthService
   login(credentials: LoginRequest): Observable<User>
   {
     return this.http.post<{ user: User; token: string }>(`${this.apiUrl}/auth/login`, credentials).pipe(
-      tap(response => 
-{
+      tap(response =>
+      {
         const { user, token } = response;
         this.currentUser.set(user);
         localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(user));
@@ -97,18 +97,18 @@ export class AuthService
   /**
    * Get stored user from localStorage
    */
-  private getStoredUser(): User | null 
-{
-    try 
-{
+  private getStoredUser(): User | null
+  {
+    try
+    {
       const stored = localStorage.getItem(this.CURRENT_USER_KEY);
       if (stored)
       {
         return JSON.parse(stored);
       }
     }
- catch (e)
- {
+    catch (e)
+    {
       console.error('Error parsing stored user', e);
     }
     return null;

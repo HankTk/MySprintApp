@@ -65,8 +65,8 @@ export class InventoryDialogComponent implements OnInit
     });
   }
 
-  async ngOnInit(): Promise<void> 
-{
+  async ngOnInit(): Promise<void>
+  {
     await Promise.all([
       this.loadProducts(),
       this.loadWarehouses()
@@ -77,32 +77,32 @@ export class InventoryDialogComponent implements OnInit
     }
   }
 
-  private async loadProducts(): Promise<void> 
-{
-    try 
-{
+  private async loadProducts(): Promise<void>
+  {
+    try
+    {
       const products = await firstValueFrom(this.productService.getProducts());
       // Filter to show only active products
       const activeProducts = products.filter(p => p.active !== false);
       this.products.set(activeProducts);
     }
- catch (error)
- {
+    catch (error)
+    {
       console.error('Failed to load products:', error);
     }
   }
 
-  private async loadWarehouses(): Promise<void> 
-{
-    try 
-{
+  private async loadWarehouses(): Promise<void>
+  {
+    try
+    {
       const warehouses = await firstValueFrom(this.warehouseService.getWarehouses());
       // Filter to show only active warehouses
       const activeWarehouses = warehouses.filter(w => w.active !== false);
       this.warehouses.set(activeWarehouses);
     }
- catch (error)
- {
+    catch (error)
+    {
       console.error('Failed to load warehouses:', error);
     }
   }
@@ -126,7 +126,7 @@ export class InventoryDialogComponent implements OnInit
   }
 
   private populateForm(inventory: Inventory): void
- {
+  {
     let jsonDataString = '{}';
     if (inventory.jsonData)
     {
@@ -134,15 +134,15 @@ export class InventoryDialogComponent implements OnInit
       {
         jsonDataString = JSON.stringify(inventory.jsonData, null, 2);
       }
- else if (typeof inventory.jsonData === 'string')
- {
-        try 
-{
+      else if (typeof inventory.jsonData === 'string')
+      {
+        try
+        {
           JSON.parse(inventory.jsonData);
           jsonDataString = inventory.jsonData;
         }
- catch
- {
+        catch
+        {
           jsonDataString = '{}';
         }
       }
@@ -157,15 +157,15 @@ export class InventoryDialogComponent implements OnInit
   }
 
   private jsonValidator(control: any)
- {
+  {
     if (!control.value) return null;
-    try 
-{
+    try
+    {
       JSON.parse(control.value);
       return null;
     }
- catch (e)
- {
+    catch (e)
+    {
       return { invalidJson: true };
     }
   }
@@ -179,12 +179,12 @@ export class InventoryDialogComponent implements OnInit
       let jsonData: any = {};
       if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
       {
-        try 
-{
+        try
+        {
           jsonData = JSON.parse(formValue.jsonData);
         }
- catch (e)
- {
+        catch (e)
+        {
           return;
         }
       }
@@ -201,8 +201,8 @@ export class InventoryDialogComponent implements OnInit
         };
         this.dialogRef.close({ action: 'update', inventory: inventoryToUpdate });
       }
- else
- {
+      else
+      {
         const inventoryToCreate: CreateInventoryRequest =
         {
           productId: formValue.productId,

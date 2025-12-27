@@ -159,7 +159,7 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
   
   @Input() 
   set showFilter(value: boolean)
- {
+  {
     const oldValue = this._showFilter;
     // Only log and process if value actually changed
     if (oldValue !== value)
@@ -177,15 +177,16 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
       {
         this.cdr.detectChanges();
       });
-    } else
- {
+    }
+    else
+    {
       // Value didn't change, just update internal value silently
       this._showFilter = value;
     }
   }
   
   get showFilter(): boolean
- {
+  {
     return this._showFilter ?? false;
   }
   
@@ -270,8 +271,9 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
         this.cdr.detectChanges();
         console.log('[AxTable] After change detection - showFilter:', this.showFilter);
       });
-    } else
- {
+    }
+    else
+    {
       // Log when showFilter is checked but not changed
       console.log('[AxTable] ngOnChanges called but showFilter not in changes. Current showFilter:', this.showFilter);
       console.log('[AxTable] All changes:', Object.keys(changes));
@@ -295,7 +297,7 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
   }
 
   private initializeColumns(): void
- {
+  {
     if (this.columns && this.columns.length > 0)
     {
       // Use column definitions
@@ -313,8 +315,9 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
         width: col.width,
         align: col.align || 'left'
       }));
-    } else if (this.displayedColumns && this.displayedColumns.length > 0)
- {
+    }
+    else if (this.displayedColumns && this.displayedColumns.length > 0)
+    {
       // Legacy: Convert string array to column definitions
       this.computedColumns = this.displayedColumns.map(key => ({
         key,
@@ -351,14 +354,14 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
   }
 
   private updateData(): void
- {
+  {
     this.sortedData = [...this.dataSource];
     this.applyFilters();
     this.applySorting();
   }
 
   private applyFilters(): void
- {
+  {
     // Debug: log all active filters
     console.log('[Date Filter] applyFilters called, active filters:', JSON.stringify(this.columnFilters, (key, value) =>
     {
@@ -386,8 +389,9 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
           {
             return true; // No filter applied
           }
-        } else if (!filterValue)
- {
+        }
+        else if (!filterValue)
+        {
           return true; // No filter applied
         }
         
@@ -457,8 +461,9 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
                 const day = cellValue[2];
                 cellDate = new Date(year, month, day);
               }
-            } else if (typeof cellValue === 'string')
- {
+            }
+            else if (typeof cellValue === 'string')
+            {
               // Parse ISO date string properly to avoid timezone issues
               // If it's an ISO string like "2025-12-18T11:56:47.154625", extract date parts
               if (cellValue.includes('T'))
@@ -478,8 +483,9 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
             else if (cellValue instanceof Date)
             {
               cellDate = new Date(cellValue.getTime());
-            } else if (typeof cellValue === 'number')
- {
+            }
+            else if (typeof cellValue === 'number')
+            {
               // Handle timestamp
               cellDate = new Date(cellValue);
             }
@@ -528,8 +534,9 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
           {
             // Exact match for select/autocomplete
             return String(cellValue) === filterValue;
-          } else
- {
+          }
+          else
+          {
             // Text filter - contains match
             return String(cellValue).toLowerCase().includes(filterValue.toLowerCase());
           }
@@ -541,7 +548,7 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
   }
 
   private applySorting(): void
- {
+  {
     if (this.activeSort && this.activeSort.direction)
     {
       const column = this.computedColumns.find(col => col.key === this.activeSort!.active);
@@ -578,7 +585,7 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
     const fields = column.field.split('.');
     let value: any = row;
     for (const field of fields)
-{
+    {
       value = value?.[field];
       if (value == null) break;
     }
@@ -633,8 +640,9 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
         startType: typeof filterDateRange.start,
         endType: typeof filterDateRange.end
       });
-    } else
- {
+    }
+    else
+    {
       // Clear filter if both dates are null
       delete this.columnFilters[columnKey];
       this.dateRangeFilters[columnKey] = { start: null, end: null };
@@ -818,13 +826,14 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
       // Wait for next tick in case template isn't ready yet
       setTimeout(() =>
       {
-        if (this.dateRangePopupTemplate)
-        {
-          this.toggleDateRangePicker(columnKey, event);
-        } else
- {
-          console.error('Date range popup template still not found after delay');
-        }
+          if (this.dateRangePopupTemplate)
+          {
+            this.toggleDateRangePicker(columnKey, event);
+          }
+          else
+          {
+            console.error('Date range popup template still not found after delay');
+          }
       }, 100);
       return;
     }
@@ -845,13 +854,13 @@ export class AxTableComponent<T = any> implements OnInit, OnChanges, OnDestroy
 
     // Create overlay
     const overlayRef = this.overlay.create(
-    {
-      positionStrategy,
+      {
+        positionStrategy,
       hasBackdrop: false,
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
-      panelClass: 'date-range-overlay-panel',
-      disposeOnNavigation: true
-    });
+        panelClass: 'date-range-overlay-panel',
+        disposeOnNavigation: true
+      });
 
     // Set current column key for template context
     this.currentOverlayColumnKey = columnKey;

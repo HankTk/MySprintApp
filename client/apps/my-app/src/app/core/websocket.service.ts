@@ -75,7 +75,7 @@ export class WebSocketService implements OnDestroy
   }
 
   private subscribeToDataChanges(): void
- {
+  {
     if (!this.stompClient || !this.stompClient.connected)
     {
       return;
@@ -83,20 +83,20 @@ export class WebSocketService implements OnDestroy
 
     this.stompClient.subscribe('/topic/data-changes', (message: IMessage) =>
     {
-      try 
-{
+      try
+      {
         const notification: DataChangeNotification = JSON.parse(message.body);
         this.notificationSubject.next(notification);
       }
- catch (error)
- {
+      catch (error)
+      {
         console.error('Error parsing WebSocket message:', error);
       }
     });
   }
 
   private attemptReconnect(): void
- {
+  {
     if (this.reconnectAttempts < this.maxReconnectAttempts)
     {
       this.reconnectAttempts++;
@@ -106,8 +106,8 @@ export class WebSocketService implements OnDestroy
         this.connect();
       }, this.reconnectDelay);
     }
- else
- {
+    else
+    {
       console.error('Max reconnection attempts reached');
     }
   }

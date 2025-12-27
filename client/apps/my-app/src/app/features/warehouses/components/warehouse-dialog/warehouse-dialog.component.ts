@@ -63,8 +63,8 @@ export class WarehouseDialogComponent implements OnInit
     });
   }
 
-  async ngOnInit(): Promise<void> 
-{
+  async ngOnInit(): Promise<void>
+  {
     await this.loadAddresses();
     if (this.isEdit && this.data.warehouse)
     {
@@ -72,15 +72,15 @@ export class WarehouseDialogComponent implements OnInit
     }
   }
 
-  private async loadAddresses(): Promise<void> 
-{
-    try 
-{
+  private async loadAddresses(): Promise<void>
+  {
+    try
+    {
       const addresses = await firstValueFrom(this.addressService.getAddresses());
       this.addresses.set(addresses);
     }
- catch (error)
- {
+    catch (error)
+    {
       console.error('Failed to load addresses:', error);
     }
   }

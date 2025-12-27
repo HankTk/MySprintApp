@@ -95,8 +95,8 @@ export class AccountPayableDetailComponent implements OnInit
     const po = this.po();
     if (!po?.jsonData?.history) return [];
     const allHistory = po.jsonData.history as HistoryRecord[];
-    return allHistory.filter(record => 
-{
+    return allHistory.filter(record =>
+    {
       if (record.step === 'invoicing' || record.step === 'payment')
       {
         return true;
@@ -121,10 +121,10 @@ export class AccountPayableDetailComponent implements OnInit
     }
   }
 
-  private async loadPurchaseOrder(id: string): Promise<void> 
-{
-    try 
-{
+  private async loadPurchaseOrder(id: string): Promise<void>
+  {
+    try
+    {
       this.loading.set(true);
       const po = await firstValueFrom(this.purchaseOrderService.getPurchaseOrder(id));
       if (po)
@@ -145,34 +145,34 @@ export class AccountPayableDetailComponent implements OnInit
         {
           this.currentStep.set('history');
         }
- else if (po.status === 'INVOICED')
- {
+        else if (po.status === 'INVOICED')
+        {
           this.currentStep.set('payment');
         }
- else
- {
+        else
+        {
           this.currentStep.set('invoice');
         }
       }
     }
- catch (err)
- {
+    catch (err)
+    {
       console.error('Error loading purchase order:', err);
       this.po.set(null);
     }
- finally
- {
+    finally
+    {
       this.loading.set(false);
     }
   }
 
-  async handlePayment(): Promise<void> 
-{
+  async handlePayment(): Promise<void>
+  {
     const po = this.po();
     if (!po || !po.id) return;
 
-    try 
-{
+    try
+    {
       this.submitting.set(true);
       const jsonData = po.jsonData || {};
       jsonData.paymentAmount = this.paymentAmount();
@@ -222,12 +222,12 @@ export class AccountPayableDetailComponent implements OnInit
         }
       }
     }
- catch (err)
+    catch (err)
     {
       console.error('Error recording payment:', err);
       alert('Failed to record payment');
     }
- finally
+    finally
     {
       this.submitting.set(false);
     }
@@ -243,12 +243,12 @@ export class AccountPayableDetailComponent implements OnInit
   formatDate(dateString?: string | Date): string
   {
     if (!dateString) return 'N/A';
-    try 
-{
+    try
+    {
       const date = dateString instanceof Date ? dateString : new Date(dateString);
       return date.toLocaleDateString();
     }
- catch
+    catch
     {
       return String(dateString);
     }
@@ -256,8 +256,8 @@ export class AccountPayableDetailComponent implements OnInit
 
   formatDateTime(dateString: string): string
   {
-    try 
-{
+    try
+    {
       const date = new Date(dateString);
       return date.toLocaleString('en-US', {
         year: 'numeric',
@@ -267,7 +267,7 @@ export class AccountPayableDetailComponent implements OnInit
         minute: '2-digit'
       });
     }
- catch
+    catch
     {
       return dateString;
     }
@@ -321,11 +321,11 @@ export class AccountPayableDetailComponent implements OnInit
     // Handle objects - convert to JSON string
     if (typeof value === 'object' && !(value instanceof Date))
     {
-      try 
-{
+      try
+      {
         return JSON.stringify(value);
       }
- catch
+      catch
       {
         return 'N/A';
       }

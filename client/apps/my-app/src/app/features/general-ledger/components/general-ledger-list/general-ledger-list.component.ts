@@ -126,7 +126,7 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit
   }
 
   private initializeColumns(): void
- {
+  {
     this.columns.set([
       {
         key: 'date',
@@ -257,13 +257,13 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit
   formatDate(dateString: string): string
   {
     if (!dateString) return '';
-    try 
-{
+    try
+    {
       const date = new Date(dateString);
       return date.toLocaleDateString();
     }
- catch
- {
+    catch
+    {
       return dateString;
     }
   }
@@ -299,8 +299,8 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit
     {
       this.router.navigate(['/orders', entry.orderId]);
     }
- else if (entry.poId)
- {
+    else if (entry.poId)
+    {
       this.router.navigate(['/purchase-orders', entry.poId]);
     }
   }
@@ -311,8 +311,8 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit
   }
 
   // Get filtered entries from table (ax-table handles filtering internally)
-  get filteredEntries(): GLEntry[] 
-{
+  get filteredEntries(): GLEntry[]
+  {
     // The table handles filtering internally, so we use glEntries
     // The summary will show totals for all entries (filtering is handled by table display)
     return this.glEntries();
@@ -320,49 +320,49 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit
 
   // Calculate totals (using all entries - table handles filtering for display)
   get totalDebit(): number
- {
+  {
     return this.filteredEntries.filter(e => e.type === 'COST' || e.type === 'EXPENSE' || e.type === 'ACCOUNTS_PAYABLE')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalCredit(): number
- {
+  {
     return this.filteredEntries.filter(e => e.type === 'REVENUE' || e.type === 'PAYMENT')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalRevenue(): number
- {
+  {
     return this.filteredEntries.filter(e => e.type === 'REVENUE')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalCost(): number
- {
+  {
     return this.filteredEntries.filter(e => e.type === 'COST')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalExpense(): number
- {
+  {
     return this.filteredEntries.filter(e => e.type === 'EXPENSE')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalAccountsPayable(): number
- {
+  {
     return this.filteredEntries.filter(e => e.type === 'ACCOUNTS_PAYABLE')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalPayment(): number
- {
+  {
     return this.filteredEntries.filter(e => e.type === 'PAYMENT')
       .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get netIncome(): number
- {
+  {
     return this.totalRevenue - this.totalCost - this.totalExpense;
   }
 }

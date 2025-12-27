@@ -44,7 +44,7 @@ export class StoreService implements OnDestroy
   }
 
   private handleDataChange(notification: DataChangeNotification): void
- {
+  {
     const { changeType, dataTypeId, data } = notification;
     const currentData = this.state()[dataTypeId] || [];
 
@@ -63,13 +63,13 @@ export class StoreService implements OnDestroy
             }));
             console.log(`Data added to ${dataTypeId}:`, data);
           }
- else
- {
+          else
+          {
             console.log(`Data already exists in ${dataTypeId}, skipping:`, data);
           }
         }
- else
- {
+        else
+        {
           // If currentData is not an array, initialize it
           this.state.update(s => ({
             ...s,
@@ -83,7 +83,7 @@ export class StoreService implements OnDestroy
         // Update data
         if (Array.isArray(currentData))
         {
-          const updatedData = currentData.map((item: any) => 
+          const updatedData = currentData.map((item: any) =>
             item.id === data.id ? data : item
           );
           this.state.update(s => ({

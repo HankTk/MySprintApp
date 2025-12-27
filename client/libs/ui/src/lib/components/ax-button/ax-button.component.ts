@@ -30,8 +30,9 @@ export class AxButtonComponent
     {
       console.log('AxButtonComponent: Button clicked', { variant: this.variant, type: this.type });
       this.click.emit(event);
-    } else
- {
+    }
+    else
+    {
       console.log('AxButtonComponent: Button click ignored (disabled or loading)', { disabled: this.disabled, loading: this.loading });
     }
   }

@@ -24,12 +24,12 @@ export class AxProgressComponent
   @Input() label?: string;
 
   get clampedValue(): number
- {
+  {
     return Math.min(Math.max(this.value, 0), 100);
   }
 
   get displayLabel(): string
- {
+  {
     return this.label || `${Math.round(this.clampedValue)}%`;
   }
 }

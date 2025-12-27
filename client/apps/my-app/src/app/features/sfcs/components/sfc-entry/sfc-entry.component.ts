@@ -140,8 +140,8 @@ export class SFCEntryComponent implements OnInit
     });
   }
 
-  async ngOnInit(): Promise<void> 
-{
+  async ngOnInit(): Promise<void>
+  {
     const sfcId = this.route.snapshot.paramMap.get('id');
     
     // Load RMAs and customers first using services that update the store
@@ -320,8 +320,8 @@ export class SFCEntryComponent implements OnInit
     }
   }
 
-  async onRMAChange(rmaId: string | null): Promise<void> 
-{
+  async onRMAChange(rmaId: string | null): Promise<void>
+  {
     // Normalize null/empty values
     const normalizedRMAId = (rmaId && rmaId.trim() !== '') ? rmaId : null;
     
@@ -445,8 +445,8 @@ export class SFCEntryComponent implements OnInit
     }
   }
 
-  async onAssignmentChange(assignedTo: string | null, notes: string): Promise<void> 
-{
+  async onAssignmentChange(assignedTo: string | null, notes: string): Promise<void>
+  {
     const sfc = this.sfc();
     if (!sfc || !sfc.id)
     {
@@ -582,8 +582,8 @@ export class SFCEntryComponent implements OnInit
     this.router.navigate(['/sfcs']);
   }
 
-  async onStepClick(stepKey: SFCStep): Promise<void> 
-{
+  async onStepClick(stepKey: SFCStep): Promise<void>
+  {
     const isCompleted = this.isStepCompleted(stepKey);
     const isActive = this.currentStep() === stepKey;
     
@@ -705,8 +705,8 @@ export class SFCEntryComponent implements OnInit
     return step?.label || '';
   }
 
-  async handleCompleteEntry(): Promise<void> 
-{
+  async handleCompleteEntry(): Promise<void>
+  {
     const sfc = this.sfc();
     if (!sfc || !sfc.id)
     {
@@ -769,13 +769,13 @@ export class SFCEntryComponent implements OnInit
     }
   }
 
-  async handleStartProcessing(): Promise<void> 
-{
+  async handleStartProcessing(): Promise<void>
+  {
     const sfc = this.sfc();
     if (!sfc || !sfc.id) return;
 
-    try 
-{
+    try
+    {
       this.submitting.set(true);
       const jsonData = sfc.jsonData || {};
       const startedDateObj = this.startedDate() ? this.startedDate()!.toISOString() : undefined;
@@ -819,8 +819,8 @@ export class SFCEntryComponent implements OnInit
     const sfc = this.sfc();
     if (!sfc || !sfc.id) return;
 
-    try 
-{
+    try
+    {
       this.submitting.set(true);
       const jsonData = sfc.jsonData || {};
       const completedDateObj = this.completedDate() ? this.completedDate()!.toISOString() : undefined;

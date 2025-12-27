@@ -214,11 +214,13 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     }
   }
 
-  registerOnChange(fn: (value: DateRange) => void): void {
+  registerOnChange(fn: (value: DateRange) => void): void
+  {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: () => void): void
+  {
     this.onTouched = fn;
   }
 
@@ -263,16 +265,18 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
       // Start new selection
       this.tempStartDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
       this.tempEndDate = null;
-    } else if (this.tempStartDate && !this.tempEndDate)
- {
+    }
+    else if (this.tempStartDate && !this.tempEndDate)
+    {
       // Complete selection
       const selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
       if (selectedDate < this.tempStartDate)
       {
         this.tempEndDate = new Date(this.tempStartDate);
         this.tempStartDate = selectedDate;
-      } else
- {
+      }
+      else
+      {
         this.tempEndDate = selectedDate;
       }
     }
@@ -378,8 +382,9 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
         start: this.selectedYearRange.start - rangeSize,
         end: this.selectedYearRange.end - rangeSize
       };
-    } else
- {
+    }
+    else
+    {
       this.selectedYearRange = {
         start: this.selectedYearRange.start + rangeSize,
         end: this.selectedYearRange.end + rangeSize
@@ -428,8 +433,9 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     {
       this.calendarStartDate = new Date(this.selectedYear, this.selectedMonthIndex, 1);
       this.calendarEndDate = new Date(this.selectedYear, this.selectedMonthIndex + 1, 1);
-    } else
- {
+    }
+    else
+    {
       this.calendarEndDate = new Date(this.selectedYear, this.selectedMonthIndex, 1);
       // Ensure calendarStartDate is one month before calendarEndDate
       this.calendarStartDate = new Date(this.selectedYear, this.selectedMonthIndex - 1, 1);
@@ -453,8 +459,9 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     if (this.viewMode === 'multi-year')
     {
       this.viewMode = 'month';
-    } else if (this.viewMode === 'year')
- {
+    }
+    else if (this.viewMode === 'year')
+    {
       this.viewMode = 'month';
     }
   }
@@ -559,8 +566,9 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     if (this.tempStartDate && this.tempEndDate)
     {
       return `${formatDate(this.tempStartDate)} - ${formatDate(this.tempEndDate)}`;
-    } else if (this.tempStartDate)
- {
+    }
+    else if (this.tempStartDate)
+    {
       return formatDate(this.tempStartDate);
     }
     return '';
@@ -737,11 +745,13 @@ export class AxDateRangePickerComponent implements ControlValueAccessor, OnInit,
     if (this.startDate && this.endDate)
     {
       return `${formatDate(this.startDate)} - ${formatDate(this.endDate)}`;
-    } else if (this.startDate)
- {
+    }
+    else if (this.startDate)
+    {
       return `From ${formatDate(this.startDate)}`;
-    } else if (this.endDate)
- {
+    }
+    else if (this.endDate)
+    {
       return `Until ${formatDate(this.endDate)}`;
     }
     return '';

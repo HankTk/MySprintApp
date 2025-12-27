@@ -97,8 +97,8 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit
     });
   }
 
-  async ngOnInit(): Promise<void> 
-{
+  async ngOnInit(): Promise<void>
+  {
     await Promise.all([
       this.loadProducts(),
       this.loadWarehouses()
@@ -112,28 +112,28 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit
     this.initializeColumns();
   }
 
-  private async loadProducts(): Promise<void> 
-{
-    try 
-{
+  private async loadProducts(): Promise<void>
+  {
+    try
+    {
       const products = await firstValueFrom(this.productService.getProducts());
       this.products.set(products);
     }
- catch (error)
- {
+    catch (error)
+    {
       console.error('Failed to load products:', error);
     }
   }
 
-  private async loadWarehouses(): Promise<void> 
-{
-    try 
-{
+  private async loadWarehouses(): Promise<void>
+  {
+    try
+    {
       const warehouses = await firstValueFrom(this.warehouseService.getWarehouses());
       this.warehouses.set(warehouses);
     }
- catch (error)
- {
+    catch (error)
+    {
       console.error('Failed to load warehouses:', error);
     }
   }
@@ -199,7 +199,7 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private initializeColumns(): void
- {
+  {
     this.columns.set([
       {
         key: 'productId',
@@ -208,12 +208,12 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit
         sortable: true,
         filterable: true,
         filterType: 'select',
-        filterOptions: (data: Inventory[]): FilterOption[] => 
-{
+        filterOptions: (data: Inventory[]): FilterOption[] =>
+        {
           const products = this.products() || [];
           const productMap = new Map<string, string>();
-          data.forEach(inv => 
-{
+          data.forEach(inv =>
+          {
             if (inv.productId && !productMap.has(inv.productId))
             {
               const product = products.find((p: Product) => p.id === inv.productId);
@@ -238,12 +238,12 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit
         sortable: true,
         filterable: true,
         filterType: 'select',
-        filterOptions: (data: Inventory[]): FilterOption[] => 
-{
+        filterOptions: (data: Inventory[]): FilterOption[] =>
+        {
           const warehouses = this.warehouses() || [];
           const warehouseMap = new Map<string, string>();
-          data.forEach(inv => 
-{
+          data.forEach(inv =>
+          {
             if (inv.warehouseId && !warehouseMap.has(inv.warehouseId))
             {
               const warehouse = warehouses.find((w: Warehouse) => w.id === inv.warehouseId);

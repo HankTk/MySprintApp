@@ -17,9 +17,9 @@ let currentServerUnavailableDialogRef: any = null;
  * Handles HTTP errors globally and displays user-friendly error messages
  */
 export const httpErrorInterceptor: HttpInterceptorFn = (req, next) =>
-{
+  {
 
-  const snackBar = inject(MatSnackBar);
+    const snackBar = inject(MatSnackBar);
   const dialog = inject(MatDialog);
   const translate = inject(TranslateService);
   const authService = inject(AuthService);
@@ -38,14 +38,14 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) =>
         // Show modal dialog instead of toast for server unavailable
         messageKey = 'messages.serverUnavailable';
         showDialog = true;
-      } 
+      }
       else if (error.status >= 500)
- {
+      {
         // Server error
         messageKey = 'messages.serverError';
-      } 
+      }
       else if (error.status === 401)
- {
+      {
         // Unauthorized - token expired or invalid
         // Don't logout for login endpoint
         if (!req.url.includes('/auth/login'))
@@ -53,14 +53,14 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) =>
           authService.logout();
         }
         messageKey = 'messages.unauthorized';
-      } 
+      }
       else if (error.status === 403)
- {
+      {
         // Forbidden
         messageKey = 'messages.forbidden';
-      } 
+      }
       else if (error.status === 404)
- {
+      {
         // Not found
         messageKey = 'messages.notFound';
       }
@@ -70,8 +70,8 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) =>
       {
         serverUnavailableDialogOpen = true;
         const dialogRef = dialog.open(ServerUnavailableDialogComponent,
-        {
-          width: '100vw',
+          {
+            width: '100vw',
           maxWidth: '100vw',
           height: '100vh',
           maxHeight: '100vh',
@@ -79,10 +79,10 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) =>
           panelClass: 'server-unavailable-fullscreen-dialog',
           hasBackdrop: true,
           backdropClass: 'server-unavailable-backdrop',
-          data: {
-            message: translate.instant(messageKey)
-          }
-        });
+            data: {
+              message: translate.instant(messageKey)
+            }
+          });
 
         // Store dialog reference globally so it can be closed from shutdown button
         currentServerUnavailableDialogRef = dialogRef;
@@ -95,7 +95,7 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) =>
       }
       // Show snackbar for other errors
       else if (messageKey && !showDialog)
- {
+      {
         const message = translate.instant(messageKey);
         const closeLabel = translate.instant('messages.close');
         snackBar.open(message, closeLabel, {
@@ -127,8 +127,8 @@ export function closeServerUnavailableDialog(): void
     serverUnavailableDialogOpen = false;
     console.log('Dialog closed');
   }
- else
- {
+  else
+  {
     console.warn('No dialog reference to close');
   }
 }
@@ -143,8 +143,8 @@ export function showServerUnavailableDialog(dialog: MatDialog, translate: Transl
   {
     serverUnavailableDialogOpen = true;
     const dialogRef = dialog.open(ServerUnavailableDialogComponent,
-    {
-      width: '100vw',
+      {
+        width: '100vw',
       maxWidth: '100vw',
       height: '100vh',
       maxHeight: '100vh',
@@ -152,10 +152,10 @@ export function showServerUnavailableDialog(dialog: MatDialog, translate: Transl
       panelClass: 'server-unavailable-fullscreen-dialog',
       hasBackdrop: true,
       backdropClass: 'server-unavailable-backdrop',
-      data: {
-        message: translate.instant('messages.serverUnavailable')
-      }
-    });
+        data: {
+          message: translate.instant('messages.serverUnavailable')
+        }
+      });
 
     currentServerUnavailableDialogRef = dialogRef;
 
