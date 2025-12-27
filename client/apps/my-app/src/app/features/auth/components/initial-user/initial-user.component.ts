@@ -267,19 +267,19 @@ export class InitialUserComponent implements OnInit, OnDestroy
           // If it doesn't work, show a message to the user
           setTimeout(() =>
           {
-            alert('このアプリケーションを閉じるには、ブラウザのタブを閉じてください。');
+            alert('Please close the browser tab to close this application.');
           }, 100);
         }
         catch (error)
         {
           console.error('Error closing window:', error);
-          alert('このアプリケーションを閉じるには、ブラウザのタブを閉じてください。');
+          alert('Please close the browser tab to close this application.');
         }
       }
       else
       {
         console.error('window.close is not available');
-        alert('このアプリケーションを閉じるには、ブラウザのタブを閉じてください。');
+        alert('Please close the browser tab to close this application.');
       }
     }
   }

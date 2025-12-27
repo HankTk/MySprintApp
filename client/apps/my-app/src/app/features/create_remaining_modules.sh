@@ -1,7 +1,7 @@
 #!/bin/bash
-# Customer実装をテンプレートとして、残りのモジュールを作成するスクリプト
+# Script to create remaining modules using Customer implementation as a template
 
-# 各モジュールの定義
+# Module definitions
 declare -A modules=(
   ["addresses"]="Address"
   ["vendors"]="Vendor"
@@ -12,14 +12,14 @@ declare -A modules=(
   ["sfcs"]="SFC"
 )
 
-# Customerのファイルをコピーして、各モジュール用に変更
+# Copy Customer files and modify for each module
 for module_dir in "${!modules[@]}"; do
   entity_name="${modules[$module_dir]}"
   echo "Creating $module_dir module for $entity_name..."
   
-  # ディレクトリ構造は既に作成済み
+  # Directory structure is already created
   
-  # モデルファイルを作成（簡易版）
+  # Create model file (simplified version)
   cat > "$module_dir/models/${module_dir%-*}.model.ts" << MODEL_EOF
 export interface ${entity_name} {
   id?: string;

@@ -36,7 +36,7 @@ export class LanguageSwitcherComponent implements OnInit, OnDestroy, AfterViewIn
 
   languages = [
     {value: 'en' as Language, label: 'English'},
-    {value: 'ja' as Language, label: '日本語'}
+    {value: 'ja' as Language, label: 'Japanese'}
   ];
 
   ngOnInit(): void
