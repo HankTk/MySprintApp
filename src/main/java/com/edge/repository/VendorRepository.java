@@ -86,12 +86,12 @@ public class VendorRepository extends AbstractJsonRepository<Vendor>
         if (vendor == null) throw new IllegalArgumentException("Vendor cannot be null");
         if (vendor.getEmail() != null && !vendor.getEmail().trim().isEmpty() && 
             getVendorByEmail(vendor.getEmail()).isPresent())
-            {
+        {
             throw new VendorAlreadyExistsException("Vendor with email " + vendor.getEmail() + " already exists");
         }
         if (vendor.getVendorNumber() != null && !vendor.getVendorNumber().trim().isEmpty() && 
             getVendorByVendorNumber(vendor.getVendorNumber()).isPresent())
-            {
+        {
             throw new VendorAlreadyExistsException("Vendor with vendor number " + vendor.getVendorNumber() + " already exists");
         }
         return save(vendor);
@@ -132,7 +132,7 @@ public class VendorRepository extends AbstractJsonRepository<Vendor>
             // If addressIds is in the new jsonData, use it; otherwise preserve existing
             if (!newJsonData.containsKey("addressIds") && existingVendor.getJsonData() != null && 
                 existingVendor.getJsonData().containsKey("addressIds"))
-                {
+            {
                 newJsonData.put("addressIds", existingVendor.getJsonData().get("addressIds"));
             }
             existingVendor.setJsonData(new java.util.HashMap<>(newJsonData));

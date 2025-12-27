@@ -27,32 +27,32 @@ public class DataChangeNotification
     }
     
     public ChangeType getChangeType()
- {
+    {
         return changeType;
     }
     
     public void setChangeType(ChangeType changeType)
- {
+    {
         this.changeType = changeType;
     }
     
     public String getDataTypeId()
- {
+    {
         return dataTypeId;
     }
     
     public void setDataTypeId(String dataTypeId)
- {
+    {
         this.dataTypeId = dataTypeId;
     }
     
     public Object getData()
- {
+    {
         return data;
     }
     
     public void setData(Object data)
- {
+    {
         this.data = data;
     }
 }

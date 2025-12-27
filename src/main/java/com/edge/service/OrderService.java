@@ -64,7 +64,7 @@ public class OrderService
     }
     
     public Order createOrder(Order order)
- {
+    {
         // Enrich order items with product information
         enrichOrderItems(order);
         Order created = orderRepository.createOrder(order);
@@ -73,7 +73,7 @@ public class OrderService
     }
     
     public Order updateOrder(String id, Order orderDetails)
- {
+    {
         System.out.println("OrderService.updateOrder - ID: " + id + ", Status: " + orderDetails.getStatus());
         
         // Get existing order to check status change
@@ -99,7 +99,7 @@ public class OrderService
     }
     
     public Order addOrderItem(String orderId, String productId, Integer quantity)
- {
+    {
         Order order = orderRepository.getOrderById(orderId)
             .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
         
@@ -137,7 +137,7 @@ public class OrderService
     }
     
     public Order updateOrderItemQuantity(String orderId, String itemId, Integer quantity)
- {
+    {
         Order order = orderRepository.getOrderById(orderId)
             .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
         
@@ -154,7 +154,7 @@ public class OrderService
     }
     
     public Order removeOrderItem(String orderId, String itemId)
- {
+    {
         Order order = orderRepository.getOrderById(orderId)
             .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
         
@@ -169,7 +169,7 @@ public class OrderService
     }
     
     public void deleteOrder(String id)
- {
+    {
         Optional<Order> orderToDelete = orderRepository.getOrderById(id);
         orderRepository.deleteOrder(id);
         
@@ -181,12 +181,12 @@ public class OrderService
     }
     
     public String generateNextInvoiceNumber()
- {
+    {
         return orderRepository.generateNextInvoiceNumber();
     }
     
     private void enrichOrderItems(Order order)
- {
+    {
         if (order.getItems() != null)
         {
             for (OrderItem item : order.getItems())
@@ -209,7 +209,7 @@ public class OrderService
     }
     
     private void decreaseInventoryForOrder(Order order)
- {
+    {
         if (order.getItems() == null || order.getItems().isEmpty())
         {
             return;

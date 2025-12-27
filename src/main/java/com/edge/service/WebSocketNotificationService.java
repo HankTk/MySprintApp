@@ -16,7 +16,7 @@ public class WebSocketNotificationService
     }
     
     public void notifyDataChange(DataChangeNotification.ChangeType changeType, String dataTypeId, Object data)
- {
+    {
         DataChangeNotification notification = new DataChangeNotification(changeType, dataTypeId, data);
         messagingTemplate.convertAndSend("/topic/data-changes", notification);
     }

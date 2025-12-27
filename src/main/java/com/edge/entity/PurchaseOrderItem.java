@@ -18,7 +18,7 @@ public class PurchaseOrderItem
     private BigDecimal lineTotal;
     
     public void calculateLineTotal()
- {
+    {
         if (quantity != null && unitPrice != null)
         {
             lineTotal = unitPrice.multiply(BigDecimal.valueOf(quantity));

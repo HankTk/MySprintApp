@@ -21,7 +21,7 @@ public class RMAItem
     private String condition; // Condition of returned item (e.g., "NEW", "USED", "DAMAGED")
     
     public void calculateLineTotal()
- {
+    {
         if (returnedQuantity != null && unitPrice != null)
         {
             lineTotal = unitPrice.multiply(BigDecimal.valueOf(returnedQuantity));

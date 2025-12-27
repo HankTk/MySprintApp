@@ -64,7 +64,7 @@ public class PurchaseOrderService
     }
     
     public PurchaseOrder createPurchaseOrder(PurchaseOrder po)
- {
+    {
         // Enrich PO items with product information
         enrichPurchaseOrderItems(po);
         PurchaseOrder created = purchaseOrderRepository.createPurchaseOrder(po);
@@ -73,7 +73,7 @@ public class PurchaseOrderService
     }
     
     public PurchaseOrder updatePurchaseOrder(String id, PurchaseOrder poDetails)
- {
+    {
         System.out.println("PurchaseOrderService.updatePurchaseOrder - ID: " + id + ", Status: " + poDetails.getStatus());
         
         // Get existing PO to check status change
@@ -99,7 +99,7 @@ public class PurchaseOrderService
     }
     
     public PurchaseOrder addPurchaseOrderItem(String poId, String productId, Integer quantity)
- {
+    {
         PurchaseOrder po = purchaseOrderRepository.getPurchaseOrderById(poId)
             .orElseThrow(() -> new RuntimeException("Purchase Order not found with id: " + poId));
         
@@ -137,7 +137,7 @@ public class PurchaseOrderService
     }
     
     public PurchaseOrder updatePurchaseOrderItemQuantity(String poId, String itemId, Integer quantity)
- {
+    {
         PurchaseOrder po = purchaseOrderRepository.getPurchaseOrderById(poId)
             .orElseThrow(() -> new RuntimeException("Purchase Order not found with id: " + poId));
         
@@ -154,7 +154,7 @@ public class PurchaseOrderService
     }
     
     public PurchaseOrder removePurchaseOrderItem(String poId, String itemId)
- {
+    {
         PurchaseOrder po = purchaseOrderRepository.getPurchaseOrderById(poId)
             .orElseThrow(() -> new RuntimeException("Purchase Order not found with id: " + poId));
         
@@ -169,7 +169,7 @@ public class PurchaseOrderService
     }
     
     public void deletePurchaseOrder(String id)
- {
+    {
         Optional<PurchaseOrder> poToDelete = purchaseOrderRepository.getPurchaseOrderById(id);
         purchaseOrderRepository.deletePurchaseOrder(id);
         
@@ -181,12 +181,12 @@ public class PurchaseOrderService
     }
     
     public String generateNextInvoiceNumber()
- {
+    {
         return purchaseOrderRepository.generateNextInvoiceNumber();
     }
     
     private void enrichPurchaseOrderItems(PurchaseOrder po)
- {
+    {
         if (po.getItems() != null)
         {
             for (PurchaseOrderItem item : po.getItems())
@@ -209,7 +209,7 @@ public class PurchaseOrderService
     }
     
     private void increaseInventoryForPurchaseOrder(PurchaseOrder po)
- {
+    {
         if (po.getItems() == null || po.getItems().isEmpty())
         {
             return;

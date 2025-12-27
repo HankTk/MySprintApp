@@ -3,6 +3,7 @@ package com.edge.controller;
 /**
  * @author Hidenori Takaku
  */
+
 import com.edge.entity.PurchaseOrder;
 import com.edge.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,197 +20,197 @@ import java.util.List;
 public class PurchaseOrderController
 {
 
-    @Autowired
-    private PurchaseOrderService purchaseOrderService;
+  @Autowired
+  private PurchaseOrderService purchaseOrderService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public List<PurchaseOrder> getAllPurchaseOrders()
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+  public List<PurchaseOrder> getAllPurchaseOrders()
+  {
+    return purchaseOrderService.getAllPurchaseOrders();
+  }
+
+  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+  public ResponseEntity<?> getById(@PathVariable String id)
+  {
+    return purchaseOrderService.getPurchaseOrderById(id)
+      .map(ResponseEntity::ok)
+      .orElse(ResponseEntity.notFound().build());
+  }
+
+  @GetMapping(value = "/supplier/{supplierId}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+  public ResponseEntity<List<PurchaseOrder>> getPurchaseOrdersBySupplierId(@PathVariable String supplierId)
+  {
+    return ResponseEntity.ok(purchaseOrderService.getPurchaseOrdersBySupplierId(supplierId));
+  }
+
+  @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+  public ResponseEntity<List<PurchaseOrder>> getPurchaseOrdersByStatus(@PathVariable String status)
+  {
+    return ResponseEntity.ok(purchaseOrderService.getPurchaseOrdersByStatus(status));
+  }
+
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+  public ResponseEntity<PurchaseOrder> createPurchaseOrder(@RequestBody PurchaseOrder po)
+  {
+    return ResponseEntity.ok(purchaseOrderService.createPurchaseOrder(po));
+  }
+
+  @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+  public ResponseEntity<PurchaseOrder> updatePurchaseOrder(@PathVariable String id, @RequestBody PurchaseOrder poDetails)
+  {
+    try
     {
-        return purchaseOrderService.getAllPurchaseOrders();
+      System.out.println("Received update request for purchase order ID: " + id);
+      System.out.println("Purchase order details status: " + poDetails.getStatus());
+      PurchaseOrder updatedPO = purchaseOrderService.updatePurchaseOrder(id, poDetails);
+      System.out.println("Updated purchase order status: " + updatedPO.getStatus());
+      return ResponseEntity.ok(updatedPO);
     }
-
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<?> getById(@PathVariable String id)
+    catch (RuntimeException e)
     {
-            return purchaseOrderService.getPurchaseOrderById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+      System.err.println("Error updating purchase order: " + e.getMessage());
+      e.printStackTrace();
+      return ResponseEntity.notFound().build();
     }
+  }
 
-    @GetMapping(value = "/supplier/{supplierId}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<List<PurchaseOrder>> getPurchaseOrdersBySupplierId(@PathVariable String supplierId)
+  @PostMapping(value = "/{poId}/items", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+  public ResponseEntity<PurchaseOrder> addPurchaseOrderItem(
+    @PathVariable String poId,
+    @RequestBody AddPurchaseOrderItemRequest request)
+  {
+    try
     {
-        return ResponseEntity.ok(purchaseOrderService.getPurchaseOrdersBySupplierId(supplierId));
+      PurchaseOrder updatedPO = purchaseOrderService.addPurchaseOrderItem(poId, request.getProductId(), request.getQuantity());
+      return ResponseEntity.ok(updatedPO);
     }
-
-    @GetMapping(value = "/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<List<PurchaseOrder>> getPurchaseOrdersByStatus(@PathVariable String status)
+    catch (RuntimeException e)
     {
-        return ResponseEntity.ok(purchaseOrderService.getPurchaseOrdersByStatus(status));
+      return ResponseEntity.notFound().build();
     }
+  }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<PurchaseOrder> createPurchaseOrder(@RequestBody PurchaseOrder po)
+  @PutMapping(value = "/{poId}/items/{itemId}/quantity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+  public ResponseEntity<PurchaseOrder> updatePurchaseOrderItemQuantity(
+    @PathVariable String poId,
+    @PathVariable String itemId,
+    @RequestBody UpdateQuantityRequest request)
+  {
+    try
     {
-        return ResponseEntity.ok(purchaseOrderService.createPurchaseOrder(po));
+      PurchaseOrder updatedPO = purchaseOrderService.updatePurchaseOrderItemQuantity(poId, itemId, request.getQuantity());
+      return ResponseEntity.ok(updatedPO);
     }
-
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<PurchaseOrder> updatePurchaseOrder(@PathVariable String id, @RequestBody PurchaseOrder poDetails)
+    catch (RuntimeException e)
     {
-        try
-        {
-            System.out.println("Received update request for purchase order ID: " + id);
-            System.out.println("Purchase order details status: " + poDetails.getStatus());
-            PurchaseOrder updatedPO = purchaseOrderService.updatePurchaseOrder(id, poDetails);
-            System.out.println("Updated purchase order status: " + updatedPO.getStatus());
-            return ResponseEntity.ok(updatedPO);
-        }
-        catch (RuntimeException e)
-        {
-            System.err.println("Error updating purchase order: " + e.getMessage());
-            e.printStackTrace();
-            return ResponseEntity.notFound().build();
-        }
+      return ResponseEntity.notFound().build();
     }
+  }
 
-    @PostMapping(value = "/{poId}/items", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<PurchaseOrder> addPurchaseOrderItem(
-            @PathVariable String poId,
-            @RequestBody AddPurchaseOrderItemRequest request)
+  @DeleteMapping(value = "/{poId}/items/{itemId}")
+  public ResponseEntity<PurchaseOrder> removePurchaseOrderItem(
+    @PathVariable String poId,
+    @PathVariable String itemId)
+  {
+    try
     {
-        try
-        {
-            PurchaseOrder updatedPO = purchaseOrderService.addPurchaseOrderItem(poId, request.getProductId(), request.getQuantity());
-            return ResponseEntity.ok(updatedPO);
-        }
-        catch (RuntimeException e)
-        {
-            return ResponseEntity.notFound().build();
-        }
+      PurchaseOrder updatedPO = purchaseOrderService.removePurchaseOrderItem(poId, itemId);
+      return ResponseEntity.ok(updatedPO);
     }
-
-    @PutMapping(value = "/{poId}/items/{itemId}/quantity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<PurchaseOrder> updatePurchaseOrderItemQuantity(
-            @PathVariable String poId,
-            @PathVariable String itemId,
-            @RequestBody UpdateQuantityRequest request)
+    catch (RuntimeException e)
     {
-        try
-        {
-            PurchaseOrder updatedPO = purchaseOrderService.updatePurchaseOrderItemQuantity(poId, itemId, request.getQuantity());
-            return ResponseEntity.ok(updatedPO);
-        }
-        catch (RuntimeException e)
-        {
-            return ResponseEntity.notFound().build();
-        }
+      return ResponseEntity.notFound().build();
     }
+  }
 
-    @DeleteMapping(value = "/{poId}/items/{itemId}")
-    public ResponseEntity<PurchaseOrder> removePurchaseOrderItem(
-            @PathVariable String poId,
-            @PathVariable String itemId)
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deletePurchaseOrder(@PathVariable String id)
+  {
+    try
     {
-        try
-        {
-            PurchaseOrder updatedPO = purchaseOrderService.removePurchaseOrderItem(poId, itemId);
-            return ResponseEntity.ok(updatedPO);
-        }
-        catch (RuntimeException e)
-        {
-            return ResponseEntity.notFound().build();
-        }
+      purchaseOrderService.deletePurchaseOrder(id);
+      return ResponseEntity.ok().build();
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePurchaseOrder(@PathVariable String id)
+    catch (RuntimeException e)
     {
-        try
-        {
-            purchaseOrderService.deletePurchaseOrder(id);
-            return ResponseEntity.ok().build();
-        }
-        catch (RuntimeException e)
-        {
-            return ResponseEntity.notFound().build();
-        }
+      return ResponseEntity.notFound().build();
     }
+  }
 
-    @GetMapping(value = "/invoice/next-number", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
-    public ResponseEntity<InvoiceNumberResponse> getNextInvoiceNumber()
+  @GetMapping(value = "/invoice/next-number", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+  public ResponseEntity<InvoiceNumberResponse> getNextInvoiceNumber()
+  {
+    try
     {
-        try
-        {
-            String invoiceNumber = purchaseOrderService.generateNextInvoiceNumber();
-            return ResponseEntity.ok(new InvoiceNumberResponse(invoiceNumber));
-        }
-        catch (RuntimeException e)
- {
-            return ResponseEntity.internalServerError().build();
-        }
+      String invoiceNumber = purchaseOrderService.generateNextInvoiceNumber();
+      return ResponseEntity.ok(new InvoiceNumberResponse(invoiceNumber));
     }
-    
- static class InvoiceNumberResponse
- {
-        private String invoiceNumber;
-        
-        public InvoiceNumberResponse(String invoiceNumber)
-        {
-            this.invoiceNumber = invoiceNumber;
-        }
-        
-        public String getInvoiceNumber()
- {
-            return invoiceNumber;
-        }
-        
-        public void setInvoiceNumber(String invoiceNumber)
- {
-            this.invoiceNumber = invoiceNumber;
-        }
+    catch (RuntimeException e)
+    {
+      return ResponseEntity.internalServerError().build();
+    }
+  }
+
+  static class InvoiceNumberResponse
+  {
+    private String invoiceNumber;
+
+    public InvoiceNumberResponse(String invoiceNumber)
+    {
+      this.invoiceNumber = invoiceNumber;
     }
 
-    // Request DTOs
- static class AddPurchaseOrderItemRequest
- {
-        private String productId;
-        private Integer quantity;
-
-        public String getProductId()
- {
-            return productId;
-        }
-
-        public void setProductId(String productId)
- {
-            this.productId = productId;
-        }
-
-        public Integer getQuantity()
- {
-            return quantity;
-        }
-
-        public void setQuantity(Integer quantity)
- {
-            this.quantity = quantity;
-        }
+    public String getInvoiceNumber()
+    {
+      return invoiceNumber;
     }
 
- static class UpdateQuantityRequest
- {
-        private Integer quantity;
-
-        public Integer getQuantity()
- {
-            return quantity;
-        }
-
-        public void setQuantity(Integer quantity)
- {
-            this.quantity = quantity;
-        }
+    public void setInvoiceNumber(String invoiceNumber)
+    {
+      this.invoiceNumber = invoiceNumber;
     }
+  }
+
+  // Request DTOs
+  static class AddPurchaseOrderItemRequest
+  {
+    private String productId;
+    private Integer quantity;
+
+    public String getProductId()
+    {
+      return productId;
+    }
+
+    public void setProductId(String productId)
+    {
+      this.productId = productId;
+    }
+
+    public Integer getQuantity()
+    {
+      return quantity;
+    }
+
+    public void setQuantity(Integer quantity)
+    {
+      this.quantity = quantity;
+    }
+  }
+
+  static class UpdateQuantityRequest
+  {
+    private Integer quantity;
+
+    public Integer getQuantity()
+    {
+      return quantity;
+    }
+
+    public void setQuantity(Integer quantity)
+    {
+      this.quantity = quantity;
+    }
+  }
 }
 

@@ -95,7 +95,7 @@ public class InventoryRepository extends AbstractJsonRepository<Inventory>
     }
 
     public Inventory createOrUpdateInventory(String productId, String warehouseId, Integer quantity)
- {
+    {
         if (productId == null || warehouseId == null)
         {
             throw new IllegalArgumentException("Product ID and Warehouse ID cannot be null");
@@ -123,7 +123,7 @@ public class InventoryRepository extends AbstractJsonRepository<Inventory>
     }
 
     public Inventory adjustInventory(String productId, String warehouseId, Integer quantityChange)
- {
+    {
         if (productId == null || warehouseId == null)
         {
             throw new IllegalArgumentException("Product ID and Warehouse ID cannot be null");
@@ -142,13 +142,13 @@ public class InventoryRepository extends AbstractJsonRepository<Inventory>
     }
 
     public Inventory createInventory(Inventory inventory)
- {
+    {
         if (inventory == null) throw new IllegalArgumentException("Inventory cannot be null");
         return save(inventory);
     }
 
     public Inventory updateInventory(String id, Inventory inventoryDetails)
- {
+    {
         if (id == null || id.trim().isEmpty())
             throw new IllegalArgumentException("Inventory ID cannot be null or empty");
         if (inventoryDetails == null)
@@ -183,7 +183,7 @@ public class InventoryRepository extends AbstractJsonRepository<Inventory>
     }
 
     public void deleteInventory(String id)
- {
+    {
         deleteById(id);
     }
 

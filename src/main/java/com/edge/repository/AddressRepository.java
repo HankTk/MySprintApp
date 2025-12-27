@@ -101,13 +101,13 @@ public class AddressRepository extends AbstractJsonRepository<Address>
     }
 
     public Address createAddress(Address address)
- {
+    {
         if (address == null) throw new IllegalArgumentException("Address cannot be null");
         return save(address);
     }
 
     public Address updateAddress(String id, Address addressDetails)
- {
+    {
         if (id == null || id.trim().isEmpty())
             throw new IllegalArgumentException("Address ID cannot be null or empty");
         if (addressDetails == null)
@@ -135,7 +135,7 @@ public class AddressRepository extends AbstractJsonRepository<Address>
     }
 
     public void deleteAddress(String id)
- {
+    {
         deleteById(id);
     }
 

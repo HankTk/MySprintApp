@@ -124,18 +124,18 @@ public class UserRepository extends AbstractJsonRepository<User>
 
     // Custom exceptions
     public static class UserNotFoundException extends EntityNotFoundException
- {
-     public UserNotFoundException(String message)
-     {
-         super(message);
-     }
- }
+    {
+        public UserNotFoundException(String message)
+        {
+            super(message);
+        }
+    }
 
     public static class UserAlreadyExistsException extends EntityAlreadyExistsException
- {
-     public UserAlreadyExistsException(String message)
-     {
-         super(message);
-     }
- }
+    {
+        public UserAlreadyExistsException(String message)
+        {
+            super(message);
+        }
+    }
 }

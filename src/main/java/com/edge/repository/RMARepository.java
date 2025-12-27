@@ -40,7 +40,7 @@ public class RMARepository extends AbstractJsonRepository<RMA>
             counterFilePath = dataDir.resolve(COUNTER_FILE_NAME);
         }
         catch (IOException e)
- {
+        {
             logger.error("Error initializing counter file path", e);
             throw new RuntimeException("Failed to initialize RMA counter", e);
         }
@@ -48,7 +48,7 @@ public class RMARepository extends AbstractJsonRepository<RMA>
 
     @Override
     protected ObjectMapper createObjectMapper()
- {
+    {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.registerModule(new JavaTimeModule());
@@ -139,7 +139,7 @@ public class RMARepository extends AbstractJsonRepository<RMA>
     }
 
     public RMA createRMA(RMA rma)
- {
+    {
         if (rma == null) throw new IllegalArgumentException("RMA cannot be null");
         
         // Generate RMA number if not provided
@@ -160,7 +160,7 @@ public class RMARepository extends AbstractJsonRepository<RMA>
     }
     
     private synchronized String generateNextRMANumber()
- {
+    {
         try
         {
             long currentCounter = readCounter();
@@ -171,13 +171,14 @@ public class RMARepository extends AbstractJsonRepository<RMA>
             return String.valueOf(nextRMANumber);
         }
         catch (IOException e)
- {
+        {
             logger.error("Error generating RMA number", e);
             throw new RuntimeException("Failed to generate RMA number", e);
         }
     }
     
-    private long readCounter() throws IOException {
+    private long readCounter() throws IOException
+    {
         if (!java.nio.file.Files.exists(counterFilePath))
         {
             long initialValue = INITIAL_RMA_NUMBER;
@@ -207,7 +208,7 @@ public class RMARepository extends AbstractJsonRepository<RMA>
             return counterValue;
         }
         catch (NumberFormatException e)
- {
+        {
             logger.warn("Counter file contains invalid data, resetting to initial value: {}", INITIAL_RMA_NUMBER);
             long initialValue = INITIAL_RMA_NUMBER;
             writeCounter(initialValue);
@@ -215,12 +216,13 @@ public class RMARepository extends AbstractJsonRepository<RMA>
         }
     }
     
-    private void writeCounter(long value) throws IOException {
+    private void writeCounter(long value) throws IOException
+    {
         java.nio.file.Files.write(counterFilePath, String.valueOf(value).getBytes());
     }
 
     public RMA updateRMA(String id, RMA rmaDetails)
- {
+    {
         if (id == null || id.trim().isEmpty())
             throw new IllegalArgumentException("RMA ID cannot be null or empty");
         if (rmaDetails == null)
@@ -307,7 +309,7 @@ public class RMARepository extends AbstractJsonRepository<RMA>
     }
 
     public void deleteRMA(String id)
- {
+    {
         deleteById(id);
     }
 

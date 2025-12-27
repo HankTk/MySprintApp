@@ -64,7 +64,7 @@ public class AuthController
             }
         }
         catch (Exception e)
- {
+        {
             return ResponseEntity.status(500).body(Map.of("error", "Authentication failed: " + e.getMessage()));
         }
     }

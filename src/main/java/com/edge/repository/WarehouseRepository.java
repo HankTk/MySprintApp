@@ -83,18 +83,18 @@ public class WarehouseRepository extends AbstractJsonRepository<Warehouse>
     }
 
     public Warehouse createWarehouse(Warehouse warehouse)
- {
+    {
         if (warehouse == null) throw new IllegalArgumentException("Warehouse cannot be null");
         if (warehouse.getWarehouseCode() != null && !warehouse.getWarehouseCode().trim().isEmpty() && 
             getWarehouseByCode(warehouse.getWarehouseCode()).isPresent())
-            {
+        {
             throw new WarehouseAlreadyExistsException("Warehouse with code " + warehouse.getWarehouseCode() + " already exists");
         }
         return save(warehouse);
     }
 
     public Warehouse updateWarehouse(String id, Warehouse warehouseDetails)
- {
+    {
         if (id == null || id.trim().isEmpty())
             throw new IllegalArgumentException("Warehouse ID cannot be null or empty");
         if (warehouseDetails == null)
@@ -126,7 +126,7 @@ public class WarehouseRepository extends AbstractJsonRepository<Warehouse>
     }
 
     public void deleteWarehouse(String id)
- {
+    {
         deleteById(id);
     }
 

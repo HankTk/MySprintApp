@@ -44,7 +44,7 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
             invoiceCounterFilePath = dataDir.resolve(INVOICE_COUNTER_FILE_NAME);
         }
         catch (IOException e)
- {
+        {
             logger.error("Error initializing counter file path", e);
             throw new RuntimeException("Failed to initialize purchase order counter", e);
         }
@@ -132,7 +132,7 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
     }
 
     public PurchaseOrder createPurchaseOrder(PurchaseOrder po)
- {
+    {
         if (po == null) throw new IllegalArgumentException("Purchase Order cannot be null");
         
         // Generate order number if not provided
@@ -153,7 +153,7 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
     }
     
     private synchronized String generateNextOrderNumber()
- {
+    {
         try
         {
             long currentCounter = readCounter();
@@ -164,13 +164,14 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
             return String.valueOf(nextOrderNumber);
         }
         catch (IOException e)
- {
+        {
             logger.error("Error generating order number", e);
             throw new RuntimeException("Failed to generate order number", e);
         }
     }
     
-    private long readCounter() throws IOException {
+    private long readCounter() throws IOException
+    {
         if (!java.nio.file.Files.exists(counterFilePath))
         {
             long initialValue = INITIAL_PO_NUMBER;
@@ -200,7 +201,7 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
             return counterValue;
         }
         catch (NumberFormatException e)
- {
+        {
             logger.warn("Counter file contains invalid data, resetting to initial value: {}", INITIAL_PO_NUMBER);
             long initialValue = INITIAL_PO_NUMBER;
             writeCounter(initialValue);
@@ -208,12 +209,13 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
         }
     }
     
-    private void writeCounter(long value) throws IOException {
+    private void writeCounter(long value) throws IOException
+    {
         java.nio.file.Files.write(counterFilePath, String.valueOf(value).getBytes());
     }
     
     public synchronized String generateNextInvoiceNumber()
- {
+    {
         try
         {
             long currentCounter = readInvoiceCounter();
@@ -224,13 +226,14 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
             return String.valueOf(nextInvoiceNumber);
         }
         catch (IOException e)
- {
+        {
             logger.error("Error generating invoice number", e);
             throw new RuntimeException("Failed to generate invoice number", e);
         }
     }
     
-    private long readInvoiceCounter() throws IOException {
+    private long readInvoiceCounter() throws IOException
+    {
         if (!java.nio.file.Files.exists(invoiceCounterFilePath))
         {
             long initialValue = INITIAL_PO_INVOICE_NUMBER;
@@ -260,7 +263,7 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
             return counterValue;
         }
         catch (NumberFormatException e)
- {
+        {
             logger.warn("Invoice counter file contains invalid data, resetting to initial value: {}", INITIAL_PO_INVOICE_NUMBER);
             long initialValue = INITIAL_PO_INVOICE_NUMBER;
             writeInvoiceCounter(initialValue);
@@ -268,12 +271,13 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
         }
     }
     
-    private void writeInvoiceCounter(long value) throws IOException {
+    private void writeInvoiceCounter(long value) throws IOException
+    {
         java.nio.file.Files.write(invoiceCounterFilePath, String.valueOf(value).getBytes());
     }
 
     public PurchaseOrder updatePurchaseOrder(String id, PurchaseOrder poDetails)
- {
+    {
         if (id == null || id.trim().isEmpty())
             throw new IllegalArgumentException("Purchase Order ID cannot be null or empty");
         if (poDetails == null)
@@ -364,7 +368,7 @@ public class PurchaseOrderRepository extends AbstractJsonRepository<PurchaseOrde
     }
 
     public void deletePurchaseOrder(String id)
- {
+    {
         deleteById(id);
     }
 

@@ -41,7 +41,7 @@ public class CustomerRepository extends AbstractJsonRepository<Customer>
             logger.info("Successfully loaded {} customers from data file", items.size());
         }
         catch (Exception e)
- {
+        {
             logger.error("Error parsing JSON data: {}", e.getMessage(), e);
             items = new java.util.ArrayList<>();
         }
@@ -107,7 +107,7 @@ public class CustomerRepository extends AbstractJsonRepository<Customer>
     }
 
     public Customer updateCustomer(String id, Customer customerDetails)
- {
+    {
         if (id == null || id.trim().isEmpty())
         {
             throw new IllegalArgumentException("Customer ID cannot be null or empty");
@@ -158,7 +158,7 @@ public class CustomerRepository extends AbstractJsonRepository<Customer>
             existingCustomer.setJsonData(jsonData);
         }
         else
- {
+        {
             existingCustomer.setJsonData(customerDetails.getJsonData());
         }
         
@@ -168,20 +168,20 @@ public class CustomerRepository extends AbstractJsonRepository<Customer>
     }
 
     public void deleteCustomer(String id)
- {
+    {
         deleteById(id);
     }
 
- static class CustomerNotFoundException extends EntityNotFoundException
- {
+    static class CustomerNotFoundException extends EntityNotFoundException
+    {
         public CustomerNotFoundException(String message)
         {
             super(message);
         }
     }
 
- static class CustomerAlreadyExistsException extends EntityAlreadyExistsException
- {
+    static class CustomerAlreadyExistsException extends EntityAlreadyExistsException
+    {
         public CustomerAlreadyExistsException(String message)
         {
             super(message);

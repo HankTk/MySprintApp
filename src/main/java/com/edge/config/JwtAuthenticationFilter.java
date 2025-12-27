@@ -26,7 +26,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+            throws ServletException, IOException
+    {
         
         // Skip JWT validation for OPTIONS requests (CORS preflight)
         if ("OPTIONS".equalsIgnoreCase(request.getMethod()))
@@ -86,7 +87,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
     }
 
     private String getJwtFromRequest(HttpServletRequest request)
- {
+    {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer "))
         {

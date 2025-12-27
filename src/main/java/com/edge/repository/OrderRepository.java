@@ -44,7 +44,7 @@ public class OrderRepository extends AbstractJsonRepository<Order>
             invoiceCounterFilePath = dataDir.resolve(INVOICE_COUNTER_FILE_NAME);
         }
         catch (IOException e)
- {
+        {
             logger.error("Error initializing counter file path", e);
             throw new RuntimeException("Failed to initialize order counter", e);
         }
@@ -132,7 +132,7 @@ public class OrderRepository extends AbstractJsonRepository<Order>
     }
 
     public Order createOrder(Order order)
- {
+    {
         if (order == null) throw new IllegalArgumentException("Order cannot be null");
         
         // Generate order number if not provided
@@ -153,7 +153,7 @@ public class OrderRepository extends AbstractJsonRepository<Order>
     }
     
     private synchronized String generateNextOrderNumber()
- {
+    {
         try
         {
             // Read current counter value from file
@@ -169,13 +169,14 @@ public class OrderRepository extends AbstractJsonRepository<Order>
             return String.valueOf(nextOrderNumber);
         }
         catch (IOException e)
- {
+        {
             logger.error("Error generating order number", e);
             throw new RuntimeException("Failed to generate order number", e);
         }
     }
     
-    private long readCounter() throws IOException {
+    private long readCounter() throws IOException
+    {
         // If counter file doesn't exist, initialize it with the initial value
         if (!java.nio.file.Files.exists(counterFilePath))
         {
@@ -209,7 +210,7 @@ public class OrderRepository extends AbstractJsonRepository<Order>
             return counterValue;
         }
         catch (NumberFormatException e)
- {
+        {
             // File contains invalid data, reset to initial value
             logger.warn("Counter file contains invalid data, resetting to initial value: {}", INITIAL_ORDER_NUMBER);
             long initialValue = INITIAL_ORDER_NUMBER;
@@ -218,12 +219,13 @@ public class OrderRepository extends AbstractJsonRepository<Order>
         }
     }
     
-    private void writeCounter(long value) throws IOException {
+    private void writeCounter(long value) throws IOException
+    {
         java.nio.file.Files.write(counterFilePath, String.valueOf(value).getBytes());
     }
     
     public synchronized String generateNextInvoiceNumber()
- {
+    {
         try
         {
             // Read current invoice counter value from file
@@ -239,13 +241,14 @@ public class OrderRepository extends AbstractJsonRepository<Order>
             return String.valueOf(nextInvoiceNumber);
         }
         catch (IOException e)
- {
+        {
             logger.error("Error generating invoice number", e);
             throw new RuntimeException("Failed to generate invoice number", e);
         }
     }
     
-    private long readInvoiceCounter() throws IOException {
+    private long readInvoiceCounter() throws IOException
+    {
         // If counter file doesn't exist, initialize it with the initial value
         if (!java.nio.file.Files.exists(invoiceCounterFilePath))
         {
@@ -279,7 +282,7 @@ public class OrderRepository extends AbstractJsonRepository<Order>
             return counterValue;
         }
         catch (NumberFormatException e)
- {
+        {
             // File contains invalid data, reset to initial value
             logger.warn("Invoice counter file contains invalid data, resetting to initial value: {}", INITIAL_INVOICE_NUMBER);
             long initialValue = INITIAL_INVOICE_NUMBER;
@@ -288,12 +291,13 @@ public class OrderRepository extends AbstractJsonRepository<Order>
         }
     }
     
-    private void writeInvoiceCounter(long value) throws IOException {
+    private void writeInvoiceCounter(long value) throws IOException
+    {
         java.nio.file.Files.write(invoiceCounterFilePath, String.valueOf(value).getBytes());
     }
 
     public Order updateOrder(String id, Order orderDetails)
- {
+    {
         if (id == null || id.trim().isEmpty())
             throw new IllegalArgumentException("Order ID cannot be null or empty");
         if (orderDetails == null)
@@ -393,20 +397,20 @@ public class OrderRepository extends AbstractJsonRepository<Order>
     }
 
     public void deleteOrder(String id)
- {
+    {
         deleteById(id);
     }
 
- static class OrderNotFoundException extends EntityNotFoundException
- {
+    static class OrderNotFoundException extends EntityNotFoundException
+    {
         public OrderNotFoundException(String message)
         {
             super(message);
         }
     }
 
- static class OrderAlreadyExistsException extends EntityAlreadyExistsException
- {
+    static class OrderAlreadyExistsException extends EntityAlreadyExistsException
+    {
         public OrderAlreadyExistsException(String message)
         {
             super(message);

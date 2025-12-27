@@ -87,14 +87,14 @@ public class ProductRepository extends AbstractJsonRepository<Product>
         if (product == null) throw new IllegalArgumentException("Product cannot be null");
         if (product.getProductCode() != null && !product.getProductCode().trim().isEmpty() && 
             getProductByProductCode(product.getProductCode()).isPresent())
-            {
+        {
             throw new ProductAlreadyExistsException("Product with code " + product.getProductCode() + " already exists");
         }
         return save(product);
     }
 
     public Product updateProduct(String id, Product productDetails)
- {
+    {
         if (id == null || id.trim().isEmpty())
             throw new IllegalArgumentException("Product ID cannot be null or empty");
         if (productDetails == null)
@@ -128,7 +128,7 @@ public class ProductRepository extends AbstractJsonRepository<Product>
     }
 
     public void deleteProduct(String id)
- {
+    {
         deleteById(id);
     }
 
