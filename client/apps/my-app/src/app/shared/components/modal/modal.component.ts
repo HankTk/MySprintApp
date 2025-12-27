@@ -1,8 +1,8 @@
-import { Component, Inject, Optional } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
+import {Component, Inject, Optional} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatDialogRef, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import {TranslateModule} from '@ngx-translate/core';
 
 /**
  * Reusable modal component
@@ -18,8 +18,9 @@ import { TranslateModule } from '@ngx-translate/core';
 export class ModalComponent
 {
   constructor(
-    @Optional() public dialogRef: MatDialogRef<ModalComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+      @Optional() public dialogRef: MatDialogRef<ModalComponent>,
+      @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   )
-  {}
+  {
+  }
 }

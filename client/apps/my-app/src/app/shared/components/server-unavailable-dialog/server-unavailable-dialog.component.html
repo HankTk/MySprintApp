@@ -2,11 +2,11 @@
   <div class="dialog-icon">
     <ax-icon name="error_outline" size="large"></ax-icon>
   </div>
-  
+
   <h2 mat-dialog-title class="dialog-title">
     {{ 'messages.serverUnavailableTitle' | translate }}
   </h2>
-  
+
   <mat-dialog-content class="dialog-content">
     <p class="message">{{ message }}</p>
     <p class="instructions">
@@ -18,15 +18,15 @@
       <li>{{ 'messages.serverUnavailableCheck3' | translate }}</li>
     </ul>
   </mat-dialog-content>
-  
+
   <mat-dialog-actions class="dialog-actions">
     <ax-button
-      variant="raised"
-      color="primary"
-      [label]="isRetrying ? ('messages.checking' | translate) : ('messages.retry' | translate)"
-      [loading]="isRetrying"
-      [disabled]="isRetrying"
-      (click)="onRetry()">
+            variant="raised"
+            color="primary"
+            [label]="isRetrying ? ('messages.checking' | translate) : ('messages.retry' | translate)"
+            [loading]="isRetrying"
+            [disabled]="isRetrying"
+            (click)="onRetry()">
     </ax-button>
   </mat-dialog-actions>
 </div>

@@ -1,16 +1,27 @@
-import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { StoreService } from '../../../../core/store.service';
-import { User } from '../../models/user';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { Subscription } from 'rxjs';
-import { JsonUtil } from '../../../../shared/utils/json.util';
-import { UserManagementService } from './user-management.service';
-import { 
-  AxButtonComponent, 
-  AxProgressComponent, 
+import {
+  Component,
+  OnInit,
+  inject,
+  OnDestroy,
+  signal,
+  ViewChild,
+  ChangeDetectorRef,
+  TemplateRef,
+  AfterViewInit,
+  effect
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {StoreService} from '../../../../core/store.service';
+import {User} from '../../models/user';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {Subscription} from 'rxjs';
+import {JsonUtil} from '../../../../shared/utils/json.util';
+import {UserManagementService} from './user-management.service';
+import {
+  AxButtonComponent,
+  AxProgressComponent,
   AxCardComponent,
   AxIconComponent,
   AxTableComponent,
@@ -19,7 +30,7 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
+import {AxTooltipDirective} from '@ui/components';
 
 @Component({
   selector: 'app-user-management',
@@ -45,17 +56,17 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
   displayedColumns = signal<string[]>(['userid', 'lastName', 'firstName', 'email', 'role', 'actions']);
   showFilters = signal<boolean>(false);
   showFilterValue = false; // Regular property for @Input binding
-  
+
   // Table-level flag: whether the table supports filtering
   tableFilterable = true;
-  
+
   // Column definitions for the new ax-table
   columns = signal<AxTableColumnDef<User>[]>([]);
-  
+
   // Template references for custom cells
 
   @ViewChild('actionsCell') actionsCellTemplate?: TemplateRef<any>;
-  
+
   // Reference to the table component
   @ViewChild('axTable') axTable?: AxTableComponent<User>;
 
@@ -70,7 +81,7 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
   JsonUtilRef = JsonUtil;
 
   users = this.store.select('users');
-  
+
   constructor()
   {
     // Reinitialize columns when users change (using effect)
@@ -100,7 +111,7 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private initializeColumns(): void
- {
+  {
     const isEnglish = this.languageService.isEnglish();
     this.columns.set([
       {
@@ -179,11 +190,11 @@ export class UserManagementComponent implements OnInit, OnDestroy, AfterViewInit
   {
     const currentValue = this.showFilters();
     const newValue = !currentValue;
-    
+
     // Update both signal and property
     this.showFilters.set(newValue);
     this.showFilterValue = newValue;
-    
+
     // Force change detection to ensure the binding is updated
     this.cdr.markForCheck();
     this.cdr.detectChanges();

@@ -1,12 +1,15 @@
-import { Injectable, inject, WritableSignal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { Warehouse, CreateWarehouseRequest } from '../models/warehouse.model';
-import { ResourceService } from '../../../shared/services/resource.service';
-import { TranslateService } from '@ngx-translate/core';
-import { WarehouseDialogComponent, WarehouseDialogData } from '../components/warehouse-dialog/warehouse-dialog.component';
-import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import {Injectable, inject, WritableSignal} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {Warehouse, CreateWarehouseRequest} from '../models/warehouse.model';
+import {ResourceService} from '../../../shared/services/resource.service';
+import {TranslateService} from '@ngx-translate/core';
+import {WarehouseDialogComponent, WarehouseDialogData} from '../components/warehouse-dialog/warehouse-dialog.component';
+import {
+  DeleteConfirmDialogComponent,
+  DeleteConfirmDialogData
+} from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -48,67 +51,67 @@ export class WarehouseService
   loadWarehouses(isLoading: WritableSignal<boolean>): void
   {
     this.resourceManager.loadResource(
-      'warehouses',
-      isLoading,
-      this.translate.instant('messages.failedToLoad', { resource: 'warehouses' })
+        'warehouses',
+        isLoading,
+        this.translate.instant('messages.failedToLoad', {resource: 'warehouses'})
     );
   }
 
   createWarehouseWithNotification(
-    warehouseData: CreateWarehouseRequest,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      warehouseData: CreateWarehouseRequest,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.createResource(
-      'warehouses',
-      warehouseData,
-      isLoading,
-      this.translate.instant('messages.warehouseCreatedSuccessfully'),
-      this.translate.instant('messages.failedToCreateWarehouse')
+        'warehouses',
+        warehouseData,
+        isLoading,
+        this.translate.instant('messages.warehouseCreatedSuccessfully'),
+        this.translate.instant('messages.failedToCreateWarehouse')
     );
   }
 
   updateWarehouseWithNotification(
-    warehouseData: Warehouse,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      warehouseData: Warehouse,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.updateResource(
-      'warehouses',
-      warehouseData.id!,
-      warehouseData,
-      isLoading,
-      this.translate.instant('messages.warehouseUpdatedSuccessfully'),
-      this.translate.instant('messages.failedToUpdateWarehouse')
+        'warehouses',
+        warehouseData.id!,
+        warehouseData,
+        isLoading,
+        this.translate.instant('messages.warehouseUpdatedSuccessfully'),
+        this.translate.instant('messages.failedToUpdateWarehouse')
     );
   }
 
   deleteWarehouseWithNotification(
-    id: string,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      id: string,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.deleteResource(
-      'warehouses',
-      id,
-      isLoading,
-      this.translate.instant('messages.warehouseDeletedSuccessfully'),
-      this.translate.instant('messages.failedToDeleteWarehouse')
+        'warehouses',
+        id,
+        isLoading,
+        this.translate.instant('messages.warehouseDeletedSuccessfully'),
+        this.translate.instant('messages.failedToDeleteWarehouse')
     );
   }
 
   openAddWarehouseDialog(isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(WarehouseDialogComponent,
-    {
-      data: { isEdit: false } as WarehouseDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {isEdit: false} as WarehouseDialogData,
+          width: '1200px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'create')
       {
         this.createWarehouseWithNotification(result.warehouse, isLoading);
@@ -119,15 +122,15 @@ export class WarehouseService
   openEditWarehouseDialog(warehouse: Warehouse, isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(WarehouseDialogComponent,
-    {
-      data: { warehouse, isEdit: true } as WarehouseDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {warehouse, isEdit: true} as WarehouseDialogData,
+          width: '1200px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'update')
       {
         this.updateWarehouseWithNotification(result.warehouse, isLoading);
@@ -139,18 +142,18 @@ export class WarehouseService
   {
     const warehouseName = warehouse.warehouseName || warehouse.warehouseCode || warehouse.id || 'Warehouse';
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
-    {
-      data: {
-        userName: warehouseName,
-        userEmail: ''
-      } as DeleteConfirmDialogData,
-      width: '500px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {
+            userName: warehouseName,
+            userEmail: ''
+          } as DeleteConfirmDialogData,
+          width: '500px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result === true)
       {
         this.deleteWarehouseWithNotification(warehouse.id!, isLoading);

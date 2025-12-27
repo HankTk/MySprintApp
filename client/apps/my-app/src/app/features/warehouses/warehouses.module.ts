@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { WarehouseListComponent } from './components/warehouse-list/warehouse-list.component';
-import { WarehouseDialogComponent } from './components/warehouse-dialog/warehouse-dialog.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {WarehouseListComponent} from './components/warehouse-list/warehouse-list.component';
+import {WarehouseDialogComponent} from './components/warehouse-dialog/warehouse-dialog.component';
 
 /**
  * Warehouses module

@@ -1,16 +1,28 @@
-import { Component, OnInit, inject, OnDestroy, signal, computed, ViewChild, TemplateRef, AfterViewInit, effect, ChangeDetectorRef } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { CommonModule, CurrencyPipe } from '@angular/common';
-import { StoreService } from '../../../../core/store.service';
-import { Order } from '../../models/order.model';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { Subscription } from 'rxjs';
-import { JsonUtil } from '../../../../shared/utils/json.util';
-import { OrderService } from '../../services/order.service';
-import { CustomerService } from '../../../customers/services/customer.service';
-import { Customer } from '../../../customers/models/customer.model';
+import {
+  Component,
+  OnInit,
+  inject,
+  OnDestroy,
+  signal,
+  computed,
+  ViewChild,
+  TemplateRef,
+  AfterViewInit,
+  effect,
+  ChangeDetectorRef
+} from '@angular/core';
+import {Router, NavigationEnd} from '@angular/router';
+import {filter} from 'rxjs/operators';
+import {CommonModule, CurrencyPipe} from '@angular/common';
+import {StoreService} from '../../../../core/store.service';
+import {Order} from '../../models/order.model';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {Subscription} from 'rxjs';
+import {JsonUtil} from '../../../../shared/utils/json.util';
+import {OrderService} from '../../services/order.service';
+import {CustomerService} from '../../../customers/services/customer.service';
+import {Customer} from '../../../customers/models/customer.model';
 import {
   AxButtonComponent,
   AxProgressComponent,
@@ -23,7 +35,7 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
+import {AxTooltipDirective} from '@ui/components';
 
 @Component({
   selector: 'app-order-list',
@@ -66,15 +78,15 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit
   @ViewChild('axTable') axTable?: AxTableComponent<Order>;
 
   statusOptions: AxSelectOption[] = [
-    { value: null, label: 'All' },
-    { value: 'DRAFT', label: 'Draft' },
-    { value: 'PENDING_APPROVAL', label: 'Pending Approval' },
-    { value: 'APPROVED', label: 'Approved' },
-    { value: 'SHIPPING_INSTRUCTED', label: 'Shipping Instructed' },
-    { value: 'SHIPPED', label: 'Shipped' },
-    { value: 'INVOICED', label: 'Invoiced' },
-    { value: 'PAID', label: 'Paid' },
-    { value: 'CANCELLED', label: 'Cancelled' }
+    {value: null, label: 'All'},
+    {value: 'DRAFT', label: 'Draft'},
+    {value: 'PENDING_APPROVAL', label: 'Pending Approval'},
+    {value: 'APPROVED', label: 'Approved'},
+    {value: 'SHIPPING_INSTRUCTED', label: 'Shipping Instructed'},
+    {value: 'SHIPPED', label: 'Shipped'},
+    {value: 'INVOICED', label: 'Invoiced'},
+    {value: 'PAID', label: 'Paid'},
+    {value: 'CANCELLED', label: 'Cancelled'}
   ];
 
   private store = inject(StoreService);
@@ -116,15 +128,15 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit
     this.loadCustomers();
 
     this.subscriptions.add(
-      this.router.events
-        .pipe(filter(event => event instanceof NavigationEnd))
-        .subscribe((event: any) =>
-        {
-          if (event.url === '/orders' || event.urlAfterRedirects === '/orders')
-          {
-            this.loadOrders();
-          }
-        })
+        this.router.events
+            .pipe(filter(event => event instanceof NavigationEnd))
+            .subscribe((event: any) =>
+            {
+              if (event.url === '/orders' || event.urlAfterRedirects === '/orders')
+              {
+                this.loadOrders();
+              }
+            })
     );
   }
 
@@ -135,7 +147,7 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private initializeColumns(): void
- {
+  {
     this.columns.set([
       {
         key: 'orderNumber',
@@ -153,12 +165,12 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit
         sortable: true,
         filterable: true,
         filterType: 'select',
-        filterOptions: (data: Order[]): FilterOption[] => 
-{
+        filterOptions: (data: Order[]): FilterOption[] =>
+        {
           const customers = this.customers() || [];
           const customerMap = new Map<string, string>();
-          data.forEach(order => 
-{
+          data.forEach(order =>
+          {
             if (order.customerId && !customerMap.has(order.customerId))
             {
               const customer = customers.find((c: Customer) => c.id === order.customerId);
@@ -167,10 +179,10 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit
             }
           });
           const customerNames = Array.from(customerMap.entries())
-            .map(([id, name]) => ({ value: id || '', label: name || '' }))
-            .sort((a, b) => a.label.localeCompare(b.label));
+              .map(([id, name]) => ({value: id || '', label: name || ''}))
+              .sort((a, b) => a.label.localeCompare(b.label));
           return [
-            { value: '', label: 'All' },
+            {value: '', label: 'All'},
             ...customerNames
           ];
         },
@@ -193,7 +205,7 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit
         filterable: true,
         filterType: 'select',
         filterOptions: [
-          { value: '', label: 'All' },
+          {value: '', label: 'All'},
           ...this.statusOptions.filter(opt => opt.value !== null).map(opt => ({
             value: opt.value as string,
             label: opt.label
@@ -264,13 +276,13 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit
   formatDate(dateString?: string): string
   {
     if (!dateString) return 'N/A';
-    try 
-{
+    try
+    {
       const date = new Date(dateString);
       return date.toLocaleDateString();
     }
- catch
- {
+    catch
+    {
       return dateString;
     }
   }
@@ -290,7 +302,7 @@ export class OrderListComponent implements OnInit, OnDestroy, AfterViewInit
     if (!status) return 'N/A';
     // Convert status like "PENDING_APPROVAL" to "pendingApproval" to match translation keys
     const camelCaseStatus = status.toLowerCase().split('_').map((word, index) =>
-      index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)
+        index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)
     ).join('');
     const key = `order.status.${camelCaseStatus}`;
     const translated = this.languageService.instant(key);

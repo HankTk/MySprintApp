@@ -95,7 +95,7 @@ mat-card-title {
   cursor: pointer !important;
   pointer-events: auto !important;
   isolation: isolate; // Create new stacking context
-  
+
   // Ensure button and all children are clickable
   ::ng-deep * {
     pointer-events: auto !important;

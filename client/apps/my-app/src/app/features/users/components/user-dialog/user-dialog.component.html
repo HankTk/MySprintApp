@@ -8,84 +8,84 @@
     <mat-dialog-content class="dialog-content">
       <div class="form-row">
         <ax-input
-          [label]="'userid' | translate"
-          [placeholder]="'useridPlaceholder' | translate"
-          formControlName="userid"
-          [error]="isFieldInvalid('userid') ? getErrorMessage('userid') : undefined">
+                [label]="'userid' | translate"
+                [placeholder]="'useridPlaceholder' | translate"
+                formControlName="userid"
+                [error]="isFieldInvalid('userid') ? getErrorMessage('userid') : undefined">
         </ax-input>
       </div>
 
       <div class="form-row">
         @if (isEnglish) {
           <ax-input
-            [label]="'firstName' | translate"
-            [placeholder]="'firstNamePlaceholder' | translate"
-            formControlName="firstName"
-            [error]="isFieldInvalid('firstName') ? getErrorMessage('firstName') : undefined">
+                  [label]="'firstName' | translate"
+                  [placeholder]="'firstNamePlaceholder' | translate"
+                  formControlName="firstName"
+                  [error]="isFieldInvalid('firstName') ? getErrorMessage('firstName') : undefined">
           </ax-input>
         }
 
         <ax-input
-          [label]="'lastName' | translate"
-          [placeholder]="'lastNamePlaceholder' | translate"
-          formControlName="lastName"
-          [error]="isFieldInvalid('lastName') ? getErrorMessage('lastName') : undefined">
+                [label]="'lastName' | translate"
+                [placeholder]="'lastNamePlaceholder' | translate"
+                formControlName="lastName"
+                [error]="isFieldInvalid('lastName') ? getErrorMessage('lastName') : undefined">
         </ax-input>
 
         @if (!isEnglish) {
           <ax-input
-            [label]="'firstName' | translate"
-            [placeholder]="'firstNamePlaceholder' | translate"
-            formControlName="firstName"
-            [error]="isFieldInvalid('firstName') ? getErrorMessage('firstName') : undefined">
+                  [label]="'firstName' | translate"
+                  [placeholder]="'firstNamePlaceholder' | translate"
+                  formControlName="firstName"
+                  [error]="isFieldInvalid('firstName') ? getErrorMessage('firstName') : undefined">
           </ax-input>
         }
       </div>
 
       <div class="form-row">
         <ax-input
-          type="email"
-          [label]="'emailAddress' | translate"
-          [placeholder]="'emailPlaceholder' | translate"
-          formControlName="email"
-          [error]="isFieldInvalid('email') ? getErrorMessage('email') : undefined">
+                type="email"
+                [label]="'emailAddress' | translate"
+                [placeholder]="'emailPlaceholder' | translate"
+                formControlName="email"
+                [error]="isFieldInvalid('email') ? getErrorMessage('email') : undefined">
         </ax-input>
       </div>
 
       <div class="form-row">
         <ax-select
-          [label]="'role' | translate"
-          [options]="roleOptions"
-          formControlName="role"
-          [error]="isFieldInvalid('role') ? getErrorMessage('role') : undefined">
+                [label]="'role' | translate"
+                [options]="roleOptions"
+                formControlName="role"
+                [error]="isFieldInvalid('role') ? getErrorMessage('role') : undefined">
         </ax-select>
       </div>
 
       <div class="form-row">
         <ax-textarea
-          [label]="'jsonData' | translate"
-          [placeholder]="'jsonDataPlaceholder' | translate"
-          formControlName="jsonData"
-          [rows]="4"
-          [hint]="'jsonDataHint' | translate"
-          [error]="isFieldInvalid('jsonData') ? getErrorMessage('jsonData') : undefined">
+                [label]="'jsonData' | translate"
+                [placeholder]="'jsonDataPlaceholder' | translate"
+                formControlName="jsonData"
+                [rows]="4"
+                [hint]="'jsonDataHint' | translate"
+                [error]="isFieldInvalid('jsonData') ? getErrorMessage('jsonData') : undefined">
         </ax-textarea>
       </div>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end" class="dialog-actions">
       <ax-button
-        variant="stroked"
-        type="button"
-        [label]="'cancel' | translate"
-        (click)="onCancel()">
+              variant="stroked"
+              type="button"
+              [label]="'cancel' | translate"
+              (click)="onCancel()">
       </ax-button>
       <ax-button
-        variant="raised"
-        color="primary"
-        type="submit"
-        [label]="isEdit ? ('update' | translate) : ('add' | translate)"
-        [disabled]="userForm.invalid">
+              variant="raised"
+              color="primary"
+              type="submit"
+              [label]="isEdit ? ('update' | translate) : ('add' | translate)"
+              [disabled]="userForm.invalid">
       </ax-button>
     </mat-dialog-actions>
   </form>

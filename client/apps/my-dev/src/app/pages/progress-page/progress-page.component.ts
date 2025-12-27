@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AxProgressComponent, AxCardComponent, MatCardModule } from '@ui/components';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AxProgressComponent, AxCardComponent, MatCardModule} from '@ui/components';
 
 @Component({
   selector: 'app-progress-page',

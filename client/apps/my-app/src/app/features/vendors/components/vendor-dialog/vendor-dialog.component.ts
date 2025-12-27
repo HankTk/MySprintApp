@@ -1,16 +1,16 @@
-import { Component, Inject, OnInit, inject, signal } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { Vendor, CreateVendorRequest } from '../../models/vendor.model';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { AxButtonComponent, AxIconComponent } from '@ui/components';
-import { AddressService } from '../../../addresses/services/address.service';
-import { Address } from '../../../addresses/models/address.model';
-import { firstValueFrom } from 'rxjs';
+import {Component, Inject, OnInit, inject, signal} from '@angular/core';
+import {FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialogRef, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {Vendor, CreateVendorRequest} from '../../models/vendor.model';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {AxButtonComponent, AxIconComponent} from '@ui/components';
+import {AddressService} from '../../../addresses/services/address.service';
+import {Address} from '../../../addresses/models/address.model';
+import {firstValueFrom} from 'rxjs';
 
 export interface VendorDialogData
 {
@@ -47,12 +47,12 @@ export class VendorDialogComponent implements OnInit
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
   private addressService = inject(AddressService);
-  
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: VendorDialogData)
   {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editVendor') : this.translate.instant('addVendor');
-    
+
     this.vendorForm = this.fb.group({
       vendorNumber: [''],
       companyName: [''],
@@ -82,7 +82,7 @@ export class VendorDialogComponent implements OnInit
       this.addresses.set(addresses);
     }
     catch (error)
- {
+    {
       console.error('Failed to load addresses:', error);
     }
   }
@@ -101,7 +101,7 @@ export class VendorDialogComponent implements OnInit
   }
 
   private populateForm(vendor: Vendor): void
- {
+  {
     let jsonDataString = '{}';
     if (vendor.jsonData)
     {
@@ -109,15 +109,15 @@ export class VendorDialogComponent implements OnInit
       {
         jsonDataString = JSON.stringify(vendor.jsonData, null, 2);
       }
- else if (typeof vendor.jsonData === 'string')
- {
-        try 
-{
+      else if (typeof vendor.jsonData === 'string')
+      {
+        try
+        {
           JSON.parse(vendor.jsonData);
           jsonDataString = vendor.jsonData;
         }
- catch
- {
+        catch
+        {
           jsonDataString = '{}';
         }
       }
@@ -136,21 +136,21 @@ export class VendorDialogComponent implements OnInit
   }
 
   private jsonValidator(control: any)
- {
+  {
     if (!control.value) return null;
-    try 
-{
+    try
+    {
       JSON.parse(control.value);
       return null;
     }
- catch (e)
- {
-      return { invalidJson: true };
+    catch (e)
+    {
+      return {invalidJson: true};
     }
   }
 
   get isEnglish(): boolean
- {
+  {
     return this.languageService.isEnglish();
   }
 
@@ -159,16 +159,16 @@ export class VendorDialogComponent implements OnInit
     if (this.vendorForm.valid)
     {
       const formValue = this.vendorForm.value;
-      
+
       let jsonData: any = {};
       if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
       {
-        try 
-{
+        try
+        {
           jsonData = JSON.parse(formValue.jsonData);
         }
- catch (e)
- {
+        catch (e)
+        {
           return;
         }
       }
@@ -176,33 +176,33 @@ export class VendorDialogComponent implements OnInit
       if (this.isEdit && this.data.vendor)
       {
         const vendorToUpdate: Vendor =
-        {
-          id: this.data.vendor.id,
-          vendorNumber: formValue.vendorNumber,
-          companyName: formValue.companyName,
-          firstName: formValue.firstName,
-          lastName: formValue.lastName,
-          email: formValue.email,
-          phone: formValue.phone,
-          addressId: formValue.addressId || undefined,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'update', vendor: vendorToUpdate });
+            {
+              id: this.data.vendor.id,
+              vendorNumber: formValue.vendorNumber,
+              companyName: formValue.companyName,
+              firstName: formValue.firstName,
+              lastName: formValue.lastName,
+              email: formValue.email,
+              phone: formValue.phone,
+              addressId: formValue.addressId || undefined,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'update', vendor: vendorToUpdate});
       }
- else
- {
+      else
+      {
         const vendorToCreate: CreateVendorRequest =
-        {
-          vendorNumber: formValue.vendorNumber,
-          companyName: formValue.companyName,
-          firstName: formValue.firstName,
-          lastName: formValue.lastName,
-          email: formValue.email,
-          phone: formValue.phone,
-          addressId: formValue.addressId || undefined,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'create', vendor: vendorToCreate });
+            {
+              vendorNumber: formValue.vendorNumber,
+              companyName: formValue.companyName,
+              firstName: formValue.firstName,
+              lastName: formValue.lastName,
+              email: formValue.email,
+              phone: formValue.phone,
+              addressId: formValue.addressId || undefined,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'create', vendor: vendorToCreate});
       }
     }
   }

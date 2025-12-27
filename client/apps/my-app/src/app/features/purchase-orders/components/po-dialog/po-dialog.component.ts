@@ -1,14 +1,14 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { PurchaseOrder, CreatePurchaseOrderRequest } from '../../models/purchase-order.model';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { AxButtonComponent, AxIconComponent } from '@ui/components';
+import {Component, Inject, OnInit, inject} from '@angular/core';
+import {FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialogRef, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {PurchaseOrder, CreatePurchaseOrderRequest} from '../../models/purchase-order.model';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {AxButtonComponent, AxIconComponent} from '@ui/components';
 
 export interface PurchaseOrderDialogData
 {
@@ -44,12 +44,12 @@ export class PurchaseOrderDialogComponent implements OnInit
   private dialogRef = inject(MatDialogRef<PurchaseOrderDialogComponent>);
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
-  
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: PurchaseOrderDialogData)
   {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editPurchaseOrder') : this.translate.instant('addPurchaseOrder');
-    
+
     this.poForm = this.fb.group({
       supplierId: [''],
       shippingAddressId: [''],
@@ -71,7 +71,7 @@ export class PurchaseOrderDialogComponent implements OnInit
   }
 
   private populateForm(po: PurchaseOrder): void
- {
+  {
     let jsonDataString = '{}';
     if (po.jsonData)
     {
@@ -79,15 +79,15 @@ export class PurchaseOrderDialogComponent implements OnInit
       {
         jsonDataString = JSON.stringify(po.jsonData, null, 2);
       }
- else if (typeof po.jsonData === 'string')
- {
-        try 
-{
+      else if (typeof po.jsonData === 'string')
+      {
+        try
+        {
           JSON.parse(po.jsonData);
           jsonDataString = po.jsonData;
         }
- catch
- {
+        catch
+        {
           jsonDataString = '{}';
         }
       }
@@ -106,16 +106,16 @@ export class PurchaseOrderDialogComponent implements OnInit
   }
 
   private jsonValidator(control: any)
- {
+  {
     if (!control.value) return null;
-    try 
-{
+    try
+    {
       JSON.parse(control.value);
       return null;
     }
- catch (e)
- {
-      return { invalidJson: true };
+    catch (e)
+    {
+      return {invalidJson: true};
     }
   }
 
@@ -124,16 +124,16 @@ export class PurchaseOrderDialogComponent implements OnInit
     if (this.poForm.valid)
     {
       const formValue = this.poForm.value;
-      
+
       let jsonData: any = {};
       if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
       {
-        try 
-{
+        try
+        {
           jsonData = JSON.parse(formValue.jsonData);
         }
- catch (e)
- {
+        catch (e)
+        {
           return;
         }
       }
@@ -141,33 +141,33 @@ export class PurchaseOrderDialogComponent implements OnInit
       if (this.isEdit && this.data.purchaseOrder)
       {
         const poToUpdate: PurchaseOrder =
-        {
-          ...this.data.purchaseOrder,
-          supplierId: formValue.supplierId,
-          shippingAddressId: formValue.shippingAddressId,
-          billingAddressId: formValue.billingAddressId,
-          orderDate: formValue.orderDate,
-          expectedDeliveryDate: formValue.expectedDeliveryDate,
-          status: formValue.status,
-          notes: formValue.notes,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'update', purchaseOrder: poToUpdate });
+            {
+              ...this.data.purchaseOrder,
+              supplierId: formValue.supplierId,
+              shippingAddressId: formValue.shippingAddressId,
+              billingAddressId: formValue.billingAddressId,
+              orderDate: formValue.orderDate,
+              expectedDeliveryDate: formValue.expectedDeliveryDate,
+              status: formValue.status,
+              notes: formValue.notes,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'update', purchaseOrder: poToUpdate});
       }
- else
- {
+      else
+      {
         const poToCreate: CreatePurchaseOrderRequest =
-        {
-          supplierId: formValue.supplierId,
-          shippingAddressId: formValue.shippingAddressId,
-          billingAddressId: formValue.billingAddressId,
-          orderDate: formValue.orderDate,
-          expectedDeliveryDate: formValue.expectedDeliveryDate,
-          status: formValue.status,
-          notes: formValue.notes,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'create', purchaseOrder: poToCreate });
+            {
+              supplierId: formValue.supplierId,
+              shippingAddressId: formValue.shippingAddressId,
+              billingAddressId: formValue.billingAddressId,
+              orderDate: formValue.orderDate,
+              expectedDeliveryDate: formValue.expectedDeliveryDate,
+              status: formValue.status,
+              notes: formValue.notes,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'create', purchaseOrder: poToCreate});
       }
     }
   }

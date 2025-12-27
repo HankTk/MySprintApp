@@ -5,9 +5,9 @@
   <mat-nav-list>
     @for (item of menuItems; track item.id) {
       <a
-        mat-list-item
-        [class.active]="currentPage === item.id"
-        (click)="onItemClick(item.id)">
+              mat-list-item
+              [class.active]="currentPage === item.id"
+              (click)="onItemClick(item.id)">
         <ax-icon [name]="item.icon" matListItemIcon></ax-icon>
         <span matListItemTitle>{{ item.label }}</span>
       </a>

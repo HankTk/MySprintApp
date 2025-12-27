@@ -30,6 +30,7 @@
       box-sizing: border-box;
       position: relative;
     }
+
     .header-content {
       display: flex;
       align-items: center;
@@ -37,14 +38,14 @@
 
       .back-button {
         flex-shrink: 0;
-        
+
         ::ng-deep {
           button {
             display: flex;
             align-items: center;
             justify-content: center;
           }
-          
+
           ax-icon,
           mat-icon {
             display: flex;
@@ -228,12 +229,12 @@
             .mat-mdc-form-field {
               display: block;
             }
-            
+
             // Align input area at the bottom
             .mat-mdc-text-field-wrapper {
               padding-bottom: 0;
             }
-            
+
             // Hide subscript wrapper to align input area
             .mat-mdc-form-field-subscript-wrapper {
               display: none;
@@ -377,7 +378,7 @@
       gap: var(--spacing-lg);
       flex: 1;
       max-width: 600px;
-      
+
       .full-width {
         width: 100%;
       }

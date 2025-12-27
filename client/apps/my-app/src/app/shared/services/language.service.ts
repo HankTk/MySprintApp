@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 export type Language = 'en' | 'ja';
 

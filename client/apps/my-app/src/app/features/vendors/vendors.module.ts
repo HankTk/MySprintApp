@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { VendorListComponent } from './components/vendor-list/vendor-list.component';
-import { VendorDialogComponent } from './components/vendor-dialog/vendor-dialog.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {VendorListComponent} from './components/vendor-list/vendor-list.component';
+import {VendorDialogComponent} from './components/vendor-dialog/vendor-dialog.component';
 
 /**
  * Vendors module

@@ -9,7 +9,8 @@ export interface ElectronAPI
   shutdown: () => void;
 }
 
-declare global {
+declare global
+{
   interface Window
   {
     electronAPI?: ElectronAPI;

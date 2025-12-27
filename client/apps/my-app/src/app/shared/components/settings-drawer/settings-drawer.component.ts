@@ -1,15 +1,15 @@
-import { Component, EventEmitter, Output, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../services/language.service';
-import { LanguageSwitcherComponent } from '../language-switcher/language-switcher.component';
-import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.component';
-import { 
-  AxButtonComponent, 
-  AxIconComponent, 
+import {Component, EventEmitter, Output, inject} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../services/language.service';
+import {LanguageSwitcherComponent} from '../language-switcher/language-switcher.component';
+import {ThemeSwitcherComponent} from '../theme-switcher/theme-switcher.component';
+import {
+  AxButtonComponent,
+  AxIconComponent,
   AxDividerComponent
 } from '@ui/components';
-import { MatListModule } from '@angular/material/list';
+import {MatListModule} from '@angular/material/list';
 
 @Component({
   selector: 'app-settings-drawer',
@@ -30,7 +30,7 @@ import { MatListModule } from '@angular/material/list';
 export class SettingsDrawerComponent
 {
   @Output() closeDrawer = new EventEmitter<void>();
-  
+
   private languageService = inject(LanguageService);
 
   onClose(): void

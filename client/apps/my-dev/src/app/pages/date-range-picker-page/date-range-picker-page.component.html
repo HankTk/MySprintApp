@@ -7,10 +7,10 @@
       <mat-card-title>Basic Usage</mat-card-title>
     </mat-card-header>
     <ax-date-range-picker
-      label="Date Range"
-      [(startDate)]="startDate"
-      [(endDate)]="endDate"
-      placeholder="Select dates">
+            label="Date Range"
+            [(startDate)]="startDate"
+            [(endDate)]="endDate"
+            placeholder="Select dates">
     </ax-date-range-picker>
     <div style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
       <p><strong>Start Date:</strong> {{ startDate ? (startDate | date: 'short') : 'Not selected' }}</p>
@@ -24,18 +24,18 @@
     </mat-card-header>
     <div class="picker-group">
       <ax-date-range-picker
-        label="Normal"
-        placeholder="Select dates">
+              label="Normal"
+              placeholder="Select dates">
       </ax-date-range-picker>
       <ax-date-range-picker
-        label="Error State"
-        [error]="true"
-        placeholder="Select dates">
+              label="Error State"
+              [error]="true"
+              placeholder="Select dates">
       </ax-date-range-picker>
       <ax-date-range-picker
-        label="Disabled"
-        [disabled]="true"
-        placeholder="Select dates">
+              label="Disabled"
+              [disabled]="true"
+              placeholder="Select dates">
       </ax-date-range-picker>
     </div>
   </ax-card>
@@ -45,18 +45,19 @@
       <mat-card-title>Date Range Picker with Popover (Two-Month Calendar)</mat-card-title>
       <mat-card-subtitle>Single input field that opens calendar in popover</mat-card-subtitle>
     </mat-card-header>
-    <p class="description">Click on the input field to open a popover with two-month calendar view and predefined date ranges.</p>
-    
+    <p class="description">Click on the input field to open a popover with two-month calendar view and predefined date
+      ranges.</p>
+
     <ax-date-range-picker
-      [popoverMode]="true"
-      [showPredefinedRanges]="true"
-      label="Date Range"
-      placeholder="Select date range"
-      [startDate]="inlineStartDate"
-      [endDate]="inlineEndDate"
-      (rangeChange)="onInlineRangeChange($event)">
+            [popoverMode]="true"
+            [showPredefinedRanges]="true"
+            label="Date Range"
+            placeholder="Select date range"
+            [startDate]="inlineStartDate"
+            [endDate]="inlineEndDate"
+            (rangeChange)="onInlineRangeChange($event)">
     </ax-date-range-picker>
-    
+
     <div style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
       <p><strong>Start Date:</strong> {{ inlineStartDate ? (inlineStartDate | date: 'short') : 'Not selected' }}</p>
       <p><strong>End Date:</strong> {{ inlineEndDate ? (inlineEndDate | date: 'short') : 'Not selected' }}</p>
@@ -68,16 +69,17 @@
       <mat-card-title>Enhanced Date Range Picker with Two-Month Calendar (Inline)</mat-card-title>
       <mat-card-subtitle>Inline calendar view with predefined date ranges</mat-card-subtitle>
     </mat-card-header>
-    <p class="description">This enhanced picker shows two months side-by-side with predefined range options on the left.</p>
-    
+    <p class="description">This enhanced picker shows two months side-by-side with predefined range options on the
+      left.</p>
+
     <ax-date-range-picker
-      [inline]="true"
-      [showPredefinedRanges]="true"
-      [startDate]="inlineStartDate"
-      [endDate]="inlineEndDate"
-      (rangeChange)="onInlineRangeChange($event)">
+            [inline]="true"
+            [showPredefinedRanges]="true"
+            [startDate]="inlineStartDate"
+            [endDate]="inlineEndDate"
+            (rangeChange)="onInlineRangeChange($event)">
     </ax-date-range-picker>
-    
+
     <div style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
       <p><strong>Start Date:</strong> {{ inlineStartDate ? (inlineStartDate | date: 'short') : 'Not selected' }}</p>
       <p><strong>End Date:</strong> {{ inlineEndDate ? (inlineEndDate | date: 'short') : 'Not selected' }}</p>
@@ -89,47 +91,50 @@
       <mat-card-title>Single Field Date Range Picker (Table Filter Style)</mat-card-title>
     </mat-card-header>
     <p class="description">This demonstrates the single input field with popup approach used in table filters.</p>
-    
+
     <div class="single-field-wrapper">
       <div class="date-range-single-wrapper">
         <mat-form-field appearance="outline" class="filter-field-inline date-range-single">
           <input
-            matInput
-            [value]="getDateRangeDisplay()"
-            placeholder="Date Range"
-            readonly
-            (click)="toggleDateRangePicker()">
+                  matInput
+                  [value]="getDateRangeDisplay()"
+                  placeholder="Date Range"
+                  readonly
+                  (click)="toggleDateRangePicker()">
           <button
-            matIconSuffix
-            mat-icon-button
-            type="button"
-            (click)="toggleDateRangePicker(); $event.stopPropagation()"
-            aria-label="Open date range picker">
+                  matIconSuffix
+                  mat-icon-button
+                  type="button"
+                  (click)="toggleDateRangePicker(); $event.stopPropagation()"
+                  aria-label="Open date range picker">
             <mat-icon>calendar_today</mat-icon>
           </button>
         </mat-form-field>
-        
+
         @if (isDateRangePickerOpen) {
           <div class="date-range-popup">
             <div class="date-range-popup-content">
               <ax-date-range-picker
-                [startDate]="singleFieldStartDate"
-                [endDate]="singleFieldEndDate"
-                (startDateChange)="onSingleFieldStartDateChange($event)"
-                (endDateChange)="onSingleFieldEndDateChange($event)">
+                      [startDate]="singleFieldStartDate"
+                      [endDate]="singleFieldEndDate"
+                      (startDateChange)="onSingleFieldStartDateChange($event)"
+                      (endDateChange)="onSingleFieldEndDateChange($event)">
               </ax-date-range-picker>
               <div class="date-range-actions">
                 <button mat-button (click)="clearSingleFieldDateRange(); $event.stopPropagation()">Clear</button>
-                <button mat-button color="primary" (click)="closeSingleFieldDateRangePicker(); $event.stopPropagation()">Apply</button>
+                <button mat-button color="primary"
+                        (click)="closeSingleFieldDateRangePicker(); $event.stopPropagation()">Apply
+                </button>
               </div>
             </div>
           </div>
         }
       </div>
     </div>
-    
+
     <div style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
-      <p><strong>Start Date:</strong> {{ singleFieldStartDate ? (singleFieldStartDate | date: 'short') : 'Not selected' }}</p>
+      <p><strong>Start
+        Date:</strong> {{ singleFieldStartDate ? (singleFieldStartDate | date: 'short') : 'Not selected' }}</p>
       <p><strong>End Date:</strong> {{ singleFieldEndDate ? (singleFieldEndDate | date: 'short') : 'Not selected' }}</p>
     </div>
   </ax-card>

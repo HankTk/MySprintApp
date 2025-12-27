@@ -1,13 +1,16 @@
-import { Injectable, inject, WritableSignal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { PurchaseOrder, CreatePurchaseOrderRequest } from '../models/purchase-order.model';
-import { ResourceService } from '../../../shared/services/resource.service';
-import { TranslateService } from '@ngx-translate/core';
-import { PurchaseOrderDialogComponent, PurchaseOrderDialogData } from '../components/po-dialog/po-dialog.component';
-import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import {Injectable, inject, WritableSignal} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {PurchaseOrder, CreatePurchaseOrderRequest} from '../models/purchase-order.model';
+import {ResourceService} from '../../../shared/services/resource.service';
+import {TranslateService} from '@ngx-translate/core';
+import {PurchaseOrderDialogComponent, PurchaseOrderDialogData} from '../components/po-dialog/po-dialog.component';
+import {
+  DeleteConfirmDialogComponent,
+  DeleteConfirmDialogData
+} from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -50,67 +53,67 @@ export class PurchaseOrderService
   loadPurchaseOrders(isLoading: WritableSignal<boolean>): void
   {
     this.resourceManager.loadResource(
-      'purchase-orders',
-      isLoading,
-      this.translate.instant('messages.failedToLoad', { resource: 'purchase-orders' })
+        'purchase-orders',
+        isLoading,
+        this.translate.instant('messages.failedToLoad', {resource: 'purchase-orders'})
     );
   }
 
   createPurchaseOrderWithNotification(
-    poData: CreatePurchaseOrderRequest,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      poData: CreatePurchaseOrderRequest,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.createResource(
-      'purchase-orders',
-      poData,
-      isLoading,
-      this.translate.instant('messages.purchaseOrderCreatedSuccessfully'),
-      this.translate.instant('messages.failedToCreatePurchaseOrder')
+        'purchase-orders',
+        poData,
+        isLoading,
+        this.translate.instant('messages.purchaseOrderCreatedSuccessfully'),
+        this.translate.instant('messages.failedToCreatePurchaseOrder')
     );
   }
 
   updatePurchaseOrderWithNotification(
-    poData: PurchaseOrder,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      poData: PurchaseOrder,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.updateResource(
-      'purchase-orders',
-      poData.id!,
-      poData,
-      isLoading,
-      this.translate.instant('messages.purchaseOrderUpdatedSuccessfully'),
-      this.translate.instant('messages.failedToUpdatePurchaseOrder')
+        'purchase-orders',
+        poData.id!,
+        poData,
+        isLoading,
+        this.translate.instant('messages.purchaseOrderUpdatedSuccessfully'),
+        this.translate.instant('messages.failedToUpdatePurchaseOrder')
     );
   }
 
   deletePurchaseOrderWithNotification(
-    id: string,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      id: string,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.deleteResource(
-      'purchase-orders',
-      id,
-      isLoading,
-      this.translate.instant('messages.purchaseOrderDeletedSuccessfully'),
-      this.translate.instant('messages.failedToDeletePurchaseOrder')
+        'purchase-orders',
+        id,
+        isLoading,
+        this.translate.instant('messages.purchaseOrderDeletedSuccessfully'),
+        this.translate.instant('messages.failedToDeletePurchaseOrder')
     );
   }
 
   openAddPurchaseOrderDialog(isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(PurchaseOrderDialogComponent,
-    {
-      data: { isEdit: false } as PurchaseOrderDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {isEdit: false} as PurchaseOrderDialogData,
+          width: '1200px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'create')
       {
         this.createPurchaseOrderWithNotification(result.purchaseOrder, isLoading);
@@ -121,15 +124,15 @@ export class PurchaseOrderService
   openEditPurchaseOrderDialog(po: PurchaseOrder, isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(PurchaseOrderDialogComponent,
-    {
-      data: { purchaseOrder: po, isEdit: true } as PurchaseOrderDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {purchaseOrder: po, isEdit: true} as PurchaseOrderDialogData,
+          width: '1200px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'update')
       {
         this.updatePurchaseOrderWithNotification(result.purchaseOrder, isLoading);
@@ -141,18 +144,18 @@ export class PurchaseOrderService
   {
     const poLabel = po.orderNumber || po.id || 'Purchase Order';
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
-    {
-      data: {
-        userName: poLabel,
-        userEmail: ''
-      } as DeleteConfirmDialogData,
-      width: '500px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {
+            userName: poLabel,
+            userEmail: ''
+          } as DeleteConfirmDialogData,
+          width: '500px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result === true)
       {
         this.deletePurchaseOrderWithNotification(po.id!, isLoading);

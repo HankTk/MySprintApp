@@ -34,7 +34,7 @@
   color: var(--color-text-primary);
   line-height: 1.2;
   text-align: center;
-  
+
   @media (min-width: 768px) {
     font-size: 48px;
   }
@@ -58,15 +58,15 @@
   max-width: 100%;
   box-sizing: border-box;
   padding: 0 var(--spacing-sm);
-  
+
   @media (max-width: 1400px) {
     grid-template-columns: repeat(3, minmax(0, 300px));
   }
-  
+
   @media (max-width: 1050px) {
     grid-template-columns: repeat(2, minmax(0, 300px));
   }
-  
+
   @media (max-width: 700px) {
     grid-template-columns: minmax(0, 300px);
   }
@@ -85,17 +85,17 @@
   transition: transform var(--transition-base), box-shadow var(--transition-base);
   opacity: 1;
   box-sizing: border-box;
-  
+
   &.disabled {
     cursor: not-allowed;
     opacity: 0.6;
   }
-  
+
   &:hover:not(.disabled) {
     transform: translateY(-4px);
     box-shadow: var(--shadow-xl);
   }
-  
+
   &:focus:not(.disabled) {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;

@@ -9,20 +9,20 @@ export class JsonUtil
    * @returns Formatted JSON string or string representation of the data
    */
   static formatJsonData(jsonData: any): string
- {
-    try 
-{
+  {
+    try
+    {
       if (typeof jsonData === 'string')
       {
         return JSON.stringify(JSON.parse(jsonData), null, 2);
       }
- else
- {
+      else
+      {
         return JSON.stringify(jsonData, null, 2);
       }
     }
- catch
- {
+    catch
+    {
       return String(jsonData);
     }
   }

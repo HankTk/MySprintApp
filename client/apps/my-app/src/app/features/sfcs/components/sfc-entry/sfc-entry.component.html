@@ -22,12 +22,12 @@
         <div class="step-indicator">
           <div class="step-list">
             @for (step of steps; track step.key) {
-              <div 
-                class="step-item"
-                [class.active]="currentStep() === step.key"
-                [class.completed]="isStepCompleted(step.key)"
-                [class.clickable]="isStepCompleted(step.key) || currentStep() === step.key"
-                (click)="onStepClick(step.key)">
+              <div
+                      class="step-item"
+                      [class.active]="currentStep() === step.key"
+                      [class.completed]="isStepCompleted(step.key)"
+                      [class.clickable]="isStepCompleted(step.key) || currentStep() === step.key"
+                      (click)="onStepClick(step.key)">
                 <div class="step-number">{{ $index + 1 }}</div>
                 <div class="step-label">{{ step.label | translate }}</div>
               </div>
@@ -41,11 +41,11 @@
             <div class="sub-step-indicator">
               @for (subStep of entrySubSteps; track subStep.key) {
                 <button
-                  mat-button
-                  class="sub-step-button"
-                  [class.active]="currentEntrySubStep() === subStep.key"
-                  [class.completed]="isSubStepCompleted(subStep.key)"
-                  (click)="currentEntrySubStep.set(subStep.key)">
+                        mat-button
+                        class="sub-step-button"
+                        [class.active]="currentEntrySubStep() === subStep.key"
+                        [class.completed]="isSubStepCompleted(subStep.key)"
+                        (click)="currentEntrySubStep.set(subStep.key)">
                   {{ subStep.label | translate }}
                 </button>
               }
@@ -83,7 +83,7 @@
               @if (currentEntrySubStep() === 'assignment') {
                 <div class="sub-step-content">
                   <h3>{{ 'sfcEntry.subStep.assignment' | translate }}</h3>
-                  
+
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>{{ 'assignedTo' | translate }}</mat-label>
                     <mat-select [value]="assignedTo()" (selectionChange)="onAssignmentChange($event.value, notes())">
@@ -98,7 +98,8 @@
 
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>{{ 'notes' | translate }}</mat-label>
-                    <textarea matInput [value]="notes()" (input)="onAssignmentChange(assignedTo(), $any($event.target).value)" rows="4"></textarea>
+                    <textarea matInput [value]="notes()"
+                              (input)="onAssignmentChange(assignedTo(), $any($event.target).value)" rows="4"></textarea>
                   </mat-form-field>
                 </div>
               }
@@ -108,10 +109,13 @@
                 <div class="sub-step-content">
                   <h3>{{ 'sfcEntry.subStep.review' | translate }}</h3>
                   <div class="review-summary">
-                    <p><strong>{{ 'rmaNumber' | translate }}:</strong> {{ sfc()?.rmaNumber || getRMANumber(sfc()?.rmaId) || 'N/A' }}</p>
-                    <p><strong>{{ 'customer' | translate }}:</strong> {{ sfc()?.customerName || getCustomerName(sfc()?.customerId) || 'N/A' }}</p>
+                    <p><strong>{{ 'rmaNumber' | translate }}
+                      :</strong> {{ sfc()?.rmaNumber || getRMANumber(sfc()?.rmaId) || 'N/A' }}</p>
+                    <p><strong>{{ 'customer' | translate }}
+                      :</strong> {{ sfc()?.customerName || getCustomerName(sfc()?.customerId) || 'N/A' }}</p>
                     <p><strong>{{ 'orderNumber' | translate }}:</strong> {{ sfc()?.orderNumber || 'N/A' }}</p>
-                    <p><strong>{{ 'assignedTo' | translate }}:</strong> {{ getUserName(sfc()?.assignedTo) || 'N/A' }}</p>
+                    <p><strong>{{ 'assignedTo' | translate }}:</strong> {{ getUserName(sfc()?.assignedTo) || 'N/A' }}
+                    </p>
                     @if (sfc()?.notes) {
                       <p><strong>{{ 'notes' | translate }}:</strong> {{ sfc()?.notes }}</p>
                     }
@@ -126,11 +130,12 @@
         @if (currentStep() === 'in_progress') {
           <div class="step-content">
             <h3>{{ 'sfcEntry.step.inProgress' | translate }}</h3>
-            
+
             <div class="form-fields">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>{{ 'sfcEntry.inProgress.startedDate' | translate }}</mat-label>
-                <input matInput [matDatepicker]="startedDatePicker" [value]="startedDate()" (dateChange)="startedDate.set($event.value)">
+                <input matInput [matDatepicker]="startedDatePicker" [value]="startedDate()"
+                       (dateChange)="startedDate.set($event.value)">
                 <mat-datepicker-toggle matIconSuffix [for]="startedDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #startedDatePicker></mat-datepicker>
               </mat-form-field>
@@ -142,11 +147,12 @@
         @if (currentStep() === 'completed') {
           <div class="step-content">
             <h3>{{ 'sfcEntry.step.completed' | translate }}</h3>
-            
+
             <div class="form-fields">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>{{ 'sfcEntry.completed.completedDate' | translate }}</mat-label>
-                <input matInput [matDatepicker]="completedDatePicker" [value]="completedDate()" (dateChange)="completedDate.set($event.value)">
+                <input matInput [matDatepicker]="completedDatePicker" [value]="completedDate()"
+                       (dateChange)="completedDate.set($event.value)">
                 <mat-datepicker-toggle matIconSuffix [for]="completedDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #completedDatePicker></mat-datepicker>
               </mat-form-field>
@@ -158,21 +164,22 @@
         @if (currentStep() === 'history') {
           <div class="step-content">
             <h3>{{ 'sfcEntry.step.history' | translate }}</h3>
-            
+
             <div class="history-content">
               <div class="history-section">
                 <h4>{{ 'sfcEntry.history.addNote' | translate }}</h4>
                 <div class="form-fields">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>{{ 'notes' | translate }}</mat-label>
-                    <textarea matInput [value]="historyNote()" (input)="historyNote.set($any($event.target).value)" rows="3"></textarea>
+                    <textarea matInput [value]="historyNote()" (input)="historyNote.set($any($event.target).value)"
+                              rows="3"></textarea>
                   </mat-form-field>
                   <ax-button
-                    variant="raised"
-                    color="primary"
-                    [label]="'add' | translate"
-                    (click)="handleAddHistoryNote()"
-                    [disabled]="!historyNote() || submitting()">
+                          variant="raised"
+                          color="primary"
+                          [label]="'add' | translate"
+                          (click)="handleAddHistoryNote()"
+                          [disabled]="!historyNote() || submitting()">
                   </ax-button>
                 </div>
               </div>
@@ -194,7 +201,7 @@
                           <div class="history-data">
                             @for (item of record.data | keyvalue; track item.key) {
                               <div class="data-item">
-                                <strong>{{ getDataKeyLabel(toString(item.key)) | translate }}:</strong> 
+                                <strong>{{ getDataKeyLabel(toString(item.key)) | translate }}:</strong>
                                 {{ formatDataValue(toString(item.key), item.value) }}
                               </div>
                             }
@@ -214,45 +221,45 @@
         <!-- Navigation Buttons -->
         <div class="navigation-buttons">
           <button
-            mat-button
-            (click)="handlePrevious()"
-            [disabled]="currentStep() === 'entry' && currentEntrySubStep() === 'rma'">
+                  mat-button
+                  (click)="handlePrevious()"
+                  [disabled]="currentStep() === 'entry' && currentEntrySubStep() === 'rma'">
             <mat-icon>arrow_back</mat-icon>
             {{ 'previous' | translate }}
           </button>
-          
+
           <!-- Step-specific action buttons -->
           @if (currentStep() === 'entry' && currentEntrySubStep() === 'review') {
             <ax-button
-              variant="raised"
-              color="primary"
-              [label]="'sfcEntry.completeEntry' | translate"
-              (click)="handleCompleteEntry()"
-              [disabled]="!canProceedToNext() || submitting()">
+                    variant="raised"
+                    color="primary"
+                    [label]="'sfcEntry.completeEntry' | translate"
+                    (click)="handleCompleteEntry()"
+                    [disabled]="!canProceedToNext() || submitting()">
             </ax-button>
           } @else if (currentStep() === 'in_progress') {
             <ax-button
-              variant="raised"
-              color="primary"
-              [label]="'sfcEntry.startProcessing' | translate"
-              (click)="handleStartProcessing()"
-              [disabled]="!canProceedToNext() || submitting()">
+                    variant="raised"
+                    color="primary"
+                    [label]="'sfcEntry.startProcessing' | translate"
+                    (click)="handleStartProcessing()"
+                    [disabled]="!canProceedToNext() || submitting()">
             </ax-button>
           } @else if (currentStep() === 'completed') {
             <ax-button
-              variant="raised"
-              color="primary"
-              [label]="'sfcEntry.completeProcessing' | translate"
-              (click)="handleCompleteProcessing()"
-              [disabled]="!canProceedToNext() || submitting()">
+                    variant="raised"
+                    color="primary"
+                    [label]="'sfcEntry.completeProcessing' | translate"
+                    (click)="handleCompleteProcessing()"
+                    [disabled]="!canProceedToNext() || submitting()">
             </ax-button>
           } @else {
             <ax-button
-              variant="raised"
-              color="primary"
-              [label]="'next' | translate"
-              (click)="handleNext()"
-              [disabled]="!canProceedToNext()">
+                    variant="raised"
+                    color="primary"
+                    [label]="'next' | translate"
+                    (click)="handleNext()"
+                    [disabled]="!canProceedToNext()">
             </ax-button>
           }
         </div>

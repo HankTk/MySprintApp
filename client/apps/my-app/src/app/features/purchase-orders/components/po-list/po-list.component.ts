@@ -1,6 +1,17 @@
-import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  inject,
+  OnDestroy,
+  signal,
+  ViewChild,
+  ChangeDetectorRef,
+  TemplateRef,
+  AfterViewInit,
+  effect
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule, CurrencyPipe} from '@angular/common';
 import {
   AxButtonComponent,
   AxProgressComponent,
@@ -12,16 +23,16 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
-import { StoreService } from '../../../../core/store.service';
-import { PurchaseOrder } from '../../models/purchase-order.model';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { Subscription } from 'rxjs';
-import { PurchaseOrderService } from '../../services/purchase-order.service';
-import { VendorService } from '../../../vendors/services/vendor.service';
-import { Vendor } from '../../../vendors/models/vendor.model';
-import { firstValueFrom } from 'rxjs';
+import {AxTooltipDirective} from '@ui/components';
+import {StoreService} from '../../../../core/store.service';
+import {PurchaseOrder} from '../../models/purchase-order.model';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {Subscription} from 'rxjs';
+import {PurchaseOrderService} from '../../services/purchase-order.service';
+import {VendorService} from '../../../vendors/services/vendor.service';
+import {Vendor} from '../../../vendors/models/vendor.model';
+import {firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-purchase-order-list',
@@ -93,8 +104,8 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
     });
   }
 
-  async ngOnInit(): Promise<void> 
-{
+  async ngOnInit(): Promise<void>
+  {
     await this.loadVendors();
     this.loadPurchaseOrders();
   }
@@ -111,7 +122,7 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   private initializeColumns(): void
- {
+  {
     this.columns.set([
       {
         key: 'orderNumber',
@@ -129,12 +140,12 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
         sortable: true,
         filterable: true,
         filterType: 'select',
-        filterOptions: (data: PurchaseOrder[]): FilterOption[] => 
-{
+        filterOptions: (data: PurchaseOrder[]): FilterOption[] =>
+        {
           const vendors = this.vendors() || [];
           const vendorMap = new Map<string, string>();
-          data.forEach(po => 
-{
+          data.forEach(po =>
+          {
             if (po.supplierId && !vendorMap.has(po.supplierId))
             {
               const vendor = vendors.find((v: Vendor) => v.id === po.supplierId);
@@ -143,10 +154,10 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
             }
           });
           const vendorNames = Array.from(vendorMap.entries())
-            .map(([id, name]) => ({ value: id || '', label: name || '' }))
-            .sort((a, b) => a.label.localeCompare(b.label));
+              .map(([id, name]) => ({value: id || '', label: name || ''}))
+              .sort((a, b) => a.label.localeCompare(b.label));
           return [
-            { value: '', label: 'All' },
+            {value: '', label: 'All'},
             ...vendorNames
           ];
         },
@@ -217,15 +228,15 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
     this.router.navigate(['/']);
   }
 
-  private async loadVendors(): Promise<void> 
-{
-    try 
-{
+  private async loadVendors(): Promise<void>
+  {
+    try
+    {
       const vendors = await firstValueFrom(this.vendorService.getVendors());
       this.vendors.set(vendors);
     }
- catch (err)
- {
+    catch (err)
+    {
       console.error('Error loading vendors:', err);
     }
   }
@@ -245,13 +256,13 @@ export class PurchaseOrderListComponent implements OnInit, OnDestroy, AfterViewI
   formatDate(dateString?: string): string
   {
     if (!dateString) return 'N/A';
-    try 
-{
+    try
+    {
       const date = new Date(dateString);
       return date.toLocaleDateString();
     }
- catch
- {
+    catch
+    {
       return dateString;
     }
   }

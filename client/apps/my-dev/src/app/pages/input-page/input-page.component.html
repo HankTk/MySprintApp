@@ -8,16 +8,16 @@
     </mat-card-header>
     <div class="input-group">
       <ax-input
-        label="Email"
-        type="email"
-        placeholder="Enter your email"
-        [(ngModel)]="email">
+              label="Email"
+              type="email"
+              placeholder="Enter your email"
+              [(ngModel)]="email">
       </ax-input>
       <ax-input
-        label="Password"
-        type="password"
-        placeholder="Enter your password"
-        [(ngModel)]="password">
+              label="Password"
+              type="password"
+              placeholder="Enter your password"
+              [(ngModel)]="password">
       </ax-input>
     </div>
   </ax-card>
@@ -28,15 +28,15 @@
     </mat-card-header>
     <div class="input-group">
       <ax-input
-        label="Required Field"
-        placeholder="This field is required"
-        [required]="true"
-        [(ngModel)]="requiredField">
+              label="Required Field"
+              placeholder="This field is required"
+              [required]="true"
+              [(ngModel)]="requiredField">
       </ax-input>
       <ax-input
-        label="Disabled Field"
-        [disabled]="true"
-        [(ngModel)]="disabledField">
+              label="Disabled Field"
+              [disabled]="true"
+              [(ngModel)]="disabledField">
       </ax-input>
     </div>
   </ax-card>
@@ -47,16 +47,16 @@
     </mat-card-header>
     <div class="input-group">
       <ax-input
-        label="Field with Hint"
-        placeholder="Enter text"
-        hint="This is a helpful hint"
-        [(ngModel)]="hintField">
+              label="Field with Hint"
+              placeholder="Enter text"
+              hint="This is a helpful hint"
+              [(ngModel)]="hintField">
       </ax-input>
       <ax-input
-        label="Field with Error"
-        placeholder="Enter at least 3 characters"
-        [error]="hasError ? 'Must be at least 3 characters' : undefined"
-        [(ngModel)]="errorField">
+              label="Field with Error"
+              placeholder="Enter at least 3 characters"
+              [error]="hasError ? 'Must be at least 3 characters' : undefined"
+              [(ngModel)]="errorField">
       </ax-input>
     </div>
   </ax-card>

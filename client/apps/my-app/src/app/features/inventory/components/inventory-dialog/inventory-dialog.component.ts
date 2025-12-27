@@ -1,18 +1,18 @@
-import { Component, Inject, OnInit, inject, signal } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { Inventory, CreateInventoryRequest } from '../../models/inventory.model';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { AxButtonComponent, AxIconComponent } from '@ui/components';
-import { ProductService } from '../../../products/services/product.service';
-import { WarehouseService } from '../../../warehouses/services/warehouse.service';
-import { Product } from '../../../products/models/product.model';
-import { Warehouse } from '../../../warehouses/models/warehouse.model';
-import { firstValueFrom } from 'rxjs';
+import {Component, Inject, OnInit, inject, signal} from '@angular/core';
+import {FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialogRef, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {Inventory, CreateInventoryRequest} from '../../models/inventory.model';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {AxButtonComponent, AxIconComponent} from '@ui/components';
+import {ProductService} from '../../../products/services/product.service';
+import {WarehouseService} from '../../../warehouses/services/warehouse.service';
+import {Product} from '../../../products/models/product.model';
+import {Warehouse} from '../../../warehouses/models/warehouse.model';
+import {firstValueFrom} from 'rxjs';
 
 export interface InventoryDialogData
 {
@@ -51,12 +51,12 @@ export class InventoryDialogComponent implements OnInit
   private translate = inject(TranslateService);
   private productService = inject(ProductService);
   private warehouseService = inject(WarehouseService);
-  
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: InventoryDialogData)
   {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editInventory') : this.translate.instant('addInventory');
-    
+
     this.inventoryForm = this.fb.group({
       productId: ['', [Validators.required]],
       warehouseId: ['', [Validators.required]],
@@ -166,7 +166,7 @@ export class InventoryDialogComponent implements OnInit
     }
     catch (e)
     {
-      return { invalidJson: true };
+      return {invalidJson: true};
     }
   }
 
@@ -175,7 +175,7 @@ export class InventoryDialogComponent implements OnInit
     if (this.inventoryForm.valid)
     {
       const formValue = this.inventoryForm.value;
-      
+
       let jsonData: any = {};
       if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
       {
@@ -192,25 +192,25 @@ export class InventoryDialogComponent implements OnInit
       if (this.isEdit && this.data.inventory)
       {
         const inventoryToUpdate: Inventory =
-        {
-          id: this.data.inventory.id,
-          productId: formValue.productId,
-          warehouseId: formValue.warehouseId,
-          quantity: formValue.quantity,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'update', inventory: inventoryToUpdate });
+            {
+              id: this.data.inventory.id,
+              productId: formValue.productId,
+              warehouseId: formValue.warehouseId,
+              quantity: formValue.quantity,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'update', inventory: inventoryToUpdate});
       }
       else
       {
         const inventoryToCreate: CreateInventoryRequest =
-        {
-          productId: formValue.productId,
-          warehouseId: formValue.warehouseId,
-          quantity: formValue.quantity,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'create', inventory: inventoryToCreate });
+            {
+              productId: formValue.productId,
+              warehouseId: formValue.warehouseId,
+              quantity: formValue.quantity,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'create', inventory: inventoryToCreate});
       }
     }
   }
@@ -237,7 +237,7 @@ export class InventoryDialogComponent implements OnInit
       }
       if (field.errors['min'])
       {
-        return this.translate.instant('validation.min', { min: field.errors['min'].min });
+        return this.translate.instant('validation.min', {min: field.errors['min'].min});
       }
       if (field.errors['invalidJson'])
       {

@@ -1,13 +1,24 @@
-import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { StoreService } from '../../../../core/store.service';
-import { Vendor } from '../../models/vendor.model';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { Subscription } from 'rxjs';
-import { JsonUtil } from '../../../../shared/utils/json.util';
-import { VendorService } from '../../services/vendor.service';
+import {
+  Component,
+  OnInit,
+  inject,
+  OnDestroy,
+  signal,
+  ViewChild,
+  ChangeDetectorRef,
+  TemplateRef,
+  AfterViewInit,
+  effect
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {StoreService} from '../../../../core/store.service';
+import {Vendor} from '../../models/vendor.model';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {Subscription} from 'rxjs';
+import {JsonUtil} from '../../../../shared/utils/json.util';
+import {VendorService} from '../../services/vendor.service';
 import {
   AxButtonComponent,
   AxProgressComponent,
@@ -19,7 +30,7 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
+import {AxTooltipDirective} from '@ui/components';
 
 @Component({
   selector: 'app-vendor-list',
@@ -99,7 +110,7 @@ export class VendorListComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private initializeColumns(): void
- {
+  {
     const isEnglish = this.languageService.isEnglish();
     this.columns.set([
       {

@@ -34,7 +34,8 @@
     <div class="button-group">
       <ax-button variant="raised" label="Normal"></ax-button>
       <ax-button variant="raised" [disabled]="true" label="Disabled"></ax-button>
-      <ax-button variant="raised" [loading]="isLoading" (click)="onLoadingClick()" [label]="isLoading ? 'Loading...' : 'Click to Load'"></ax-button>
+      <ax-button variant="raised" [loading]="isLoading" (click)="onLoadingClick()"
+                 [label]="isLoading ? 'Loading...' : 'Click to Load'"></ax-button>
     </div>
   </ax-card>
 </div>

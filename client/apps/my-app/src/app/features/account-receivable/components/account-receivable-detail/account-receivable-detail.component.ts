@@ -1,27 +1,27 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, CurrencyPipe, KeyValuePipe } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatTableModule } from '@angular/material/table';
-import { MatChipsModule } from '@angular/material/chips';
-import { TranslateModule } from '@ngx-translate/core';
-import { AxButtonComponent, AxProgressComponent } from '@ui/components';
-import { firstValueFrom } from 'rxjs';
-import { StoreService } from '../../../../core/store.service';
-import { Order } from '../../../orders/models/order.model';
-import { OrderService } from '../../../orders/services/order.service';
-import { CustomerService } from '../../../customers/services/customer.service';
-import { Customer } from '../../../customers/models/customer.model';
-import { AddressService } from '../../../addresses/services/address.service';
-import { Address } from '../../../addresses/models/address.model';
+import {Component, OnInit, inject, signal, computed} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CommonModule, CurrencyPipe, KeyValuePipe} from '@angular/common';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatCardModule} from '@angular/material/card';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatTableModule} from '@angular/material/table';
+import {MatChipsModule} from '@angular/material/chips';
+import {TranslateModule} from '@ngx-translate/core';
+import {AxButtonComponent, AxProgressComponent} from '@ui/components';
+import {firstValueFrom} from 'rxjs';
+import {StoreService} from '../../../../core/store.service';
+import {Order} from '../../../orders/models/order.model';
+import {OrderService} from '../../../orders/services/order.service';
+import {CustomerService} from '../../../customers/services/customer.service';
+import {Customer} from '../../../customers/models/customer.model';
+import {AddressService} from '../../../addresses/services/address.service';
+import {Address} from '../../../addresses/models/address.model';
 
 type AccountReceivableStep = 'invoice' | 'payment' | 'history';
 
@@ -134,7 +134,7 @@ export class AccountReceivableDetailComponent implements OnInit
       if (order)
       {
         this.order.set(order);
-        
+
         // Load payment data from jsonData
         if (order.jsonData)
         {
@@ -143,13 +143,13 @@ export class AccountReceivableDetailComponent implements OnInit
           this.paymentDate.set(paymentDateStr ? new Date(paymentDateStr) : null);
           this.paymentMethod.set(order.jsonData.paymentMethod || '');
         }
-        
+
         // Load addresses if customer exists
         if (order.customerId)
         {
           await this.loadAddresses(order.customerId);
         }
-        
+
         // Set initial step based on order status
         if (order.status === 'PAID' || (order.jsonData?.paymentAmount && order.jsonData.paymentAmount > 0))
         {
@@ -201,42 +201,42 @@ export class AccountReceivableDetailComponent implements OnInit
       jsonData.paymentAmount = this.paymentAmount();
       jsonData.paymentDate = this.paymentDate() ? this.paymentDate()!.toISOString().split('T')[0] : null;
       jsonData.paymentMethod = this.paymentMethod();
-      
+
       const updated = await firstValueFrom(
-        this.orderService.updateOrder(order.id, {
-          ...order,
-          status: this.paymentAmount() >= (order.total || 0) ? 'PAID' : 'INVOICED',
-          jsonData
-        })
+          this.orderService.updateOrder(order.id, {
+            ...order,
+            status: this.paymentAmount() >= (order.total || 0) ? 'PAID' : 'INVOICED',
+            jsonData
+          })
       );
-      
+
       if (updated)
       {
         this.order.set(updated);
-        
+
         // Add history record
         const history = jsonData.history || [];
         const newRecord: HistoryRecord =
-        {
-          step: 'payment',
-          status: this.paymentAmount() >= (order.total || 0) ? 'PAID' : 'INVOICED',
-          timestamp: new Date().toISOString(),
-          note: `Payment recorded: $${this.paymentAmount().toFixed(2)}`,
-          data: {
-            paymentAmount: this.paymentAmount(),
-            paymentDate: this.paymentDate() ? this.paymentDate()!.toISOString().split('T')[0] : null,
-            paymentMethod: this.paymentMethod()
-          }
-        };
+            {
+              step: 'payment',
+              status: this.paymentAmount() >= (order.total || 0) ? 'PAID' : 'INVOICED',
+              timestamp: new Date().toISOString(),
+              note: `Payment recorded: $${this.paymentAmount().toFixed(2)}`,
+              data: {
+                paymentAmount: this.paymentAmount(),
+                paymentDate: this.paymentDate() ? this.paymentDate()!.toISOString().split('T')[0] : null,
+                paymentMethod: this.paymentMethod()
+              }
+            };
         jsonData.history = [...history, newRecord];
-        
+
         const finalUpdated = await firstValueFrom(
-          this.orderService.updateOrder(order.id, {
-            ...updated,
-            jsonData
-          })
+            this.orderService.updateOrder(order.id, {
+              ...updated,
+              jsonData
+            })
         );
-        
+
         if (finalUpdated)
         {
           this.order.set(finalUpdated);
@@ -299,11 +299,11 @@ export class AccountReceivableDetailComponent implements OnInit
   getStepLabel(step: string): string
   {
     const stepLabels: Record<string, string> =
-    {
-      'invoicing': 'accountsReceivable.history.stepLabels.invoicing',
-      'payment': 'accountsReceivable.history.stepLabels.payment',
-      'status_change': 'accountsReceivable.history.stepLabels.statusChange'
-    };
+        {
+          'invoicing': 'accountsReceivable.history.stepLabels.invoicing',
+          'payment': 'accountsReceivable.history.stepLabels.payment',
+          'status_change': 'accountsReceivable.history.stepLabels.statusChange'
+        };
     return stepLabels[step] || step;
   }
 
@@ -311,25 +311,25 @@ export class AccountReceivableDetailComponent implements OnInit
   {
     if (!status) return 'N/A';
     const statusMap: Record<string, string> =
-    {
-      'INVOICED': 'accountsReceivable.history.statusLabels.invoiced',
-      'PAID': 'accountsReceivable.history.statusLabels.paid'
-    };
+        {
+          'INVOICED': 'accountsReceivable.history.statusLabels.invoiced',
+          'PAID': 'accountsReceivable.history.statusLabels.paid'
+        };
     return statusMap[status] || status;
   }
 
   getDataKeyLabel(key: string): string
   {
     const keyMap: Record<string, string> =
-    {
-      'invoiceNumber': 'accountsReceivable.history.dataLabels.invoiceNumber',
-      'invoiceDate': 'accountsReceivable.history.dataLabels.invoiceDate',
-      'paymentAmount': 'accountsReceivable.history.dataLabels.paymentAmount',
-      'paymentDate': 'accountsReceivable.history.dataLabels.paymentDate',
-      'paymentMethod': 'accountsReceivable.history.dataLabels.paymentMethod',
-      'oldStatus': 'accountsReceivable.history.dataLabels.oldStatus',
-      'newStatus': 'accountsReceivable.history.dataLabels.newStatus'
-    };
+        {
+          'invoiceNumber': 'accountsReceivable.history.dataLabels.invoiceNumber',
+          'invoiceDate': 'accountsReceivable.history.dataLabels.invoiceDate',
+          'paymentAmount': 'accountsReceivable.history.dataLabels.paymentAmount',
+          'paymentDate': 'accountsReceivable.history.dataLabels.paymentDate',
+          'paymentMethod': 'accountsReceivable.history.dataLabels.paymentMethod',
+          'oldStatus': 'accountsReceivable.history.dataLabels.oldStatus',
+          'newStatus': 'accountsReceivable.history.dataLabels.newStatus'
+        };
     return keyMap[key] || key;
   }
 
@@ -340,7 +340,7 @@ export class AccountReceivableDetailComponent implements OnInit
     {
       return 'N/A';
     }
-    
+
     // Handle objects - convert to JSON string
     if (typeof value === 'object' && !(value instanceof Date))
     {
@@ -353,7 +353,7 @@ export class AccountReceivableDetailComponent implements OnInit
         return 'N/A';
       }
     }
-    
+
     if (key === 'oldStatus' || key === 'newStatus')
     {
       return this.getStatusLabel(String(value));
@@ -361,13 +361,13 @@ export class AccountReceivableDetailComponent implements OnInit
     if (key === 'paymentMethod')
     {
       const methodMap: Record<string, string> =
-      {
-        'BANK_TRANSFER': 'accountsReceivable.payment.method.bankTransfer',
-        'CREDIT_CARD': 'accountsReceivable.payment.method.creditCard',
-        'CASH': 'accountsReceivable.payment.method.cash',
-        'CHECK': 'accountsReceivable.payment.method.check',
-        'OTHER': 'accountsReceivable.payment.method.other'
-      };
+          {
+            'BANK_TRANSFER': 'accountsReceivable.payment.method.bankTransfer',
+            'CREDIT_CARD': 'accountsReceivable.payment.method.creditCard',
+            'CASH': 'accountsReceivable.payment.method.cash',
+            'CHECK': 'accountsReceivable.payment.method.check',
+            'OTHER': 'accountsReceivable.payment.method.other'
+          };
       return methodMap[String(value)] || String(value);
     }
     if (key === 'paymentAmount' && typeof value === 'number')

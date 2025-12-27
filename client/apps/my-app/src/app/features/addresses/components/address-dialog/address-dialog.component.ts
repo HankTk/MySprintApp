@@ -1,13 +1,13 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { Address, CreateAddressRequest } from '../../models/address.model';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { AxButtonComponent, AxIconComponent } from '@ui/components';
+import {Component, Inject, OnInit, inject} from '@angular/core';
+import {FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialogRef, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {Address, CreateAddressRequest} from '../../models/address.model';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {AxButtonComponent, AxIconComponent} from '@ui/components';
 
 export interface AddressDialogData
 {
@@ -43,12 +43,12 @@ export class AddressDialogComponent implements OnInit
   private dialogRef = inject(MatDialogRef<AddressDialogComponent>);
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
-  
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: AddressDialogData)
   {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editAddress') : this.translate.instant('addAddress');
-    
+
     this.addressForm = this.fb.group({
       addressType: ['', Validators.required],
       streetAddress1: [''],
@@ -71,7 +71,7 @@ export class AddressDialogComponent implements OnInit
   }
 
   private populateForm(address: Address): void
- {
+  {
     let jsonDataString = '{}';
     if (address.jsonData)
     {
@@ -79,15 +79,15 @@ export class AddressDialogComponent implements OnInit
       {
         jsonDataString = JSON.stringify(address.jsonData, null, 2);
       }
- else if (typeof address.jsonData === 'string')
- {
-        try 
-{
+      else if (typeof address.jsonData === 'string')
+      {
+        try
+        {
           JSON.parse(address.jsonData);
           jsonDataString = address.jsonData;
         }
- catch
- {
+        catch
+        {
           jsonDataString = '{}';
         }
       }
@@ -107,21 +107,21 @@ export class AddressDialogComponent implements OnInit
   }
 
   private jsonValidator(control: any)
- {
+  {
     if (!control.value) return null;
-    try 
-{
+    try
+    {
       JSON.parse(control.value);
       return null;
     }
- catch (e)
- {
-      return { invalidJson: true };
+    catch (e)
+    {
+      return {invalidJson: true};
     }
   }
 
   get isEnglish(): boolean
- {
+  {
     return this.languageService.isEnglish();
   }
 
@@ -130,16 +130,16 @@ export class AddressDialogComponent implements OnInit
     if (this.addressForm.valid)
     {
       const formValue = this.addressForm.value;
-      
+
       let jsonData: any = {};
       if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
       {
-        try 
-{
+        try
+        {
           jsonData = JSON.parse(formValue.jsonData);
         }
- catch (e)
- {
+        catch (e)
+        {
           return;
         }
       }
@@ -147,35 +147,35 @@ export class AddressDialogComponent implements OnInit
       if (this.isEdit && this.data.address)
       {
         const addressToUpdate: Address =
-        {
-          id: this.data.address.id,
-          addressType: formValue.addressType,
-          streetAddress1: formValue.streetAddress1,
-          streetAddress2: formValue.streetAddress2,
-          city: formValue.city,
-          state: formValue.state,
-          postalCode: formValue.postalCode,
-          country: formValue.country,
-          defaultAddress: formValue.defaultAddress,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'update', address: addressToUpdate });
+            {
+              id: this.data.address.id,
+              addressType: formValue.addressType,
+              streetAddress1: formValue.streetAddress1,
+              streetAddress2: formValue.streetAddress2,
+              city: formValue.city,
+              state: formValue.state,
+              postalCode: formValue.postalCode,
+              country: formValue.country,
+              defaultAddress: formValue.defaultAddress,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'update', address: addressToUpdate});
       }
- else
- {
+      else
+      {
         const addressToCreate: CreateAddressRequest =
-        {
-          addressType: formValue.addressType,
-          streetAddress1: formValue.streetAddress1,
-          streetAddress2: formValue.streetAddress2,
-          city: formValue.city,
-          state: formValue.state,
-          postalCode: formValue.postalCode,
-          country: formValue.country,
-          defaultAddress: formValue.defaultAddress,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'create', address: addressToCreate });
+            {
+              addressType: formValue.addressType,
+              streetAddress1: formValue.streetAddress1,
+              streetAddress2: formValue.streetAddress2,
+              city: formValue.city,
+              state: formValue.state,
+              postalCode: formValue.postalCode,
+              country: formValue.country,
+              defaultAddress: formValue.defaultAddress,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'create', address: addressToCreate});
       }
     }
   }

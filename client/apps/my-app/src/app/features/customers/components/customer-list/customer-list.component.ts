@@ -1,13 +1,24 @@
-import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { StoreService } from '../../../../core/store.service';
-import { Customer } from '../../models/customer.model';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { Subscription } from 'rxjs';
-import { JsonUtil } from '../../../../shared/utils/json.util';
-import { CustomerService } from '../../services/customer.service';
+import {
+  Component,
+  OnInit,
+  inject,
+  OnDestroy,
+  signal,
+  ViewChild,
+  ChangeDetectorRef,
+  TemplateRef,
+  AfterViewInit,
+  effect
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {StoreService} from '../../../../core/store.service';
+import {Customer} from '../../models/customer.model';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {Subscription} from 'rxjs';
+import {JsonUtil} from '../../../../shared/utils/json.util';
+import {CustomerService} from '../../services/customer.service';
 import {
   AxButtonComponent,
   AxProgressComponent,
@@ -19,7 +30,7 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
+import {AxTooltipDirective} from '@ui/components';
 
 @Component({
   selector: 'app-customer-list',
@@ -100,7 +111,7 @@ export class CustomerListComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private initializeColumns(): void
- {
+  {
     const isEnglish = this.languageService.isEnglish();
     this.columns.set([
       {

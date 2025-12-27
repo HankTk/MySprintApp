@@ -1,12 +1,15 @@
-import { Injectable, inject, WritableSignal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { Product, CreateProductRequest } from '../models/product.model';
-import { ResourceService } from '../../../shared/services/resource.service';
-import { TranslateService } from '@ngx-translate/core';
-import { ProductDialogComponent, ProductDialogData } from '../components/product-dialog/product-dialog.component';
-import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import {Injectable, inject, WritableSignal} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {Product, CreateProductRequest} from '../models/product.model';
+import {ResourceService} from '../../../shared/services/resource.service';
+import {TranslateService} from '@ngx-translate/core';
+import {ProductDialogComponent, ProductDialogData} from '../components/product-dialog/product-dialog.component';
+import {
+  DeleteConfirmDialogComponent,
+  DeleteConfirmDialogData
+} from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -48,67 +51,67 @@ export class ProductService
   loadProducts(isLoading: WritableSignal<boolean>): void
   {
     this.resourceManager.loadResource(
-      'products',
-      isLoading,
-      this.translate.instant('messages.failedToLoad', { resource: 'products' })
+        'products',
+        isLoading,
+        this.translate.instant('messages.failedToLoad', {resource: 'products'})
     );
   }
 
   createProductWithNotification(
-    productData: CreateProductRequest,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      productData: CreateProductRequest,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.createResource(
-      'products',
-      productData,
-      isLoading,
-      this.translate.instant('messages.productCreatedSuccessfully'),
-      this.translate.instant('messages.failedToCreateProduct')
+        'products',
+        productData,
+        isLoading,
+        this.translate.instant('messages.productCreatedSuccessfully'),
+        this.translate.instant('messages.failedToCreateProduct')
     );
   }
 
   updateProductWithNotification(
-    productData: Product,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      productData: Product,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.updateResource(
-      'products',
-      productData.id!,
-      productData,
-      isLoading,
-      this.translate.instant('messages.productUpdatedSuccessfully'),
-      this.translate.instant('messages.failedToUpdateProduct')
+        'products',
+        productData.id!,
+        productData,
+        isLoading,
+        this.translate.instant('messages.productUpdatedSuccessfully'),
+        this.translate.instant('messages.failedToUpdateProduct')
     );
   }
 
   deleteProductWithNotification(
-    id: string,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      id: string,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.deleteResource(
-      'products',
-      id,
-      isLoading,
-      this.translate.instant('messages.productDeletedSuccessfully'),
-      this.translate.instant('messages.failedToDeleteProduct')
+        'products',
+        id,
+        isLoading,
+        this.translate.instant('messages.productDeletedSuccessfully'),
+        this.translate.instant('messages.failedToDeleteProduct')
     );
   }
 
   openAddProductDialog(isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(ProductDialogComponent,
-    {
-      data: { isEdit: false } as ProductDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {isEdit: false} as ProductDialogData,
+          width: '1200px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'create')
       {
         this.createProductWithNotification(result.product, isLoading);
@@ -119,15 +122,15 @@ export class ProductService
   openEditProductDialog(product: Product, isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(ProductDialogComponent,
-    {
-      data: { product, isEdit: true } as ProductDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {product, isEdit: true} as ProductDialogData,
+          width: '1200px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'update')
       {
         this.updateProductWithNotification(result.product, isLoading);
@@ -139,18 +142,18 @@ export class ProductService
   {
     const productName = product.productName || product.productCode || 'Product';
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
-    {
-      data: {
-        userName: productName,
-        userEmail: ''
-      } as DeleteConfirmDialogData,
-      width: '500px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {
+            userName: productName,
+            userEmail: ''
+          } as DeleteConfirmDialogData,
+          width: '500px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result === true)
       {
         this.deleteProductWithNotification(product.id!, isLoading);

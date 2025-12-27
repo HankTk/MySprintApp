@@ -1,6 +1,16 @@
-import { Component, OnInit, inject, signal, effect, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  inject,
+  signal,
+  effect,
+  ViewChild,
+  ChangeDetectorRef,
+  TemplateRef,
+  AfterViewInit
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule, CurrencyPipe} from '@angular/common';
 import {
   AxButtonComponent,
   AxProgressComponent,
@@ -12,16 +22,16 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { GeneralLedgerService } from '../../services/general-ledger.service';
-import { GLEntry, GLEntryType } from '../../models/general-ledger-entry.model';
+import {AxTooltipDirective} from '@ui/components';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {GeneralLedgerService} from '../../services/general-ledger.service';
+import {GLEntry, GLEntryType} from '../../models/general-ledger-entry.model';
 
 @Component({
   selector: 'app-general-ledger-list',
@@ -145,12 +155,12 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit
         filterable: true,
         filterType: 'select',
         filterOptions: [
-          { value: '', label: 'All' },
-          { value: 'REVENUE', label: this.languageService.instant('generalLedger.type.revenue') },
-          { value: 'COST', label: this.languageService.instant('generalLedger.type.cost') },
-          { value: 'EXPENSE', label: this.languageService.instant('generalLedger.type.expense') },
-          { value: 'ACCOUNTS_PAYABLE', label: this.languageService.instant('generalLedger.type.accountsPayable') },
-          { value: 'PAYMENT', label: this.languageService.instant('generalLedger.type.payment') }
+          {value: '', label: 'All'},
+          {value: 'REVENUE', label: this.languageService.instant('generalLedger.type.revenue')},
+          {value: 'COST', label: this.languageService.instant('generalLedger.type.cost')},
+          {value: 'EXPENSE', label: this.languageService.instant('generalLedger.type.expense')},
+          {value: 'ACCOUNTS_PAYABLE', label: this.languageService.instant('generalLedger.type.accountsPayable')},
+          {value: 'PAYMENT', label: this.languageService.instant('generalLedger.type.payment')}
         ],
         cellTemplate: this.typeCellTemplate
       },
@@ -322,43 +332,43 @@ export class GeneralLedgerListComponent implements OnInit, AfterViewInit
   get totalDebit(): number
   {
     return this.filteredEntries.filter(e => e.type === 'COST' || e.type === 'EXPENSE' || e.type === 'ACCOUNTS_PAYABLE')
-      .reduce((sum, e) => sum + e.amount, 0);
+        .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalCredit(): number
   {
     return this.filteredEntries.filter(e => e.type === 'REVENUE' || e.type === 'PAYMENT')
-      .reduce((sum, e) => sum + e.amount, 0);
+        .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalRevenue(): number
   {
     return this.filteredEntries.filter(e => e.type === 'REVENUE')
-      .reduce((sum, e) => sum + e.amount, 0);
+        .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalCost(): number
   {
     return this.filteredEntries.filter(e => e.type === 'COST')
-      .reduce((sum, e) => sum + e.amount, 0);
+        .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalExpense(): number
   {
     return this.filteredEntries.filter(e => e.type === 'EXPENSE')
-      .reduce((sum, e) => sum + e.amount, 0);
+        .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalAccountsPayable(): number
   {
     return this.filteredEntries.filter(e => e.type === 'ACCOUNTS_PAYABLE')
-      .reduce((sum, e) => sum + e.amount, 0);
+        .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get totalPayment(): number
   {
     return this.filteredEntries.filter(e => e.type === 'PAYMENT')
-      .reduce((sum, e) => sum + e.amount, 0);
+        .reduce((sum, e) => sum + e.amount, 0);
   }
 
   get netIncome(): number

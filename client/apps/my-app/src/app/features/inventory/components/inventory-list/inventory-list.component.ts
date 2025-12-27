@@ -1,18 +1,29 @@
-import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { StoreService } from '../../../../core/store.service';
-import { Inventory } from '../../models/inventory.model';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { Subscription } from 'rxjs';
-import { JsonUtil } from '../../../../shared/utils/json.util';
-import { InventoryService } from '../../services/inventory.service';
-import { ProductService } from '../../../products/services/product.service';
-import { WarehouseService } from '../../../warehouses/services/warehouse.service';
-import { Product } from '../../../products/models/product.model';
-import { Warehouse } from '../../../warehouses/models/warehouse.model';
-import { firstValueFrom } from 'rxjs';
+import {
+  Component,
+  OnInit,
+  inject,
+  OnDestroy,
+  signal,
+  ViewChild,
+  ChangeDetectorRef,
+  TemplateRef,
+  AfterViewInit,
+  effect
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {StoreService} from '../../../../core/store.service';
+import {Inventory} from '../../models/inventory.model';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {Subscription} from 'rxjs';
+import {JsonUtil} from '../../../../shared/utils/json.util';
+import {InventoryService} from '../../services/inventory.service';
+import {ProductService} from '../../../products/services/product.service';
+import {WarehouseService} from '../../../warehouses/services/warehouse.service';
+import {Product} from '../../../products/models/product.model';
+import {Warehouse} from '../../../warehouses/models/warehouse.model';
+import {firstValueFrom} from 'rxjs';
 import {
   AxButtonComponent,
   AxProgressComponent,
@@ -24,7 +35,7 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
+import {AxTooltipDirective} from '@ui/components';
 
 @Component({
   selector: 'app-inventory-list',
@@ -222,10 +233,10 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit
             }
           });
           const productNames = Array.from(productMap.entries())
-            .map(([id, name]) => ({ value: id || '', label: name || '' }))
-            .sort((a, b) => a.label.localeCompare(b.label));
+              .map(([id, name]) => ({value: id || '', label: name || ''}))
+              .sort((a, b) => a.label.localeCompare(b.label));
           return [
-            { value: '', label: 'All' },
+            {value: '', label: 'All'},
             ...productNames
           ];
         },
@@ -252,10 +263,10 @@ export class InventoryListComponent implements OnInit, OnDestroy, AfterViewInit
             }
           });
           const warehouseNames = Array.from(warehouseMap.entries())
-            .map(([id, name]) => ({ value: id || '', label: name || '' }))
-            .sort((a, b) => a.label.localeCompare(b.label));
+              .map(([id, name]) => ({value: id || '', label: name || ''}))
+              .sort((a, b) => a.label.localeCompare(b.label));
           return [
-            { value: '', label: 'All' },
+            {value: '', label: 'All'},
             ...warehouseNames
           ];
         },

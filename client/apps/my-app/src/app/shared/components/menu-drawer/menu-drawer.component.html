@@ -1,19 +1,10 @@
 <nav class="menu-drawer">
   <div class="drawer-header">
-    <h2>{{ 'menu.title' | translate }}</h2>
+    <h2>'menu.title' | translate</h2>
     <ax-button variant="icon" (click)="onClose()" class="close-button">
       <ax-icon name="close" class="close-icon"></ax-icon>
     </ax-button>
   </div>
-  
-  <mat-nav-list class="menu-nav-list">
-    @for (item of menuItems; track item.route) {
-      <a mat-list-item [routerLink]="item.route" (click)="onClose()" class="menu-item">
-        <div class="menu-item-content">
-          <ax-icon [name]="item.icon" class="menu-icon"></ax-icon>
-          <span class="menu-text">{{ item.label | translate }}</span>
-        </div>
-      </a>
-    }
-  </mat-nav-list>
+
+  <mat-nav-list class="menu-nav-list"></mat-nav-list>
 </nav>

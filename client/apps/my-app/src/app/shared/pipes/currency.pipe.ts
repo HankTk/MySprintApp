@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 /**
  * Currency pipe
@@ -11,11 +11,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class CurrencyPipe implements PipeTransform
 {
   transform(
-    value: number | string,
-    currencyCode = 'USD',
-    locale = 'en-US'
-  ): string 
-{
+      value: number | string,
+      currencyCode = 'USD',
+      locale = 'en-US'
+  ): string
+  {
     if (value == null)
     {
       return '';

@@ -1,12 +1,12 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { SFC, CreateSFCRequest } from '../../models/sfc.model';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { AxButtonComponent, AxIconComponent } from '@ui/components';
+import {Component, Inject, OnInit, inject} from '@angular/core';
+import {FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialogRef, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {SFC, CreateSFCRequest} from '../../models/sfc.model';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {AxButtonComponent, AxIconComponent} from '@ui/components';
 
 export interface SFCDialogData
 {
@@ -40,12 +40,12 @@ export class SFCDialogComponent implements OnInit
   private dialogRef = inject(MatDialogRef<SFCDialogComponent>);
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
-  
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: SFCDialogData)
   {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editSFC') : this.translate.instant('addSFC');
-    
+
     this.sfcForm = this.fb.group({
       rmaId: [''],
       rmaNumber: [''],
@@ -69,7 +69,7 @@ export class SFCDialogComponent implements OnInit
   }
 
   private populateForm(sfc: SFC): void
- {
+  {
     let jsonDataString = '{}';
     if (sfc.jsonData)
     {
@@ -77,15 +77,15 @@ export class SFCDialogComponent implements OnInit
       {
         jsonDataString = JSON.stringify(sfc.jsonData, null, 2);
       }
- else if (typeof sfc.jsonData === 'string')
- {
-        try 
-{
+      else if (typeof sfc.jsonData === 'string')
+      {
+        try
+        {
           JSON.parse(sfc.jsonData);
           jsonDataString = sfc.jsonData;
         }
- catch
- {
+        catch
+        {
           jsonDataString = '{}';
         }
       }
@@ -106,16 +106,16 @@ export class SFCDialogComponent implements OnInit
   }
 
   private jsonValidator(control: any)
- {
+  {
     if (!control.value) return null;
-    try 
-{
+    try
+    {
       JSON.parse(control.value);
       return null;
     }
- catch (e)
- {
-      return { invalidJson: true };
+    catch (e)
+    {
+      return {invalidJson: true};
     }
   }
 
@@ -124,16 +124,16 @@ export class SFCDialogComponent implements OnInit
     if (this.sfcForm.valid)
     {
       const formValue = this.sfcForm.value;
-      
+
       let jsonData: any = {};
       if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
       {
-        try 
-{
+        try
+        {
           jsonData = JSON.parse(formValue.jsonData);
         }
- catch (e)
- {
+        catch (e)
+        {
           return;
         }
       }
@@ -141,37 +141,37 @@ export class SFCDialogComponent implements OnInit
       if (this.isEdit && this.data.sfc)
       {
         const sfcToUpdate: SFC =
-        {
-          ...this.data.sfc,
-          rmaId: formValue.rmaId,
-          rmaNumber: formValue.rmaNumber,
-          orderId: formValue.orderId,
-          orderNumber: formValue.orderNumber,
-          customerId: formValue.customerId,
-          customerName: formValue.customerName,
-          status: formValue.status,
-          assignedTo: formValue.assignedTo,
-          notes: formValue.notes,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'update', sfc: sfcToUpdate });
+            {
+              ...this.data.sfc,
+              rmaId: formValue.rmaId,
+              rmaNumber: formValue.rmaNumber,
+              orderId: formValue.orderId,
+              orderNumber: formValue.orderNumber,
+              customerId: formValue.customerId,
+              customerName: formValue.customerName,
+              status: formValue.status,
+              assignedTo: formValue.assignedTo,
+              notes: formValue.notes,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'update', sfc: sfcToUpdate});
       }
- else
- {
+      else
+      {
         const sfcToCreate: CreateSFCRequest =
-        {
-          rmaId: formValue.rmaId,
-          rmaNumber: formValue.rmaNumber,
-          orderId: formValue.orderId,
-          orderNumber: formValue.orderNumber,
-          customerId: formValue.customerId,
-          customerName: formValue.customerName,
-          status: formValue.status,
-          assignedTo: formValue.assignedTo,
-          notes: formValue.notes,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'create', sfc: sfcToCreate });
+            {
+              rmaId: formValue.rmaId,
+              rmaNumber: formValue.rmaNumber,
+              orderId: formValue.orderId,
+              orderNumber: formValue.orderNumber,
+              customerId: formValue.customerId,
+              customerName: formValue.customerName,
+              status: formValue.status,
+              assignedTo: formValue.assignedTo,
+              notes: formValue.notes,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'create', sfc: sfcToCreate});
       }
     }
   }

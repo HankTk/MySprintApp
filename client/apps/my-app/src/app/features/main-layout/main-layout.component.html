@@ -1,19 +1,19 @@
 <mat-sidenav-container class="app-container">
   <!-- Menu Drawer -->
-  <mat-sidenav 
-    #menuDrawer
-    mode="over" 
-    position="start"
-    class="menu-sidenav">
+  <mat-sidenav
+      #menuDrawer
+      mode="over"
+      position="start"
+      class="menu-sidenav">
     <app-menu-drawer (closeDrawer)="closeMenuDrawer()"></app-menu-drawer>
   </mat-sidenav>
 
   <!-- Settings Drawer -->
-  <mat-sidenav 
-    #settingsDrawer
-    mode="over" 
-    position="end"
-    class="settings-sidenav">
+  <mat-sidenav
+      #settingsDrawer
+      mode="over"
+      position="end"
+      class="settings-sidenav">
     <app-settings-drawer (closeDrawer)="closeSettingsDrawer()"></app-settings-drawer>
   </mat-sidenav>
 
@@ -36,7 +36,7 @@
 
     <!-- Main Content Area -->
     <div class="main-content">
-      <router-outlet />
+      <router-outlet/>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -46,7 +46,7 @@
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'quantity' | translate }}</mat-label>
           <input matInput type="number" formControlName="quantity"
-            [class.is-invalid]="isFieldInvalid('quantity')">
+                 [class.is-invalid]="isFieldInvalid('quantity')">
           @if (isFieldInvalid('quantity')) {
             <mat-error>
               {{ getErrorMessage('quantity') }}
@@ -59,11 +59,11 @@
         <mat-form-field appearance="outline" class="form-field full-width">
           <mat-label>{{ 'jsonData' | translate }}</mat-label>
           <textarea
-            matInput
-            formControlName="jsonData"
-            rows="4"
-            [placeholder]="'jsonDataPlaceholder' | translate"
-            [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
+                  matInput
+                  formControlName="jsonData"
+                  rows="4"
+                  [placeholder]="'jsonDataPlaceholder' | translate"
+                  [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
           <mat-hint>{{ 'jsonDataHint' | translate }}</mat-hint>
           @if (isFieldInvalid('jsonData')) {
             <mat-error>
@@ -76,17 +76,17 @@
 
     <mat-dialog-actions align="end" class="dialog-actions">
       <ax-button
-        variant="stroked"
-        type="button"
-        [label]="'cancel' | translate"
-        (click)="onCancel()">
+              variant="stroked"
+              type="button"
+              [label]="'cancel' | translate"
+              (click)="onCancel()">
       </ax-button>
       <ax-button
-        variant="raised"
-        color="primary"
-        type="submit"
-        [label]="isEdit ? ('update' | translate) : ('add' | translate)"
-        [disabled]="inventoryForm.invalid">
+              variant="raised"
+              color="primary"
+              type="submit"
+              [label]="isEdit ? ('update' | translate) : ('add' | translate)"
+              [disabled]="inventoryForm.invalid">
       </ax-button>
     </mat-dialog-actions>
   </form>

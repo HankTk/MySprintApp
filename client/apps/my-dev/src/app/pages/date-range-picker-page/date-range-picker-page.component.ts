@@ -1,20 +1,20 @@
-import { Component, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { AxDateRangePickerComponent, AxCardComponent, MatCardModule } from '@ui/components';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import {Component, HostListener} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {AxDateRangePickerComponent, AxCardComponent, MatCardModule} from '@ui/components';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-date-range-picker-page',
   standalone: true,
   imports: [
-    CommonModule, 
-    FormsModule, 
-    AxDateRangePickerComponent, 
-    AxCardComponent, 
+    CommonModule,
+    FormsModule,
+    AxDateRangePickerComponent,
+    AxCardComponent,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -28,7 +28,7 @@ export class DateRangePickerPageComponent
 {
   startDate: Date | null = null;
   endDate: Date | null = null;
-  
+
   // Single field date range picker (table filter style)
   isDateRangePickerOpen = false;
   singleFieldStartDate: Date | null = null;
@@ -37,7 +37,7 @@ export class DateRangePickerPageComponent
   // Inline calendar date range picker
   inlineStartDate: Date | null = null;
   inlineEndDate: Date | null = null;
-  inlineDateRange: { start: Date | null; end: Date | null } = { start: null, end: null };
+  inlineDateRange: { start: Date | null; end: Date | null } = {start: null, end: null};
 
   toggleDateRangePicker(): void
   {
@@ -83,12 +83,12 @@ export class DateRangePickerPageComponent
     {
       return `${start} - ${end}`;
     }
- else if (start)
- {
+    else if (start)
+    {
       return `From ${start}`;
     }
- else if (end)
- {
+    else if (end)
+    {
       return `Until ${end}`;
     }
     return '';
@@ -108,24 +108,24 @@ export class DateRangePickerPageComponent
     const isDateRangeInput = target.closest('.date-range-single-wrapper');
     const isDateRangePopup = target.closest('.date-range-popup');
     const isDateRangePicker = target.closest('ax-date-range-picker');
-    const isDatePicker = target.closest('.mat-datepicker-popup') || 
-                        target.closest('.mat-calendar') || 
-                        target.closest('.cdk-overlay-container') ||
-                        target.closest('.cdk-overlay-pane');
+    const isDatePicker = target.closest('.mat-datepicker-popup') ||
+        target.closest('.mat-calendar') ||
+        target.closest('.cdk-overlay-container') ||
+        target.closest('.cdk-overlay-pane');
     const isDatePickerToggle = target.closest('.mat-datepicker-toggle');
     const isDatePickerInput = target.closest('input[matDatepicker]');
     const isDatePickerContainer = target.closest('.ax-date-range-picker-container');
-    
-    if (isDatePickerToggle || 
-        isDatePickerInput || 
-        isDateRangePopup || 
-        isDateRangePicker || 
-        isDatePicker || 
+
+    if (isDatePickerToggle ||
+        isDatePickerInput ||
+        isDateRangePopup ||
+        isDateRangePicker ||
+        isDatePicker ||
         isDatePickerContainer)
-        {
+    {
       return;
     }
-    
+
     if (!isDateRangeInput && this.isDateRangePickerOpen)
     {
       this.isDateRangePickerOpen = false;

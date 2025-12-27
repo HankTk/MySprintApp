@@ -22,12 +22,12 @@
         <div class="step-indicator">
           <div class="step-list">
             @for (step of steps; track step.key) {
-              <div 
-                class="step-item"
-                [class.active]="currentStep() === step.key"
-                [class.completed]="isStepCompleted(step.key)"
-                [class.clickable]="isStepCompleted(step.key) || currentStep() === step.key"
-                (click)="onStepClick(step.key)">
+              <div
+                      class="step-item"
+                      [class.active]="currentStep() === step.key"
+                      [class.completed]="isStepCompleted(step.key)"
+                      [class.clickable]="isStepCompleted(step.key) || currentStep() === step.key"
+                      (click)="onStepClick(step.key)">
                 <div class="step-number">{{ $index + 1 }}</div>
                 <div class="step-label">{{ step.label | translate }}</div>
               </div>
@@ -41,11 +41,11 @@
             <div class="sub-step-indicator">
               @for (subStep of entrySubSteps; track subStep.key) {
                 <button
-                  mat-button
-                  class="sub-step-button"
-                  [class.active]="currentEntrySubStep() === subStep.key"
-                  [class.completed]="isSubStepCompleted(subStep.key)"
-                  (click)="currentEntrySubStep.set(subStep.key)">
+                        mat-button
+                        class="sub-step-button"
+                        [class.active]="currentEntrySubStep() === subStep.key"
+                        [class.completed]="isSubStepCompleted(subStep.key)"
+                        (click)="currentEntrySubStep.set(subStep.key)">
                   {{ subStep.label | translate }}
                 </button>
               }
@@ -74,7 +74,7 @@
               @if (currentEntrySubStep() === 'products') {
                 <div class="sub-step-content">
                   <h3>{{ 'purchaseOrderEntry.subStep.products' | translate }}</h3>
-                  
+
                   <div class="product-selection">
                     <mat-form-field appearance="outline" class="form-field">
                       <mat-label>{{ 'product' | translate }}</mat-label>
@@ -82,7 +82,8 @@
                         <mat-option [value]="null">{{ 'selectProduct' | translate }}</mat-option>
                         @for (product of products(); track product.id) {
                           <mat-option [value]="product.id">
-                            {{ product.productName || product.productCode }} - ${{ product.unitPrice?.toFixed(2) || '0.00' }}
+                            {{ product.productName || product.productCode }} -
+                            ${{ product.unitPrice?.toFixed(2) || '0.00' }}
                           </mat-option>
                         }
                       </mat-select>
@@ -90,15 +91,16 @@
 
                     <mat-form-field appearance="outline" class="form-field quantity-field">
                       <mat-label>{{ 'quantity' | translate }}</mat-label>
-                      <input matInput type="number" [value]="quantity()" (input)="quantity.set(+$any($event.target).value)" min="1" step="1">
+                      <input matInput type="number" [value]="quantity()"
+                             (input)="quantity.set(+$any($event.target).value)" min="1" step="1">
                     </mat-form-field>
 
                     <ax-button
-                      variant="raised"
-                      color="primary"
-                      [label]="'add' | translate"
-                      (click)="onAddProduct()"
-                      [disabled]="!selectedProduct() || loading()">
+                            variant="raised"
+                            color="primary"
+                            [label]="'add' | translate"
+                            (click)="onAddProduct()"
+                            [disabled]="!selectedProduct() || loading()">
                     </ax-button>
                   </div>
 
@@ -114,18 +116,18 @@
                         <td mat-cell *matCellDef="let item">
                           <div class="quantity-controls">
                             <button
-                              mat-icon-button
-                              (click)="onUpdateQuantity(item.id!, (item.quantity || 1) - 1)"
-                              [disabled]="loading() || (item.quantity || 1) <= 1"
-                              class="quantity-button">
+                                    mat-icon-button
+                                    (click)="onUpdateQuantity(item.id!, (item.quantity || 1) - 1)"
+                                    [disabled]="loading() || (item.quantity || 1) <= 1"
+                                    class="quantity-button">
                               <mat-icon>remove</mat-icon>
                             </button>
                             <span class="quantity-value">{{ item.quantity || 0 }}</span>
                             <button
-                              mat-icon-button
-                              (click)="onUpdateQuantity(item.id!, (item.quantity || 1) + 1)"
-                              [disabled]="loading()"
-                              class="quantity-button">
+                                    mat-icon-button
+                                    (click)="onUpdateQuantity(item.id!, (item.quantity || 1) + 1)"
+                                    [disabled]="loading()"
+                                    class="quantity-button">
                               <mat-icon>add</mat-icon>
                             </button>
                           </div>
@@ -134,23 +136,27 @@
 
                       <ng-container matColumnDef="unitPrice">
                         <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'unitPrice' | translate }}</th>
-                        <td mat-cell *matCellDef="let item" class="text-right">${{ item.unitPrice?.toFixed(2) || '0.00' }}</td>
+                        <td mat-cell *matCellDef="let item" class="text-right">
+                          ${{ item.unitPrice?.toFixed(2) || '0.00' }}
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="lineTotal">
                         <th mat-header-cell *matHeaderCellDef class="text-right">{{ 'lineTotal' | translate }}</th>
-                        <td mat-cell *matCellDef="let item" class="text-right">${{ item.lineTotal?.toFixed(2) || '0.00' }}</td>
+                        <td mat-cell *matCellDef="let item" class="text-right">
+                          ${{ item.lineTotal?.toFixed(2) || '0.00' }}
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef class="text-center">{{ 'actions' | translate }}</th>
                         <td mat-cell *matCellDef="let item" class="text-center">
                           <button
-                            mat-icon-button
-                            color="warn"
-                            (click)="onRemoveItem(item.id!)"
-                            [disabled]="loading()"
-                            class="remove-button">
+                                  mat-icon-button
+                                  color="warn"
+                                  (click)="onRemoveItem(item.id!)"
+                                  [disabled]="loading()"
+                                  class="remove-button">
                             <mat-icon>delete</mat-icon>
                           </button>
                         </td>
@@ -173,11 +179,12 @@
               @if (currentEntrySubStep() === 'shipping') {
                 <div class="sub-step-content">
                   <h3>{{ 'purchaseOrderEntry.subStep.shipping' | translate }}</h3>
-                  
+
                   <div class="form-row">
                     <mat-form-field appearance="outline" class="form-field">
                       <mat-label>{{ 'shippingAddress' | translate }}</mat-label>
-                      <mat-select [value]="po()?.shippingAddressId || null" (selectionChange)="onShippingInfoChange($event.value || '', po()?.billingAddressId || '')">
+                      <mat-select [value]="po()?.shippingAddressId || null"
+                                  (selectionChange)="onShippingInfoChange($event.value || '', po()?.billingAddressId || '')">
                         <mat-option [value]="null">{{ 'selectAddress' | translate }}</mat-option>
                         @for (address of addresses(); track address.id) {
                           <mat-option [value]="address.id">
@@ -189,7 +196,8 @@
 
                     <mat-form-field appearance="outline" class="form-field">
                       <mat-label>{{ 'billingAddress' | translate }}</mat-label>
-                      <mat-select [value]="po()?.billingAddressId || null" (selectionChange)="onShippingInfoChange(po()?.shippingAddressId || '', $event.value || '')">
+                      <mat-select [value]="po()?.billingAddressId || null"
+                                  (selectionChange)="onShippingInfoChange(po()?.shippingAddressId || '', $event.value || '')">
                         <mat-option [value]="null">{{ 'selectAddress' | translate }}</mat-option>
                         @for (address of addresses(); track address.id) {
                           <mat-option [value]="address.id">
@@ -202,7 +210,8 @@
 
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>{{ 'expectedDeliveryDate' | translate }}</mat-label>
-                    <input matInput [matDatepicker]="expectedDeliveryDatePicker" [value]="expectedDeliveryDate()" (dateChange)="onExpectedDeliveryDateChange($event.value)">
+                    <input matInput [matDatepicker]="expectedDeliveryDatePicker" [value]="expectedDeliveryDate()"
+                           (dateChange)="onExpectedDeliveryDateChange($event.value)">
                     <mat-datepicker-toggle matIconSuffix [for]="expectedDeliveryDatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #expectedDeliveryDatePicker></mat-datepicker>
                   </mat-form-field>
@@ -230,11 +239,12 @@
           <div class="step-content">
             <h3>{{ 'purchaseOrderEntry.step.approval' | translate }}</h3>
             <p class="step-description">{{ 'purchaseOrderEntry.approval.description' | translate }}</p>
-            
+
             <div class="approval-checks">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>{{ 'purchaseOrderEntry.approval.notes' | translate }}</mat-label>
-                <textarea matInput [value]="approvalNotes()" (input)="approvalNotes.set($any($event.target).value)" rows="4"></textarea>
+                <textarea matInput [value]="approvalNotes()" (input)="approvalNotes.set($any($event.target).value)"
+                          rows="4"></textarea>
               </mat-form-field>
             </div>
           </div>
@@ -244,11 +254,12 @@
         @if (currentStep() === 'received') {
           <div class="step-content">
             <h3>{{ 'purchaseOrderEntry.step.received' | translate }}</h3>
-            
+
             <div class="form-fields">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>{{ 'purchaseOrderEntry.received.receivedDate' | translate }}</mat-label>
-                <input matInput [matDatepicker]="receivedDatePicker" [value]="receivedDate()" (dateChange)="receivedDate.set($event.value)">
+                <input matInput [matDatepicker]="receivedDatePicker" [value]="receivedDate()"
+                       (dateChange)="receivedDate.set($event.value)">
                 <mat-datepicker-toggle matIconSuffix [for]="receivedDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #receivedDatePicker></mat-datepicker>
               </mat-form-field>
@@ -260,7 +271,7 @@
         @if (currentStep() === 'invoicing') {
           <div class="step-content">
             <h3>{{ 'purchaseOrderEntry.step.invoicing' | translate }}</h3>
-            
+
             <div class="form-fields">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>{{ 'invoiceNumber' | translate }}</mat-label>
@@ -272,7 +283,8 @@
 
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>{{ 'invoiceDate' | translate }}</mat-label>
-                <input matInput [matDatepicker]="invoiceDatePicker" [value]="invoiceDate()" (dateChange)="invoiceDate.set($event.value)">
+                <input matInput [matDatepicker]="invoiceDatePicker" [value]="invoiceDate()"
+                       (dateChange)="invoiceDate.set($event.value)">
                 <mat-datepicker-toggle matIconSuffix [for]="invoiceDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #invoiceDatePicker></mat-datepicker>
               </mat-form-field>
@@ -284,21 +296,22 @@
         @if (currentStep() === 'history') {
           <div class="step-content">
             <h3>{{ 'purchaseOrderEntry.step.history' | translate }}</h3>
-            
+
             <div class="history-content">
               <div class="history-section">
                 <h4>{{ 'purchaseOrderEntry.history.addNote' | translate }}</h4>
                 <div class="form-fields">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>{{ 'notes' | translate }}</mat-label>
-                    <textarea matInput [value]="historyNote()" (input)="historyNote.set($any($event.target).value)" rows="3"></textarea>
+                    <textarea matInput [value]="historyNote()" (input)="historyNote.set($any($event.target).value)"
+                              rows="3"></textarea>
                   </mat-form-field>
                   <ax-button
-                    variant="raised"
-                    color="primary"
-                    [label]="'add' | translate"
-                    (click)="handleAddHistoryNote()"
-                    [disabled]="!historyNote() || submitting()">
+                          variant="raised"
+                          color="primary"
+                          [label]="'add' | translate"
+                          (click)="handleAddHistoryNote()"
+                          [disabled]="!historyNote() || submitting()">
                   </ax-button>
                 </div>
               </div>
@@ -320,7 +333,7 @@
                           <div class="history-data">
                             @for (item of record.data | keyvalue; track item.key) {
                               <div class="data-item">
-                                <strong>{{ getDataKeyLabel(toString(item.key)) | translate }}:</strong> 
+                                <strong>{{ getDataKeyLabel(toString(item.key)) | translate }}:</strong>
                                 {{ formatDataValue(toString(item.key), item.value) }}
                               </div>
                             }
@@ -340,53 +353,53 @@
         <!-- Navigation Buttons -->
         <div class="navigation-buttons">
           <button
-            mat-button
-            (click)="handlePrevious()"
-            [disabled]="currentStep() === 'entry' && currentEntrySubStep() === 'supplier'">
+                  mat-button
+                  (click)="handlePrevious()"
+                  [disabled]="currentStep() === 'entry' && currentEntrySubStep() === 'supplier'">
             <mat-icon>arrow_back</mat-icon>
             {{ 'previous' | translate }}
           </button>
-          
+
           <!-- Step-specific action buttons -->
           @if (currentStep() === 'entry' && currentEntrySubStep() === 'review') {
             <ax-button
-              variant="raised"
-              color="primary"
-              [label]="'purchaseOrderEntry.completeEntry' | translate"
-              (click)="handleCompleteEntry()"
-              [disabled]="!canProceedToNext() || submitting()">
+                    variant="raised"
+                    color="primary"
+                    [label]="'purchaseOrderEntry.completeEntry' | translate"
+                    (click)="handleCompleteEntry()"
+                    [disabled]="!canProceedToNext() || submitting()">
             </ax-button>
           } @else if (currentStep() === 'approval') {
             <ax-button
-              variant="raised"
-              color="primary"
-              [label]="'purchaseOrderEntry.approve' | translate"
-              (click)="handleApprovePO()"
-              [disabled]="!canProceedToNext() || submitting()">
+                    variant="raised"
+                    color="primary"
+                    [label]="'purchaseOrderEntry.approve' | translate"
+                    (click)="handleApprovePO()"
+                    [disabled]="!canProceedToNext() || submitting()">
             </ax-button>
           } @else if (currentStep() === 'received') {
             <ax-button
-              variant="raised"
-              color="primary"
-              [label]="'purchaseOrderEntry.receive' | translate"
-              (click)="handleReceivePO()"
-              [disabled]="!canProceedToNext() || submitting()">
+                    variant="raised"
+                    color="primary"
+                    [label]="'purchaseOrderEntry.receive' | translate"
+                    (click)="handleReceivePO()"
+                    [disabled]="!canProceedToNext() || submitting()">
             </ax-button>
           } @else if (currentStep() === 'invoicing') {
             <ax-button
-              variant="raised"
-              color="primary"
-              [label]="'purchaseOrderEntry.invoice' | translate"
-              (click)="handleInvoicePO()"
-              [disabled]="!canProceedToNext() || submitting()">
+                    variant="raised"
+                    color="primary"
+                    [label]="'purchaseOrderEntry.invoice' | translate"
+                    (click)="handleInvoicePO()"
+                    [disabled]="!canProceedToNext() || submitting()">
             </ax-button>
           } @else {
             <ax-button
-              variant="raised"
-              color="primary"
-              [label]="'next' | translate"
-              (click)="handleNext()"
-              [disabled]="!canProceedToNext()">
+                    variant="raised"
+                    color="primary"
+                    [label]="'next' | translate"
+                    (click)="handleNext()"
+                    [disabled]="!canProceedToNext()">
             </ax-button>
           }
         </div>

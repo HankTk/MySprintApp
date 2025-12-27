@@ -1,13 +1,13 @@
-import { Component, Inject, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule, MatDialog } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, of } from 'rxjs';
-import { AxButtonComponent, AxIconComponent } from '@ui/components';
-import { showServerUnavailableDialog } from '../../../core/http-interceptor';
+import {Component, Inject, inject} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatDialogRef, MAT_DIALOG_DATA, MatDialogModule, MatDialog} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {catchError, of} from 'rxjs';
+import {AxButtonComponent, AxIconComponent} from '@ui/components';
+import {showServerUnavailableDialog} from '../../../core/http-interceptor';
 
 export interface ServerUnavailableDialogData
 {
@@ -43,14 +43,15 @@ export class ServerUnavailableDialogComponent
   private apiUrl = 'http://localhost:8080/api';
 
   constructor(
-    public dialogRef: MatDialogRef<ServerUnavailableDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ServerUnavailableDialogData,
-    private translate: TranslateService
+      public dialogRef: MatDialogRef<ServerUnavailableDialogComponent>,
+      @Inject(MAT_DIALOG_DATA) public data: ServerUnavailableDialogData,
+      private translate: TranslateService
   )
-  {}
+  {
+  }
 
   get message(): string
- {
+  {
     return this.data?.message || this.translate.instant('messages.serverUnavailable');
   }
 
@@ -58,35 +59,35 @@ export class ServerUnavailableDialogComponent
   {
     this.isRetrying = true;
     console.log('Retry button clicked - checking server availability...');
-    
+
     // Try to make a simple request to check if server is available
     // Use a lightweight endpoint like checking users
-    this.http.get(`${this.apiUrl}/users`, { observe: 'response' }).pipe(
-      catchError((error: HttpErrorResponse) =>
-      {
-        console.log('Server still unavailable:', error);
-        this.isRetrying = false;
-        
-        // Server is still unavailable (status === 0 or other error)
-        if (error.status === 0)
+    this.http.get(`${this.apiUrl}/users`, {observe: 'response'}).pipe(
+        catchError((error: HttpErrorResponse) =>
         {
-          // Close current dialog
-          this.dialogRef.close(false);
-          
-          // Show dialog again after a short delay to ensure the previous one is closed
-          setTimeout(() =>
+          console.log('Server still unavailable:', error);
+          this.isRetrying = false;
+
+          // Server is still unavailable (status === 0 or other error)
+          if (error.status === 0)
           {
-            showServerUnavailableDialog(this.dialog, this.translate);
-          }, 100);
-        }
- else
- {
-          // Other error, just close the dialog
-          this.dialogRef.close(false);
-        }
-        
-        return of(null);
-      })
+            // Close current dialog
+            this.dialogRef.close(false);
+
+            // Show dialog again after a short delay to ensure the previous one is closed
+            setTimeout(() =>
+            {
+              showServerUnavailableDialog(this.dialog, this.translate);
+            }, 100);
+          }
+          else
+          {
+            // Other error, just close the dialog
+            this.dialogRef.close(false);
+          }
+
+          return of(null);
+        })
     ).subscribe({
       next: (response) =>
       {

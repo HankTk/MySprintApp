@@ -1,13 +1,16 @@
-import { Injectable, inject, WritableSignal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Order, CreateOrderRequest } from '../models/order.model';
-import { ResourceService } from '../../../shared/services/resource.service';
-import { TranslateService } from '@ngx-translate/core';
-import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
-import { OrderDialogComponent, OrderDialogData } from '../components/order-dialog/order-dialog.component';
+import {Injectable, inject, WritableSignal} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {Order, CreateOrderRequest} from '../models/order.model';
+import {ResourceService} from '../../../shared/services/resource.service';
+import {TranslateService} from '@ngx-translate/core';
+import {
+  DeleteConfirmDialogComponent,
+  DeleteConfirmDialogData
+} from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import {OrderDialogComponent, OrderDialogData} from '../components/order-dialog/order-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -49,12 +52,12 @@ export class OrderService
 
   addOrderItem(orderId: string, productId: string, quantity: number): Observable<Order>
   {
-    return this.http.post<Order>(`${this.apiUrl}/${orderId}/items`, { productId, quantity });
+    return this.http.post<Order>(`${this.apiUrl}/${orderId}/items`, {productId, quantity});
   }
 
   updateOrderItemQuantity(orderId: string, itemId: string, quantity: number): Observable<Order>
   {
-    return this.http.put<Order>(`${this.apiUrl}/${orderId}/items/${itemId}/quantity`, { quantity });
+    return this.http.put<Order>(`${this.apiUrl}/${orderId}/items/${itemId}/quantity`, {quantity});
   }
 
   removeOrderItem(orderId: string, itemId: string): Observable<Order>
@@ -70,52 +73,52 @@ export class OrderService
   loadOrders(isLoading: WritableSignal<boolean>): void
   {
     this.resourceManager.loadResource(
-      'orders',
-      isLoading,
-      this.translate.instant('messages.failedToLoad', { resource: 'orders' })
+        'orders',
+        isLoading,
+        this.translate.instant('messages.failedToLoad', {resource: 'orders'})
     );
   }
 
   createOrderWithNotification(
-    orderData: CreateOrderRequest,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      orderData: CreateOrderRequest,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.createResource(
-      'orders',
-      orderData,
-      isLoading,
-      this.translate.instant('messages.orderCreatedSuccessfully'),
-      this.translate.instant('messages.failedToCreateOrder')
+        'orders',
+        orderData,
+        isLoading,
+        this.translate.instant('messages.orderCreatedSuccessfully'),
+        this.translate.instant('messages.failedToCreateOrder')
     );
   }
 
   updateOrderWithNotification(
-    orderData: Order,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      orderData: Order,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.updateResource(
-      'orders',
-      orderData.id!,
-      orderData,
-      isLoading,
-      this.translate.instant('messages.orderUpdatedSuccessfully'),
-      this.translate.instant('messages.failedToUpdateOrder')
+        'orders',
+        orderData.id!,
+        orderData,
+        isLoading,
+        this.translate.instant('messages.orderUpdatedSuccessfully'),
+        this.translate.instant('messages.failedToUpdateOrder')
     );
   }
 
   deleteOrderWithNotification(
-    id: string,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      id: string,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.deleteResource(
-      'orders',
-      id,
-      isLoading,
-      this.translate.instant('messages.orderDeletedSuccessfully'),
-      this.translate.instant('messages.failedToDeleteOrder')
+        'orders',
+        id,
+        isLoading,
+        this.translate.instant('messages.orderDeletedSuccessfully'),
+        this.translate.instant('messages.failedToDeleteOrder')
     );
   }
 
@@ -138,19 +141,19 @@ export class OrderService
   {
     const orderName = order.orderNumber || order.id || 'Order';
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
-    {
-      data: {
-        title: this.translate.instant('deleteDialog.confirmOrderDeletion'),
-        message: this.translate.instant('deleteDialog.deleteOrderMessage'),
-        itemName: orderName
-      } as DeleteConfirmDialogData,
-      width: '500px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {
+            title: this.translate.instant('deleteDialog.confirmOrderDeletion'),
+            message: this.translate.instant('deleteDialog.deleteOrderMessage'),
+            itemName: orderName
+          } as DeleteConfirmDialogData,
+          width: '500px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result === true)
       {
         this.deleteOrderWithNotification(order.id!, isLoading);

@@ -14,16 +14,16 @@
 
     <mat-card-content>
       <p class="master-subtitle">{{ 'master.subtitle' | translate }}</p>
-      
+
       <div class="master-cards-grid">
         @for (item of masterItems; track item.id) {
-          <mat-card 
-            class="master-card"
-            (click)="navigateTo(item.route)"
-            [attr.role]="'button'"
-            [attr.tabindex]="0"
-            (keydown.enter)="navigateTo(item.route)"
-            (keydown.space)="navigateTo(item.route)">
+          <mat-card
+                  class="master-card"
+                  (click)="navigateTo(item.route)"
+                  [attr.role]="'button'"
+                  [attr.tabindex]="0"
+                  (keydown.enter)="navigateTo(item.route)"
+                  (keydown.space)="navigateTo(item.route)">
             <mat-card-content>
               <div class="master-card-content">
                 <ax-icon [name]="item.icon" class="master-card-icon"></ax-icon>

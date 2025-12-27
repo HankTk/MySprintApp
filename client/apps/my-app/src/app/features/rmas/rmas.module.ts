@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RMAListComponent } from './components/rma-list/rma-list.component';
-import { RMADialogComponent } from './components/rma-dialog/rma-dialog.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RMAListComponent} from './components/rma-list/rma-list.component';
+import {RMADialogComponent} from './components/rma-dialog/rma-dialog.component';
 
 /**
  * RMAs module

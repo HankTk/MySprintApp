@@ -1,20 +1,20 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../../../core/auth/auth.service';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { LoginRequest } from '../../../users/models/user';
-import { closeServerUnavailableDialog } from '../../../../core/http-interceptor';
-import { 
-  AxButtonComponent, 
+import {Component, OnInit, inject} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {MatDialog} from '@angular/material/dialog';
+import {AuthService} from '../../../../core/auth/auth.service';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {LoginRequest} from '../../../users/models/user';
+import {closeServerUnavailableDialog} from '../../../../core/http-interceptor';
+import {
+  AxButtonComponent,
   AxIconComponent
 } from '@ui/components';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 @Component({
   selector: 'app-login',
@@ -49,26 +49,26 @@ export class LoginComponent implements OnInit
   ngOnInit(): void
   {
     const currentLang = this.languageService.getCurrentLanguage();
-    
+
     if (!this.translate.defaultLang)
     {
       this.translate.setDefaultLang('en');
     }
-    
+
     this.translate.use(currentLang).subscribe(() =>
     {
       this.loginForm = this.fb.group({
-      userid: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
-    });
+        userid: ['', [Validators.required]],
+        password: ['', [Validators.required, Validators.minLength(6)]]
+      });
 
-    this.authService.checkUsers().subscribe(hasUsers => 
-{
-      if (!hasUsers)
+      this.authService.checkUsers().subscribe(hasUsers =>
       {
-        this.router.navigate(['/initial-user']);
-      }
-    });
+        if (!hasUsers)
+        {
+          this.router.navigate(['/initial-user']);
+        }
+      });
     });
   }
 
@@ -80,10 +80,10 @@ export class LoginComponent implements OnInit
       this.errorMessage = '';
 
       const credentials: LoginRequest =
-      {
-        userid: this.loginForm.value.userid,
-        password: this.loginForm.value.password
-      };
+          {
+            userid: this.loginForm.value.userid,
+            password: this.loginForm.value.password
+          };
 
       this.authService.login(credentials).subscribe({
         next: () =>
@@ -94,8 +94,8 @@ export class LoginComponent implements OnInit
         error: (error) =>
         {
           this.isLoading = false;
-          this.translate.get('login.error').subscribe(translated => 
-{
+          this.translate.get('login.error').subscribe(translated =>
+          {
             this.errorMessage = translated;
           });
         }
@@ -128,35 +128,35 @@ export class LoginComponent implements OnInit
   {
     console.log('=== Shutdown button clicked - LoginComponent ===');
     console.log('Step 1: Closing all dialogs...');
-    
+
     // Close all open dialogs (including server unavailable dialog)
-    try 
-{
+    try
+    {
       this.dialog.closeAll();
       console.log('All dialogs closed');
     }
- catch (error)
+    catch (error)
     {
       console.error('Error closing dialogs:', error);
     }
-    
+
     // Also try the specific function
     closeServerUnavailableDialog();
-    
+
     console.log('Step 2: Proceeding with shutdown...');
-    
+
     if (window.electronAPI && typeof window.electronAPI.shutdown === 'function')
     {
-      try 
-{
+      try
+      {
         window.electronAPI.shutdown();
       }
- catch (error)
+      catch (error)
       {
         console.error('Error shutting down application:', error);
       }
     }
- else
+    else
     {
       console.warn('Electron API not available.');
       if (typeof window.close === 'function')

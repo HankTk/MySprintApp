@@ -2,17 +2,17 @@
   <div class="welcome-content">
     <h1 class="welcome-title">{{ 'welcome.title' | translate }}</h1>
     <p class="welcome-subtitle">{{ welcomeMessage() }}</p>
-    
+
     <div class="menu-cards-grid">
       @for (item of menuItems; track item.id) {
-        <mat-card 
-          class="menu-card"
-          [class.disabled]="item.disabled"
-          (click)="!item.disabled && navigateTo(item.route)"
-          [attr.role]="item.disabled ? null : 'button'"
-          [attr.tabindex]="item.disabled ? null : 0"
-          (keydown.enter)="!item.disabled && navigateTo(item.route)"
-          (keydown.space)="!item.disabled && navigateTo(item.route)">
+        <mat-card
+                class="menu-card"
+                [class.disabled]="item.disabled"
+                (click)="!item.disabled && navigateTo(item.route)"
+                [attr.role]="item.disabled ? null : 'button'"
+                [attr.tabindex]="item.disabled ? null : 0"
+                (keydown.enter)="!item.disabled && navigateTo(item.route)"
+                (keydown.space)="!item.disabled && navigateTo(item.route)">
           <mat-card-content>
             <div class="menu-card-content">
               <ax-icon [name]="item.icon" class="menu-card-icon"></ax-icon>

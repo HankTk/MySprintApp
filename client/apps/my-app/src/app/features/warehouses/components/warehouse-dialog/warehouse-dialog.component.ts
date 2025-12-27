@@ -1,16 +1,22 @@
-import { Component, Inject, OnInit, inject, signal } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { Warehouse, CreateWarehouseRequest } from '../../models/warehouse.model';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { AxButtonComponent, AxIconComponent } from '@ui/components';
-import { AddressService } from '../../../addresses/services/address.service';
-import { Address } from '../../../addresses/models/address.model';
-import { firstValueFrom } from 'rxjs';
+import {Component, Inject, OnInit, inject, signal} from '@angular/core';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {MatDialogRef, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {Warehouse, CreateWarehouseRequest} from '../../models/warehouse.model';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {AxButtonComponent, AxIconComponent} from '@ui/components';
+import {AddressService} from '../../../addresses/services/address.service';
+import {Address} from '../../../addresses/models/address.model';
+import {firstValueFrom} from 'rxjs';
 
 export interface WarehouseDialogData
 {
@@ -30,10 +36,10 @@ export interface WarehouseDialogData
     MatSelectModule,
     TranslateModule,
     AxButtonComponent,
-    AxIconComponent
+    AxIconComponent,
   ],
   templateUrl: './warehouse-dialog.component.html',
-  styleUrls: ['./warehouse-dialog.component.scss']
+  styleUrls: ['./warehouse-dialog.component.scss'],
 })
 export class WarehouseDialogComponent implements OnInit
 {
@@ -47,19 +53,21 @@ export class WarehouseDialogComponent implements OnInit
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
   private addressService = inject(AddressService);
-  
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: WarehouseDialogData)
   {
     this.isEdit = data.isEdit;
-    this.dialogTitle = this.isEdit ? this.translate.instant('editWarehouse') : this.translate.instant('addWarehouse');
-    
+    this.dialogTitle = this.isEdit
+        ? this.translate.instant('editWarehouse')
+        : this.translate.instant('addWarehouse');
+
     this.warehouseForm = this.fb.group({
       warehouseCode: [''],
       warehouseName: [''],
       addressId: [''],
       description: [''],
       active: [true],
-      jsonData: ['{}', [this.jsonValidator]]
+      jsonData: ['{}', [this.jsonValidator]],
     });
   }
 
@@ -94,12 +102,14 @@ export class WarehouseDialogComponent implements OnInit
     if (address.postalCode) parts.push(address.postalCode);
     if (address.country) parts.push(address.country);
     const addressStr = parts.join(', ');
-    const type = address.addressType ? ` (${this.translate.instant(address.addressType.toLowerCase())})` : '';
+    const type = address.addressType
+        ? ` (${this.translate.instant(address.addressType.toLowerCase())})`
+        : '';
     return (addressStr || address.id || '') + type;
   }
 
   private populateForm(warehouse: Warehouse): void
- {
+  {
     let jsonDataString = '{}';
     if (warehouse.jsonData)
     {
@@ -107,15 +117,15 @@ export class WarehouseDialogComponent implements OnInit
       {
         jsonDataString = JSON.stringify(warehouse.jsonData, null, 2);
       }
- else if (typeof warehouse.jsonData === 'string')
- {
-        try 
-{
+      else if (typeof warehouse.jsonData === 'string')
+      {
+        try
+        {
           JSON.parse(warehouse.jsonData);
           jsonDataString = warehouse.jsonData;
         }
- catch
- {
+        catch
+        {
           jsonDataString = '{}';
         }
       }
@@ -127,21 +137,21 @@ export class WarehouseDialogComponent implements OnInit
       addressId: warehouse.addressId || '',
       description: warehouse.description || '',
       active: warehouse.active !== undefined ? warehouse.active : true,
-      jsonData: jsonDataString
+      jsonData: jsonDataString,
     });
   }
 
   private jsonValidator(control: any)
- {
+  {
     if (!control.value) return null;
-    try 
-{
+    try
+    {
       JSON.parse(control.value);
       return null;
     }
- catch (e)
- {
-      return { invalidJson: true };
+    catch (e)
+    {
+      return {invalidJson: true};
     }
   }
 
@@ -150,46 +160,44 @@ export class WarehouseDialogComponent implements OnInit
     if (this.warehouseForm.valid)
     {
       const formValue = this.warehouseForm.value;
-      
+
       let jsonData: any = {};
       if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
       {
-        try 
-{
+        try
+        {
           jsonData = JSON.parse(formValue.jsonData);
         }
- catch (e)
- {
+        catch (e)
+        {
           return;
         }
       }
 
       if (this.isEdit && this.data.warehouse)
       {
-        const warehouseToUpdate: Warehouse =
-        {
+        const warehouseToUpdate: Warehouse = {
           id: this.data.warehouse.id,
           warehouseCode: formValue.warehouseCode,
           warehouseName: formValue.warehouseName,
           addressId: formValue.addressId || undefined,
           description: formValue.description,
           active: formValue.active,
-          jsonData: jsonData
+          jsonData: jsonData,
         };
-        this.dialogRef.close({ action: 'update', warehouse: warehouseToUpdate });
+        this.dialogRef.close({action: 'update', warehouse: warehouseToUpdate});
       }
- else
- {
-        const warehouseToCreate: CreateWarehouseRequest =
-        {
+      else
+      {
+        const warehouseToCreate: CreateWarehouseRequest = {
           warehouseCode: formValue.warehouseCode,
           warehouseName: formValue.warehouseName,
           addressId: formValue.addressId || undefined,
           description: formValue.description,
           active: formValue.active,
-          jsonData: jsonData
+          jsonData: jsonData,
         };
-        this.dialogRef.close({ action: 'create', warehouse: warehouseToCreate });
+        this.dialogRef.close({action: 'create', warehouse: warehouseToCreate});
       }
     }
   }
@@ -218,4 +226,3 @@ export class WarehouseDialogComponent implements OnInit
     return '';
   }
 }
-

@@ -1,8 +1,8 @@
-import { Injectable, signal, inject, OnDestroy, computed } from '@angular/core';
-import { WebSocketService, DataChangeNotification } from './websocket.service';
-import { Subscription } from 'rxjs';
+import {Injectable, signal, inject, OnDestroy, computed} from '@angular/core';
+import {WebSocketService, DataChangeNotification} from './websocket.service';
+import {Subscription} from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class StoreService implements OnDestroy
 {
 
@@ -14,13 +14,13 @@ export class StoreService implements OnDestroy
   {
     // Start WebSocket connection
     this.webSocketService.connect();
-    
+
     // Subscribe to WebSocket notifications
     this.notificationSubscription = this.webSocketService.notifications$.subscribe(
-      (notification: DataChangeNotification) =>
-      {
-        this.handleDataChange(notification);
-      }
+        (notification: DataChangeNotification) =>
+        {
+          this.handleDataChange(notification);
+        }
     );
   }
 
@@ -35,7 +35,7 @@ export class StoreService implements OnDestroy
 
   set(resource: string, data: any)
   {
-    this.state.update(s => ({ ...s, [resource]: data }));
+    this.state.update(s => ({...s, [resource]: data}));
   }
 
   select(resource: string)
@@ -45,7 +45,7 @@ export class StoreService implements OnDestroy
 
   private handleDataChange(notification: DataChangeNotification): void
   {
-    const { changeType, dataTypeId, data } = notification;
+    const {changeType, dataTypeId, data} = notification;
     const currentData = this.state()[dataTypeId] || [];
 
     switch (changeType)
@@ -84,7 +84,7 @@ export class StoreService implements OnDestroy
         if (Array.isArray(currentData))
         {
           const updatedData = currentData.map((item: any) =>
-            item.id === data.id ? data : item
+              item.id === data.id ? data : item
           );
           this.state.update(s => ({
             ...s,

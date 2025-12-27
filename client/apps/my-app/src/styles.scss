@@ -27,8 +27,8 @@ body {
   line-height: var(--line-height-relaxed);
   color: var(--text-primary);
   background-color: var(--bg-primary);
-  transition: background-color var(--transition-base) var(--easing-ease-in-out), 
-              color var(--transition-base) var(--easing-ease-in-out);
+  transition: background-color var(--transition-base) var(--easing-ease-in-out),
+  color var(--transition-base) var(--easing-ease-in-out);
   margin: 0;
   padding: 0;
 }
@@ -100,7 +100,7 @@ body {
     .mdc-text-field {
       background-color: var(--bg-form-field) !important;
     }
-    
+
     .mdc-notched-outline__leading,
     .mdc-notched-outline__notch,
     .mdc-notched-outline__trailing {
@@ -153,29 +153,29 @@ body {
       }
     }
   }
-  
+
   /* Fix any remaining white backgrounds */
   .mat-mdc-dialog-container,
   .mat-mdc-dialog-surface {
     background-color: var(--bg-card) !important;
   }
-  
+
   /* Fix Material backdrop */
   .cdk-overlay-backdrop {
     background-color: rgba(0, 0, 0, 0.5) !important;
   }
-  
+
   /* Ensure shutdown button is always above dialogs */
   .shutdown-button {
     z-index: 99999 !important;
     pointer-events: auto !important;
     position: fixed !important;
-    
+
     * {
       pointer-events: auto !important;
     }
   }
-  
+
   /* Ensure Material Dialog overlay doesn't block shutdown button */
   .cdk-overlay-container {
     .shutdown-button {
@@ -183,7 +183,7 @@ body {
       pointer-events: auto !important;
     }
   }
-  
+
   /* Prevent dialog backdrop from blocking shutdown button */
   .cdk-overlay-backdrop {
     // Allow clicks to pass through to shutdown button area
@@ -390,7 +390,7 @@ h1, h2, h3, h4, h5, h6 {
 
 @mixin hover-transform($scale: 1.05, $translate-y: -2px) {
   transition: all var(--transition-base) var(--easing-ease-in-out);
-  
+
   &:hover {
     transform: scale($scale) translateY($translate-y);
   }

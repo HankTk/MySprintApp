@@ -1,10 +1,12 @@
 # Design Tokens Documentation
 
-This document describes the design token system used in the application. Design tokens are the foundational design decisions that define the visual language of the application.
+This document describes the design token system used in the application. Design tokens are the foundational design
+decisions that define the visual language of the application.
 
 ## Overview
 
-Design tokens are centralized values that define colors, spacing, typography, shadows, and other design elements. They ensure consistency across the application and make it easy to maintain and update the design system.
+Design tokens are centralized values that define colors, spacing, typography, shadows, and other design elements. They
+ensure consistency across the application and make it easy to maintain and update the design system.
 
 ## File Structure
 
@@ -78,15 +80,18 @@ export class MyComponent {
 ### Colors
 
 #### Light Theme
+
 - **Primary Colors**: `--color-primary`, `--color-primary-dark`, `--color-primary-light`
 - **Background Colors**: `--bg-primary`, `--bg-secondary`, `--bg-card`, `--bg-toolbar`, etc.
 - **Text Colors**: `--text-primary`, `--text-secondary`, `--text-heading`, `--text-white`
 - **Border Colors**: `--border-primary`, `--border-secondary`, `--border-card`, `--border-form`
 
 #### Dark Theme
+
 All color tokens automatically switch when the `.dark-theme` class is applied to the root element.
 
 #### Semantic Colors
+
 - **Success**: `--color-success` (#4caf50)
 - **Error**: `--color-error` (#f44336)
 - **Warning**: `--color-warning` (#ffc107)
@@ -106,6 +111,7 @@ Spacing tokens follow an 4px base unit system:
 - `--spacing-xxxl`: 64px
 
 **Layout Spacing:**
+
 - `--spacing-header-height`: 64px
 - `--spacing-sidebar-width`: 280px
 - `--spacing-container-padding`: 24px
@@ -113,9 +119,11 @@ Spacing tokens follow an 4px base unit system:
 ### Typography
 
 #### Font Families
+
 - `--font-family-primary`: Noto Sans JP and fallbacks
 
 #### Font Sizes
+
 - `--font-size-xs`: 0.75rem (12px)
 - `--font-size-sm`: 0.875rem (14px)
 - `--font-size-base`: 1rem (16px)
@@ -126,6 +134,7 @@ Spacing tokens follow an 4px base unit system:
 - `--font-size-xxxl`: 2.5rem (40px)
 
 #### Font Weights
+
 - `--font-weight-light`: 300
 - `--font-weight-regular`: 400
 - `--font-weight-medium`: 500
@@ -133,6 +142,7 @@ Spacing tokens follow an 4px base unit system:
 - `--font-weight-bold`: 700
 
 #### Line Heights
+
 - `--line-height-tight`: 1.2
 - `--line-height-normal`: 1.5
 - `--line-height-relaxed`: 1.6
@@ -163,6 +173,7 @@ Dark theme automatically uses darker shadow variants.
 - `--transition-slow`: 0.5s
 
 Easing functions:
+
 - `--easing-linear`: linear
 - `--easing-ease-in`: ease-in
 - `--easing-ease-out`: ease-out
@@ -258,6 +269,7 @@ If you have existing styles with hardcoded values:
 4. Test to ensure visual consistency
 
 Example:
+
 ```scss
 // Before
 .my-component {

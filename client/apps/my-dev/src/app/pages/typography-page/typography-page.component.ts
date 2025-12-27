@@ -1,21 +1,21 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { 
-  AxTitleComponent, 
-  AxSubtitleComponent, 
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {
+  AxTitleComponent,
+  AxSubtitleComponent,
   AxHeading3Component,
   AxHeadingComponent,
-  AxSectionTitleComponent, 
+  AxSectionTitleComponent,
   AxParagraphComponent,
-  AxCardComponent 
+  AxCardComponent
 } from '@ui/components';
-import { MatCardModule } from '@angular/material/card';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
   selector: 'app-typography-page',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     AxTitleComponent,
     AxSubtitleComponent,
     AxHeading3Component,

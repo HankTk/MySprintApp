@@ -1,6 +1,17 @@
-import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  inject,
+  OnDestroy,
+  signal,
+  ViewChild,
+  ChangeDetectorRef,
+  TemplateRef,
+  AfterViewInit,
+  effect
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule, CurrencyPipe} from '@angular/common';
 import {
   AxButtonComponent,
   AxProgressComponent,
@@ -12,14 +23,14 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
-import { StoreService } from '../../../../core/store.service';
-import { RMA } from '../../models/rma.model';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { Subscription } from 'rxjs';
-import { JsonUtil } from '../../../../shared/utils/json.util';
-import { RMAService } from '../../services/rma.service';
+import {AxTooltipDirective} from '@ui/components';
+import {StoreService} from '../../../../core/store.service';
+import {RMA} from '../../models/rma.model';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {Subscription} from 'rxjs';
+import {JsonUtil} from '../../../../shared/utils/json.util';
+import {RMAService} from '../../services/rma.service';
 
 @Component({
   selector: 'app-rma-list',
@@ -103,7 +114,7 @@ export class RMAListComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private initializeColumns(): void
- {
+  {
     this.columns.set([
       {
         key: 'rmaNumber',

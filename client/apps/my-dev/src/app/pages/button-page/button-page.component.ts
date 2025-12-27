@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AxButtonComponent, AxCardComponent, AxIconComponent, MatCardModule } from '@ui/components';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AxButtonComponent, AxCardComponent, AxIconComponent, MatCardModule} from '@ui/components';
 
 @Component({
   selector: 'app-button-page',

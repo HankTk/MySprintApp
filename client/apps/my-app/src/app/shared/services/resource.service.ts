@@ -1,9 +1,9 @@
-import { Injectable, inject, signal, WritableSignal } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
-import { HttpService } from '../../core/http.service';
-import { globalHandlers } from '../../core/global-handlers';
+import {Injectable, inject, signal, WritableSignal} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Observable} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
+import {HttpService} from '../../core/http.service';
+import {globalHandlers} from '../../core/global-handlers';
 
 export type SuccessHook = (data: any) => void;
 export type ErrorHook = (error: any) => void;
@@ -16,7 +16,7 @@ export interface ResourceHooks
   onComplete?: CompleteHook;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class ResourceService
 {
 
@@ -25,20 +25,20 @@ export class ResourceService
   private translate = inject(TranslateService);
 
   protected defaultSuccessHandler(
-    data: any,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      data: any,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     isLoading.set(false);
     globalHandlers.next(data);
   }
 
   protected defaultErrorHandler(
-    error: any,
-    isLoading: WritableSignal<boolean>,
-    message: string
-  ): void 
-{
+      error: any,
+      isLoading: WritableSignal<boolean>,
+      message: string
+  ): void
+  {
     this.showSnackBar(message, 'error');
     isLoading.set(false);
     globalHandlers.error(error);
@@ -50,12 +50,12 @@ export class ResourceService
   }
 
   loadResource(
-    resource: string,
-    isLoading: WritableSignal<boolean>,
-    errorMessage?: string,
-    hooks?: ResourceHooks
-  ): void 
-{
+      resource: string,
+      isLoading: WritableSignal<boolean>,
+      errorMessage?: string,
+      hooks?: ResourceHooks
+  ): void
+  {
     isLoading.set(true);
     this.data.get(resource).subscribe({
       next: (data) =>
@@ -93,12 +93,12 @@ export class ResourceService
   }
 
   protected defaultCreateSuccessHandler(
-    result: any,
-    isLoading: WritableSignal<boolean>,
-    resource: string,
-    successMessage?: string
-  ): void 
-{
+      result: any,
+      isLoading: WritableSignal<boolean>,
+      resource: string,
+      successMessage?: string
+  ): void
+  {
     isLoading.set(false);
     const message = successMessage || this.translate.instant('messages.resourceCreatedSuccessfully');
     this.showSnackBar(message, 'success');
@@ -106,14 +106,14 @@ export class ResourceService
   }
 
   createResource(
-    resource: string,
-    data: any,
-    isLoading: WritableSignal<boolean>,
-    successMessage?: string,
-    errorMessage?: string,
-    hooks?: ResourceHooks
-  ): void 
-{
+      resource: string,
+      data: any,
+      isLoading: WritableSignal<boolean>,
+      successMessage?: string,
+      errorMessage?: string,
+      hooks?: ResourceHooks
+  ): void
+  {
     isLoading.set(true);
     this.data.post(resource, data).subscribe({
       next: (result) =>
@@ -151,12 +151,12 @@ export class ResourceService
   }
 
   protected defaultUpdateSuccessHandler(
-    result: any,
-    isLoading: WritableSignal<boolean>,
-    resource: string,
-    successMessage?: string
-  ): void 
-{
+      result: any,
+      isLoading: WritableSignal<boolean>,
+      resource: string,
+      successMessage?: string
+  ): void
+  {
     isLoading.set(false);
     const message = successMessage || this.translate.instant('messages.resourceUpdatedSuccessfully');
     this.showSnackBar(message, 'success');
@@ -164,15 +164,15 @@ export class ResourceService
   }
 
   updateResource(
-    resource: string,
-    id: string,
-    data: any,
-    isLoading: WritableSignal<boolean>,
-    successMessage?: string,
-    errorMessage?: string,
-    hooks?: ResourceHooks
-  ): void 
-{
+      resource: string,
+      id: string,
+      data: any,
+      isLoading: WritableSignal<boolean>,
+      successMessage?: string,
+      errorMessage?: string,
+      hooks?: ResourceHooks
+  ): void
+  {
     if (!id)
     {
       console.error(`${resource} ID is missing:`, data);
@@ -216,11 +216,11 @@ export class ResourceService
   }
 
   protected defaultDeleteSuccessHandler(
-    isLoading: WritableSignal<boolean>,
-    resource: string,
-    successMessage?: string
-  ): void 
-{
+      isLoading: WritableSignal<boolean>,
+      resource: string,
+      successMessage?: string
+  ): void
+  {
     isLoading.set(false);
     const message = successMessage || this.translate.instant('messages.resourceDeletedSuccessfully');
     this.showSnackBar(message, 'success');
@@ -228,14 +228,14 @@ export class ResourceService
   }
 
   deleteResource(
-    resource: string,
-    id: string,
-    isLoading: WritableSignal<boolean>,
-    successMessage?: string,
-    errorMessage?: string,
-    hooks?: ResourceHooks
-  ): void 
-{
+      resource: string,
+      id: string,
+      isLoading: WritableSignal<boolean>,
+      successMessage?: string,
+      errorMessage?: string,
+      hooks?: ResourceHooks
+  ): void
+  {
     isLoading.set(true);
     this.data.delete(resource, id).subscribe({
       next: (result) =>

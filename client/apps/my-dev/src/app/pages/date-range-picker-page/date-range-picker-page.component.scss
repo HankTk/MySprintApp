@@ -19,17 +19,17 @@
 
 .single-field-wrapper {
   margin: 16px 0;
-  
+
   .date-range-single-wrapper {
     position: relative;
     display: inline-block;
     width: 100%;
     max-width: 300px;
-    
+
     .date-range-single {
       width: 100%;
     }
-    
+
     .date-range-popup {
       position: absolute;
       top: calc(100% + 4px);
@@ -42,25 +42,25 @@
       min-width: 400px;
       max-width: 500px;
       pointer-events: auto;
-      
+
       .date-range-popup-content {
         padding: 16px;
-        
+
         ax-date-range-picker {
           display: block;
           margin-bottom: 16px;
-          
+
           ::ng-deep {
             .mat-datepicker-toggle {
               pointer-events: auto !important;
             }
-            
+
             input[matDatepicker] {
               pointer-events: auto !important;
             }
           }
         }
-        
+
         .date-range-actions {
           display: flex;
           justify-content: flex-end;
@@ -75,15 +75,15 @@
   .mat-datepicker-popup {
     z-index: 10001 !important;
   }
-  
+
   .cdk-overlay-container {
     z-index: 10002 !important;
   }
-  
+
   .cdk-overlay-pane {
     z-index: 10002 !important;
   }
-  
+
   .mat-datepicker-popup-container {
     z-index: 10002 !important;
   }

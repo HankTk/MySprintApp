@@ -8,10 +8,10 @@
     </mat-card-header>
     <div class="textarea-group">
       <ax-textarea
-        label="Description"
-        [(ngModel)]="description"
-        placeholder="Enter a description..."
-        [rows]="4">
+              label="Description"
+              [(ngModel)]="description"
+              placeholder="Enter a description..."
+              [rows]="4">
       </ax-textarea>
       <p class="char-count">Characters: {{ description.length }}</p>
     </div>
@@ -23,11 +23,11 @@
     </mat-card-header>
     <div class="textarea-group">
       <ax-textarea
-        label="Feedback"
-        [(ngModel)]="feedback"
-        placeholder="Share your feedback..."
-        hint="Your feedback helps us improve"
-        [rows]="3">
+              label="Feedback"
+              [(ngModel)]="feedback"
+              placeholder="Share your feedback..."
+              hint="Your feedback helps us improve"
+              [rows]="3">
       </ax-textarea>
     </div>
   </ax-card>
@@ -38,20 +38,20 @@
     </mat-card-header>
     <div class="textarea-states">
       <ax-textarea
-        label="Normal"
-        placeholder="Enter text..."
-        [rows]="3">
+              label="Normal"
+              placeholder="Enter text..."
+              [rows]="3">
       </ax-textarea>
       <ax-textarea
-        label="With Content"
-        [(ngModel)]="notes"
-        [rows]="3">
+              label="With Content"
+              [(ngModel)]="notes"
+              [rows]="3">
       </ax-textarea>
       <ax-textarea
-        label="Disabled"
-        [disabled]="true"
-        placeholder="Cannot edit"
-        [rows]="3">
+              label="Disabled"
+              [disabled]="true"
+              placeholder="Cannot edit"
+              [rows]="3">
       </ax-textarea>
     </div>
   </ax-card>
@@ -62,19 +62,19 @@
     </mat-card-header>
     <div class="textarea-sizes">
       <ax-textarea
-        label="Small (2 rows)"
-        placeholder="Small textarea"
-        [rows]="2">
+              label="Small (2 rows)"
+              placeholder="Small textarea"
+              [rows]="2">
       </ax-textarea>
       <ax-textarea
-        label="Medium (4 rows)"
-        placeholder="Medium textarea"
-        [rows]="4">
+              label="Medium (4 rows)"
+              placeholder="Medium textarea"
+              [rows]="4">
       </ax-textarea>
       <ax-textarea
-        label="Large (6 rows)"
-        placeholder="Large textarea"
-        [rows]="6">
+              label="Large (6 rows)"
+              placeholder="Large textarea"
+              [rows]="6">
       </ax-textarea>
     </div>
   </ax-card>

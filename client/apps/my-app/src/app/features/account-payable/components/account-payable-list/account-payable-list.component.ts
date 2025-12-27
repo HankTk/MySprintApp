@@ -1,6 +1,17 @@
-import { Component, OnInit, inject, signal, computed, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  inject,
+  signal,
+  computed,
+  ViewChild,
+  ChangeDetectorRef,
+  TemplateRef,
+  AfterViewInit,
+  effect
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule, CurrencyPipe} from '@angular/common';
 import {
   AxButtonComponent,
   AxProgressComponent,
@@ -13,16 +24,16 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { StoreService } from '../../../../core/store.service';
-import { PurchaseOrder } from '../../../purchase-orders/models/purchase-order.model';
-import { PurchaseOrderService } from '../../../purchase-orders/services/purchase-order.service';
-import { VendorService } from '../../../vendors/services/vendor.service';
-import { Vendor } from '../../../vendors/models/vendor.model';
+import {AxTooltipDirective} from '@ui/components';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {StoreService} from '../../../../core/store.service';
+import {PurchaseOrder} from '../../../purchase-orders/models/purchase-order.model';
+import {PurchaseOrderService} from '../../../purchase-orders/services/purchase-order.service';
+import {VendorService} from '../../../vendors/services/vendor.service';
+import {Vendor} from '../../../vendors/models/vendor.model';
 
 @Component({
   selector: 'app-account-payable-list',
@@ -86,7 +97,7 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit
   {
     const pos = this.purchaseOrders() || [];
     return pos.filter((po: PurchaseOrder) =>
-      po.status === 'INVOICED' || po.status === 'PAID'
+        po.status === 'INVOICED' || po.status === 'PAID'
     ).map((po: PurchaseOrder) => ({
       ...po,
       outstandingAmount: Math.max(0, (po.total || 0) - (po.jsonData?.paymentAmount || 0))
@@ -166,10 +177,10 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit
             }
           });
           const vendorNames = Array.from(vendorMap.entries())
-            .map(([id, name]) => ({ value: id || '', label: name || '' }))
-            .sort((a, b) => a.label.localeCompare(b.label));
+              .map(([id, name]) => ({value: id || '', label: name || ''}))
+              .sort((a, b) => a.label.localeCompare(b.label));
           return [
-            { value: '', label: 'All' },
+            {value: '', label: 'All'},
             ...vendorNames
           ];
         },
@@ -210,14 +221,14 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit
         key: 'outstanding',
         header: this.languageService.instant('accountsPayable.outstanding'),
         // Outstanding is calculated: total - paidAmount. Since we can't easily filter by a calculated field on the frontend
-        // without adding it to the data model, we'll map it in the data source if needed, or rely on client-side filtering 
+        // without adding it to the data model, we'll map it in the data source if needed, or rely on client-side filtering
         // if the table supports it. For now, let's enable it and see.
-        // Actually, ax-table filtering works on the 'field' property. If we want to filter by outstanding, 
+        // Actually, ax-table filtering works on the 'field' property. If we want to filter by outstanding,
         // we might need to compute it.
         // But wait, the column definition doesn't direct filtering, key does? No, 'field' does.
         // Let's use 'total' as placeholder or if table logic allows custom filter function (which ax-table seems to rely on 'field').
         // Since we can't easily filter by computed field without data transformation, I will stick to enabling it
-        // but pointing to 'total' which is incorrect. 
+        // but pointing to 'total' which is incorrect.
         // Better approach: In AccountsPayable, outstanding is calculated in template: calculateOutstandingAmount(po)
         // I should probably not enable filter for 'outstanding' unless I add it to the model/data like I did for GL debit/credit.
         // Reviewing plan... "Set filterable: true for ... outstanding".
@@ -241,9 +252,9 @@ export class AccountPayableListComponent implements OnInit, AfterViewInit
         filterable: true,
         filterType: 'select',
         filterOptions: [
-          { value: '', label: 'All' },
-          { value: 'INVOICED', label: 'Invoiced' },
-          { value: 'PAID', label: 'Paid' }
+          {value: '', label: 'All'},
+          {value: 'INVOICED', label: 'Invoiced'},
+          {value: 'PAID', label: 'Paid'}
         ],
         cellTemplate: this.statusCellTemplate
       },

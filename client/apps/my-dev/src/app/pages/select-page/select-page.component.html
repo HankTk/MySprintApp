@@ -8,10 +8,10 @@
     </mat-card-header>
     <div class="select-group">
       <ax-select
-        label="Select an option"
-        [options]="options"
-        [(ngModel)]="selectedValue"
-        placeholder="Please select">
+              label="Select an option"
+              [options]="options"
+              [(ngModel)]="selectedValue"
+              placeholder="Please select">
       </ax-select>
       <p class="selected-value">Selected: {{ selectedValue || 'None' }}</p>
     </div>
@@ -23,10 +23,10 @@
     </mat-card-header>
     <div class="select-group">
       <ax-select
-        label="Select a country"
-        [options]="countries"
-        [(ngModel)]="selectedCountry"
-        placeholder="Choose your country">
+              label="Select a country"
+              [options]="countries"
+              [(ngModel)]="selectedCountry"
+              placeholder="Choose your country">
       </ax-select>
       <p class="selected-value">Selected: {{ selectedCountry || 'None' }}</p>
     </div>
@@ -39,11 +39,11 @@
     </mat-card-header>
     <div class="select-group">
       <ax-select
-        label="Select multiple options"
-        [options]="options"
-        [(ngModel)]="selectedMultiple"
-        [multiple]="true"
-        placeholder="Select one or more options">
+              label="Select multiple options"
+              [options]="options"
+              [(ngModel)]="selectedMultiple"
+              [multiple]="true"
+              placeholder="Select one or more options">
       </ax-select>
       <p class="selected-value">Selected: {{ selectedMultiple.length > 0 ? selectedMultiple.join(', ') : 'None' }}</p>
       <p class="selected-value">Count: {{ selectedMultiple.length }}</p>
@@ -57,13 +57,14 @@
     </mat-card-header>
     <div class="select-group">
       <ax-select
-        label="Select countries"
-        [options]="countries"
-        [(ngModel)]="selectedMultipleCountries"
-        [multiple]="true"
-        placeholder="Choose countries">
+              label="Select countries"
+              [options]="countries"
+              [(ngModel)]="selectedMultipleCountries"
+              [multiple]="true"
+              placeholder="Choose countries">
       </ax-select>
-      <p class="selected-value">Selected: {{ selectedMultipleCountries.length > 0 ? selectedMultipleCountries.join(', ') : 'None' }}</p>
+      <p class="selected-value">
+        Selected: {{ selectedMultipleCountries.length > 0 ? selectedMultipleCountries.join(', ') : 'None' }}</p>
       <p class="selected-value">Count: {{ selectedMultipleCountries.length }}</p>
     </div>
   </ax-card>
@@ -74,20 +75,20 @@
     </mat-card-header>
     <div class="select-states">
       <ax-select
-        label="Normal"
-        [options]="options"
-        placeholder="Please select">
+              label="Normal"
+              [options]="options"
+              placeholder="Please select">
       </ax-select>
       <ax-select
-        label="Disabled"
-        [options]="options"
-        [disabled]="true"
-        placeholder="Cannot select">
+              label="Disabled"
+              [options]="options"
+              [disabled]="true"
+              placeholder="Cannot select">
       </ax-select>
       <ax-select
-        label="With Disabled Options"
-        [options]="disabledOptions"
-        placeholder="Some options disabled">
+              label="With Disabled Options"
+              [options]="disabledOptions"
+              placeholder="Some options disabled">
       </ax-select>
     </div>
   </ax-card>

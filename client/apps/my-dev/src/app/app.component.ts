@@ -1,9 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
+import {Component, OnDestroy} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterOutlet, Router, NavigationEnd} from '@angular/router';
+import {filter} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-root',
@@ -20,12 +20,12 @@ export class AppComponent implements OnDestroy
   constructor(private router: Router)
   {
     this.routerSubscription = this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: any) =>
-      {
-        const url = event.urlAfterRedirects;
-        this.currentPage = url.split('/').pop() || 'button';
-      });
+        .pipe(filter(event => event instanceof NavigationEnd))
+        .subscribe((event: any) =>
+        {
+          const url = event.urlAfterRedirects;
+          this.currentPage = url.split('/').pop() || 'button';
+        });
   }
 
   ngOnDestroy(): void

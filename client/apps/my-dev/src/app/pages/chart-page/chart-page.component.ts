@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AxChartComponent, AxCardComponent, ChartConfig, MatCardModule } from '@ui/components';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AxChartComponent, AxCardComponent, ChartConfig, MatCardModule} from '@ui/components';
 
 @Component({
   selector: 'app-chart-page',

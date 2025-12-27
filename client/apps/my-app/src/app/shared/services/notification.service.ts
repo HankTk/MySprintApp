@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
+import {Injectable, inject} from '@angular/core';
+import {MatSnackBar, MatSnackBarConfig} from '@angular/material/snack-bar';
+import {TranslateService} from '@ngx-translate/core';
 
 export type NotificationType = 'success' | 'error' | 'info' | 'warning';
 
@@ -19,12 +19,12 @@ export class NotificationService
   show(message: string, type: NotificationType = 'info', duration = 5000): void
   {
     const config: MatSnackBarConfig =
-    {
-      duration,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
-      panelClass: [`${type}-snackbar`]
-    };
+        {
+          duration,
+          horizontalPosition: 'end',
+          verticalPosition: 'top',
+          panelClass: [`${type}-snackbar`]
+        };
 
     const closeLabel = this.translate.instant('messages.close');
     this.snackBar.open(message, closeLabel, config);

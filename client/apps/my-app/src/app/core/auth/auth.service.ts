@@ -1,8 +1,8 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { Observable, tap, catchError, of, map } from 'rxjs';
-import { User, LoginRequest } from '../../features/users/models/user';
+import {Injectable, inject, signal} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {Observable, tap, catchError, of, map} from 'rxjs';
+import {User, LoginRequest} from '../../features/users/models/user';
 
 /**
  * Authentication service
@@ -16,11 +16,11 @@ export class AuthService
   private http = inject(HttpClient);
   private router = inject(Router);
   private apiUrl = 'http://localhost:8080/api';
-  
+
   private readonly CURRENT_USER_KEY = 'currentUser';
   private readonly HAS_USERS_KEY = 'hasUsers';
   private readonly JWT_TOKEN_KEY = 'jwtToken';
-  
+
   // Reactive state
   currentUser = signal<User | null>(this.getStoredUser());
   hasUsers = signal<boolean | null>(null);
@@ -36,17 +36,17 @@ export class AuthService
   checkUsers(): Observable<boolean>
   {
     return this.http.get<{ hasUsers: boolean }>(`${this.apiUrl}/auth/check-users`).pipe(
-      map(response => response.hasUsers),
-      tap(hasUsers =>
-      {
-        this.hasUsers.set(hasUsers);
-        localStorage.setItem(this.HAS_USERS_KEY, String(hasUsers));
-      }),
-      catchError(() =>
-      {
-        this.hasUsers.set(false);
-        return of(false);
-      })
+        map(response => response.hasUsers),
+        tap(hasUsers =>
+        {
+          this.hasUsers.set(hasUsers);
+          localStorage.setItem(this.HAS_USERS_KEY, String(hasUsers));
+        }),
+        catchError(() =>
+        {
+          this.hasUsers.set(false);
+          return of(false);
+        })
     );
   }
 
@@ -56,14 +56,14 @@ export class AuthService
   login(credentials: LoginRequest): Observable<User>
   {
     return this.http.post<{ user: User; token: string }>(`${this.apiUrl}/auth/login`, credentials).pipe(
-      tap(response =>
-      {
-        const { user, token } = response;
-        this.currentUser.set(user);
-        localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(user));
-        localStorage.setItem(this.JWT_TOKEN_KEY, token);
-      }),
-      map(response => response.user)
+        tap(response =>
+        {
+          const {user, token} = response;
+          this.currentUser.set(user);
+          localStorage.setItem(this.CURRENT_USER_KEY, JSON.stringify(user));
+          localStorage.setItem(this.JWT_TOKEN_KEY, token);
+        }),
+        map(response => response.user)
     );
   }
 

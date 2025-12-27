@@ -19,6 +19,7 @@
     box-sizing: border-box;
     overflow-x: hidden;
     overflow-y: hidden;
+
     .header-content {
       display: flex;
       align-items: center;
@@ -26,14 +27,14 @@
 
       .back-button {
         flex-shrink: 0;
-        
+
         ::ng-deep {
           button {
             display: flex;
             align-items: center;
             justify-content: center;
           }
-          
+
           ax-icon,
           mat-icon {
             display: flex;
@@ -252,7 +253,7 @@
           gap: var(--spacing-sm);
           flex: 1;
           max-width: 600px;
-          
+
           .full-width {
             width: 100%;
           }
@@ -307,7 +308,7 @@
         padding: var(--spacing-md) 0 0 0;
         border-top: 1px solid var(--border-color, #e5e7eb);
         background-color: var(--bg-primary, #ffffff);
-        
+
         &.sticky-bottom {
           position: sticky;
           bottom: 0;

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AxCardComponent } from '@ui/components';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {AxCardComponent} from '@ui/components';
 
 @Component({
   selector: 'app-card-page',

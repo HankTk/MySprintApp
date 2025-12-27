@@ -1,15 +1,15 @@
-import { Component, Inject, OnInit, inject } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { User, CreateUserRequest } from '../../models/user';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { 
-  AxButtonComponent, 
-  AxIconComponent, 
-  AxInputComponent, 
+import {Component, Inject, OnInit, inject} from '@angular/core';
+import {FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialogRef, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {User, CreateUserRequest} from '../../models/user';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {
+  AxButtonComponent,
+  AxIconComponent,
+  AxInputComponent,
   AxSelectComponent,
-  AxTextareaComponent 
+  AxTextareaComponent
 } from '@ui/components';
 
 export interface UserDialogData
@@ -40,23 +40,23 @@ export class UserDialogComponent implements OnInit
   userForm: FormGroup;
   isEdit: boolean;
   dialogTitle: string;
-  
+
   roleOptions = [
-    { value: '', label: 'Select Role' },
-    { value: 'Admin', label: 'Admin' },
-    { value: 'Basic', label: 'Basic' }
+    {value: '', label: 'Select Role'},
+    {value: 'Admin', label: 'Admin'},
+    {value: 'Basic', label: 'Basic'}
   ];
 
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<UserDialogComponent>);
   private languageService = inject(LanguageService);
   private translate = inject(TranslateService);
-  
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: UserDialogData)
   {
     this.isEdit = data.isEdit;
     this.dialogTitle = this.isEdit ? this.translate.instant('editUser') : this.translate.instant('addUser');
-    
+
     this.userForm = this.fb.group({
       userid: ['', [Validators.required, Validators.minLength(1)]],
       firstName: ['', [Validators.required, Validators.minLength(1)]],
@@ -77,16 +77,16 @@ export class UserDialogComponent implements OnInit
   }
 
   private updateRoleOptions(): void
- {
+  {
     this.roleOptions = [
-      { value: '', label: this.translate.instant('rolePlaceholder') },
-      { value: 'Admin', label: this.translate.instant('roleOptions.admin') },
-      { value: 'Basic', label: this.translate.instant('roleOptions.basic') }
+      {value: '', label: this.translate.instant('rolePlaceholder')},
+      {value: 'Admin', label: this.translate.instant('roleOptions.admin')},
+      {value: 'Basic', label: this.translate.instant('roleOptions.basic')}
     ];
   }
 
   private populateForm(user: User): void
- {
+  {
     let jsonDataString = '{}';
     if (user.jsonData)
     {
@@ -94,15 +94,15 @@ export class UserDialogComponent implements OnInit
       {
         jsonDataString = JSON.stringify(user.jsonData, null, 2);
       }
- else if (typeof user.jsonData === 'string')
- {
-        try 
-{
+      else if (typeof user.jsonData === 'string')
+      {
+        try
+        {
           JSON.parse(user.jsonData);
           jsonDataString = user.jsonData;
         }
- catch
- {
+        catch
+        {
           jsonDataString = '{}';
         }
       }
@@ -119,21 +119,21 @@ export class UserDialogComponent implements OnInit
   }
 
   private jsonValidator(control: any)
- {
+  {
     if (!control.value) return null;
-    try 
-{
+    try
+    {
       JSON.parse(control.value);
       return null;
     }
- catch (e)
- {
-      return { invalidJson: true };
+    catch (e)
+    {
+      return {invalidJson: true};
     }
   }
 
   get isEnglish(): boolean
- {
+  {
     return this.languageService.isEnglish();
   }
 
@@ -142,16 +142,16 @@ export class UserDialogComponent implements OnInit
     if (this.userForm.valid)
     {
       const formValue = this.userForm.value;
-      
+
       let jsonData: any = {};
       if (formValue.jsonData && formValue.jsonData.trim() !== '{}')
       {
-        try 
-{
+        try
+        {
           jsonData = JSON.parse(formValue.jsonData);
         }
- catch (e)
- {
+        catch (e)
+        {
           return;
         }
       }
@@ -159,29 +159,29 @@ export class UserDialogComponent implements OnInit
       if (this.isEdit && this.data.user)
       {
         const userToUpdate: User =
-        {
-          id: this.data.user.id,
-          userid: formValue.userid,
-          firstName: formValue.firstName,
-          lastName: formValue.lastName,
-          email: formValue.email,
-          role: formValue.role,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'update', user: userToUpdate });
+            {
+              id: this.data.user.id,
+              userid: formValue.userid,
+              firstName: formValue.firstName,
+              lastName: formValue.lastName,
+              email: formValue.email,
+              role: formValue.role,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'update', user: userToUpdate});
       }
- else
- {
+      else
+      {
         const userToCreate: CreateUserRequest =
-        {
-          userid: formValue.userid,
-          firstName: formValue.firstName,
-          lastName: formValue.lastName,
-          email: formValue.email,
-          role: formValue.role,
-          jsonData: jsonData
-        };
-        this.dialogRef.close({ action: 'create', user: userToCreate });
+            {
+              userid: formValue.userid,
+              firstName: formValue.firstName,
+              lastName: formValue.lastName,
+              email: formValue.email,
+              role: formValue.role,
+              jsonData: jsonData
+            };
+        this.dialogRef.close({action: 'create', user: userToCreate});
       }
     }
   }
@@ -212,7 +212,7 @@ export class UserDialogComponent implements OnInit
       }
       if (field.errors['minlength'])
       {
-        return this.translate.instant('validation.minlength', { min: field.errors['minlength'].requiredLength });
+        return this.translate.instant('validation.minlength', {min: field.errors['minlength'].requiredLength});
       }
       if (field.errors['invalidJson'])
       {

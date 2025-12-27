@@ -1,6 +1,17 @@
-import { Component, OnInit, inject, signal, computed, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  inject,
+  signal,
+  computed,
+  ViewChild,
+  ChangeDetectorRef,
+  TemplateRef,
+  AfterViewInit,
+  effect
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule, CurrencyPipe} from '@angular/common';
 import {
   AxButtonComponent,
   AxProgressComponent,
@@ -13,16 +24,16 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { StoreService } from '../../../../core/store.service';
-import { Order } from '../../../orders/models/order.model';
-import { OrderService } from '../../../orders/services/order.service';
-import { CustomerService } from '../../../customers/services/customer.service';
-import { Customer } from '../../../customers/models/customer.model';
+import {AxTooltipDirective} from '@ui/components';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {StoreService} from '../../../../core/store.service';
+import {Order} from '../../../orders/models/order.model';
+import {OrderService} from '../../../orders/services/order.service';
+import {CustomerService} from '../../../customers/services/customer.service';
+import {Customer} from '../../../customers/models/customer.model';
 
 @Component({
   selector: 'app-account-receivable-list',
@@ -86,7 +97,7 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit
   {
     const orders = this.orders() || [];
     return orders.filter((order: Order) =>
-      order.status === 'INVOICED' || order.status === 'PAID'
+        order.status === 'INVOICED' || order.status === 'PAID'
     ).map((order: Order) => ({
       ...order,
       outstandingAmount: Math.max(0, (order.total || 0) - (order.jsonData?.paymentAmount || 0))
@@ -166,10 +177,10 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit
             }
           });
           const customerNames = Array.from(customerMap.entries())
-            .map(([id, name]) => ({ value: id || '', label: name || '' }))
-            .sort((a, b) => a.label.localeCompare(b.label));
+              .map(([id, name]) => ({value: id || '', label: name || ''}))
+              .sort((a, b) => a.label.localeCompare(b.label));
           return [
-            { value: '', label: 'All' },
+            {value: '', label: 'All'},
             ...customerNames
           ];
         },
@@ -225,9 +236,9 @@ export class AccountReceivableListComponent implements OnInit, AfterViewInit
         filterable: true,
         filterType: 'select',
         filterOptions: [
-          { value: '', label: 'All' },
-          { value: 'INVOICED', label: 'Invoiced' },
-          { value: 'PAID', label: 'Paid' }
+          {value: '', label: 'All'},
+          {value: 'INVOICED', label: 'Invoiced'},
+          {value: 'PAID', label: 'Paid'}
         ],
         cellTemplate: this.statusCellTemplate
       },

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatTabsModule } from '@angular/material/tabs';
-import { AxCardComponent, MatCardModule } from '@ui/components';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatTabsModule} from '@angular/material/tabs';
+import {AxCardComponent, MatCardModule} from '@ui/components';
 
 @Component({
   selector: 'app-tabs-page',

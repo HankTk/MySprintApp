@@ -1,13 +1,16 @@
-import { Injectable, inject, WritableSignal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { SFC, CreateSFCRequest } from '../models/sfc.model';
-import { ResourceService } from '../../../shared/services/resource.service';
-import { TranslateService } from '@ngx-translate/core';
-import { SFCDialogComponent, SFCDialogData } from '../components/sfc-dialog/sfc-dialog.component';
-import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import {Injectable, inject, WritableSignal} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {SFC, CreateSFCRequest} from '../models/sfc.model';
+import {ResourceService} from '../../../shared/services/resource.service';
+import {TranslateService} from '@ngx-translate/core';
+import {SFCDialogComponent, SFCDialogData} from '../components/sfc-dialog/sfc-dialog.component';
+import {
+  DeleteConfirmDialogComponent,
+  DeleteConfirmDialogData
+} from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -50,67 +53,67 @@ export class SFCService
   loadSFCs(isLoading: WritableSignal<boolean>): void
   {
     this.resourceManager.loadResource(
-      'sfcs',
-      isLoading,
-      this.translate.instant('messages.failedToLoad', { resource: 'sfcs' })
+        'sfcs',
+        isLoading,
+        this.translate.instant('messages.failedToLoad', {resource: 'sfcs'})
     );
   }
 
   createSFCWithNotification(
-    sfcData: CreateSFCRequest,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      sfcData: CreateSFCRequest,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.createResource(
-      'sfcs',
-      sfcData,
-      isLoading,
-      this.translate.instant('messages.sfcCreatedSuccessfully'),
-      this.translate.instant('messages.failedToCreateSFC')
+        'sfcs',
+        sfcData,
+        isLoading,
+        this.translate.instant('messages.sfcCreatedSuccessfully'),
+        this.translate.instant('messages.failedToCreateSFC')
     );
   }
 
   updateSFCWithNotification(
-    sfcData: SFC,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      sfcData: SFC,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.updateResource(
-      'sfcs',
-      sfcData.id!,
-      sfcData,
-      isLoading,
-      this.translate.instant('messages.sfcUpdatedSuccessfully'),
-      this.translate.instant('messages.failedToUpdateSFC')
+        'sfcs',
+        sfcData.id!,
+        sfcData,
+        isLoading,
+        this.translate.instant('messages.sfcUpdatedSuccessfully'),
+        this.translate.instant('messages.failedToUpdateSFC')
     );
   }
 
   deleteSFCWithNotification(
-    id: string,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      id: string,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.deleteResource(
-      'sfcs',
-      id,
-      isLoading,
-      this.translate.instant('messages.sfcDeletedSuccessfully'),
-      this.translate.instant('messages.failedToDeleteSFC')
+        'sfcs',
+        id,
+        isLoading,
+        this.translate.instant('messages.sfcDeletedSuccessfully'),
+        this.translate.instant('messages.failedToDeleteSFC')
     );
   }
 
   openAddSFCDialog(isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(SFCDialogComponent,
-    {
-      data: { isEdit: false } as SFCDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {isEdit: false} as SFCDialogData,
+          width: '1200px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'create')
       {
         this.createSFCWithNotification(result.sfc, isLoading);
@@ -121,15 +124,15 @@ export class SFCService
   openEditSFCDialog(sfc: SFC, isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(SFCDialogComponent,
-    {
-      data: { sfc, isEdit: true } as SFCDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {sfc, isEdit: true} as SFCDialogData,
+          width: '1200px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'update')
       {
         this.updateSFCWithNotification(result.sfc, isLoading);
@@ -141,18 +144,18 @@ export class SFCService
   {
     const sfcLabel = sfc.sfcNumber || sfc.id || 'SFC';
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
-    {
-      data: {
-        userName: sfcLabel,
-        userEmail: ''
-      } as DeleteConfirmDialogData,
-      width: '500px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {
+            userName: sfcLabel,
+            userEmail: ''
+          } as DeleteConfirmDialogData,
+          width: '500px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result === true)
       {
         this.deleteSFCWithNotification(sfc.id!, isLoading);

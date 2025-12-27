@@ -1,6 +1,18 @@
-import { Component, OnInit, inject, OnDestroy, signal, computed, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  inject,
+  OnDestroy,
+  signal,
+  computed,
+  ViewChild,
+  ChangeDetectorRef,
+  TemplateRef,
+  AfterViewInit,
+  effect
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
 import {
   AxButtonComponent,
   AxProgressComponent,
@@ -12,17 +24,17 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
-import { StoreService } from '../../../../core/store.service';
-import { SFC } from '../../models/sfc.model';
-import { RMA } from '../../../rmas/models/rma.model';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { Subscription } from 'rxjs';
-import { JsonUtil } from '../../../../shared/utils/json.util';
-import { SFCService } from '../../services/sfc.service';
-import { RMAService } from '../../../rmas/services/rma.service';
-import { firstValueFrom } from 'rxjs';
+import {AxTooltipDirective} from '@ui/components';
+import {StoreService} from '../../../../core/store.service';
+import {SFC} from '../../models/sfc.model';
+import {RMA} from '../../../rmas/models/rma.model';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {Subscription} from 'rxjs';
+import {JsonUtil} from '../../../../shared/utils/json.util';
+import {SFCService} from '../../services/sfc.service';
+import {RMAService} from '../../../rmas/services/rma.service';
+import {firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-sfc-list',
@@ -121,7 +133,7 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private initializeColumns(): void
- {
+  {
     this.columns.set([
       {
         key: 'sfcNumber',
@@ -199,12 +211,12 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit
     this.rmaService.loadRMAs(this.isLoading);
   }
 
-  async createSFCFromRMA(rma: RMA): Promise<void> 
-{
+  async createSFCFromRMA(rma: RMA): Promise<void>
+  {
     if (!rma.id) return;
 
-    try 
-{
+    try
+    {
       this.processingRMA.set(rma.id);
       const sfc = await firstValueFrom(this.sfcService.createSFCFromRMA(rma.id));
       // Reload data to show the new SFC
@@ -215,13 +227,13 @@ export class SFCListComponent implements OnInit, OnDestroy, AfterViewInit
         this.router.navigate(['/sfcs', sfc.id]);
       }
     }
- catch (err)
- {
+    catch (err)
+    {
       console.error('Error creating SFC from RMA:', err);
       alert('Failed to create SFC from RMA. Please try again.');
     }
- finally
- {
+    finally
+    {
       this.processingRMA.set(null);
     }
   }

@@ -5,13 +5,13 @@
       {{ 'changeLanguage' | translate }}
     </mat-label>
   }
-  <mat-select 
-    #languageSelect
-    [value]="currentLanguage" 
-    (selectionChange)="onLanguageChange($event.value)"
-    class="language-select" 
-    [placeholder]="showLabel ? '' : ('changeLanguage' | translate)"
-    panelClass="language-select-panel">
+  <mat-select
+      #languageSelect
+      [value]="currentLanguage"
+      (selectionChange)="onLanguageChange($event.value)"
+      class="language-select"
+      [placeholder]="showLabel ? '' : ('changeLanguage' | translate)"
+      panelClass="language-select-panel">
     @for (lang of languages; track lang.value) {
       <mat-option [value]="lang.value">
         <ax-icon name="flag" class="option-icon"></ax-icon>

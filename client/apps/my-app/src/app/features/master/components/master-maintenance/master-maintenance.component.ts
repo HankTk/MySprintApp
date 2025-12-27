@@ -1,10 +1,10 @@
-import { Component, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatTabsModule, MatTabChangeEvent } from '@angular/material/tabs';
-import { TranslateModule } from '@ngx-translate/core';
-import { 
+import {Component, inject, signal, computed} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Router} from '@angular/router';
+import {MatCardModule} from '@angular/material/card';
+import {MatTabsModule, MatTabChangeEvent} from '@angular/material/tabs';
+import {TranslateModule} from '@ngx-translate/core';
+import {
   AxButtonComponent,
   AxIconComponent
 } from '@ui/components';
@@ -44,17 +44,17 @@ interface MaintenanceCategory
 export class MasterMaintenanceComponent
 {
   private router = inject(Router);
-  
+
   selectedCategory = signal<string>('data-management');
-  
+
   selectedCategoryIndex = computed(() =>
   {
     const index = this.categories.findIndex(cat => cat.id === this.selectedCategory());
     return index >= 0 ? index : 0;
   });
-  
+
   get selectedIndex(): number
- {
+  {
     return this.selectedCategoryIndex();
   }
 

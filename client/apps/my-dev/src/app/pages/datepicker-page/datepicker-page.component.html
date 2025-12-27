@@ -8,9 +8,9 @@
     </mat-card-header>
     <div class="datepicker-group">
       <ax-datepicker
-        label="Select a date"
-        [(ngModel)]="selectedDate"
-        placeholder="Choose date">
+              label="Select a date"
+              [(ngModel)]="selectedDate"
+              placeholder="Choose date">
       </ax-datepicker>
       <p class="selected-value">
         Selected: {{ selectedDate ? (selectedDate | date: 'fullDate') : 'None' }}
@@ -24,9 +24,9 @@
     </mat-card-header>
     <div class="datepicker-group">
       <ax-datepicker
-        label="Birth Date"
-        [(ngModel)]="birthDate"
-        placeholder="Select your birth date">
+              label="Birth Date"
+              [(ngModel)]="birthDate"
+              placeholder="Select your birth date">
       </ax-datepicker>
       <p class="selected-value">
         Selected: {{ birthDate ? (birthDate | date: 'fullDate') : 'None' }}
@@ -40,13 +40,13 @@
     </mat-card-header>
     <div class="datepicker-states">
       <ax-datepicker
-        label="Normal"
-        placeholder="Select date">
+              label="Normal"
+              placeholder="Select date">
       </ax-datepicker>
       <ax-datepicker
-        label="Disabled"
-        [disabled]="true"
-        placeholder="Cannot select">
+              label="Disabled"
+              [disabled]="true"
+              placeholder="Cannot select">
       </ax-datepicker>
     </div>
   </ax-card>

@@ -1,11 +1,13 @@
-import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
-import { AuthService } from './auth/auth.service';
-import { ServerUnavailableDialogComponent } from '../shared/components/server-unavailable-dialog/server-unavailable-dialog.component';
+import {HttpInterceptorFn, HttpErrorResponse} from '@angular/common/http';
+import {inject} from '@angular/core';
+import {catchError, throwError} from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
+import {AuthService} from './auth/auth.service';
+import {
+  ServerUnavailableDialogComponent
+} from '../shared/components/server-unavailable-dialog/server-unavailable-dialog.component';
 
 // Track if server unavailable dialog is already open to prevent multiple dialogs
 let serverUnavailableDialogOpen = false;
@@ -17,94 +19,94 @@ let currentServerUnavailableDialogRef: any = null;
  * Handles HTTP errors globally and displays user-friendly error messages
  */
 export const httpErrorInterceptor: HttpInterceptorFn = (req, next) =>
-  {
+{
 
-    const snackBar = inject(MatSnackBar);
+  const snackBar = inject(MatSnackBar);
   const dialog = inject(MatDialog);
   const translate = inject(TranslateService);
   const authService = inject(AuthService);
 
   return next(req).pipe(
-    catchError((error: HttpErrorResponse) =>
-    {
-      let messageKey = '';
-      let showDialog = false;
-      
-      // Handle different error types
-      if (error.status === 0)
+      catchError((error: HttpErrorResponse) =>
       {
-        // Network error or server unavailable
-        // Status 0 typically means server is not reachable (not running, CORS issue, etc.)
-        // Show modal dialog instead of toast for server unavailable
-        messageKey = 'messages.serverUnavailable';
-        showDialog = true;
-      }
-      else if (error.status >= 500)
-      {
-        // Server error
-        messageKey = 'messages.serverError';
-      }
-      else if (error.status === 401)
-      {
-        // Unauthorized - token expired or invalid
-        // Don't logout for login endpoint
-        if (!req.url.includes('/auth/login'))
+        let messageKey = '';
+        let showDialog = false;
+
+        // Handle different error types
+        if (error.status === 0)
         {
-          authService.logout();
+          // Network error or server unavailable
+          // Status 0 typically means server is not reachable (not running, CORS issue, etc.)
+          // Show modal dialog instead of toast for server unavailable
+          messageKey = 'messages.serverUnavailable';
+          showDialog = true;
         }
-        messageKey = 'messages.unauthorized';
-      }
-      else if (error.status === 403)
-      {
-        // Forbidden
-        messageKey = 'messages.forbidden';
-      }
-      else if (error.status === 404)
-      {
-        // Not found
-        messageKey = 'messages.notFound';
-      }
-
-      // Show modal dialog for server unavailable
-      if (showDialog && !serverUnavailableDialogOpen)
-      {
-        serverUnavailableDialogOpen = true;
-        const dialogRef = dialog.open(ServerUnavailableDialogComponent,
-          {
-            width: '100vw',
-          maxWidth: '100vw',
-          height: '100vh',
-          maxHeight: '100vh',
-          disableClose: true, // Prevent closing by clicking outside
-          panelClass: 'server-unavailable-fullscreen-dialog',
-          hasBackdrop: true,
-          backdropClass: 'server-unavailable-backdrop',
-            data: {
-              message: translate.instant(messageKey)
-            }
-          });
-
-        // Store dialog reference globally so it can be closed from shutdown button
-        currentServerUnavailableDialogRef = dialogRef;
-
-        dialogRef.afterClosed().subscribe(() =>
+        else if (error.status >= 500)
         {
-          serverUnavailableDialogOpen = false;
-          currentServerUnavailableDialogRef = null;
-        });
-      }
-      // Show snackbar for other errors
-      else if (messageKey && !showDialog)
-      {
-        const message = translate.instant(messageKey);
-        const closeLabel = translate.instant('messages.close');
-        snackBar.open(message, closeLabel, {
-          duration: 5000
-        });
-      }
+          // Server error
+          messageKey = 'messages.serverError';
+        }
+        else if (error.status === 401)
+        {
+          // Unauthorized - token expired or invalid
+          // Don't logout for login endpoint
+          if (!req.url.includes('/auth/login'))
+          {
+            authService.logout();
+          }
+          messageKey = 'messages.unauthorized';
+        }
+        else if (error.status === 403)
+        {
+          // Forbidden
+          messageKey = 'messages.forbidden';
+        }
+        else if (error.status === 404)
+        {
+          // Not found
+          messageKey = 'messages.notFound';
+        }
 
-      return throwError(() => error);
-    })
+        // Show modal dialog for server unavailable
+        if (showDialog && !serverUnavailableDialogOpen)
+        {
+          serverUnavailableDialogOpen = true;
+          const dialogRef = dialog.open(ServerUnavailableDialogComponent,
+              {
+                width: '100vw',
+                maxWidth: '100vw',
+                height: '100vh',
+                maxHeight: '100vh',
+                disableClose: true, // Prevent closing by clicking outside
+                panelClass: 'server-unavailable-fullscreen-dialog',
+                hasBackdrop: true,
+                backdropClass: 'server-unavailable-backdrop',
+                data: {
+                  message: translate.instant(messageKey)
+                }
+              });
+
+          // Store dialog reference globally so it can be closed from shutdown button
+          currentServerUnavailableDialogRef = dialogRef;
+
+          dialogRef.afterClosed().subscribe(() =>
+          {
+            serverUnavailableDialogOpen = false;
+            currentServerUnavailableDialogRef = null;
+          });
+        }
+        // Show snackbar for other errors
+        else if (messageKey && !showDialog)
+        {
+          const message = translate.instant(messageKey);
+          const closeLabel = translate.instant('messages.close');
+          snackBar.open(message, closeLabel, {
+            duration: 5000
+          });
+        }
+
+        return throwError(() => error);
+      })
   );
 
 };
@@ -115,9 +117,9 @@ export const httpErrorInterceptor: HttpInterceptorFn = (req, next) =>
  */
 export function closeServerUnavailableDialog(): void
 {
-  console.log('closeServerUnavailableDialog called', { 
-    hasRef: !!currentServerUnavailableDialogRef, 
-    isOpen: serverUnavailableDialogOpen 
+  console.log('closeServerUnavailableDialog called', {
+    hasRef: !!currentServerUnavailableDialogRef,
+    isOpen: serverUnavailableDialogOpen
   });
   if (currentServerUnavailableDialogRef)
   {
@@ -143,19 +145,19 @@ export function showServerUnavailableDialog(dialog: MatDialog, translate: Transl
   {
     serverUnavailableDialogOpen = true;
     const dialogRef = dialog.open(ServerUnavailableDialogComponent,
-      {
-        width: '100vw',
-      maxWidth: '100vw',
-      height: '100vh',
-      maxHeight: '100vh',
-      disableClose: true,
-      panelClass: 'server-unavailable-fullscreen-dialog',
-      hasBackdrop: true,
-      backdropClass: 'server-unavailable-backdrop',
-        data: {
-          message: translate.instant('messages.serverUnavailable')
-        }
-      });
+        {
+          width: '100vw',
+          maxWidth: '100vw',
+          height: '100vh',
+          maxHeight: '100vh',
+          disableClose: true,
+          panelClass: 'server-unavailable-fullscreen-dialog',
+          hasBackdrop: true,
+          backdropClass: 'server-unavailable-backdrop',
+          data: {
+            message: translate.instant('messages.serverUnavailable')
+          }
+        });
 
     currentServerUnavailableDialogRef = dialogRef;
 

@@ -17,14 +17,14 @@
   flex-shrink: 0;
   width: 200px;
   height: 200px;
-  
+
   ::ng-deep {
     ax-icon {
       color: var(--color-error, #f44336);
       display: block !important;
       width: 200px !important;
       height: 200px !important;
-      
+
       .ax-icon-large,
       .ax-icon-medium,
       .ax-icon-small {
@@ -33,7 +33,7 @@
         height: 200px !important;
         line-height: 200px !important;
       }
-      
+
       mat-icon {
         font-size: 200px !important;
         width: 200px !important;
@@ -62,7 +62,7 @@
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  
+
   .message {
     font-size: var(--font-size-lg, 1.25rem);
     color: var(--text-primary, rgba(0, 0, 0, 0.87));
@@ -70,19 +70,19 @@
     font-weight: var(--font-weight-medium, 500);
     text-align: center;
   }
-  
+
   .instructions {
     font-size: var(--font-size-base, 1rem);
     color: var(--text-secondary, rgba(0, 0, 0, 0.6));
     margin-bottom: var(--spacing-md, 16px);
     text-align: center;
   }
-  
+
   .checklist {
     margin: var(--spacing-md, 16px) 0;
     padding-left: var(--spacing-xl, 32px);
     text-align: left;
-    
+
     li {
       font-size: var(--font-size-base, 1rem);
       color: var(--text-secondary, rgba(0, 0, 0, 0.6));
@@ -101,7 +101,7 @@
   max-width: 600px;
   flex-shrink: 0;
   margin-top: var(--spacing-lg, 24px);
-  
+
   ::ng-deep {
     ax-button {
       button {
@@ -110,7 +110,7 @@
         min-width: 200px !important;
         height: auto !important;
         line-height: 1.5 !important;
-        
+
         .mdc-button__label {
           font-size: 1.25rem !important;
           font-weight: 500 !important;
@@ -131,7 +131,7 @@
       border-radius: 0 !important;
       padding: 0 !important;
       margin: 0 !important;
-      
+
       .mdc-dialog__surface {
         width: 100% !important;
         height: 100% !important;
@@ -139,7 +139,7 @@
       }
     }
   }
-  
+
   .server-unavailable-backdrop {
     background-color: rgba(0, 0, 0, 0.8) !important;
   }

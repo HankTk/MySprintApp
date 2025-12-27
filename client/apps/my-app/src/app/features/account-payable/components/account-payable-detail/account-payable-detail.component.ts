@@ -1,25 +1,25 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule, CurrencyPipe, KeyValuePipe } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatTableModule } from '@angular/material/table';
-import { MatChipsModule } from '@angular/material/chips';
-import { TranslateModule } from '@ngx-translate/core';
-import { AxButtonComponent, AxProgressComponent } from '@ui/components';
-import { firstValueFrom } from 'rxjs';
-import { StoreService } from '../../../../core/store.service';
-import { PurchaseOrder } from '../../../purchase-orders/models/purchase-order.model';
-import { PurchaseOrderService } from '../../../purchase-orders/services/purchase-order.service';
-import { VendorService } from '../../../vendors/services/vendor.service';
-import { Vendor } from '../../../vendors/models/vendor.model';
+import {Component, OnInit, inject, signal, computed} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CommonModule, CurrencyPipe, KeyValuePipe} from '@angular/common';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatCardModule} from '@angular/material/card';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatTableModule} from '@angular/material/table';
+import {MatChipsModule} from '@angular/material/chips';
+import {TranslateModule} from '@ngx-translate/core';
+import {AxButtonComponent, AxProgressComponent} from '@ui/components';
+import {firstValueFrom} from 'rxjs';
+import {StoreService} from '../../../../core/store.service';
+import {PurchaseOrder} from '../../../purchase-orders/models/purchase-order.model';
+import {PurchaseOrderService} from '../../../purchase-orders/services/purchase-order.service';
+import {VendorService} from '../../../vendors/services/vendor.service';
+import {Vendor} from '../../../vendors/models/vendor.model';
 
 type AccountPayableStep = 'invoice' | 'payment' | 'history';
 
@@ -130,7 +130,7 @@ export class AccountPayableDetailComponent implements OnInit
       if (po)
       {
         this.po.set(po);
-        
+
         // Load payment data from jsonData
         if (po.jsonData)
         {
@@ -139,7 +139,7 @@ export class AccountPayableDetailComponent implements OnInit
           this.paymentDate.set(paymentDateStr ? new Date(paymentDateStr) : null);
           this.paymentMethod.set(po.jsonData.paymentMethod || '');
         }
-        
+
         // Set initial step based on PO status
         if (po.status === 'PAID' || (po.jsonData?.paymentAmount && po.jsonData.paymentAmount > 0))
         {
@@ -178,42 +178,42 @@ export class AccountPayableDetailComponent implements OnInit
       jsonData.paymentAmount = this.paymentAmount();
       jsonData.paymentDate = this.paymentDate() ? this.paymentDate()!.toISOString().split('T')[0] : null;
       jsonData.paymentMethod = this.paymentMethod();
-      
+
       const updated = await firstValueFrom(
-        this.purchaseOrderService.updatePurchaseOrder(po.id, {
-          ...po,
-          status: this.paymentAmount() >= (po.total || 0) ? 'PAID' : 'INVOICED',
-          jsonData
-        })
+          this.purchaseOrderService.updatePurchaseOrder(po.id, {
+            ...po,
+            status: this.paymentAmount() >= (po.total || 0) ? 'PAID' : 'INVOICED',
+            jsonData
+          })
       );
-      
+
       if (updated)
       {
         this.po.set(updated);
-        
+
         // Add history record
         const history = jsonData.history || [];
         const newRecord: HistoryRecord =
-        {
-          step: 'payment',
-          status: this.paymentAmount() >= (po.total || 0) ? 'PAID' : 'INVOICED',
-          timestamp: new Date().toISOString(),
-          note: `Payment recorded: $${this.paymentAmount().toFixed(2)}`,
-          data: {
-            paymentAmount: this.paymentAmount(),
-            paymentDate: this.paymentDate() ? this.paymentDate()!.toISOString().split('T')[0] : null,
-            paymentMethod: this.paymentMethod()
-          }
-        };
+            {
+              step: 'payment',
+              status: this.paymentAmount() >= (po.total || 0) ? 'PAID' : 'INVOICED',
+              timestamp: new Date().toISOString(),
+              note: `Payment recorded: $${this.paymentAmount().toFixed(2)}`,
+              data: {
+                paymentAmount: this.paymentAmount(),
+                paymentDate: this.paymentDate() ? this.paymentDate()!.toISOString().split('T')[0] : null,
+                paymentMethod: this.paymentMethod()
+              }
+            };
         jsonData.history = [...history, newRecord];
-        
+
         const finalUpdated = await firstValueFrom(
-          this.purchaseOrderService.updatePurchaseOrder(po.id, {
-            ...updated,
-            jsonData
-          })
+            this.purchaseOrderService.updatePurchaseOrder(po.id, {
+              ...updated,
+              jsonData
+            })
         );
-        
+
         if (finalUpdated)
         {
           this.po.set(finalUpdated);
@@ -276,11 +276,11 @@ export class AccountPayableDetailComponent implements OnInit
   getStepLabel(step: string): string
   {
     const stepLabels: Record<string, string> =
-    {
-      'invoicing': 'accountsPayable.history.stepLabels.invoicing',
-      'payment': 'accountsPayable.history.stepLabels.payment',
-      'status_change': 'accountsPayable.history.stepLabels.statusChange'
-    };
+        {
+          'invoicing': 'accountsPayable.history.stepLabels.invoicing',
+          'payment': 'accountsPayable.history.stepLabels.payment',
+          'status_change': 'accountsPayable.history.stepLabels.statusChange'
+        };
     return stepLabels[step] || step;
   }
 
@@ -288,25 +288,25 @@ export class AccountPayableDetailComponent implements OnInit
   {
     if (!status) return 'N/A';
     const statusMap: Record<string, string> =
-    {
-      'INVOICED': 'accountsPayable.history.statusLabels.invoiced',
-      'PAID': 'accountsPayable.history.statusLabels.paid'
-    };
+        {
+          'INVOICED': 'accountsPayable.history.statusLabels.invoiced',
+          'PAID': 'accountsPayable.history.statusLabels.paid'
+        };
     return statusMap[status] || status;
   }
 
   getDataKeyLabel(key: string): string
   {
     const keyMap: Record<string, string> =
-    {
-      'invoiceNumber': 'accountsPayable.history.dataLabels.invoiceNumber',
-      'invoiceDate': 'accountsPayable.history.dataLabels.invoiceDate',
-      'paymentAmount': 'accountsPayable.history.dataLabels.paymentAmount',
-      'paymentDate': 'accountsPayable.history.dataLabels.paymentDate',
-      'paymentMethod': 'accountsPayable.history.dataLabels.paymentMethod',
-      'oldStatus': 'accountsPayable.history.dataLabels.oldStatus',
-      'newStatus': 'accountsPayable.history.dataLabels.newStatus'
-    };
+        {
+          'invoiceNumber': 'accountsPayable.history.dataLabels.invoiceNumber',
+          'invoiceDate': 'accountsPayable.history.dataLabels.invoiceDate',
+          'paymentAmount': 'accountsPayable.history.dataLabels.paymentAmount',
+          'paymentDate': 'accountsPayable.history.dataLabels.paymentDate',
+          'paymentMethod': 'accountsPayable.history.dataLabels.paymentMethod',
+          'oldStatus': 'accountsPayable.history.dataLabels.oldStatus',
+          'newStatus': 'accountsPayable.history.dataLabels.newStatus'
+        };
     return keyMap[key] || key;
   }
 
@@ -317,7 +317,7 @@ export class AccountPayableDetailComponent implements OnInit
     {
       return 'N/A';
     }
-    
+
     // Handle objects - convert to JSON string
     if (typeof value === 'object' && !(value instanceof Date))
     {
@@ -330,7 +330,7 @@ export class AccountPayableDetailComponent implements OnInit
         return 'N/A';
       }
     }
-    
+
     if (key === 'oldStatus' || key === 'newStatus')
     {
       return this.getStatusLabel(String(value));
@@ -338,13 +338,13 @@ export class AccountPayableDetailComponent implements OnInit
     if (key === 'paymentMethod')
     {
       const methodMap: Record<string, string> =
-      {
-        'BANK_TRANSFER': 'accountsPayable.payment.method.bankTransfer',
-        'CREDIT_CARD': 'accountsPayable.payment.method.creditCard',
-        'CASH': 'accountsPayable.payment.method.cash',
-        'CHECK': 'accountsPayable.payment.method.check',
-        'OTHER': 'accountsPayable.payment.method.other'
-      };
+          {
+            'BANK_TRANSFER': 'accountsPayable.payment.method.bankTransfer',
+            'CREDIT_CARD': 'accountsPayable.payment.method.creditCard',
+            'CASH': 'accountsPayable.payment.method.cash',
+            'CHECK': 'accountsPayable.payment.method.check',
+            'OTHER': 'accountsPayable.payment.method.other'
+          };
       return methodMap[String(value)] || String(value);
     }
     if (key === 'paymentAmount' && typeof value === 'number')

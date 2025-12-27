@@ -1,10 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { ThemeService } from './shared/services/theme.service';
-import { AuthService } from './core/auth/auth.service';
-import { filter } from 'rxjs/operators';
+import {Component, OnInit, inject} from '@angular/core';
+import {RouterOutlet, Router, NavigationEnd} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {TranslateModule} from '@ngx-translate/core';
+import {ThemeService} from './shared/services/theme.service';
+import {AuthService} from './core/auth/auth.service';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',

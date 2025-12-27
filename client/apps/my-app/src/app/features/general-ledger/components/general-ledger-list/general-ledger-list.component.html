@@ -16,19 +16,19 @@
       @if (tableFilterable) {
         <div class="filter-controls">
           @if (showFilters()) {
-            <ax-button 
-              variant="flat" 
-              color="primary" 
-              [label]="getClearFiltersLabel()"
-              (click)="clearTableFilters()">
+            <ax-button
+                    variant="flat"
+                    color="primary"
+                    [label]="getClearFiltersLabel()"
+                    (click)="clearTableFilters()">
               <ax-icon name="clear"></ax-icon>
             </ax-button>
           }
-          <ax-button 
-            variant="flat" 
-            color="primary" 
-            [label]="showFilters() ? ('hideFilters' | translate) : ('showFilters' | translate)"
-            (click)="toggleFilters(); $event.stopPropagation()">
+          <ax-button
+                  variant="flat"
+                  color="primary"
+                  [label]="showFilters() ? ('hideFilters' | translate) : ('showFilters' | translate)"
+                  (click)="toggleFilters(); $event.stopPropagation()">
             <ax-icon [name]="showFilters() ? 'visibility_off' : 'visibility'"></ax-icon>
           </ax-button>
         </div>
@@ -42,10 +42,10 @@
       </ng-template>
 
       <ng-template #typeCell let-row let-column="column">
-        <span 
-          class="type-badge" 
-          [style.color]="getTypeColor(row.type)"
-          [style.background-color]="getTypeBackgroundColor(row.type)">
+        <span
+                class="type-badge"
+                [style.color]="getTypeColor(row.type)"
+                [style.background-color]="getTypeBackgroundColor(row.type)">
           {{ getTypeLabel(row.type) }}
         </span>
       </ng-template>
@@ -74,26 +74,26 @@
       </ng-template>
 
       <ng-template #actionsCell let-row let-column="column">
-        <ax-button 
-          *ngIf="row.orderId || row.poId"
-          variant="icon" 
-          color="primary" 
-          (click)="viewEntry(row); $event.stopPropagation()" 
-          [axTooltip]="'generalLedger.table.view' | translate">
+        <ax-button
+                *ngIf="row.orderId || row.poId"
+                variant="icon"
+                color="primary"
+                (click)="viewEntry(row); $event.stopPropagation()"
+                [axTooltip]="'generalLedger.table.view' | translate">
           <ax-icon name="visibility"></ax-icon>
         </ax-button>
       </ng-template>
 
       <ax-table
-        #axTable
-        [dataSource]="glEntries() || []"
-        [columns]="columns()"
-        [filterable]="tableFilterable"
-        [showFilter]="showFilterValue"
-        [showSort]="true"
-        [showPaginator]="true"
-        [pageSize]="10"
-        [selectionMode]="'none'">
+          #axTable
+          [dataSource]="glEntries() || []"
+          [columns]="columns()"
+          [filterable]="tableFilterable"
+          [showFilter]="showFilterValue"
+          [showSort]="true"
+          [showPaginator]="true"
+          [pageSize]="10"
+          [selectionMode]="'none'">
       </ax-table>
 
       @if (glEntries() && glEntries().length === 0 && !isLoading()) {

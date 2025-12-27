@@ -10,17 +10,17 @@
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'customerNumber' | translate }}</mat-label>
           <input
-            matInput
-            formControlName="customerNumber"
-            [placeholder]="'customerNumberPlaceholder' | translate">
+                  matInput
+                  formControlName="customerNumber"
+                  [placeholder]="'customerNumberPlaceholder' | translate">
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'companyName' | translate }}</mat-label>
           <input
-            matInput
-            formControlName="companyName"
-            [placeholder]="'companyNamePlaceholder' | translate">
+                  matInput
+                  formControlName="companyName"
+                  [placeholder]="'companyNamePlaceholder' | translate">
         </mat-form-field>
       </div>
 
@@ -29,27 +29,27 @@
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>{{ 'firstName' | translate }}</mat-label>
             <input
-              matInput
-              formControlName="firstName"
-              [placeholder]="'firstNamePlaceholder' | translate">
+                    matInput
+                    formControlName="firstName"
+                    [placeholder]="'firstNamePlaceholder' | translate">
           </mat-form-field>
         }
 
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'lastName' | translate }}</mat-label>
           <input
-            matInput
-            formControlName="lastName"
-            [placeholder]="'lastNamePlaceholder' | translate">
+                  matInput
+                  formControlName="lastName"
+                  [placeholder]="'lastNamePlaceholder' | translate">
         </mat-form-field>
 
         @if (!isEnglish) {
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>{{ 'firstName' | translate }}</mat-label>
             <input
-              matInput
-              formControlName="firstName"
-              [placeholder]="'firstNamePlaceholder' | translate">
+                    matInput
+                    formControlName="firstName"
+                    [placeholder]="'firstNamePlaceholder' | translate">
           </mat-form-field>
         }
       </div>
@@ -58,11 +58,11 @@
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'emailAddress' | translate }}</mat-label>
           <input
-            matInput
-            type="email"
-            formControlName="email"
-            [placeholder]="'emailPlaceholder' | translate"
-            [class.is-invalid]="isFieldInvalid('email')">
+                  matInput
+                  type="email"
+                  formControlName="email"
+                  [placeholder]="'emailPlaceholder' | translate"
+                  [class.is-invalid]="isFieldInvalid('email')">
           @if (isFieldInvalid('email')) {
             <mat-error>
               {{ getErrorMessage('email') }}
@@ -73,9 +73,9 @@
         <mat-form-field appearance="outline" class="form-field">
           <mat-label>{{ 'phone' | translate }}</mat-label>
           <input
-            matInput
-            formControlName="phone"
-            [placeholder]="'phonePlaceholder' | translate">
+                  matInput
+                  formControlName="phone"
+                  [placeholder]="'phonePlaceholder' | translate">
         </mat-form-field>
       </div>
 
@@ -97,11 +97,11 @@
         <mat-form-field appearance="outline" class="form-field full-width">
           <mat-label>{{ 'jsonData' | translate }}</mat-label>
           <textarea
-            matInput
-            formControlName="jsonData"
-            rows="4"
-            [placeholder]="'jsonDataPlaceholder' | translate"
-            [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
+                  matInput
+                  formControlName="jsonData"
+                  rows="4"
+                  [placeholder]="'jsonDataPlaceholder' | translate"
+                  [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
           <mat-hint>{{ 'jsonDataHint' | translate }}</mat-hint>
           @if (isFieldInvalid('jsonData')) {
             <mat-error>
@@ -114,17 +114,17 @@
 
     <mat-dialog-actions align="end" class="dialog-actions">
       <ax-button
-        variant="stroked"
-        type="button"
-        [label]="'cancel' | translate"
-        (click)="onCancel()">
+              variant="stroked"
+              type="button"
+              [label]="'cancel' | translate"
+              (click)="onCancel()">
       </ax-button>
       <ax-button
-        variant="raised"
-        color="primary"
-        type="submit"
-        [label]="isEdit ? ('update' | translate) : ('add' | translate)"
-        [disabled]="customerForm.invalid">
+              variant="raised"
+              color="primary"
+              type="submit"
+              [label]="isEdit ? ('update' | translate) : ('add' | translate)"
+              [disabled]="customerForm.invalid">
       </ax-button>
     </mat-dialog-actions>
   </form>

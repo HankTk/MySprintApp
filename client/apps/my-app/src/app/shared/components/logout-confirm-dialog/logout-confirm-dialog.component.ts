@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { TranslateModule } from '@ngx-translate/core';
-import { AxIconComponent } from '@ui/components';
+import {Component, inject} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatDialogRef, MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
+import {TranslateModule} from '@ngx-translate/core';
+import {AxIconComponent} from '@ui/components';
 
 @Component({
   selector: 'app-logout-confirm-dialog',

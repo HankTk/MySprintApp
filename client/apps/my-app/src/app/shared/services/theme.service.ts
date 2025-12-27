@@ -1,5 +1,5 @@
-import { Injectable, signal, effect } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {Injectable, signal, effect} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 export type Theme = 'light' | 'dark';
 
@@ -10,7 +10,7 @@ export class ThemeService
 {
   private currentThemeSubject = new BehaviorSubject<Theme>('light');
   public currentTheme$ = this.currentThemeSubject.asObservable();
-  
+
   // Signal for reactive theme changes
   private themeSignal = signal<Theme>('light');
 
@@ -65,7 +65,7 @@ export class ThemeService
   {
     const body = document.body;
     const html = document.documentElement;
-    
+
     if (theme === 'dark')
     {
       body.classList.add('dark-theme');

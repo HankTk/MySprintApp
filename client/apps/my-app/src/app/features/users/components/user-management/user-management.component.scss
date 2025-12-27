@@ -33,18 +33,18 @@
       justify-content: space-between;
       align-items: center;
       gap: 16px;
-      
+
       .back-button {
         flex-shrink: 0;
         margin-right: 8px;
-        
+
         ::ng-deep {
           button {
             display: flex;
             align-items: center;
             justify-content: center;
           }
-          
+
           ax-icon,
           mat-icon {
             display: flex;
@@ -53,7 +53,7 @@
           }
         }
       }
-      
+
       .card-title {
         display: flex;
         align-items: center;
@@ -67,14 +67,14 @@
           height: 28px;
         }
       }
-      
+
       app-language-switcher {
         flex-shrink: 0;
         margin-left: auto;
       }
     }
 
-    }
+  }
 
   .controls-section {
     display: flex;
@@ -90,7 +90,7 @@
       align-items: center;
       gap: 8px;
     }
-    
+
     .filter-controls {
       display: flex;
       align-items: center;
@@ -276,14 +276,14 @@
       }
     }
 
-      .table-container {
-        .user-table {
-          ::ng-deep .mat-mdc-header-cell,
-          ::ng-deep .mat-mdc-cell {
-            padding: 8px 4px;
-            font-size: 14px;
-            vertical-align: middle;
-          }
+    .table-container {
+      .user-table {
+        ::ng-deep .mat-mdc-header-cell,
+        ::ng-deep .mat-mdc-cell {
+          padding: 8px 4px;
+          font-size: 14px;
+          vertical-align: middle;
+        }
 
         .json-data {
           font-size: 11px;

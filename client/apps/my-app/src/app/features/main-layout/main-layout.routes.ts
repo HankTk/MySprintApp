@@ -1,10 +1,10 @@
-import { Routes } from '@angular/router';
-import { MainLayoutComponent } from './main-layout.component';
-import { WelcomeComponent } from '../welcome/welcome.component';
-import { UserManagementComponent } from '../users/components/user-management/user-management.component';
-import { ProductListComponent } from '../products/components/product-list/product-list.component';
-import { CustomerListComponent } from '../customers/components/customer-list/customer-list.component';
-import { MasterComponent } from '../master/master.component';
+import {Routes} from '@angular/router';
+import {MainLayoutComponent} from './main-layout.component';
+import {WelcomeComponent} from '../welcome/welcome.component';
+import {UserManagementComponent} from '../users/components/user-management/user-management.component';
+import {ProductListComponent} from '../products/components/product-list/product-list.component';
+import {CustomerListComponent} from '../customers/components/customer-list/customer-list.component';
+import {MasterComponent} from '../master/master.component';
 
 export const routes: Routes = [
   {

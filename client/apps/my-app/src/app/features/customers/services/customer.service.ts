@@ -1,12 +1,15 @@
-import { Injectable, inject, WritableSignal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
-import { Customer, CreateCustomerRequest } from '../models/customer.model';
-import { ResourceService } from '../../../shared/services/resource.service';
-import { TranslateService } from '@ngx-translate/core';
-import { CustomerDialogComponent, CustomerDialogData } from '../components/customer-dialog/customer-dialog.component';
-import { DeleteConfirmDialogComponent, DeleteConfirmDialogData } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
+import {Injectable, inject, WritableSignal} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {Customer, CreateCustomerRequest} from '../models/customer.model';
+import {ResourceService} from '../../../shared/services/resource.service';
+import {TranslateService} from '@ngx-translate/core';
+import {CustomerDialogComponent, CustomerDialogData} from '../components/customer-dialog/customer-dialog.component';
+import {
+  DeleteConfirmDialogComponent,
+  DeleteConfirmDialogData
+} from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -48,67 +51,67 @@ export class CustomerService
   loadCustomers(isLoading: WritableSignal<boolean>): void
   {
     this.resourceManager.loadResource(
-      'customers',
-      isLoading,
-      this.translate.instant('messages.failedToLoad', { resource: 'customers' })
+        'customers',
+        isLoading,
+        this.translate.instant('messages.failedToLoad', {resource: 'customers'})
     );
   }
 
   createCustomerWithNotification(
-    customerData: CreateCustomerRequest,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      customerData: CreateCustomerRequest,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.createResource(
-      'customers',
-      customerData,
-      isLoading,
-      this.translate.instant('messages.customerCreatedSuccessfully'),
-      this.translate.instant('messages.failedToCreateCustomer')
+        'customers',
+        customerData,
+        isLoading,
+        this.translate.instant('messages.customerCreatedSuccessfully'),
+        this.translate.instant('messages.failedToCreateCustomer')
     );
   }
 
   updateCustomerWithNotification(
-    customerData: Customer,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      customerData: Customer,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.updateResource(
-      'customers',
-      customerData.id!,
-      customerData,
-      isLoading,
-      this.translate.instant('messages.customerUpdatedSuccessfully'),
-      this.translate.instant('messages.failedToUpdateCustomer')
+        'customers',
+        customerData.id!,
+        customerData,
+        isLoading,
+        this.translate.instant('messages.customerUpdatedSuccessfully'),
+        this.translate.instant('messages.failedToUpdateCustomer')
     );
   }
 
   deleteCustomerWithNotification(
-    id: string,
-    isLoading: WritableSignal<boolean>
-  ): void 
-{
+      id: string,
+      isLoading: WritableSignal<boolean>
+  ): void
+  {
     this.resourceManager.deleteResource(
-      'customers',
-      id,
-      isLoading,
-      this.translate.instant('messages.customerDeletedSuccessfully'),
-      this.translate.instant('messages.failedToDeleteCustomer')
+        'customers',
+        id,
+        isLoading,
+        this.translate.instant('messages.customerDeletedSuccessfully'),
+        this.translate.instant('messages.failedToDeleteCustomer')
     );
   }
 
   openAddCustomerDialog(isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(CustomerDialogComponent,
-    {
-      data: { isEdit: false } as CustomerDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {isEdit: false} as CustomerDialogData,
+          width: '1200px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'create')
       {
         this.createCustomerWithNotification(result.customer, isLoading);
@@ -119,15 +122,15 @@ export class CustomerService
   openEditCustomerDialog(customer: Customer, isLoading: WritableSignal<boolean>): void
   {
     const dialogRef = this.dialog.open(CustomerDialogComponent,
-    {
-      data: { customer, isEdit: true } as CustomerDialogData,
-      width: '1200px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {customer, isEdit: true} as CustomerDialogData,
+          width: '1200px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result && result.action === 'update')
       {
         this.updateCustomerWithNotification(result.customer, isLoading);
@@ -139,18 +142,18 @@ export class CustomerService
   {
     const customerName = customer.companyName || `${customer.lastName} ${customer.firstName}`;
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent,
-    {
-      data: {
-        userName: customerName,
-        userEmail: customer.email
-      } as DeleteConfirmDialogData,
-      width: '500px',
-      maxWidth: '90vw',
-      disableClose: true
-    });
+        {
+          data: {
+            userName: customerName,
+            userEmail: customer.email
+          } as DeleteConfirmDialogData,
+          width: '500px',
+          maxWidth: '90vw',
+          disableClose: true
+        });
 
-    dialogRef.afterClosed().subscribe(result => 
-{
+    dialogRef.afterClosed().subscribe(result =>
+    {
       if (result === true)
       {
         this.deleteCustomerWithNotification(customer.id!, isLoading);

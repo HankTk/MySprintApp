@@ -53,10 +53,10 @@
         <mat-form-field appearance="outline" class="form-field full-width">
           <mat-label>{{ 'jsonData' | translate }}</mat-label>
           <textarea
-            matInput
-            formControlName="jsonData"
-            rows="4"
-            [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
+                  matInput
+                  formControlName="jsonData"
+                  rows="4"
+                  [class.is-invalid]="isFieldInvalid('jsonData')"></textarea>
           <mat-hint>{{ 'jsonDataHint' | translate }}</mat-hint>
           @if (isFieldInvalid('jsonData')) {
             <mat-error>
@@ -69,17 +69,17 @@
 
     <mat-dialog-actions align="end" class="dialog-actions">
       <ax-button
-        variant="stroked"
-        type="button"
-        [label]="'cancel' | translate"
-        (click)="onCancel()">
+              variant="stroked"
+              type="button"
+              [label]="'cancel' | translate"
+              (click)="onCancel()">
       </ax-button>
       <ax-button
-        variant="raised"
-        color="primary"
-        type="submit"
-        [label]="isEdit ? ('update' | translate) : ('add' | translate)"
-        [disabled]="warehouseForm.invalid">
+              variant="raised"
+              color="primary"
+              type="submit"
+              [label]="isEdit ? ('update' | translate) : ('add' | translate)"
+              [disabled]="warehouseForm.invalid">
       </ax-button>
     </mat-dialog-actions>
   </form>

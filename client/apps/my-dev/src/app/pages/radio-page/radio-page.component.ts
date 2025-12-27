@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { AxRadioComponent, AxFormGroupComponent, AxCardComponent, MatCardModule } from '@ui/components';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {AxRadioComponent, AxFormGroupComponent, AxCardComponent, MatCardModule} from '@ui/components';
 
 @Component({
   selector: 'app-radio-page',

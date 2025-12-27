@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { AxButtonComponent, AxCardComponent, MatCardModule } from '@ui/components';
-import { DialogExampleComponent } from './dialog-example.component';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {AxButtonComponent, AxCardComponent, MatCardModule} from '@ui/components';
+import {DialogExampleComponent} from './dialog-example.component';
 
 @Component({
   selector: 'app-dialog-page',
@@ -32,7 +32,7 @@ export class DialogPageComponent
       hasBackdrop: true,
       panelClass: 'dialog-example-panel'
     });
-    
+
     // Clear reference when dialog closes
     this.dialogRef.afterClosed().subscribe(() =>
     {
@@ -53,7 +53,7 @@ export class DialogPageComponent
       hasBackdrop: true,
       panelClass: 'dialog-example-panel'
     });
-    
+
     // Clear reference when dialog closes
     this.dialogRef.afterClosed().subscribe(() =>
     {

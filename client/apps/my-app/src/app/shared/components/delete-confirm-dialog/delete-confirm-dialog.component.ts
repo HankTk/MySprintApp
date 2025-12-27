@@ -1,8 +1,8 @@
-import { Component, Inject, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
-import { AxButtonComponent, AxIconComponent } from '@ui/components';
+import {Component, Inject, inject} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatDialogRef, MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {TranslateModule} from '@ngx-translate/core';
+import {AxButtonComponent, AxIconComponent} from '@ui/components';
 
 export interface DeleteConfirmDialogData
 {
@@ -32,18 +32,18 @@ export interface DeleteConfirmDialogData
 export class DeleteConfirmDialogComponent
 {
   private dialogRef = inject(MatDialogRef<DeleteConfirmDialogComponent>);
-  
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: DeleteConfirmDialogData)
   {
   }
 
   get displayName(): string
- {
+  {
     return this.data.itemName || this.data.userName || '';
   }
 
   get displayDetails(): string
- {
+  {
     return this.data.itemDetails || this.data.userEmail || '';
   }
 

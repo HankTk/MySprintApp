@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { AxInputComponent, AxCardComponent, MatCardModule } from '@ui/components';
+import {Component} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {AxInputComponent, AxCardComponent, MatCardModule} from '@ui/components';
 
 @Component({
   selector: 'app-input-page',
@@ -20,7 +20,7 @@ export class InputPageComponent
   hintField = '';
 
   get hasError(): boolean
- {
+  {
     return this.errorField.length > 0 && this.errorField.length < 3;
   }
 }

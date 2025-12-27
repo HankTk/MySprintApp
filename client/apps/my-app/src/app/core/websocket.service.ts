@@ -1,6 +1,6 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { Subject, BehaviorSubject } from 'rxjs';
-import { Client, IMessage, IFrame } from '@stomp/stompjs';
+import {Injectable, OnDestroy} from '@angular/core';
+import {Subject, BehaviorSubject} from 'rxjs';
+import {Client, IMessage, IFrame} from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 export interface DataChangeNotification
@@ -36,7 +36,7 @@ export class WebSocketService implements OnDestroy
     }
 
     this.isConnecting = true;
-    
+
     // Create STOMP client using SockJS
     this.stompClient = new Client({
       webSocketFactory: () => new SockJS(this.wsUrl),

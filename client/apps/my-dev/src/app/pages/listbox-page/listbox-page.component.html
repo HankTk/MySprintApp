@@ -7,10 +7,10 @@
       <mat-card-title>Single Selection</mat-card-title>
     </mat-card-header>
     <ax-listbox
-      label="Select an option"
-      [options]="options"
-      [(ngModel)]="singleValue"
-      placeholder="Please select">
+            label="Select an option"
+            [options]="options"
+            [(ngModel)]="singleValue"
+            placeholder="Please select">
     </ax-listbox>
     <p style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
       Selected: {{ singleValue || 'None' }}
@@ -22,11 +22,11 @@
       <mat-card-title>Multiple Selection</mat-card-title>
     </mat-card-header>
     <ax-listbox
-      label="Select multiple options"
-      [options]="options"
-      [(ngModel)]="multipleValue"
-      [multiple]="true"
-      placeholder="Please select">
+            label="Select multiple options"
+            [options]="options"
+            [(ngModel)]="multipleValue"
+            [multiple]="true"
+            placeholder="Please select">
     </ax-listbox>
     <p style="margin-top: 16px; font-size: 14px; color: rgba(0, 0, 0, 0.6);">
       Selected: {{ multipleValue.length > 0 ? multipleValue.join(', ') : 'None' }}
@@ -39,26 +39,26 @@
     </mat-card-header>
     <div class="listbox-group">
       <ax-listbox
-        label="Normal"
-        [options]="options"
-        placeholder="Please select">
+              label="Normal"
+              [options]="options"
+              placeholder="Please select">
       </ax-listbox>
       <ax-listbox
-        label="Error State"
-        [options]="options"
-        [error]="true"
-        placeholder="Please select">
+              label="Error State"
+              [options]="options"
+              [error]="true"
+              placeholder="Please select">
       </ax-listbox>
       <ax-listbox
-        label="Disabled"
-        [options]="options"
-        [disabled]="true"
-        placeholder="Please select">
+              label="Disabled"
+              [options]="options"
+              [disabled]="true"
+              placeholder="Please select">
       </ax-listbox>
       <ax-listbox
-        label="With Disabled Options"
-        [options]="disabledOptions"
-        placeholder="Please select">
+              label="With Disabled Options"
+              [options]="disabledOptions"
+              placeholder="Please select">
       </ax-listbox>
     </div>
   </ax-card>

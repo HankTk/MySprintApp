@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
+import {Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/core';
 
 /**
  * Highlight directive
@@ -21,18 +21,18 @@ export class HighlightDirective
   {
     this.originalColor = this.el.nativeElement.style.backgroundColor;
     this.renderer.setStyle(
-      this.el.nativeElement,
-      'backgroundColor',
-      this.highlightColor
+        this.el.nativeElement,
+        'backgroundColor',
+        this.highlightColor
     );
   }
 
   @HostListener('mouseleave') onMouseLeave()
   {
     this.renderer.setStyle(
-      this.el.nativeElement,
-      'backgroundColor',
-      this.originalColor
+        this.el.nativeElement,
+        'backgroundColor',
+        this.originalColor
     );
   }
 }

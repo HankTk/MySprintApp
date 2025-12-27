@@ -1,6 +1,17 @@
-import { Component, OnInit, inject, OnDestroy, signal, ViewChild, ChangeDetectorRef, TemplateRef, AfterViewInit, effect } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  inject,
+  OnDestroy,
+  signal,
+  ViewChild,
+  ChangeDetectorRef,
+  TemplateRef,
+  AfterViewInit,
+  effect
+} from '@angular/core';
+import {Router} from '@angular/router';
+import {CommonModule} from '@angular/common';
 import {
   AxButtonComponent,
   AxProgressComponent,
@@ -12,14 +23,14 @@ import {
   MatTableModule,
   MatCardModule
 } from '@ui/components';
-import { AxTooltipDirective } from '@ui/components';
-import { StoreService } from '../../../../core/store.service';
-import { Warehouse } from '../../models/warehouse.model';
-import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../../../shared/services/language.service';
-import { Subscription } from 'rxjs';
-import { JsonUtil } from '../../../../shared/utils/json.util';
-import { WarehouseService } from '../../services/warehouse.service';
+import {AxTooltipDirective} from '@ui/components';
+import {StoreService} from '../../../../core/store.service';
+import {Warehouse} from '../../models/warehouse.model';
+import {TranslateModule} from '@ngx-translate/core';
+import {LanguageService} from '../../../../shared/services/language.service';
+import {Subscription} from 'rxjs';
+import {JsonUtil} from '../../../../shared/utils/json.util';
+import {WarehouseService} from '../../services/warehouse.service';
 
 @Component({
   selector: 'app-warehouse-list',
@@ -100,7 +111,7 @@ export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private initializeColumns(): void
- {
+  {
     this.columns.set([
       {
         key: 'warehouseCode',
@@ -146,9 +157,9 @@ export class WarehouseListComponent implements OnInit, OnDestroy, AfterViewInit
         filterable: true,
         filterType: 'select',
         filterOptions: [
-          { value: '', label: 'All' },
-          { value: 'true', label: 'Yes' },
-          { value: 'false', label: 'No' }
+          {value: '', label: 'All'},
+          {value: 'true', label: 'Yes'},
+          {value: 'false', label: 'No'}
         ],
         cellTemplate: this.activeCellTemplate
       },

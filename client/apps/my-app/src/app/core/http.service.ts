@@ -1,9 +1,9 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { StoreService } from './store.service';
+import {Injectable, inject} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable, tap} from 'rxjs';
+import {StoreService} from './store.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class HttpService
 {
 
@@ -14,7 +14,7 @@ export class HttpService
   get(resource: string): Observable<any>
   {
     return this.http.get(`${this.apiUrl}/${resource}`).pipe(
-      tap(data => this.store.set(resource, data))
+        tap(data => this.store.set(resource, data))
     );
   }
 
