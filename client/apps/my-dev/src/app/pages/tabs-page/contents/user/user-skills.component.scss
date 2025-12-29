@@ -1,0 +1,32 @@
+.skills-section {
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  .skill-category {
+    h4 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+
+      li {
+        padding: 6px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
+

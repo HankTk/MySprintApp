@@ -1,4 +1,5 @@
 <div class="page-container">
+
   <h1>Tabs Component</h1>
   <p class="description">A reusable tabs component for organizing content into multiple sections.</p>
 
@@ -7,126 +8,10 @@
       <mat-card-title>User Profile</mat-card-title>
       <mat-card-subtitle>Example: Organizing user information</mat-card-subtitle>
     </mat-card-header>
-    <mat-tab-group>
-      <mat-tab label="Personal Info">
-        <div class="tab-content">
-          <div class="info-section">
-            <h3>Personal Information</h3>
-            <div class="info-grid">
-              <div class="info-item">
-                <strong>Name:</strong>
-                <span>John Doe</span>
-              </div>
-              <div class="info-item">
-                <strong>Email:</strong>
-                <span>john.doe@example.com</span>
-              </div>
-              <div class="info-item">
-                <strong>Phone:</strong>
-                <span>+1 (555) 123-4567</span>
-              </div>
-              <div class="info-item">
-                <strong>Date of Birth:</strong>
-                <span>January 15, 1990</span>
-              </div>
-              <div class="info-item">
-                <strong>Location:</strong>
-                <span>San Francisco, CA</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Work Experience">
-        <div class="tab-content">
-          <div class="experience-section">
-            <h3>Work Experience</h3>
-            <div class="experience-item">
-              <h4>Senior Software Engineer</h4>
-              <p class="company">Tech Corp Inc. | 2020 - Present</p>
-              <p>Leading development of web applications using Angular and TypeScript. Managing a team of 5
-                developers.</p>
-            </div>
-            <div class="experience-item">
-              <h4>Software Engineer</h4>
-              <p class="company">StartupXYZ | 2018 - 2020</p>
-              <p>Developed full-stack applications using React, Node.js, and PostgreSQL. Implemented CI/CD
-                pipelines.</p>
-            </div>
-            <div class="experience-item">
-              <h4>Junior Developer</h4>
-              <p class="company">Web Solutions Ltd. | 2016 - 2018</p>
-              <p>Built responsive web applications and maintained legacy systems. Learned modern development
-                practices.</p>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Skills">
-        <div class="tab-content">
-          <div class="skills-section">
-            <h3>Technical Skills</h3>
-            <div class="skills-grid">
-              <div class="skill-category">
-                <h4>Frontend</h4>
-                <ul>
-                  <li>Angular</li>
-                  <li>React</li>
-                  <li>TypeScript</li>
-                  <li>HTML/CSS/SCSS</li>
-                  <li>JavaScript</li>
-                </ul>
-              </div>
-              <div class="skill-category">
-                <h4>Backend</h4>
-                <ul>
-                  <li>Node.js</li>
-                  <li>Spring Boot</li>
-                  <li>Java</li>
-                  <li>Python</li>
-                  <li>REST APIs</li>
-                </ul>
-              </div>
-              <div class="skill-category">
-                <h4>Tools & Others</h4>
-                <ul>
-                  <li>Git</li>
-                  <li>Docker</li>
-                  <li>CI/CD</li>
-                  <li>Agile/Scrum</li>
-                  <li>Testing</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Projects">
-        <div class="tab-content">
-          <div class="projects-section">
-            <h3>Recent Projects</h3>
-            <div class="project-item">
-              <h4>E-Commerce Platform</h4>
-              <p class="project-meta">2024 | Angular, Spring Boot, PostgreSQL</p>
-              <p>Built a full-featured e-commerce platform with user authentication, product catalog, shopping cart, and
-                payment integration.</p>
-            </div>
-            <div class="project-item">
-              <h4>Task Management App</h4>
-              <p class="project-meta">2023 | React, Node.js, MongoDB</p>
-              <p>Developed a collaborative task management application with real-time updates, notifications, and team
-                collaboration features.</p>
-            </div>
-            <div class="project-item">
-              <h4>Analytics Dashboard</h4>
-              <p class="project-meta">2022 | Angular, Highcharts, REST API</p>
-              <p>Created an interactive analytics dashboard with data visualization, filtering, and export
-                capabilities.</p>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
+    <ax-tabs
+      [tabs]="userProfileTabs"
+      (selectedTabChange)="onTabChange($event)">
+    </ax-tabs>
   </ax-card>
 
   <ax-card class="example-card">
@@ -134,113 +19,10 @@
       <mat-card-title>Product Details</mat-card-title>
       <mat-card-subtitle>Example: Product information organization</mat-card-subtitle>
     </mat-card-header>
-    <mat-tab-group>
-      <mat-tab label="Description">
-        <div class="tab-content">
-          <h3>Product Description</h3>
-          <p>This premium wireless headphone delivers exceptional sound quality with active noise cancellation
-            technology. Perfect for music lovers and professionals who demand the best audio experience.</p>
-          <h4>Key Features:</h4>
-          <ul>
-            <li>Active Noise Cancellation (ANC) technology</li>
-            <li>30-hour battery life with quick charge</li>
-            <li>Premium sound quality with 40mm drivers</li>
-            <li>Comfortable over-ear design with memory foam</li>
-            <li>Bluetooth 5.0 connectivity</li>
-            <li>Voice assistant support</li>
-          </ul>
-        </div>
-      </mat-tab>
-      <mat-tab label="Specifications">
-        <div class="tab-content">
-          <h3>Technical Specifications</h3>
-          <div class="specs-table">
-            <div class="spec-row">
-              <strong>Driver Size:</strong>
-              <span>40mm</span>
-            </div>
-            <div class="spec-row">
-              <strong>Frequency Response:</strong>
-              <span>20Hz - 20kHz</span>
-            </div>
-            <div class="spec-row">
-              <strong>Impedance:</strong>
-              <span>32 ohms</span>
-            </div>
-            <div class="spec-row">
-              <strong>Battery Life:</strong>
-              <span>30 hours (ANC off), 20 hours (ANC on)</span>
-            </div>
-            <div class="spec-row">
-              <strong>Charging Time:</strong>
-              <span>2 hours (full charge), 15 minutes (3 hours playback)</span>
-            </div>
-            <div class="spec-row">
-              <strong>Weight:</strong>
-              <span>290g</span>
-            </div>
-            <div class="spec-row">
-              <strong>Connectivity:</strong>
-              <span>Bluetooth 5.0, 3.5mm jack</span>
-            </div>
-            <div class="spec-row">
-              <strong>Color Options:</strong>
-              <span>Black, Silver, Blue</span>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Reviews">
-        <div class="tab-content">
-          <h3>Customer Reviews</h3>
-          <div class="review-item">
-            <div class="review-header">
-              <strong>Sarah M.</strong>
-              <span class="rating">★★★★★</span>
-            </div>
-            <p class="review-date">December 15, 2024</p>
-            <p>"Excellent sound quality and the noise cancellation is amazing. Very comfortable for long listening
-              sessions. Highly recommend!"</p>
-          </div>
-          <div class="review-item">
-            <div class="review-header">
-              <strong>Michael T.</strong>
-              <span class="rating">★★★★☆</span>
-            </div>
-            <p class="review-date">December 10, 2024</p>
-            <p>"Great headphones overall. Battery life is impressive and the build quality feels premium. The only minor
-              issue is the case could be more compact."</p>
-          </div>
-          <div class="review-item">
-            <div class="review-header">
-              <strong>Emily R.</strong>
-              <span class="rating">★★★★★</span>
-            </div>
-            <p class="review-date">December 5, 2024</p>
-            <p>"Perfect for my daily commute. The ANC blocks out all the train noise and the sound quality is crystal
-              clear. Worth every penny!"</p>
-          </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Shipping">
-        <div class="tab-content">
-          <h3>Shipping & Returns</h3>
-          <div class="shipping-info">
-            <h4>Shipping Options</h4>
-            <ul>
-              <li><strong>Standard Shipping:</strong> 5-7 business days - Free</li>
-              <li><strong>Express Shipping:</strong> 2-3 business days - $9.99</li>
-              <li><strong>Overnight Shipping:</strong> Next business day - $19.99</li>
-            </ul>
-            <h4>Return Policy</h4>
-            <p>We offer a 30-day money-back guarantee. If you're not satisfied with your purchase, you can return it for
-              a full refund. Items must be in original condition with all accessories included.</p>
-            <h4>Warranty</h4>
-            <p>This product comes with a 1-year manufacturer warranty covering defects in materials and workmanship.</p>
-          </div>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
+    <ax-tabs
+      [tabs]="productDetailsTabs"
+      (selectedTabChange)="onTabChange($event)">
+    </ax-tabs>
   </ax-card>
 
   <ax-card class="example-card">
@@ -248,114 +30,10 @@
       <mat-card-title>Dashboard Analytics</mat-card-title>
       <mat-card-subtitle>Example: Data organization with tabs</mat-card-subtitle>
     </mat-card-header>
-    <mat-tab-group>
-      <mat-tab label="Overview">
-        <div class="tab-content">
-          <div class="stats-grid">
-            <div class="stat-card">
-              <h4>Total Sales</h4>
-              <p class="stat-value">$125,430</p>
-              <p class="stat-change positive">+12.5% from last month</p>
-            </div>
-            <div class="stat-card">
-              <h4>Active Users</h4>
-              <p class="stat-value">8,542</p>
-              <p class="stat-change positive">+8.2% from last month</p>
-            </div>
-            <div class="stat-card">
-              <h4>Orders</h4>
-              <p class="stat-value">1,234</p>
-              <p class="stat-change positive">+5.3% from last month</p>
-            </div>
-            <div class="stat-card">
-              <h4>Conversion Rate</h4>
-              <p class="stat-value">3.2%</p>
-              <p class="stat-change negative">-0.5% from last month</p>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Revenue">
-        <div class="tab-content">
-          <h3>Revenue Breakdown</h3>
-          <div class="revenue-list">
-            <div class="revenue-item">
-              <span class="revenue-label">Product Sales</span>
-              <span class="revenue-value">$89,200</span>
-            </div>
-            <div class="revenue-item">
-              <span class="revenue-label">Services</span>
-              <span class="revenue-value">$24,150</span>
-            </div>
-            <div class="revenue-item">
-              <span class="revenue-label">Subscriptions</span>
-              <span class="revenue-value">$12,080</span>
-            </div>
-            <div class="revenue-item total">
-              <span class="revenue-label">Total Revenue</span>
-              <span class="revenue-value">$125,430</span>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Users">
-        <div class="tab-content">
-          <h3>User Activity</h3>
-          <div class="activity-list">
-            <div class="activity-item">
-              <strong>New Users (Last 30 days):</strong>
-              <span>1,234</span>
-            </div>
-            <div class="activity-item">
-              <strong>Active Users (Last 7 days):</strong>
-              <span>5,678</span>
-            </div>
-            <div class="activity-item">
-              <strong>Returning Users:</strong>
-              <span>2,864</span>
-            </div>
-            <div class="activity-item">
-              <strong>Average Session Duration:</strong>
-              <span>12 minutes</span>
-            </div>
-            <div class="activity-item">
-              <strong>Bounce Rate:</strong>
-              <span>32.5%</span>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-      <mat-tab label="Settings">
-        <div class="tab-content">
-          <h3>Dashboard Settings</h3>
-          <div class="settings-list">
-            <div class="setting-item">
-              <label>
-                <input type="checkbox" checked>
-                <span>Email notifications for daily reports</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label>
-                <input type="checkbox" checked>
-                <span>Show revenue predictions</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label>
-                <input type="checkbox">
-                <span>Enable real-time updates</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label>
-                <input type="checkbox" checked>
-                <span>Export data automatically</span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
+    <ax-tabs
+      [tabs]="dashboardTabs"
+      (selectedTabChange)="onTabChange($event)">
+    </ax-tabs>
   </ax-card>
+
 </div>

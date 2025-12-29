@@ -1,0 +1,23 @@
+.activity-list {
+  margin-top: 16px;
+
+  .activity-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    strong {
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    span {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+}
+

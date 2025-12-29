@@ -15,6 +15,19 @@
             {{ tab.label }}
           </ng-template>
         }
+        @if (tab.component) {
+          <div [class]="tab.contentClass || ''" class="ax-tab-content">
+            <ng-container axTabContentHost [component]="tab.component" [componentData]="tab.componentData"></ng-container>
+          </div>
+        } @else if (tab.content) {
+          <div [class]="tab.contentClass || ''" class="ax-tab-content">
+            @if (isStringContent(tab.content)) {
+              <div [innerHTML]="getSafeHtml(tab.content)"></div>
+            } @else if (isTemplateRef(tab.content)) {
+              <ng-container *ngTemplateOutlet="tab.content"></ng-container>
+            }
+          </div>
+        }
       </mat-tab>
     }
   }

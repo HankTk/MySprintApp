@@ -1,0 +1,28 @@
+.settings-list {
+  margin-top: 16px;
+
+  .setting-item {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      input[type="checkbox"] {
+        margin-right: 12px;
+        cursor: pointer;
+      }
+
+      span {
+        color: rgba(0, 0, 0, 0.87);
+      }
+    }
+  }
+}
+

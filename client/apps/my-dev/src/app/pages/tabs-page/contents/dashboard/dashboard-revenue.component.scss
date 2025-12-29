@@ -1,0 +1,26 @@
+.revenue-list {
+  margin-top: 16px;
+
+  .revenue-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+    &.total {
+      background: rgba(0, 0, 0, 0.02);
+      font-weight: 600;
+      border-top: 2px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .revenue-label {
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    .revenue-value {
+      color: rgba(0, 0, 0, 0.87);
+      font-weight: 500;
+    }
+  }
+}
+

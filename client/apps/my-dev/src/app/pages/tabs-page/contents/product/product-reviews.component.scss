@@ -1,0 +1,38 @@
+.review-item {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+
+    strong {
+      color: rgba(0, 0, 0, 0.87);
+    }
+
+    .rating {
+      color: #ffa726;
+      font-size: 14px;
+    }
+  }
+
+  .review-date {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
