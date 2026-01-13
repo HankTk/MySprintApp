@@ -40,6 +40,7 @@ export class SidebarComponent
     {id: 'table', label: 'Table', icon: 'table_chart'},
     {id: 'tabs', label: 'Tabs', icon: 'tab'},
     {id: 'textarea', label: 'Textarea', icon: 'notes'},
+    {id: 'three', label: 'Three', icon: 'view_in_ar'},
     {id: 'tooltip', label: 'Tooltip', icon: 'info'},
     {id: 'typography', label: 'Typography', icon: 'text_fields'}
   ];

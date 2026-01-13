@@ -81,6 +81,10 @@ export const routes: Routes = [
   {
     path: 'chart',
     loadComponent: () => import('./pages/chart-page/chart-page.component').then(m => m.ChartPageComponent)
+  },
+  {
+    path: 'three',
+    loadComponent: () => import('./pages/three-page/three-page.component').then(m => m.ThreePageComponent)
   }
 ];
 

@@ -37,6 +37,7 @@ export * from './lib/components/ax-list/ax-list.component';
 export * from './lib/components/ax-form-field/ax-form-field.component';
 export * from './lib/components/ax-textarea/ax-textarea.component';
 export * from './lib/components/ax-chart/ax-chart.component';
+export * from './lib/components/ax-three/ax-three.component';
 
 // Directives
 export * from './lib/components/ax-tooltip/ax-tooltip.directive';

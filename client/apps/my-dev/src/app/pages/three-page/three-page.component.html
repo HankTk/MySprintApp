@@ -1,0 +1,106 @@
+<div class="page-container">
+  <h1>Ax-Three Component</h1>
+  <p class="description">A reusable Three.js component using Angular-three for 3D visualization.</p>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Basic 3D Scene</mat-card-title>
+      <mat-card-subtitle>Default configuration with grid and axes helpers</mat-card-subtitle>
+    </mat-card-header>
+    <div class="three-container">
+      <ax-three
+        #basicThree
+        [backgroundColor]="basicConfig.backgroundColor"
+        [cameraPosition]="basicConfig.cameraPosition"
+        [showGrid]="basicConfig.showGrid"
+        [showAxes]="basicConfig.showAxes"
+        (sceneReady)="onBasicSceneReady($event)">
+      </ax-three>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Custom Scene</mat-card-title>
+      <mat-card-subtitle>Custom background color and camera position</mat-card-subtitle>
+    </mat-card-header>
+    <div class="three-container">
+      <ax-three
+        #customThree
+        [backgroundColor]="customConfig.backgroundColor"
+        [cameraPosition]="customConfig.cameraPosition"
+        [showGrid]="customConfig.showGrid"
+        [showAxes]="customConfig.showAxes"
+        (sceneReady)="onCustomSceneReady($event)">
+      </ax-three>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Minimal Scene</mat-card-title>
+      <mat-card-subtitle>Scene without grid and axes helpers</mat-card-subtitle>
+    </mat-card-header>
+    <div class="three-container">
+      <ax-three
+        #minimalThree
+        [backgroundColor]="minimalConfig.backgroundColor"
+        [cameraPosition]="minimalConfig.cameraPosition"
+        [showGrid]="minimalConfig.showGrid"
+        [showAxes]="minimalConfig.showAxes"
+        (sceneReady)="onMinimalSceneReady($event)">
+      </ax-three>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Walking Person (Basic Animation)</mat-card-title>
+      <mat-card-subtitle>GLTF model with basic animation playback</mat-card-subtitle>
+    </mat-card-header>
+    <div class="three-container">
+      <ax-three
+        #walkingSimpleThree
+        [backgroundColor]="walkingSimpleConfig.backgroundColor"
+        [cameraPosition]="walkingSimpleConfig.cameraPosition"
+        [showGrid]="walkingSimpleConfig.showGrid"
+        [showAxes]="walkingSimpleConfig.showAxes"
+        (sceneReady)="onWalkingSimpleReady($event)">
+      </ax-three>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Walking Person (Animation Blending)</mat-card-title>
+      <mat-card-subtitle>GLTF model with animation blending like three.js example</mat-card-subtitle>
+    </mat-card-header>
+    <div class="three-container">
+      <ax-three
+        #walkingDetailedThree
+        [backgroundColor]="walkingDetailedConfig.backgroundColor"
+        [cameraPosition]="walkingDetailedConfig.cameraPosition"
+        [showGrid]="walkingDetailedConfig.showGrid"
+        [showAxes]="walkingDetailedConfig.showAxes"
+        (sceneReady)="onWalkingDetailedReady($event)">
+      </ax-three>
+    </div>
+  </ax-card>
+
+  <ax-card class="example-card">
+    <mat-card-header ax-card-header>
+      <mat-card-title>Walking Person (Advanced Blending)</mat-card-title>
+      <mat-card-subtitle>GLTF model with advanced animation blending and transitions</mat-card-subtitle>
+    </mat-card-header>
+    <div class="three-container">
+      <ax-three
+        #walkingGltfThree
+        [backgroundColor]="walkingGltfConfig.backgroundColor"
+        [cameraPosition]="walkingGltfConfig.cameraPosition"
+        [showGrid]="walkingGltfConfig.showGrid"
+        [showAxes]="walkingGltfConfig.showAxes"
+        (sceneReady)="onWalkingGltfReady($event)">
+      </ax-three>
+    </div>
+  </ax-card>
+</div>

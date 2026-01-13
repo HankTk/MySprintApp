@@ -36,6 +36,8 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-three/cannon": "^6.0.1",
+    "@angular-three/core": "^6.0.1",
     "@angular/animations": "^21.0.3",
     "@angular/cdk": "^21.0.2",
     "@angular/common": "^21.0.3",
@@ -54,6 +56,7 @@
     "highcharts-angular": "^5.2.0",
     "rxjs": "~7.8.0",
     "sockjs-client": "^1.6.1",
+    "three": "^0.182.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
@@ -77,6 +80,7 @@
     "@types/jest": "^29.5.12",
     "@types/node": "^24.10.1",
     "@types/sockjs-client": "^1.5.4",
+    "@types/three": "^0.182.0",
     "@typescript-eslint/eslint-plugin": "^8.50.1",
     "@typescript-eslint/parser": "^8.50.1",
     "@typescript-eslint/utils": "^8.40.0",
