@@ -63,7 +63,7 @@ export class ThreePageComponent {
     cameraPosition: [0, 1.6, 3] as [number, number, number],
     showGrid: true,
     showAxes: false,
-    modelUrl: 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/XBot.glb',
+    modelUrl: 'https://threejs.org/examples/models/gltf/XBot.glb',
   };
 
   onBasicSceneReady(context: ThreeSceneContext): void {

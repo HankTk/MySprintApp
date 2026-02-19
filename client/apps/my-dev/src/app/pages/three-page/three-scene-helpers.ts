@@ -52,14 +52,13 @@ export function createMinimalScene(context: ThreeSceneContext): void {
 }
 
 export function createSimpleWalkingPerson(context: ThreeSceneContext): void {
-  // Try using GitHub raw content URL for Three.js examples
-  // Using XBot model from Three.js GitHub repository
-  createGLTFAnimationBlending(context, 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/XBot.glb', false);
+  // Using XBot model from Three.js official examples
+  createGLTFAnimationBlending(context, 'https://threejs.org/examples/models/gltf/XBot.glb', false);
 }
 
 export function createDetailedWalkingPerson(context: ThreeSceneContext): void {
-  // Using XBot model with animation blending from GitHub
-  createGLTFAnimationBlending(context, 'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/models/gltf/XBot.glb', true);
+  // Using XBot model with animation blending from Three.js official examples
+  createGLTFAnimationBlending(context, 'https://threejs.org/examples/models/gltf/XBot.glb', true);
 }
 
 export function createGLTFWalkingPerson(context: ThreeSceneContext, modelUrl: string): void {

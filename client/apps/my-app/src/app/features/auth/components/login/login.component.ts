@@ -48,6 +48,11 @@ export class LoginComponent implements OnInit
 
   ngOnInit(): void
   {
+    this.loginForm = this.fb.group({
+      userid: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+
     const currentLang = this.languageService.getCurrentLanguage();
 
     if (!this.translate.defaultLang)
@@ -57,11 +62,6 @@ export class LoginComponent implements OnInit
 
     this.translate.use(currentLang).subscribe(() =>
     {
-      this.loginForm = this.fb.group({
-        userid: ['', [Validators.required]],
-        password: ['', [Validators.required, Validators.minLength(6)]]
-      });
-
       this.authService.checkUsers().subscribe(hasUsers =>
       {
         if (!hasUsers)
